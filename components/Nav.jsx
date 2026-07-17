@@ -45,8 +45,8 @@ export default function Nav() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const left = NAV_LINKS.slice(0, 4);
-  const right = NAV_LINKS.slice(4);
+  // const left = NAV_LINKS.slice(0, 4);
+  // const right = NAV_LINKS.slice(4);
 
   const navBase = {
     position: "fixed",
@@ -90,27 +90,59 @@ export default function Nav() {
   return (
     <>
       {/* Live nav — mix-blend difference keeps text legible over any section */}
-      <nav style={{ ...navBase, background: "transparent", mixBlendMode: "difference" }}>
+      <nav
+        style={{
+          ...navBase,
+          background: "transparent",
+          mixBlendMode: "difference",
+        }}
+      >
         <div
           style={{
             width: "100%",
             maxWidth: 1180,
             margin: "0 auto",
             display: "flex",
-            alignItems: "center",
+            alignItems: "right",
             justifyContent: "space-between",
+            gap: "30px",
           }}
         >
           <Group
-            items={left}
+            items={NAV_LINKS}
             justify="flex-end"
             render={(n) => (
-              <a key={n.id} href={`#${n.id}`} onClick={(e) => scrollTo(e, n.id)} style={linkStyle(n.id)}>
+              <a
+                key={n.id}
+                href={`#${n.id}`}
+                onClick={(e) => scrollTo(e, n.id)}
+                style={linkStyle(n.id)}
+              >
                 {n.label}
               </a>
             )}
           />
           <a
+            href="#a-contact"
+            onClick={(e) => scrollTo(e, "a-contact")}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: ".05em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              color: "#fff",
+              border: "1.5px solid #fff",
+              padding: "9px 18px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Work with us
+          </a>
+
+          {/* <a
             href="#"
             onClick={toTop}
             style={{
@@ -122,14 +154,13 @@ export default function Nav() {
               overflow: "visible",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("/assets/logo.svg")}
               alt="Happen"
               style={{ height: 96, width: "auto", display: "block", filter: "brightness(0) invert(1)" }}
             />
-          </a>
-          <div
+          </a> */}
+          {/* <div
             style={{
               display: "flex",
               gap: 26,
@@ -140,7 +171,12 @@ export default function Nav() {
             }}
           >
             {right.map((n) => (
-              <a key={n.id} href={`#${n.id}`} onClick={(e) => scrollTo(e, n.id)} style={linkStyle(n.id)}>
+              <a
+                key={n.id}
+                href={`#${n.id}`}
+                onClick={(e) => scrollTo(e, n.id)}
+                style={linkStyle(n.id)}
+              >
                 {n.label}
               </a>
             ))}
@@ -163,7 +199,7 @@ export default function Nav() {
             >
               Work with us
             </a>
-          </div>
+          </div> */}
         </div>
       </nav>
     </>
