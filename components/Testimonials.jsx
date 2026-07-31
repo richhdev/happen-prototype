@@ -53,8 +53,26 @@ function Card({ t, i, progress, vh, isTop, onClick }) {
         zIndex: isTop ? 100 : i + 1,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 14 }}>
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "#CA0013" }}>{t.src}</div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 12,
+          marginBottom: 14,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: ".08em",
+            textTransform: "uppercase",
+            color: "#CA0013",
+          }}
+        >
+          {t.src}
+        </div>
       </div>
       <p
         style={{
@@ -65,9 +83,10 @@ function Card({ t, i, progress, vh, isTop, onClick }) {
           margin: 0,
           textAlign: "center",
           flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 6,
+          overflow: "hidden",
           textWrap: "pretty",
         }}
       >
@@ -86,7 +105,10 @@ export default function Testimonials() {
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  const bgY = useTransform(scrollYProgress, (p) => `${-(p * (520 - 100) * (vh / 100))}px`);
+  const bgY = useTransform(
+    scrollYProgress,
+    (p) => `${-(p * (520 - 100) * (vh / 100))}px`,
+  );
 
   return (
     <section id="a-testimonials" style={{ padding: 0 }}>
@@ -98,7 +120,8 @@ export default function Testimonials() {
             height: "100vh",
             overflow: "hidden",
             boxSizing: "border-box",
-            backgroundImage: "radial-gradient(rgba(17,17,17,.10) 1.5px, transparent 1.5px)",
+            backgroundImage:
+              "radial-gradient(rgba(17,17,17,.10) 1.5px, transparent 1.5px)",
             backgroundSize: "56px 56px",
             backgroundPositionX: "0px",
             backgroundPositionY: bgY,
@@ -120,7 +143,17 @@ export default function Testimonials() {
               textAlign: "center",
             }}
           >
-            <span style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#CA0013", marginBottom: 14 }}>
+            <span
+              style={{
+                display: "block",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: ".14em",
+                textTransform: "uppercase",
+                color: "#CA0013",
+                marginBottom: 14,
+              }}
+            >
               Testimonials
             </span>
             <motion.h2
@@ -128,9 +161,17 @@ export default function Testimonials() {
               whileInView={{ letterSpacing: "-.03em" }}
               viewport={{ once: false, amount: 0.6 }}
               transition={{ duration: 1.4, ease: EASE }}
-              style={{ fontSize: 52, fontWeight: 900, textTransform: "uppercase", lineHeight: 0.98, margin: 0 }}
+              style={{
+                fontSize: 52,
+                fontWeight: 900,
+                textTransform: "uppercase",
+                lineHeight: 0.98,
+                margin: 0,
+              }}
             >
-              Trusted by the best<br />in the business
+              Trusted by the best
+              <br />
+              in the business
             </motion.h2>
           </motion.div>
 
