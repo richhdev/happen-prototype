@@ -1,0 +1,119 @@
+.section {
+  padding: 0;
+  border-bottom: 1px solid #950000;
+  background: #ca0013;
+}
+
+.container {
+  height: 280vh;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.16) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 56px 56px;
+  background-position-x: 0px;
+}
+
+.wrap {
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.track {
+  display: flex;
+  gap: 20px;
+  padding-left: 48px;
+  padding-right: 48px;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.card {
+  flex: none;
+  width: 280px;
+  height: 280px;
+  max-height: 280px;
+  box-sizing: border-box;
+  position: relative;
+  background: linear-gradient(135deg, #1a1a1a, #2b1416);
+  border: 1px solid #3a3a3a;
+  overflow: hidden;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardBgImage {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  filter: grayscale(0.35);
+}
+
+.cardGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(17, 17, 17, 0.88) 0%,
+    rgba(17, 17, 17, 0.35) 60%,
+    rgba(17, 17, 17, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+.logoWrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 82%;
+  object-fit: contain;
+  opacity: 0.92;
+  display: block;
+}
+
+.textWrap {
+  position: relative;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin: 0;
+  color: #eeebe3;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #c9c4b7;
+  margin-top: 5px;
+}
+
+.spacer {
+  flex: none;
+  width: 28px;
+}
