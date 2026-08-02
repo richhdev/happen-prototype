@@ -1,6 +1,11 @@
 "use client";
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import { SectionHead, useIsoLayoutEffect } from "@/components/ui";
 import { WORK } from "@/lib/data";
 
@@ -8,12 +13,17 @@ export default function Work() {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const wrapRef = useRef(null);
+  const cardRefs = useRef([]);
   const [max, setMax] = useState(0);
+  const [active, setActive] = useState(0);
 
   useIsoLayoutEffect(() => {
     const measure = () => {
       if (!trackRef.current || !wrapRef.current) return;
-      const m = Math.max(0, trackRef.current.scrollWidth - wrapRef.current.clientWidth);
+      const m = Math.max(
+        0,
+        trackRef.current.scrollWidth - wrapRef.current.clientWidth,
+      );
       setMax(m);
     };
     measure();
@@ -28,95 +38,204 @@ export default function Work() {
   const x = useTransform(scrollYProgress, (v) => -(v * max));
   const bgY = useTransform(scrollYProgress, [0, 1], ["0px", "-400px"]);
 
+  useMotionValueEvent(x, "change", () => {
+    if (!wrapRef.current) return;
+    const center =
+      wrapRef.current.getBoundingClientRect().left +
+      wrapRef.current.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    cardRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const mid = r.left + r.width / 2;
+      const dist = Math.abs(mid - center);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = i;
+      }
+    });
+    setActive((prev) => (prev === best ? prev : best));
+  });
+
   return (
-    <section id="b-work" style={{ padding: 0, borderBottom: "1px solid #950000", background: "#CA0013" }}>
-      <div ref={containerRef} style={{ height: "280vh" }}>
+    <section id="b-work" className="work">
+      <div ref={containerRef} className="work-container">
         <motion.div
-          style={{
-            position: "sticky",
-            top: 0,
-            overflow: "hidden",
-            height: "100vh",
-            boxSizing: "border-box",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            backgroundImage: "radial-gradient(rgba(255,255,255,.16) 1.5px, transparent 1.5px)",
-            backgroundSize: "56px 56px",
-            backgroundPositionX: "0px",
-            backgroundPositionY: bgY,
-          }}
+          className="work-sticky"
+          style={{ backgroundPositionY: bgY }}
         >
           <SectionHead
             eyebrow="Work"
-            title={<>The proof is<br />in the Happening</>}
+            title={
+              <>
+                The proof is
+                <br />
+                in the Happening
+              </>
+            }
             eyebrowColor="#111"
             color="#fff"
             style={{ marginBottom: 40 }}
           />
 
-          <div style={{ overflow: "hidden" }} ref={wrapRef}>
-            <motion.div
-              ref={trackRef}
-              style={{ display: "flex", gap: 20, paddingLeft: 48, paddingRight: 48, willChange: "transform", x }}
-            >
+          <div className="work-track-wrap" ref={wrapRef}>
+            <motion.div ref={trackRef} className="work-track" style={{ x }}>
               {WORK.map((w, i) => (
                 <div
                   key={i}
-                  style={{
-                    flex: "none",
-                    width: 280,
-                    height: 280,
-                    maxHeight: 280,
-                    boxSizing: "border-box",
-                    position: "relative",
-                    background: "linear-gradient(135deg, #1a1a1a, #2b1416)",
-                    border: "1px solid #3a3a3a",
-                    overflow: "hidden",
-                    padding: 26,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
+                  ref={(el) => (cardRefs.current[i] = el)}
+                  className={`work-card${i === active ? " work-card-active" : ""}`}
                 >
                   <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      backgroundImage: `url('${w.bg}')`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      opacity: 0.3,
-                      filter: "grayscale(.35)",
-                    }}
+                    className="work-card-bg"
+                    style={{ backgroundImage: `url('${w.bg}')` }}
                   />
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background: "linear-gradient(0deg, rgba(17,17,17,.88) 0%, rgba(17,17,17,.35) 60%, rgba(17,17,17,.1) 100%)",
-                      pointerEvents: "none",
-                    }}
-                  />
-                  <div style={{ position: "relative", flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div className="work-card-gradient" />
+                  <div className="work-card-logo-wrap">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={w.logo}
                       alt={w.title}
-                      style={{ height: w.logoH || 40, maxWidth: "82%", objectFit: "contain", opacity: 0.92, display: "block" }}
+                      className="work-card-logo"
+                      style={{ height: w.logoH || 40 }}
                     />
                   </div>
-                  <div style={{ position: "relative" }}>
-                    <h3 style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-.015em", margin: 0, color: "#EEEBE3" }}>{w.title}</h3>
-                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#c9c4b7", marginTop: 5 }}>{w.tag}</div>
+                  <div className="work-card-text">
+                    <h3 className="work-card-title">{w.title}</h3>
+                    <div className="work-card-tag">{w.tag}</div>
                   </div>
                 </div>
               ))}
-              <div style={{ flex: "none", width: 28 }} />
             </motion.div>
           </div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        .work {
+          padding: 0;
+          border-bottom: 1px solid #950000;
+          background: #ca0013;
+        }
+
+        .work-container {
+          height: 280vh;
+        }
+
+        :global(.work-sticky) {
+          position: sticky;
+          top: 0;
+          overflow: hidden;
+          height: 100vh;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          background-image: radial-gradient(
+            rgba(255, 255, 255, 0.16) 1.5px,
+            transparent 1.5px
+          );
+          background-size: 56px 56px;
+          background-position-x: 0px;
+        }
+
+        .work-track-wrap {
+          overflow: hidden;
+          padding: 32px 0;
+        }
+
+        :global(.work-track) {
+          display: flex;
+          gap: 20px;
+          padding-left: calc(50vw - 140px);
+          padding-right: calc(50vw - 140px);
+          will-change: transform;
+        }
+
+        .work-card {
+          flex: none;
+          width: 280px;
+          height: 280px;
+          max-height: 280px;
+          box-sizing: border-box;
+          position: relative;
+          background: linear-gradient(135deg, #1a1a1a, #2b1416);
+          border: 1px solid #3a3a3a;
+          transition:
+            border-color 240ms ease,
+            transform 240ms ease;
+          overflow: hidden;
+          padding: 26px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .work-card-active {
+          border-color: #fff;
+          transform: scale(1.2);
+          z-index: 2;
+        }
+
+        .work-card-bg {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          opacity: 0.3;
+          filter: grayscale(0.35);
+        }
+
+        .work-card-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            0deg,
+            rgba(17, 17, 17, 0.88) 0%,
+            rgba(17, 17, 17, 0.35) 60%,
+            rgba(17, 17, 17, 0.1) 100%
+          );
+          pointer-events: none;
+        }
+
+        .work-card-logo-wrap {
+          position: relative;
+          flex: 1;
+          min-height: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .work-card-logo {
+          max-width: 82%;
+          object-fit: contain;
+          opacity: 0.92;
+          display: block;
+        }
+
+        .work-card-text {
+          position: relative;
+        }
+
+        .work-card-title {
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: -0.015em;
+          margin: 0;
+          color: #eeebe3;
+        }
+
+        .work-card-tag {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #c9c4b7;
+          margin-top: 5px;
+        }
+      `}</style>
     </section>
   );
 }
