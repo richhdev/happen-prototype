@@ -20,38 +20,135 @@ const CARDS = [
 
 export default function Traders() {
   return (
-    <section
-      id="a-traders"
-      style={{ padding: "120px 48px", minHeight: "100vh", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "center", background: "#E4DBCB" }}
-    >
-      <Reveal style={{ margin: "0 auto 44px", maxWidth: 760, textAlign: "center" }}>
-        <span style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#CA0013", marginBottom: 14 }}>Traders &amp; Hosts</span>
-        <h2 style={{ fontSize: 52, fontWeight: 900, letterSpacing: "-.03em", whiteSpace: "nowrap", textTransform: "uppercase", lineHeight: 0.98, margin: 0 }}>Want in?</h2>
+    <section id="a-traders" className="traders">
+      <Reveal>
+        <div className="heading-group">
+          <span className="eyebrow">Traders &amp; Hosts</span>
+          <h2 className="heading">Want in?</h2>
+        </div>
       </Reveal>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 800, width: "100%", margin: "0 auto" }}>
+      <div className="grid">
         {CARDS.map((c, i) => (
-          <Reveal
-            key={i}
-            once={false}
-            amount={0.5}
-            delay={i * 160}
-            style={{ background: "linear-gradient(180deg, #2C2C2C, #000000)", border: "1px solid #262626", padding: 44 }}
-          >
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "#CA0013", marginBottom: 12 }}>{c.kicker}</div>
-            <h3 style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-.01em", margin: "0 0 16px", color: "#EEEBE3" }}>{c.title}</h3>
-            <p style={{ fontSize: 14.5, color: "#c9c4b7", lineHeight: 1.65, margin: "0 0 26px" }}>{c.body}</p>
-            <a
-              href={c.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 26px", fontSize: 12, fontWeight: 700, letterSpacing: ".03em", textTransform: "uppercase", textDecoration: "none", color: "#EEEBE3", border: "1.5px solid rgba(238,235,227,.5)" }}
-            >
-              {c.cta} <span style={{ fontSize: 15 }}>↗</span>
-            </a>
+          <Reveal key={i} once={false} amount={0.5} delay={i * 160}>
+            <div className="card">
+              <div className="kicker">{c.kicker}</div>
+              <h3 className="title">{c.title}</h3>
+              <p className="body">{c.body}</p>
+              <a href={c.href} target="_blank" rel="noopener noreferrer" className="cta">
+                {c.cta} <span className="cta-arrow">↗</span>
+              </a>
+            </div>
           </Reveal>
         ))}
       </div>
+
+      <style jsx>{`
+        .traders {
+          padding: 120px 48px;
+          min-height: 100vh;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          background: #e4dbcb;
+        }
+
+        .heading-group {
+          margin: 0 auto 44px;
+          max-width: 760px;
+          text-align: center;
+        }
+
+        .eyebrow {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #ca0013;
+          margin-bottom: 14px;
+        }
+
+        .heading {
+          font-size: 52px;
+          font-weight: 900;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          text-transform: uppercase;
+          line-height: 0.98;
+          margin: 0;
+        }
+
+        .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 24px;
+          max-width: 800px;
+          width: 100%;
+          margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+          .grid {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        .card {
+          background: linear-gradient(180deg, #2c2c2c, #000000);
+          border: 1px solid #262626;
+          padding: 44px;
+          height: 100%;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .kicker {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #ca0013;
+          margin-bottom: 12px;
+        }
+
+        .title {
+          font-size: 28px;
+          font-weight: 800;
+          letter-spacing: -0.01em;
+          margin: 0 0 16px;
+          color: #eeebe3;
+        }
+
+        .body {
+          font-size: 14.5px;
+          color: #c9c4b7;
+          line-height: 1.65;
+          margin: 0 0 26px;
+        }
+
+        .cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 26px;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          text-transform: uppercase;
+          text-decoration: none;
+          color: #eeebe3;
+          border: 1.5px solid rgba(238, 235, 227, 0.5);
+          margin-top: auto;
+          align-self: flex-start;
+        }
+
+        .cta-arrow {
+          font-size: 15px;
+        }
+      `}</style>
     </section>
   );
 }
