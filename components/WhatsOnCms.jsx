@@ -24,7 +24,7 @@ function whenText(ev) {
 }
 
 export default function WhatsOnCms() {
-  const [events, setEvents] = useState(null); // null = loading
+  const [events, setEvents] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
