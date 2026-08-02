@@ -32,7 +32,9 @@ export default function Hero() {
     tryPlay();
     v.addEventListener("canplay", tryPlay);
     v.addEventListener("ended", tryPlay);
-    const kick = () => { if (v.paused) tryPlay(); };
+    const kick = () => {
+      if (v.paused) tryPlay();
+    };
     const evs = ["click", "touchstart", "scroll", "keydown"];
     evs.forEach((e) => document.addEventListener(e, kick, { passive: true }));
     return () => {
@@ -61,6 +63,7 @@ export default function Hero() {
 
   return (
     <header
+      id="a-hero"
       ref={headerRef}
       style={{
         position: "relative",
@@ -92,7 +95,14 @@ export default function Hero() {
           filter: "grayscale(1) brightness(.7)",
         }}
       />
-      <div style={{ position: "absolute", inset: 0, background: "rgba(17,17,17,.75)", zIndex: 1 }} />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(17,17,17,.75)",
+          zIndex: 1,
+        }}
+      />
 
       <div
         style={{
@@ -120,7 +130,14 @@ export default function Hero() {
           Melbourne · Est. 10+ years
         </span>
 
-        <div style={{ boxSizing: "border-box", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div
+          style={{
+            boxSizing: "border-box",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <motion.h1
             initial={{ letterSpacing: "0em" }}
             whileInView={{ letterSpacing: "-.08em" }}
@@ -138,7 +155,14 @@ export default function Hero() {
             <span style={lineStyle}>making it Happen</span>
           </motion.h1>
 
-          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <motion.img
               src={asset("/assets/logo.svg")}
               alt="Happen logo"
@@ -155,8 +179,18 @@ export default function Hero() {
           </div>
         </div>
 
-        <p style={{ maxWidth: 520, marginTop: 16, color: "#c9c4b7", fontSize: 16, lineHeight: 1.55 }}>
-          A Melbourne-based events agency built on over 10 years of doing the work — and doing it well. We move fast, think creatively, and always show up.
+        <p
+          style={{
+            maxWidth: 520,
+            marginTop: 16,
+            color: "#c9c4b7",
+            fontSize: 16,
+            lineHeight: 1.55,
+          }}
+        >
+          A Melbourne-based events agency built on over 10 years of doing the
+          work — and doing it well. We move fast, think creatively, and always
+          show up.
         </p>
 
         <div style={{ display: "flex", gap: 16, marginTop: 22 }}>
@@ -211,22 +245,44 @@ export default function Hero() {
           <div
             style={{
               overflow: "hidden",
-              WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
-              maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
+              WebkitMaskImage:
+                "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
+              maskImage:
+                "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
             }}
           >
-            <div style={{ display: "flex", width: "max-content", animation: "marquee 26s linear infinite", gap: 16 }}>
+            <div
+              style={{
+                display: "flex",
+                width: "max-content",
+                animation: "marquee 26s linear infinite",
+                gap: 16,
+              }}
+            >
               {trustedLoop.map((c, i) => (
                 <div
                   key={i}
-                  style={{ width: 168, height: 64, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}
+                  style={{
+                    width: 168,
+                    height: 64,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flex: "none",
+                  }}
                   title={c.name}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={c.src}
                     alt={c.name}
-                    style={{ height: c.h, maxWidth: 132, objectFit: "contain", opacity: 0.82, display: "block" }}
+                    style={{
+                      height: c.h,
+                      maxWidth: 132,
+                      objectFit: "contain",
+                      opacity: 0.82,
+                      display: "block",
+                    }}
                   />
                 </div>
               ))}
