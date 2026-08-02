@@ -1,6 +1,11 @@
 "use client";
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionTemplate } from "motion/react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionTemplate,
+} from "motion/react";
 import { asset, EASE } from "@/lib/data";
 
 const cssEase = "cubic-bezier(.16,1,.3,1)";
@@ -11,28 +16,40 @@ const ARTISTS = [
     name: "JÄMO",
     img: asset("/assets/artist-jamo.jpg"),
     desc: "Australian DJ, producer and founder of Critical Feeling — recognised for a euphoric, emotionally charged sound and electrifying live sets. An official Calvin Harris remix and standout appearances at Let Them Eat Cake, Beyond The Valley and A3 Festival.",
-    handle: "@jamo.wav · Spotify",
+    instagramHandle: "@jamo.wav",
+    instagram: "https://instagram.com/jamo.wav",
+    musicHandle: "Spotify",
+    music: "https://open.spotify.com/artist/5BatmKqX0n63qHXQTcKoPr",
   },
   {
     genre: "Techno / Trance",
     name: "Laura King",
     img: asset("/assets/artist-laura-king.jpg"),
     desc: "A leading force in Australia's contemporary techno/trance scene, bridging global trends and local flavour. High-energy sets blending hard dance, groove techno, hip hop vocals and psychedelic trance.",
-    handle: "@laura.king.music · Spotify",
+    instagramHandle: "@laura.king.music",
+    instagram: "https://instagram.com/laura.king.music",
+    musicHandle: "Soundcloud",
+    music: "https://soundcloud.com/laurakingofficial",
   },
   {
     genre: "House",
     name: "Sasha Fern",
     img: asset("/assets/artist-sasha-fern.jpg"),
     desc: "Known for all things steezy, in style and in sound. A tasteful flow of Tech & Latino House, Jackin', Garage and bouncy rhythms. Has warmed up for Peggy Gou, Sharam Jey and Boys Noize.",
-    handle: "@sashafernn · Spotify",
+    instagramHandle: "@sashafernn",
+    instagram: "https://instagram.com/sashafernn",
+    musicHandle: "Soundcloud",
+    music: "",
   },
   {
     genre: "Rave",
     name: "Vanna",
     img: asset("/assets/artist-vanna.jpg"),
     desc: 'Melbourne-based, self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
-    handle: "@vannaspins · SoundCloud",
+    instagramHandle: "@vannaspins",
+    instagram: "https://instagram.com/vannaspins",
+    musicHandle: "SoundCloud",
+    music: "https://soundcloud.com/vannaspins",
   },
 ];
 
@@ -55,10 +72,22 @@ function progresses(p, i) {
 
 function ArtistCard({ ar, i, progress, bioOpen, active, onClick }) {
   const s = SCATTER[i];
-  const txv = useTransform(progress, (p) => { const { p_i, a } = progresses(p, i); return s.sx * a + s.ex * p_i; });
-  const tyv = useTransform(progress, (p) => { const { p_i, a } = progresses(p, i); return `calc(${s.sy * a}px + (50vh - 160px) * ${s.ey * p_i})`; });
-  const tzv = useTransform(progress, (p) => { const { a } = progresses(p, i); return s.sz * a; });
-  const rotv = useTransform(progress, (p) => { const { p_i } = progresses(p, i); return s.r * (1 - p_i * 0.6); });
+  const txv = useTransform(progress, (p) => {
+    const { p_i, a } = progresses(p, i);
+    return s.sx * a + s.ex * p_i;
+  });
+  const tyv = useTransform(progress, (p) => {
+    const { p_i, a } = progresses(p, i);
+    return `calc(${s.sy * a}px + (50vh - 160px) * ${s.ey * p_i})`;
+  });
+  const tzv = useTransform(progress, (p) => {
+    const { a } = progresses(p, i);
+    return s.sz * a;
+  });
+  const rotv = useTransform(progress, (p) => {
+    const { p_i } = progresses(p, i);
+    return s.r * (1 - p_i * 0.6);
+  });
   const transform = useMotionTemplate`translate(-50%,-50%) translate3d(${txv}px, ${tyv}, ${tzv}px) rotate(${rotv}deg)`;
 
   return (
@@ -82,38 +111,93 @@ function ArtistCard({ ar, i, progress, bioOpen, active, onClick }) {
         willChange: "transform",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          padding: "90px 20px 20px",
-          pointerEvents: "none",
-          background: "linear-gradient(0deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 42%, rgba(0,0,0,.05) 100%)",
-        }}
-      >
-        <div style={{ display: "inline-block", alignSelf: "flex-start", fontSize: 10, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "#111", background: "#CA0013", padding: "5px 10px", marginBottom: 12 }}>
-          {ar.genre}
-        </div>
-        <h3 style={{ fontSize: 21, fontWeight: 900, letterSpacing: "-.02em", textTransform: "uppercase", color: "#fff", margin: "0 0 8px" }}>{ar.name}</h3>
+      <div className="artist-overlay">
+        <div className="artist-badge">{ar.genre}</div>
+        <h3 className="artist-name">{ar.name}</h3>
         <p
+          className="artist-desc"
           style={{
-            fontSize: 12.5,
-            color: "#dedad0",
-            lineHeight: 1.55,
-            margin: "0 0 8px",
             opacity: bioOpen ? 1 : 0,
             maxHeight: bioOpen ? 200 : 0,
-            overflow: "hidden",
             transition: `opacity 420ms ${cssEase}, max-height 420ms ${cssEase}`,
           }}
         >
           {ar.desc}
         </p>
-        <div style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}>{ar.handle}</div>
+
+        {ar.instagram && ar.instagramHandle && (
+          <div style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}>
+            <a
+              href={ar.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}
+            >
+              {ar.instagramHandle}
+            </a>
+          </div>
+        )}
+
+        {ar.music && ar.musicHandle && (
+          <div style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}>
+            <a
+              href={ar.music}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}
+            >
+              {ar.musicHandle}
+            </a>
+          </div>
+        )}
       </div>
+      <style jsx>{`
+        .artist-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 90px 20px 20px;
+          pointer-events: none;
+          background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.92) 0%,
+            rgba(0, 0, 0, 0.55) 42%,
+            rgba(0, 0, 0, 0.05) 100%
+          );
+        }
+
+        .artist-badge {
+          display: inline-block;
+          align-self: flex-start;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #111;
+          background: #ca0013;
+          padding: 5px 10px;
+          margin-bottom: 12px;
+        }
+
+        .artist-name {
+          font-size: 21px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          text-transform: uppercase;
+          color: #fff;
+          margin: 0 0 8px;
+        }
+
+        .artist-desc {
+          fontSize: 12.5;
+          color: #dedad0;
+          lineHeight: 1.55;
+          margin: 0 0 8px;
+          overflow: hidden:
+        }
+      `}</style>
     </motion.div>
   );
 }
@@ -144,8 +228,8 @@ export default function Artists() {
   };
 
   return (
-    <section id="b-artists" style={{ background: "#111" }}>
-      <div ref={containerRef} style={{ height: "160vh" }}>
+    <section id="b-artists" className="artists-section">
+      <div ref={containerRef} className="artists-shell">
         <motion.div
           style={{
             position: "sticky",
@@ -155,7 +239,8 @@ export default function Artists() {
             overflow: "hidden",
             perspective: "1400px",
             perspectiveOrigin: "50% 45%",
-            backgroundImage: "radial-gradient(rgba(255,255,255,.14) 1.5px, transparent 1.5px)",
+            backgroundImage:
+              "radial-gradient(rgba(255,255,255,.14) 1.5px, transparent 1.5px)",
             backgroundSize: "56px 56px",
             backgroundPositionX: "0px",
             backgroundPositionY: bgY,
@@ -173,15 +258,24 @@ export default function Artists() {
               transform: "translate(-50%,-50%)",
               textAlign: "center",
               zIndex: 20,
+              pointerEvents: "none",
             }}
           >
-            <span style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#CA0013", marginBottom: 14 }}>Artists</span>
+            <span className="artists-eyebrow">Artists</span>
             <motion.h2
               initial={{ letterSpacing: ".14em" }}
               whileInView={{ letterSpacing: "-.03em" }}
               viewport={{ once: false, amount: 0.6 }}
               transition={{ duration: 1.4, ease: EASE }}
-              style={{ fontSize: 64, fontWeight: 900, whiteSpace: "nowrap", textTransform: "uppercase", lineHeight: 0.98, margin: 0, color: "#EEEBE3" }}
+              style={{
+                fontSize: 64,
+                fontWeight: 900,
+                whiteSpace: "nowrap",
+                textTransform: "uppercase",
+                lineHeight: 0.98,
+                margin: 0,
+                color: "#EEEBE3",
+              }}
             >
               Our artists
             </motion.h2>
@@ -200,6 +294,25 @@ export default function Artists() {
           ))}
         </motion.div>
       </div>
+      <style jsx>{`
+        .artists-section {
+          background: #111;
+        }
+
+        .artists-shell {
+          height: 160vh;
+        }
+
+        .artists-eyebrow {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #ca0013;
+          margin-bottom: 14px;
+        }
+      `}</style>
     </section>
   );
 }
