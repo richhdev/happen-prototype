@@ -7,7 +7,66 @@ import {
   useTransform,
 } from "motion/react";
 import { SectionHead, useIsoLayoutEffect } from "@/components/ui";
-import { WORK } from "@/lib/data";
+import { asset } from "@/lib/data";
+
+const WORK = [
+  {
+    title: "Knotfest",
+    tag: "BOH Management — Nationwide",
+    logo: asset("/assets/client-knotfest.png"),
+    logoH: 30,
+    bg: asset("/assets/artist-jamo.jpg"),
+  },
+  {
+    title: "Good Things Festival",
+    tag: "BOH Management — Nationwide",
+    logo: asset("/assets/client-goodthings-v2.png"),
+    logoH: 52,
+    bg: asset("/assets/venue-brown-alley.webp"),
+  },
+  {
+    title: "Beyond The Valley",
+    tag: "Front Market Villages",
+    logo: asset("/assets/client-btv.svg"),
+    logoH: 34,
+    bg: asset("/assets/artist-laura-king.jpg"),
+  },
+  {
+    title: "A3 Festival",
+    tag: "Role — to be supplied",
+    logo: asset("/assets/client-a3.png"),
+    logoH: 46,
+    bg: asset("/assets/event-chapter.png"),
+  },
+  {
+    title: "Let Them Eat Cake",
+    tag: "Role — to be supplied",
+    logo: asset("/assets/client-let-them-eat-cake.svg"),
+    logoH: 34,
+    bg: asset("/assets/artist-sasha-fern.jpg"),
+  },
+  {
+    title: "Promiseland",
+    tag: "Role — to be supplied",
+    logo: asset("/assets/client-promiseland.png"),
+    logoH: 96,
+    bg: asset("/assets/venue-bourke-st-courtyard.png"),
+  },
+  {
+    title: "Eden Festival (NZ)",
+    tag: "Role — to be supplied",
+    logo: asset("/assets/client-eden-fest.png"),
+    logoH: 104,
+    bg: asset("/assets/artist-vanna.jpg"),
+  },
+  {
+    title: "Souled Out",
+    tag: "Role — to be supplied",
+    logo: asset("/assets/client-souled-out-v2.png"),
+    logoH: 76,
+    bg: asset("/assets/event-overdrive.png"),
+  },
+];
 
 export default function Work() {
   const containerRef = useRef(null);

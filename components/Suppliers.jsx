@@ -1,6 +1,27 @@
 "use client";
 import { Reveal } from "@/components/ui";
-import { SUPPLIERS } from "@/lib/data";
+import { asset } from "@/lib/data";
+
+const SUPPLIERS = [
+  { name: "Hertz", src: asset("/assets/supplier-hertz-dark.png"), h: 29 },
+  { name: "Avis", src: asset("/assets/supplier-avis-dark.png"), h: 27 },
+  {
+    name: "Network Transfers",
+    src: asset("/assets/supplier-network-transfers-dark.png"),
+    h: 26,
+  },
+  { name: "Kmart", src: asset("/assets/supplier-kmart-dark.png"), h: 21 },
+  { name: "Coles", src: asset("/assets/supplier-coles-dark.png"), h: 27 },
+  {
+    name: "Dan Murphy's",
+    src: asset("/assets/supplier-dan-murphys-dark.png"),
+    h: 25,
+  },
+  { name: "Bunnings", src: asset("/assets/supplier-bunnings-dark.png"), h: 28 },
+  { name: "Valiant", src: asset("/assets/supplier-valiant-dark.png"), h: 21 },
+  { name: "Gig", src: asset("/assets/supplier-gig-dark.png"), h: 30 },
+  { name: "Social", src: asset("/assets/supplier-social-dark.png"), h: 25 },
+];
 
 export default function Suppliers() {
   return (

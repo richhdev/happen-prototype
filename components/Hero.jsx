@@ -1,10 +1,46 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import { TRUSTED, asset } from "@/lib/data";
+import { asset } from "@/lib/data";
 
 const LOGO_H_MOBILE = 160;
 const LOGO_H_DESKTOP = 250;
+
+const TRUSTED = [
+  { name: "Beyond The Valley", src: asset("/assets/client-btv.svg"), h: 26 },
+  { name: "Live Nation", src: asset("/assets/client-live-nation.png"), h: 26 },
+  { name: "Novel", src: asset("/assets/client-novel.png"), h: 22 },
+  { name: "Happy Hour", src: asset("/assets/client-happy-hour.png"), h: 30 },
+  { name: "Dangerous Goods", src: asset("/assets/client-dg.png"), h: 24 },
+  { name: "A3", src: asset("/assets/client-a3.png"), h: 22 },
+  {
+    name: "Astral People",
+    src: asset("/assets/client-astral-people.svg"),
+    h: 40,
+  },
+  {
+    name: "Strawberry Fields",
+    src: asset("/assets/client-strawberry-fields.png"),
+    h: 40,
+  },
+  { name: "Pitch", src: asset("/assets/client-pitch.png"), h: 22 },
+  {
+    name: "Destroy All Lines",
+    src: asset("/assets/client-destroy-all-lines.svg"),
+    h: 26,
+  },
+  { name: "S.A.S.H", src: asset("/assets/client-sash.svg"), h: 28 },
+  {
+    name: "Strummingbird",
+    src: asset("/assets/client-strummingbird.svg"),
+    h: 26,
+  },
+  {
+    name: "Our City Our Sound",
+    src: asset("/assets/client-our-city-our-sound.svg"),
+    h: 36,
+  },
+];
 
 // Tracks viewport width so layout math (logo size, roll distance) can react to it.
 function useWindowWidth(initial) {

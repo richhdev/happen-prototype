@@ -1,8 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
-import { NAV_LINKS } from "@/lib/data";
 
 const cssEase = "cubic-bezier(.16,1,.3,1)";
+
+const NAV_LINKS = [
+  { id: "a-services", label: "Services" },
+  { id: "b-work", label: "Work" },
+  { id: "b-artists", label: "Artists" },
+  { id: "a-venues", label: "Venues" },
+  { id: "a-about", label: "About" },
+  { id: "a-whatson", label: "What's On" },
+  { id: "a-traders", label: "Traders" },
+];
 
 // Tracks which nav link's section is centered in the viewport, so the
 // matching link can be highlighted as the user scrolls.

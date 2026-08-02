@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { SectionHead } from "@/components/ui";
-import { SERVICES, SVC_BGS } from "@/lib/data";
+import { asset } from "@/lib/data";
 
 const cssEase = "cubic-bezier(.16,1,.3,1)";
 const CARD_HEIGHT = 380;
@@ -9,6 +9,67 @@ const CARD_BOTTOM_GAP = 48;
 const MOBILE_BREAKPOINT = 768;
 const CARD_FADE_MS = 75; // .services-card-fade transition duration
 const CARD_SWAP_DELAY_MS = 55; // must stay <= CARD_FADE_MS so content swaps while still faded out
+
+const SERVICES = [
+  {
+    meta: "Plan · Deliver · Manage · Operate",
+    title: "Artist Services",
+    desc: "End-to-end artist services and liaison for festivals and major events — from advancing and on-ground operations to individual artist care and everything in between.",
+  },
+  {
+    meta: "Plan · Stock · Host · Deliver",
+    title: "Artist Hospitality",
+    desc: "Dressing rooms, riders, and green rooms — set, stocked, and on-point. Full hospitality management from advance through to show day.",
+  },
+  {
+    meta: "Book · Negotiate · Contract · Confirm",
+    title: "Artist Management",
+    desc: "From offer and routing to contracts, deposits and lock-in. We book your flights, organise ground transfers, handle accounts and get you playing at Australia's biggest events.",
+  },
+  {
+    meta: "Advance · Book · Move · Track",
+    title: "Artist Tour Logistics",
+    desc: "Flights, hotels, ground transfers, visas, per diems. All in. All sorted. Always smiling.",
+  },
+  {
+    meta: "Program · Advance · Tour · Deliver",
+    title: "Comedy & Podcast Tours",
+    desc: "Venue sourcing, routing, budgeting, support act bookings, ticketing coordination, production planning, flights, accommodation, advancing, tour management, settlements and reporting across Australia and New Zealand.",
+  },
+  {
+    meta: "Source · Brief · Deploy · Deliver",
+    title: "Event Staffing",
+    desc: "The secret sauce behind events and festivals that run without a hitch — from front gate / box office, drivers, artist liaisons, stage managers and everything in between.",
+  },
+  {
+    meta: "Source · Curate · Build · Operate · Remit",
+    title: "Market Villages",
+    desc: "Drawing from a vast network of vendors across Australia. We handle the entire process — from applications through to show day — with a curated mix of retail and service offerings.",
+  },
+  {
+    meta: "Connect · Pair · Program · Deliver",
+    title: "Venue Bookings",
+    desc: "Matching the right space to the right crowd via deep industry relationships across the Australian music scene.",
+  },
+  {
+    meta: "Design · Curate · Build · Staff · Operate",
+    title: "Wellness & Activations",
+    desc: "Purpose-built spaces within festivals — from yoga and sound healing to breathwork, meditation, talks, speed dating and trivia. Custom infrastructure designed to suit your audience.",
+  },
+  {
+    meta: "Recruit · Activate · Track · Amplify",
+    title: "Community Building",
+    desc: "A modernised street team — hosts and promoters raising awareness & selling tickets directly to their networks, with digital tracking and seamless management.",
+  },
+];
+
+const SVC_BGS = [
+  asset("/assets/svc-bg-1.jpg"),
+  asset("/assets/svc-bg-2.jpg"),
+  asset("/assets/svc-bg-3.jpg"),
+  asset("/assets/svc-bg-4.jpg"),
+  asset("/assets/svc-bg-5.jpg"),
+];
 
 export default function Services() {
   const rowRefs = useRef([]);

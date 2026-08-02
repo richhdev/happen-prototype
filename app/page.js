@@ -27,7 +27,7 @@ export default function Home() {
       <WhatsOn />
       {/* <WhatsOnCms /> */}
       <Traders />
-      <Suppliers />
+      {/* <Suppliers /> */}
       <Instagram />
       <Contact />
     </main>

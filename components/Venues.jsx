@@ -1,6 +1,23 @@
 "use client";
 import { Reveal } from "@/components/ui";
-import { VENUES } from "@/lib/data";
+import { asset } from "@/lib/data";
+
+const VENUES = [
+  {
+    meta: "629 Bourke St, CBD",
+    name: "Bourke Street Courtyard",
+    img: asset("/assets/venue-bourke-st-courtyard.png"),
+    desc: "A heritage bluestone courtyard in the heart of the CBD. Industrial, open-air, and built for all-day and all-night events.",
+    capacity: "Capacity 800",
+  },
+  {
+    meta: "Corner of King & Lonsdale St, CBD",
+    name: "Brown Alley",
+    img: asset("/assets/venue-brown-alley.webp"),
+    desc: "Melbourne's most iconic underground club — four rooms, world-class sound, and a 24-hour licence inside a heritage building on King Street.",
+    capacity: "Capacity 1200",
+  },
+];
 
 export default function Venues() {
   return (

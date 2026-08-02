@@ -1,8 +1,29 @@
 "use client";
 import { Reveal } from "@/components/ui";
-import { EVENTS } from "@/lib/data";
+import { asset } from "@/lib/data";
 
 const labels = { upcoming: "Upcoming", onsale: "On sale", soldout: "Sold out" };
+
+const EVENTS = [
+  {
+    tag: "upcoming",
+    title: "Chapter",
+    when: "Date · Artists",
+    img: asset("/assets/event-chapter.png"),
+  },
+  {
+    tag: "onsale",
+    title: "Party Girl",
+    when: "Date · Artists",
+    img: asset("/assets/event-partygirl.png"),
+  },
+  {
+    tag: "soldout",
+    title: "Overdrive",
+    when: "Date · Artists",
+    img: asset("/assets/event-overdrive.png"),
+  },
+];
 
 export default function WhatsOn() {
   return (

@@ -1,9 +1,41 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate } from "motion/react";
-import { ARTISTS, EASE } from "@/lib/data";
+import { asset, EASE } from "@/lib/data";
 
 const cssEase = "cubic-bezier(.16,1,.3,1)";
+
+const ARTISTS = [
+  {
+    genre: "Electronic",
+    name: "JÄMO",
+    img: asset("/assets/artist-jamo.jpg"),
+    desc: "Australian DJ, producer and founder of Critical Feeling — recognised for a euphoric, emotionally charged sound and electrifying live sets. An official Calvin Harris remix and standout appearances at Let Them Eat Cake, Beyond The Valley and A3 Festival.",
+    handle: "@jamo.wav · Spotify",
+  },
+  {
+    genre: "Techno / Trance",
+    name: "Laura King",
+    img: asset("/assets/artist-laura-king.jpg"),
+    desc: "A leading force in Australia's contemporary techno/trance scene, bridging global trends and local flavour. High-energy sets blending hard dance, groove techno, hip hop vocals and psychedelic trance.",
+    handle: "@laura.king.music · Spotify",
+  },
+  {
+    genre: "House",
+    name: "Sasha Fern",
+    img: asset("/assets/artist-sasha-fern.jpg"),
+    desc: "Known for all things steezy, in style and in sound. A tasteful flow of Tech & Latino House, Jackin', Garage and bouncy rhythms. Has warmed up for Peggy Gou, Sharam Jey and Boys Noize.",
+    handle: "@sashafernn · Spotify",
+  },
+  {
+    genre: "Rave",
+    name: "Vanna",
+    img: asset("/assets/artist-vanna.jpg"),
+    desc: 'Melbourne-based, self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
+    handle: "@vannaspins · SoundCloud",
+  },
+];
+
 const SPREAD = 0.4;
 const N = ARTISTS.length;
 const SCATTER = [
