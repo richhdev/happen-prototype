@@ -87,7 +87,7 @@ export default function Hero() {
 
         <div className="cta-row">
           <a href="#a-contact" className="cta cta-primary">
-            Work with us
+            Let&apos;s talk
           </a>
           <a href="#b-work" className="cta cta-secondary">
             See our work
