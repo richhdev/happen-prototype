@@ -4,6 +4,10 @@ import { SectionHead } from "@/components/ui";
 import { SERVICES, SVC_BGS } from "@/lib/data";
 
 const cssEase = "cubic-bezier(.16,1,.3,1)";
+const headStyle = { padding: "120px 48px 56px" };
+const CARD_HEIGHT = 380;
+const CARD_BOTTOM_GAP = 48;
+const MOBILE_BREAKPOINT = 768;
 
 export default function Services() {
   const rowRefs = useRef([]);
@@ -12,9 +16,16 @@ export default function Services() {
   const [cardVisible, setCardVisible] = useState(true);
   const fadeTimer = useRef(null);
 
+  const getCenter = () => {
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    return isMobile
+      ? (window.innerHeight - CARD_HEIGHT - CARD_BOTTOM_GAP) / 2
+      : window.innerHeight / 2;
+  };
+
   useEffect(() => {
     const update = () => {
-      const center = window.innerHeight / 2;
+      const center = getCenter();
       let best = -1;
       let bestDist = Infinity;
       rowRefs.current.forEach((node, i) => {
@@ -56,24 +67,30 @@ export default function Services() {
     if (!node) return;
     const r = node.getBoundingClientRect();
     const mid = r.top + r.height / 2;
-    window.scrollBy({ top: mid - window.innerHeight / 2, behavior: "smooth" });
+    window.scrollBy({ top: mid - getCenter(), behavior: "smooth" });
   };
 
   const svc = SERVICES[cardActive];
   const bg = SVC_BGS[cardActive % SVC_BGS.length];
 
   return (
-    <section id="a-services" style={{ background: "#EEEBE3", minHeight: "100vh", boxSizing: "border-box" }}>
+    <section id="a-services" className="services">
       <SectionHead
         eyebrow="Services"
-        title={<>How we make<br />it Happen</>}
+        title={
+          <>
+            How we make
+            <br />
+            it Happen
+          </>
+        }
         maxWidth={760}
         intro="Artist services, market villages, promoter ticketing, venue bookings and wellness activations — a broad operational capability and an extensive national network."
-        style={{ padding: "120px 48px 56px" }}
+        style={headStyle}
       />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch", maxWidth: 960, margin: "0 auto" }}>
-        <div style={{ background: "#EEEBE3", padding: "226px 32px calc(50vh - 60px)", boxSizing: "border-box" }}>
+      <div className="services-body">
+        <div className="services-list">
           {SERVICES.map((s, i) => {
             const on = i === active;
             return (
@@ -81,40 +98,21 @@ export default function Services() {
                 key={i}
                 ref={(el) => (rowRefs.current[i] = el)}
                 onClick={() => scrollToRow(i)}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 6,
-                  height: 120,
-                  padding: "0 4px",
-                  boxSizing: "border-box",
-                  cursor: "pointer",
-                  background: "transparent",
-                }}
+                className="services-row"
               >
                 <span
+                  className="services-row-title"
                   style={{
-                    whiteSpace: "nowrap",
                     fontSize: on ? 32 : 27,
-                    fontWeight: 800,
                     letterSpacing: on ? "-.05em" : "0em",
                     color: on ? "#CA0013" : "rgba(17,17,17,.35)",
-                    transition: `color 320ms ${cssEase}, letter-spacing 320ms ${cssEase}, font-size 320ms ${cssEase}`,
                   }}
                 >
                   {s.title}
                 </span>
                 <span
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: ".1em",
-                    textTransform: "uppercase",
-                    color: on ? "#950000" : "rgba(17,17,17,.3)",
-                    transition: `color 320ms ${cssEase}`,
-                  }}
+                  className="services-row-meta"
+                  style={{ color: on ? "#950000" : "rgba(17,17,17,.3)" }}
                 >
                   {s.meta}
                 </span>
@@ -123,61 +121,173 @@ export default function Services() {
           })}
         </div>
 
-        <div style={{ padding: "96px 32px calc(50vh - 190px)", boxSizing: "border-box", position: "relative" }}>
-          <div style={{ position: "sticky", top: "calc(50vh - 190px)" }}>
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                maxWidth: 400,
-                height: 380,
-                margin: "0 auto",
-                boxSizing: "border-box",
-                background: "#1a1a1a",
-                border: "1px solid #262626",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                padding: 26,
-              }}
-            >
+        <div className="services-preview">
+          <div className="services-preview-sticky">
+            <div className="services-card">
               <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  opacity: 0.4,
-                  filter: "grayscale(.35)",
-                  transition: "background-image .4s ease",
-                  backgroundImage: `url('${bg}')`,
-                  pointerEvents: "none",
-                }}
+                className="services-card-bg"
+                style={{ backgroundImage: `url('${bg}')` }}
               />
+              <div className="services-card-gradient" />
               <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(0deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 42%, rgba(0,0,0,.05) 100%)",
-                  pointerEvents: "none",
-                }}
-              />
-              <div
+                className="services-card-fade"
                 style={{
                   opacity: cardVisible ? 1 : 0,
-                  transform: cardVisible ? "translateY(0px)" : "translateY(8px)",
-                  transition: `opacity 75ms ${cssEase}, transform 75ms ${cssEase}`,
+                  transform: cardVisible
+                    ? "translateY(0px)"
+                    : "translateY(8px)",
                 }}
               >
-                <p style={{ position: "relative", fontSize: 18, color: "#dedad0", lineHeight: 1.6, margin: 0 }}>
-                  {svc.desc}
-                </p>
+                <p className="services-card-desc">{svc.desc}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <div className="services-footer">&nbsp;</div>
+
+      <style jsx>{`
+        .services {
+          background: #eeebe3;
+          min-height: 100vh;
+          box-sizing: border-box;
+        }
+
+        .services-body {
+          position: relative;
+          max-width: 960px;
+          margin: 0 auto;
+        }
+
+        .services-list {
+          background: #eeebe3;
+          padding: 64px 32px
+            calc(${CARD_HEIGHT}px + ${CARD_BOTTOM_GAP}px + 40px);
+          box-sizing: border-box;
+        }
+
+        .services-row {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          gap: 6px;
+          height: 120px;
+          padding: 0 4px;
+          box-sizing: border-box;
+          cursor: pointer;
+          background: transparent;
+        }
+
+        .services-row-title {
+          white-space: nowrap;
+          font-weight: 800;
+          transition:
+            color 320ms ${cssEase},
+            letter-spacing 320ms ${cssEase},
+            font-size 320ms ${cssEase};
+        }
+
+        .services-row-meta {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          transition: color 320ms ${cssEase};
+        }
+
+        .services-preview {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 2;
+        }
+
+        .services-preview-sticky {
+          position: sticky;
+          top: calc(100vh - ${CARD_HEIGHT}px - ${CARD_BOTTOM_GAP}px);
+          padding: 0 32px;
+          box-sizing: border-box;
+          pointer-events: none;
+        }
+
+        .services-card {
+          position: relative;
+          width: 100%;
+          height: ${CARD_HEIGHT}px;
+          box-sizing: border-box;
+          background: #1a1a1a;
+          border: 1px solid #262626;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 26px;
+        }
+
+        @media (min-width: ${MOBILE_BREAKPOINT}px) {
+          .services-list {
+            padding-top: 226px;
+            padding-bottom: 120px;
+          }
+
+          .services-row {
+            align-items: flex-start;
+            text-align: left;
+          }
+
+          .services-preview-sticky {
+            top: calc(50vh - 190px);
+          }
+
+          .services-card {
+            max-width: 400px;
+            margin-left: auto;
+          }
+        }
+
+        .services-card-bg {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          opacity: 0.4;
+          filter: grayscale(0.35);
+          transition: background-image 0.4s ease;
+          pointer-events: none;
+        }
+
+        .services-card-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.92) 0%,
+            rgba(0, 0, 0, 0.55) 42%,
+            rgba(0, 0, 0, 0.05) 100%
+          );
+          pointer-events: none;
+        }
+
+        .services-card-fade {
+          transition:
+            opacity 75ms ${cssEase},
+            transform 75ms ${cssEase};
+        }
+
+        .services-card-desc {
+          position: relative;
+          font-size: 18px;
+          color: #dedad0;
+          line-height: 1.6;
+          margin: 0;
+        }
+        .services-footer {
+          height: calc(50vh - (380px / 2));
+        }
+      `}</style>
     </section>
   );
 }
