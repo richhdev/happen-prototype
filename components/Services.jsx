@@ -4,16 +4,18 @@ import { SectionHead } from "@/components/ui";
 import { SERVICES, SVC_BGS } from "@/lib/data";
 
 const cssEase = "cubic-bezier(.16,1,.3,1)";
-const headStyle = { padding: "120px 48px 56px" };
 const CARD_HEIGHT = 380;
 const CARD_BOTTOM_GAP = 48;
 const MOBILE_BREAKPOINT = 768;
+const CARD_FADE_MS = 75; // .services-card-fade transition duration
+const CARD_SWAP_DELAY_MS = 55; // must stay <= CARD_FADE_MS so content swaps while still faded out
 
 export default function Services() {
   const rowRefs = useRef([]);
   const [active, setActive] = useState(0);
   const [cardActive, setCardActive] = useState(0);
   const [cardVisible, setCardVisible] = useState(true);
+  const activeRef = useRef(0);
   const fadeTimer = useRef(null);
 
   const getCenter = () => {
@@ -39,17 +41,15 @@ export default function Services() {
           best = i;
         }
       });
-      if (best >= 0) {
-        setActive((prev) => {
-          if (best === prev) return prev;
-          setCardVisible(false);
-          if (fadeTimer.current) clearTimeout(fadeTimer.current);
-          fadeTimer.current = setTimeout(() => {
-            setCardActive(best);
-            setCardVisible(true);
-          }, 55);
-          return best;
-        });
+      if (best >= 0 && best !== activeRef.current) {
+        activeRef.current = best;
+        setActive(best);
+        setCardVisible(false);
+        if (fadeTimer.current) clearTimeout(fadeTimer.current);
+        fadeTimer.current = setTimeout(() => {
+          setCardActive(best);
+          setCardVisible(true);
+        }, CARD_SWAP_DELAY_MS);
       }
     };
     update();
@@ -75,19 +75,20 @@ export default function Services() {
 
   return (
     <section id="a-services" className="services">
-      <SectionHead
-        eyebrow="Services"
-        title={
-          <>
-            How we make
-            <br />
-            it Happen
-          </>
-        }
-        maxWidth={760}
-        intro="Artist services, market villages, promoter ticketing, venue bookings and wellness activations — a broad operational capability and an extensive national network."
-        style={headStyle}
-      />
+      <div className="services-head">
+        <SectionHead
+          eyebrow="Services"
+          title={
+            <>
+              How we make
+              <br />
+              it Happen
+            </>
+          }
+          maxWidth={760}
+          intro="Artist services, market villages, promoter ticketing, venue bookings and wellness activations — a broad operational capability and an extensive national network."
+        />
+      </div>
 
       <div className="services-body">
         <div className="services-list">
@@ -131,12 +132,7 @@ export default function Services() {
               <div className="services-card-gradient" />
               <div
                 className="services-card-fade"
-                style={{
-                  opacity: cardVisible ? 1 : 0,
-                  transform: cardVisible
-                    ? "translateY(0px)"
-                    : "translateY(8px)",
-                }}
+                style={{ opacity: cardVisible ? 1 : 0 }}
               >
                 <p className="services-card-desc">{svc.desc}</p>
               </div>
@@ -152,6 +148,10 @@ export default function Services() {
           background: #eeebe3;
           min-height: 100vh;
           box-sizing: border-box;
+        }
+
+        .services-head {
+          padding: 120px 48px 56px;
         }
 
         .services-body {
@@ -273,8 +273,8 @@ export default function Services() {
 
         .services-card-fade {
           transition:
-            opacity 75ms ${cssEase},
-            transform 75ms ${cssEase};
+            opacity ${CARD_FADE_MS}ms ${cssEase},
+            transform ${CARD_FADE_MS}ms ${cssEase};
         }
 
         .services-card-desc {
@@ -285,7 +285,7 @@ export default function Services() {
           margin: 0;
         }
         .services-footer {
-          height: calc(50vh - (380px / 2));
+          height: calc(50vh - (${CARD_HEIGHT}px / 2));
         }
       `}</style>
     </section>
