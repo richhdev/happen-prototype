@@ -27,49 +27,101 @@ export default function About() {
   }, [inView]);
 
   return (
-    <section
-      id="a-about"
-      style={{
-        background: "#CA0013",
-        padding: "130px 48px",
-        textAlign: "center",
-        minHeight: "100vh",
-        boxSizing: "border-box",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <motion.div
-        ref={blockRef}
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.12, margin: "0px 0px -60px 0px" }}
-        transition={{ duration: 0.64, ease: EASE }}
-        style={{ maxWidth: 820, margin: "0 auto" }}
-      >
-        <span style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#111", marginBottom: 20 }}>About</span>
+    <section id="a-about" className="about">
+      <div className="title-group">
+        <span className="eyebrow">About</span>
         <motion.h2
           initial={{ letterSpacing: ".14em" }}
           whileInView={{ letterSpacing: "-.025em" }}
           viewport={{ once: false, amount: 0.6 }}
           transition={{ duration: 1.4, ease: EASE }}
-          style={{ fontSize: 44, fontWeight: 900, whiteSpace: "nowrap", textTransform: "uppercase", color: "#fff", margin: "0 0 26px" }}
+          style={{ margin: 0 }}
         >
-          Who we are
+          <span className="heading">Who we are</span>
         </motion.h2>
-        <p style={{ fontSize: 20, fontWeight: 600, color: "#fff", lineHeight: 1.6, margin: "0 0 18px" }}>
-          A dream team of doers and difference-makers. Sharp, reliable, and here to get it done. Each of us brings something different: creative brains, logistical minds, artist wranglers, on-ground legends.
-        </p>
-        <p style={{ fontSize: 20, fontWeight: 600, color: "#fff", lineHeight: 1.6, margin: "0 0 44px" }}>
-          We work with grit, good humour, and zero ego. And we don&apos;t just work hard — we have a damn good time making it Happen.
-        </p>
-        <span ref={counterRef} style={{ display: "block", fontSize: 130, fontWeight: 900, letterSpacing: "-.03em", color: "#111", lineHeight: 0.8 }}>
-          {count}+
-          <span style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "#fff", marginTop: 10 }}>
-            Years doing the work
-          </span>
-        </span>
-      </motion.div>
+      </div>
+      <p className="lede">
+        A dream team of doers and difference-makers. Sharp, reliable, and here
+        to get it done. Each of us brings something different: creative brains,
+        logistical minds, artist wranglers, on-ground legends. <br />
+        <br />
+        We work with grit, good humour, and zero ego. And we don&apos;t just
+        work hard — we have a damn good time making it Happen.
+      </p>
+      <div ref={counterRef} className="counter">
+        <span>{count}+</span>
+        <span className="counter-label">Years doing the work</span>
+      </div>
+
+      <style jsx>{`
+        .about {
+          background: #ca0013;
+          padding: 130px 48px;
+          text-align: center;
+          min-height: 100vh;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 26px;
+        }
+
+        .title-group {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .eyebrow {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #111;
+          margin: 0;
+        }
+
+        .heading {
+          font-size: clamp(32px, 6vw + 12px, 52px);
+          font-weight: 900;
+          white-space: nowrap;
+          text-transform: uppercase;
+          color: #fff;
+          margin: 0;
+        }
+
+        .lede {
+          font-size: 20px;
+          font-weight: 600;
+          color: #fff;
+          line-height: 1.6;
+          max-width: 680px;
+          margin: 0 auto;
+        }
+
+        .counter {
+          display: block;
+          font-size: 130px;
+          font-weight: 900;
+          letter-spacing: -0.03em;
+          color: #111;
+          line-height: 0.8;
+          margin: 0;
+        }
+
+        .counter-label {
+          display: block;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #fff;
+          margin: 10px 0 0;
+        }
+      `}</style>
     </section>
   );
 }
