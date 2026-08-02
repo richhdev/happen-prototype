@@ -136,10 +136,16 @@ export default function Nav() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 48px;
+          padding: 0 30px;
           height: 76px;
           background: transparent;
           mix-blend-mode: difference;
+        }
+
+        @media (min-width: 768px) {
+          .nav {
+            padding: 0 48px;
+          }
         }
 
         .nav-inner {
@@ -281,10 +287,6 @@ export default function Nav() {
         }
 
         @media (max-width: 640px) {
-          .nav {
-            padding: 0 20px;
-          }
-
           .nav-inner {
             gap: 16px;
           }
