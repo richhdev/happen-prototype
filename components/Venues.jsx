@@ -8,7 +8,7 @@ const VENUES = [
     name: "Bourke Street Courtyard",
     img: asset("/assets/venue-bourke-st-courtyard.png"),
     desc: "A heritage bluestone courtyard in the heart of the CBD. Industrial, open-air, and built for all-day and all-night events.",
-    capacity: "Capacity 800",
+    capacity: "Capacity 1000",
   },
   {
     meta: "Corner of King & Lonsdale St, CBD",
