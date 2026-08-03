@@ -1,48 +1,65 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import { TRUSTED, asset } from "@/lib/data";
+import { asset } from "@/lib/data";
 
-const LOGO_H = 250;
-const CIRCUMFERENCE = Math.PI * LOGO_H;
+const LOGO_H_MOBILE = 160;
+const LOGO_H_DESKTOP = 250;
 
-export default function Hero() {
-  const headerRef = useRef(null);
-  const videoRef = useRef(null);
-  const [winW, setWinW] = useState(1440);
+const TRUSTED = [
+  { name: "Beyond The Valley", src: asset("/assets/client-btv.svg"), h: 26 },
+  { name: "Live Nation", src: asset("/assets/client-live-nation.png"), h: 26 },
+  { name: "Novel", src: asset("/assets/client-novel.png"), h: 22 },
+  { name: "Happy Hour", src: asset("/assets/client-happy-hour.png"), h: 30 },
+  { name: "Dangerous Goods", src: asset("/assets/client-dg.png"), h: 24 },
+  { name: "A3", src: asset("/assets/client-a3.png"), h: 22 },
+  {
+    name: "Astral People",
+    src: asset("/assets/client-astral-people.svg"),
+    h: 40,
+  },
+  {
+    name: "Strawberry Fields",
+    src: asset("/assets/client-strawberry-fields.png"),
+    h: 40,
+  },
+  { name: "Pitch", src: asset("/assets/client-pitch.png"), h: 22 },
+  {
+    name: "Destroy All Lines",
+    src: asset("/assets/client-destroy-all-lines.svg"),
+    h: 26,
+  },
+  { name: "S.A.S.H", src: asset("/assets/client-sash.svg"), h: 28 },
+  {
+    name: "Strummingbird",
+    src: asset("/assets/client-strummingbird.svg"),
+    h: 26,
+  },
+  {
+    name: "Our City Our Sound",
+    src: asset("/assets/client-our-city-our-sound.svg"),
+    h: 36,
+  },
+];
 
+// Tracks viewport width so layout math (logo size, roll distance) can react to it.
+function useWindowWidth(initial) {
+  const [winW, setWinW] = useState(initial);
   useEffect(() => {
     const update = () => setWinW(window.innerWidth);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+  return winW;
+}
 
-  // Keep the hero video muted + playing no matter what the browser does.
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.defaultMuted = true;
-    v.muted = true;
-    v.volume = 0;
-    const tryPlay = () => {
-      const p = v.play();
-      if (p && p.catch) p.catch(() => {});
-    };
-    tryPlay();
-    v.addEventListener("canplay", tryPlay);
-    v.addEventListener("ended", tryPlay);
-    const kick = () => { if (v.paused) tryPlay(); };
-    const evs = ["click", "touchstart", "scroll", "keydown"];
-    evs.forEach((e) => document.addEventListener(e, kick, { passive: true }));
-    return () => {
-      v.removeEventListener("canplay", tryPlay);
-      v.removeEventListener("ended", tryPlay);
-      evs.forEach((e) => document.removeEventListener(e, kick));
-    };
-  }, []);
+// Logo rolls off to the right as the hero scrolls away; rotation follows distance
+// travelled, scaled to the circumference of the logo at its current display size.
+function useLogoRoll(headerRef, winW) {
+  const LOGO_H = winW >= 768 ? LOGO_H_DESKTOP : LOGO_H_MOBILE;
+  const CIRCUMFERENCE = Math.PI * LOGO_H;
 
-  // Logo rolls off to the right as the hero scrolls away; rotation follows distance.
   const { scrollYProgress } = useScroll({
     target: headerRef,
     offset: ["start start", "end start"],
@@ -51,182 +68,79 @@ export default function Hero() {
   const x = useSpring(rawX, { stiffness: 55, damping: 18, mass: 1 });
   const rotate = useTransform(x, (v) => (v / CIRCUMFERENCE) * 360);
 
+  return { LOGO_H, x, rotate };
+}
+
+export default function Hero() {
+  const headerRef = useRef(null);
+
+  const winW = useWindowWidth(1440);
+  const { LOGO_H, x, rotate } = useLogoRoll(headerRef, winW);
+
   const trustedLoop = TRUSTED.concat(TRUSTED);
 
-  const lineStyle = {
-    display: "block",
-    fontSize: "clamp(46px, 8.5vh, 76px)",
-    whiteSpace: "nowrap",
-  };
-
   return (
-    <header
-      ref={headerRef}
-      style={{
-        position: "relative",
-        background: "#111111",
-        color: "#EEEBE3",
-        boxSizing: "border-box",
-        height: "100svh",
-        minHeight: 560,
-        display: "flex",
-        alignItems: "center",
-        overflow: "hidden",
-        padding: "28px 0",
-      }}
-    >
+    <header id="a-hero" ref={headerRef} className="hero">
       <video
-        ref={videoRef}
         src={asset("/assets/hero-bg.mp4")}
-        muted
         autoPlay
+        muted
         loop
         playsInline
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-          filter: "grayscale(1) brightness(.7)",
-        }}
+        preload="auto"
+        className="hero-video"
       />
-      <div style={{ position: "absolute", inset: 0, background: "rgba(17,17,17,.75)", zIndex: 1 }} />
+      <div className="hero-overlay" />
 
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          maxWidth: 1180,
-          margin: "0 auto",
-          padding: "0 48px",
-          width: "100%",
-          boxSizing: "border-box",
-          overflow: "hidden",
-        }}
-      >
-        <span
-          style={{
-            display: "block",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: ".16em",
-            textTransform: "uppercase",
-            color: "#CA0013",
-            marginBottom: 14,
-          }}
-        >
-          Melbourne · Est. 10+ years
-        </span>
-
-        <div style={{ boxSizing: "border-box", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <motion.h1
-            initial={{ letterSpacing: "0em" }}
-            whileInView={{ letterSpacing: "-.08em" }}
-            viewport={{ once: false, amount: 0.9 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              margin: 0,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              lineHeight: 0.92,
-            }}
-          >
-            <span style={lineStyle}>Behind every</span>
-            <span style={lineStyle}>event, is a team</span>
-            <span style={lineStyle}>making it Happen</span>
-          </motion.h1>
-
-          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="hero-content">
+        <div className="headline-group">
+          <div className="logo-wrap">
             <motion.img
               src={asset("/assets/logo.svg")}
               alt="Happen logo"
-              style={{
-                display: "block",
-                height: LOGO_H,
-                width: "auto",
-                transformOrigin: "center center",
-                willChange: "transform",
-                x,
-                rotate,
-              }}
+              className="logo"
+              style={{ height: LOGO_H, x, rotate }}
             />
           </div>
+          <motion.h1
+            initial={{ letterSpacing: "0em" }}
+            whileInView={{ letterSpacing: "-.2em" }}
+            viewport={{ once: false, amount: 0.9 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            className="headline"
+          >
+            <span className="headline-line">Behind every</span>
+            <span className="headline-line">event, is a team</span>
+            <span className="headline-line">making it Happen</span>
+          </motion.h1>
         </div>
 
-        <p style={{ maxWidth: 520, marginTop: 16, color: "#c9c4b7", fontSize: 16, lineHeight: 1.55 }}>
-          A Melbourne-based events agency built on over 10 years of doing the work — and doing it well. We move fast, think creatively, and always show up.
+        <p className="lede">
+          A Melbourne-based events agency built on over 10 years of doing the
+          work — and doing it well. We move fast, think creatively, and always
+          show up.
         </p>
 
-        <div style={{ display: "flex", gap: 16, marginTop: 22 }}>
-          <a
-            href="#a-contact"
-            style={{
-              display: "inline-flex",
-              padding: "16px 30px",
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: ".03em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              color: "#fff",
-              background: "#CA0013",
-            }}
-          >
-            Work with us
+        <div className="cta-row">
+          <a href="#a-contact" className="cta cta-primary">
+            Let&apos;s talk
           </a>
-          <a
-            href="#b-work"
-            style={{
-              display: "inline-flex",
-              padding: "16px 30px",
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: ".03em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              color: "#EEEBE3",
-              border: "1.5px solid rgba(238,235,227,.5)",
-            }}
-          >
+          <a href="#b-work" className="cta cta-secondary">
             See our work
           </a>
         </div>
 
-        <div style={{ marginTop: 36 }}>
-          <span
-            style={{
-              display: "block",
-              marginBottom: 14,
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: ".16em",
-              textTransform: "uppercase",
-              color: "#CA0013",
-            }}
-          >
-            Trusted by
-          </span>
-          <div
-            style={{
-              overflow: "hidden",
-              WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
-              maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
-            }}
-          >
-            <div style={{ display: "flex", width: "max-content", animation: "marquee 26s linear infinite", gap: 16 }}>
+        <div className="trusted">
+          <div className="trusted-mask">
+            <div className="trusted-track">
               {trustedLoop.map((c, i) => (
-                <div
-                  key={i}
-                  style={{ width: 168, height: 64, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}
-                  title={c.name}
-                >
+                <div className="trusted-item" key={i} title={c.name}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={c.src}
                     alt={c.name}
-                    style={{ height: c.h, maxWidth: 132, objectFit: "contain", opacity: 0.82, display: "block" }}
+                    style={{ height: c.h }}
+                    className="trusted-logo"
                   />
                 </div>
               ))}
@@ -234,6 +148,196 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .hero {
+          position: relative;
+          background: #111111;
+          color: #eeebe3;
+          box-sizing: border-box;
+          height: 100svh;
+          min-height: 560px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          padding: 28px 0;
+        }
+
+        .hero-video {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 0;
+          filter: grayscale(1) brightness(0.7);
+        }
+
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(17, 17, 17, 0.75);
+          z-index: 1;
+        }
+
+        .hero-content {
+          position: relative;
+          z-index: 2;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 30px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+          .hero-content {
+            padding: 0 48px;
+          }
+        }
+
+        .eyebrow {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: #ca0013;
+          margin-bottom: 14px;
+        }
+
+        .headline-group {
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          gap: 24px;
+        }
+
+        .headline {
+          margin: 0;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+
+        .headline-line {
+          display: block;
+          font-size: clamp(48px, 4vw + 20px, 76px);
+          white-space: nowrap;
+          text-transform: uppercase;
+          line-height: 1;
+        }
+
+        .logo-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+          .headline-group {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0;
+          }
+
+          .headline {
+            order: 0;
+          }
+
+          .logo-wrap {
+            order: 0;
+            flex: 1;
+          }
+        }
+
+        .logo {
+          display: block;
+          width: auto;
+          transform-origin: center center;
+          will-change: transform;
+        }
+
+        .lede {
+          max-width: 520px;
+          margin-top: 16px;
+          color: #c9c4b7;
+          font-size: clamp(16px, 1vw + 12px, 20px);
+          line-height: 1.55;
+        }
+
+        .cta-row {
+          display: flex;
+          gap: 16px;
+          margin-top: 22px;
+        }
+
+        .cta {
+          display: inline-flex;
+          padding: 16px 30px;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          text-transform: uppercase;
+          text-decoration: none;
+        }
+
+        .cta-primary {
+          color: #fff;
+          background: #ca0013;
+        }
+
+        .cta-secondary {
+          color: #eeebe3;
+          border: 1.5px solid rgba(238, 235, 227, 0.5);
+        }
+
+        .trusted {
+          margin-top: 36px;
+        }
+
+        .trusted-mask {
+          overflow: hidden;
+          -webkit-mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 6%,
+            #000 94%,
+            transparent
+          );
+          mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 6%,
+            #000 94%,
+            transparent
+          );
+        }
+
+        .trusted-track {
+          display: flex;
+          width: max-content;
+          animation: marquee 26s linear infinite;
+          gap: 16px;
+        }
+
+        .trusted-item {
+          width: 168px;
+          height: 64px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: none;
+        }
+
+        .trusted-logo {
+          max-width: 132px;
+          object-fit: contain;
+          opacity: 0.82;
+          display: block;
+        }
+      `}</style>
     </header>
   );
 }
