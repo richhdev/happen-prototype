@@ -74,18 +74,29 @@ export default function Contact() {
         </div>
 
         <div className="panel panel-links">
-          <a href="#" className="link-row link-row-bordered">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfGExZGlBSpbc4ciG6nipO5i0NgDDcdFpXRqtsu3CWuMCBO9Q/viewform"
+            className="link-row link-row-bordered"
+          >
             <div>
-              <h3 className="link-title">Project inquiry</h3>
-              <p className="link-desc">Tell us about your event</p>
+              <h3 className="link-title">Work with us</h3>
+              <p className="link-desc">
+                Register your interest to hear about casual work opportunities
+                in the events industry
+              </p>
             </div>
             <span className="link-arrow">↗</span>
           </a>
-          <a href="#" className="link-row">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdxwNLMLijvqMuaeHtV8M2FsPSfGB4g0ZVlATtbpdbBntmL6A/viewform"
+            className="link-row"
+          >
             <div>
-              <h3 className="link-title">Email sign-up</h3>
+              <h3 className="link-title">
+                Promoter / Micro Influencer Sign up
+              </h3>
               <p className="link-desc">
-                Events worth showing up for, before anyone else knows
+                If you know how to hype a party, we want you on the team
               </p>
             </div>
             <span className="link-arrow">↗</span>
@@ -276,11 +287,7 @@ function ContactLogo() {
   // is compressed into a shorter scroll window — more sensitive per pixel
   // scrolled — landing centred exactly at page end.
   const { scrollYProgress } = useScroll();
-  const rawX = useTransform(
-    scrollYProgress,
-    [0.9, 1],
-    [-(winW / 2 + 400), 0]
-  );
+  const rawX = useTransform(scrollYProgress, [0.9, 1], [-(winW / 2 + 400), 0]);
   const x = useSpring(rawX, { stiffness: 55, damping: 18, mass: 1 });
   const rotate = useTransform(x, (v) => (v / CIRCUMFERENCE) * 360);
 

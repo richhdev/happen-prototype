@@ -6,32 +6,35 @@ const labels = { upcoming: "Upcoming", onsale: "On sale", soldout: "Sold out" };
 
 const EVENTS = [
   {
-    title: "Party Girl Tour",
-    status: "upcoming",
+    title: "Party Girl Tour - Forgotten Cities",
+    status: "onsale",
     date: "Sep 5th 2026",
     description: "Torrensville, SA Thebarton Theatre",
     link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
     img: asset("assets/event-party-girl-tour.jpg"),
   },
   {
-    title: "Party Girl Tour",
-    status: "Sold Out",
+    title: "Party Girl Tour - Forgotten Cities",
+    status: "soldout",
     date: "Sept 09 2026",
     description: "Auckland, NZ, New Zealand, The Civic, Auckland,",
+    link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
     img: asset("assets/event-party-girl-tour.jpg"),
   },
   {
-    title: "Danny Rants - off the record",
-    status: "Upcoming",
+    title: "Danny Rants - Off The Record",
+    status: "upcoming",
     date: "to be confirmed",
     description: "",
+    link: "https://happengroup.fillout.com/dannyrants",
     img: asset("assets/event-off-the-record-tour.png"),
   },
   {
     title: "Chapter NYE 2026",
-    status: "Upcoming",
+    status: "upcoming",
     date: "31st dec 2026",
     description: "",
+    link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
     img: asset("assets/event-chaper-nye-2026.jpg"),
   },
 ];
@@ -63,7 +66,9 @@ export default function WhatsOn() {
                     <div className="date">{ev.date}</div>
                     <div className="description">{ev.description}</div>
                     <a
-                      href="#"
+                      href={ev.link}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       className={`cta${soldout ? " cta-disabled" : ""}`}
                       aria-disabled={soldout || undefined}
                     >
