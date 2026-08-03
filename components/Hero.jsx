@@ -116,9 +116,9 @@ export default function Hero() {
         </div>
 
         <p className="lede">
-          A Melbourne-based events agency built on over 10 years of doing the
-          work — and doing it well. We move fast, think creatively, and always
-          show up.
+          We&apos;re a Melbourne-based events agency built on over 10 years of
+          rolling up our sleeves and doing the work. We move fast, think
+          creatively and deliver with precision.
         </p>
 
         <div className="cta-row">

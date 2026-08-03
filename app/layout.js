@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 export const metadata = {
   title: "Happen — Melbourne Events Agency",
   description:
-    "A Melbourne-based events agency built on over 10 years of doing the work. Artist services, market villages, promoter ticketing, venue bookings and wellness activations.",
+    "A Melbourne-based events agency built on over 10 years of doing the work. Artist services, retail precincts, promoter ticketing, venue bookings and wellness activations.",
   openGraph: {
     title: "Happen — Melbourne Events Agency",
     description:

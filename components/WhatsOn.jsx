@@ -12,7 +12,7 @@ const labels = {
 const EVENTS = [
   {
     title: "Party Girl Tour - Forgotten Cities",
-    status: "onsale",
+    status: "upcoming",
     date: "Sep 5th 2026",
     description: "Torrensville, SA Thebarton Theatre",
     cta: "Get tickets",

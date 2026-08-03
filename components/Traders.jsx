@@ -3,18 +3,41 @@ import { Reveal } from "@/components/ui";
 
 const CARDS = [
   {
-    kicker: "Market traders",
-    title: "Set up a stall at a major festival.",
-    body: "We manage market villages at Australia's biggest events. If you've got a stall worth bringing, we've got the space, the crowd, and the process handled from application through to show day.",
-    cta: "Get your stall",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSckRb2G14DYaI8nsFkefg57j11VgkiwvdGxYnOqG9SUGjYu_g/viewform",
+    kicker: "Retail Vendor",
+    title: "Set up as a retail vendor at a major festival.",
+    body: "We manage retail precincts at festivals across Australia. If you've got a shop and would like to trade, fill out an application and we'll be in touch if there's a good fit.",
+    ctas: [
+      {
+        label: "Good Things 2026",
+        href: "https://form.jotform.com/261311126413846",
+      },
+      {
+        label: "Beyond The Valley 2026",
+        href: "https://form.jotform.com/261448233625861",
+      },
+    ],
   },
   {
-    kicker: "Hosts & promoters",
-    title: "Become part of the Happen team.",
-    body: "We're always looking for well-connected individuals and magnetic group leaders — social, influential, and the life of the party — to join our community building network.",
-    cta: "Join the team",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSfGExZGlBSpbc4ciG6nipO5i0NgDDcdFpXRqtsu3CWuMCBO9Q/viewform",
+    kicker: "Hosts & Promoters",
+    title: "Turn your network into a side hustle.",
+    body: "Become a Happen Group promoter, hook your mates up with tickets to some of Australia's best events and earn money along the way.",
+    ctas: [
+      {
+        label: "Join the team",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSdxwNLMLijvqMuaeHtV8M2FsPSfGB4g0ZVlATtbpdbBntmL6A/viewform",
+      },
+    ],
+  },
+  {
+    kicker: "Casual Event Workers",
+    title: "Pick up casual work at Australia's biggest events.",
+    body: "Please fill out the below form if you are interested in hearing about casual work opportunities in the events industry.",
+    ctas: [
+      {
+        label: "Register your interest",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSfGExZGlBSpbc4ciG6nipO5i0NgDDcdFpXRqtsu3CWuMCBO9Q/viewform",
+      },
+    ],
   },
 ];
 
@@ -35,14 +58,19 @@ export default function Traders() {
               <div className="kicker">{c.kicker}</div>
               <h3 className="title">{c.title}</h3>
               <p className="body">{c.body}</p>
-              <a
-                href={c.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta"
-              >
-                {c.cta} <span className="cta-arrow">↗</span>
-              </a>
+              <div className="cta-row">
+                {c.ctas.map((cta, j) => (
+                  <a
+                    key={j}
+                    href={cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cta"
+                  >
+                    {cta.label} <span className="cta-arrow">↗</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </Reveal>
         ))}
@@ -89,14 +117,14 @@ export default function Traders() {
           display: grid;
           grid-template-columns: 1fr;
           gap: 24px;
-          max-width: 800px;
+          max-width: 1100px;
           width: 100%;
           margin: 0 auto;
         }
 
         @media (min-width: 768px) {
           .grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
           }
         }
 
@@ -134,6 +162,13 @@ export default function Traders() {
           margin: 0 0 26px;
         }
 
+        .cta-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: auto;
+        }
+
         .cta {
           display: inline-flex;
           align-items: center;
@@ -146,8 +181,6 @@ export default function Traders() {
           text-decoration: none;
           color: #eeebe3;
           border: 1.5px solid rgba(238, 235, 227, 0.5);
-          margin-top: auto;
-          align-self: flex-start;
         }
 
         .cta-arrow {

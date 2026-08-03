@@ -40,6 +40,16 @@ const TESTIMONIALS = [
       "“We absolutely love working with Happen Group. Macca, Paris and the team are incredibly easy to work with, communicate well and are super organised. No matter what gets thrown at them onsite, they’re calm, adaptable and just get on with it with a smile and a laugh.”",
     src: "Annie Tetzlaff · Good Things Festival / Destroy All Lines",
   },
+  {
+    quote:
+      "“Working with The Happen Group for artist liaison, logistics, and artist services at the LTEC Festival was an absolute pleasure from start to finish. Their team consistently went above and beyond, anticipating needs before we even had to ask and thinking outside the box to solve challenges quickly and creatively. Every aspect of artist care and logistics was handled with efficiency and professionalism, and they maintained an exceptionally high standard throughout the entire event. Their dedication and attention to detail made a real difference to our artists’ experience, and we wouldn’t hesitate to work with The Happen Group again.”",
+    src: "Jerry Poon · Director, LTEC",
+  },
+  {
+    quote:
+      "“We have worked with the team at Happen Group for over 10 years now in a number of different roles. Whether we are contracting them to deliver an area of one of our festivals or working together on an event it is always a great experience.”",
+    src: "Fil Palermo · Director, Untitled Group",
+  },
 ];
 
 const N = TESTIMONIALS.length;

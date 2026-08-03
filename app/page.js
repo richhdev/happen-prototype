@@ -9,7 +9,6 @@ import About from "@/components/About";
 import WhatsOn from "@/components/WhatsOn";
 import WhatsOnCms from "@/components/WhatsOnCms";
 import Traders from "@/components/Traders";
-import Suppliers from "@/components/Suppliers";
 import Instagram from "@/components/Instagram";
 import Contact from "@/components/Contact";
 
@@ -19,7 +18,6 @@ export default function Home() {
       <Nav />
       <Hero />
       <WhatsOn />
-
       <Work />
       <Services />
       <Testimonials />

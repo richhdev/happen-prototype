@@ -57,7 +57,7 @@ const SERVICES = [
     desc: "Purpose-built spaces within festivals. We design and deliver wellness, connection and entertainment experiences tailored to your audience.",
   },
   {
-    title: "Community Building",
+    title: "Industry Ticketing / Community Building",
     meta: "Recruit · Activate · Track · Amplify",
     desc: "We build and manage teams of hosts and promoters who sell tickets to your event through their own networks. It's the old-school street team, reimagined for today.",
   },
@@ -147,7 +147,7 @@ export default function Services() {
             </>
           }
           maxWidth={760}
-          intro="Artist services, market villages, promoter ticketing, venue bookings and wellness activations — a broad operational capability and an extensive national network."
+          intro="We've built a broad operational capability and a national network to match."
         />
       </div>
 

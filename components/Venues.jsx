@@ -7,7 +7,7 @@ const VENUES = [
     meta: "629 Bourke St, CBD",
     name: "Bourke Street Courtyard",
     img: asset("/assets/venue-bourke-st-courtyard.png"),
-    desc: "A heritage bluestone courtyard in the heart of the CBD. Industrial, open-air, and built for all-day and all-night events.",
+    desc: "A heritage bluestone courtyard in the heart of the CBD. A combination of industrial and garden paradise, built for all-day and all-night events.",
     capacity: "Capacity 1000",
   },
   {

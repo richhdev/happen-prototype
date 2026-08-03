@@ -24,8 +24,8 @@ export default function Contact() {
             </span>
           </motion.h2>
           <p className="lede">
-            Got a festival to run? A market village to fill? An artist who needs
-            looking after? Tell us what you need.
+            Got a festival to run? A retail precinct to fill? An artist who
+            needs looking after? Tell us what you need.
           </p>
         </div>
       </Reveal>
@@ -89,7 +89,7 @@ export default function Contact() {
           </a>
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSdxwNLMLijvqMuaeHtV8M2FsPSfGB4g0ZVlATtbpdbBntmL6A/viewform"
-            className="link-row"
+            className="link-row link-row-bordered"
           >
             <div>
               <h3 className="link-title">
@@ -97,6 +97,38 @@ export default function Contact() {
               </h3>
               <p className="link-desc">
                 If you know how to hype a party, we want you on the team
+              </p>
+            </div>
+            <span className="link-arrow">↗</span>
+          </a>
+          <a
+            href="https://form.jotform.com/261311126413846"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-row link-row-bordered"
+          >
+            <div>
+              <h3 className="link-title">
+                Good Things 2026 Retail vendor applications
+              </h3>
+              <p className="link-desc">
+                Apply for a retail vendor stall at Good Things Festival 2026
+              </p>
+            </div>
+            <span className="link-arrow">↗</span>
+          </a>
+          <a
+            href="https://form.jotform.com/261448233625861"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-row"
+          >
+            <div>
+              <h3 className="link-title">
+                Beyond The Valley 2026 Retail vendor applications
+              </h3>
+              <p className="link-desc">
+                Apply for a retail vendor stall at Beyond The Valley 2026
               </p>
             </div>
             <span className="link-arrow">↗</span>
@@ -168,10 +200,6 @@ export default function Contact() {
         }
 
         @media (min-width: 768px) {
-          .grid {
-            grid-template-columns: 1fr 1fr;
-          }
-
           .logo-wrap {
             grid-column: 1 / -1;
           }

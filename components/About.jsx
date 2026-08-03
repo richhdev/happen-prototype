@@ -41,12 +41,13 @@ export default function About() {
         </motion.h2>
       </div>
       <p className="lede">
-        A dream team of doers and difference-makers. Sharp, reliable, and here
-        to get it done. Each of us brings something different: creative brains,
-        logistical minds, artist wranglers, on-ground legends. <br />
+        A dream team of doers and difference-makers. Sharp, reliable and here
+        to get it done. Each of us brings something different to the table:
+        creative brains, logistical minds, artist wranglers and on-ground
+        weapons. <br />
         <br />
-        We work with grit, good humour, and zero ego. And we don&apos;t just
-        work hard — we have a damn good time making it Happen.
+        We work with grit, good humour and zero ego. We&apos;re just here to
+        make it Happen.
       </p>
       <div ref={counterRef} className="counter">
         <span>{count}+</span>
