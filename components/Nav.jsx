@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 const cssEase = "cubic-bezier(.16,1,.3,1)";
 
 const NAV_LINKS = [
-  { id: "a-services", label: "Services" },
+  { id: "a-whatson", label: "What's On" },
   { id: "b-work", label: "Work" },
+  { id: "a-services", label: "Services" },
+  { id: "a-testimonials", label: "Testimonials" },
   { id: "b-artists", label: "Artists" },
   { id: "a-venues", label: "Venues" },
   { id: "a-about", label: "About" },
-  { id: "a-whatson", label: "What's On" },
   { id: "a-traders", label: "Traders" },
 ];
 

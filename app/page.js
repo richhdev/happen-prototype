@@ -18,16 +18,14 @@ export default function Home() {
     <main style={{ width: "100%", background: "#EEEBE3" }}>
       <Nav />
       <Hero />
-      <Services />
+      <WhatsOn />
       <Work />
+      <Services />
       <Testimonials />
       <Artists />
       <Venues />
       <About />
-      <WhatsOn />
-      {/* <WhatsOnCms /> */}
       <Traders />
-      {/* <Suppliers /> */}
       <Instagram />
       <Contact />
     </main>
