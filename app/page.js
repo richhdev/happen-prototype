@@ -19,13 +19,14 @@ export default function Home() {
       <Nav />
       <Hero />
       <WhatsOn />
-      <Traders />
+
       <Work />
       <Services />
       <Testimonials />
       <Artists />
       <Venues />
       <About />
+      <Traders />
       <Instagram />
       <Contact />
     </main>

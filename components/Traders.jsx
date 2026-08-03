@@ -1,18 +1,20 @@
 "use client";
 import { Reveal } from "@/components/ui";
 
-const MARRKETSTALL = [
+const CARDS = [
   {
-    title: "Good things 2026",
-    body: "Retail vendor stall applications 2026",
+    kicker: "Market traders",
+    title: "Set up a stall at a major festival.",
+    body: "We manage market villages at Australia's biggest events. If you've got a stall worth bringing, we've got the space, the crowd, and the process handled from application through to show day.",
     cta: "Get your stall",
-    href: "https://form.jotform.com/261311126413846",
+    href: "https://docs.google.com/forms/d/e/1FAIpQLSckRb2G14DYaI8nsFkefg57j11VgkiwvdGxYnOqG9SUGjYu_g/viewform",
   },
   {
-    title: "Beyond the valley 2026",
-    body: "Retail vendor stall applications 2026",
-    cta: "Get your stall",
-    href: "https://form.jotform.com/261448233625861",
+    kicker: "Hosts & promoters",
+    title: "Become part of the Happen team.",
+    body: "We're always looking for well-connected individuals and magnetic group leaders — social, influential, and the life of the party — to join our community building network.",
+    cta: "Join the team",
+    href: "https://docs.google.com/forms/d/e/1FAIpQLSfGExZGlBSpbc4ciG6nipO5i0NgDDcdFpXRqtsu3CWuMCBO9Q/viewform",
   },
 ];
 
@@ -20,27 +22,26 @@ export default function Traders() {
   return (
     <section id="a-traders" className="traders">
       <Reveal>
-        <div className="traders-heading-group">
-          <span className="traders-eyebrow">Want in?</span>
-          <h2 className="traders-heading">
-            Market Stall <br /> Applications
-          </h2>
+        <div className="heading-group">
+          <span className="eyebrow">Traders &amp; Hosts</span>
+          <h2 className="heading">Want in?</h2>
         </div>
       </Reveal>
 
-      <div className="traders-grid">
-        {MARRKETSTALL.map((c, i) => (
+      <div className="grid">
+        {CARDS.map((c, i) => (
           <Reveal key={i} once={false} amount={0.5} delay={i * 160}>
-            <div className="traders-card">
-              <h3 className="traders-title">{c.title}</h3>
-              <p className="traders-body">{c.body}</p>
+            <div className="card">
+              <div className="kicker">{c.kicker}</div>
+              <h3 className="title">{c.title}</h3>
+              <p className="body">{c.body}</p>
               <a
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="traders-cta"
+                className="cta"
               >
-                {c.cta} <span className="traders-cta-arrow">↗</span>
+                {c.cta} <span className="cta-arrow">↗</span>
               </a>
             </div>
           </Reveal>
@@ -58,13 +59,13 @@ export default function Traders() {
           background: #e4dbcb;
         }
 
-        .traders-heading-group {
-          margin: 44px auto 44px;
+        .heading-group {
+          margin: 0 auto 44px;
           max-width: 760px;
           text-align: center;
         }
 
-        .traders-eyebrow {
+        .eyebrow {
           display: block;
           font-size: 11px;
           font-weight: 700;
@@ -74,7 +75,7 @@ export default function Traders() {
           margin-bottom: 14px;
         }
 
-        .traders-heading {
+        .heading {
           font-size: 52px;
           font-weight: 900;
           letter-spacing: -0.03em;
@@ -84,7 +85,7 @@ export default function Traders() {
           margin: 0;
         }
 
-        .traders-grid {
+        .grid {
           display: grid;
           grid-template-columns: 1fr;
           gap: 24px;
@@ -94,12 +95,12 @@ export default function Traders() {
         }
 
         @media (min-width: 768px) {
-          .traders-grid {
+          .grid {
             grid-template-columns: 1fr 1fr;
           }
         }
 
-        .traders-card {
+        .card {
           background: linear-gradient(180deg, #2c2c2c, #000000);
           border: 1px solid #262626;
           padding: 44px;
@@ -109,7 +110,7 @@ export default function Traders() {
           flex-direction: column;
         }
 
-        .traders-kicker {
+        .kicker {
           font-size: 10px;
           font-weight: 700;
           letter-spacing: 0.08em;
@@ -118,7 +119,7 @@ export default function Traders() {
           margin-bottom: 12px;
         }
 
-        .traders-title {
+        .title {
           font-size: 28px;
           font-weight: 800;
           letter-spacing: -0.01em;
@@ -126,14 +127,14 @@ export default function Traders() {
           color: #eeebe3;
         }
 
-        .traders-body {
+        .body {
           font-size: 14.5px;
           color: #c9c4b7;
           line-height: 1.65;
           margin: 0 0 26px;
         }
 
-        .traders-cta {
+        .cta {
           display: inline-flex;
           align-items: center;
           gap: 8px;
@@ -149,7 +150,7 @@ export default function Traders() {
           align-self: flex-start;
         }
 
-        .traders-cta-arrow {
+        .cta-arrow {
           font-size: 15px;
         }
       `}</style>

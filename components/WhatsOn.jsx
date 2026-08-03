@@ -2,7 +2,12 @@
 import { Reveal } from "@/components/ui";
 import { asset } from "@/lib/data";
 
-const labels = { upcoming: "Upcoming", onsale: "On sale", soldout: "Sold out" };
+const labels = {
+  upcoming: "Upcoming",
+  onsale: "On sale",
+  soldout: "Sold out",
+  acceptingapplications: "Accepting applications",
+};
 
 const EVENTS = [
   {
@@ -10,6 +15,7 @@ const EVENTS = [
     status: "onsale",
     date: "Sep 5th 2026",
     description: "Torrensville, SA Thebarton Theatre",
+    cta: "Get tickets",
     link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
     img: asset("assets/event-party-girl-tour.jpg"),
   },
@@ -18,6 +24,7 @@ const EVENTS = [
     status: "soldout",
     date: "Sept 09 2026",
     description: "Auckland, NZ, New Zealand, The Civic, Auckland,",
+    cta: "Get tickets",
     link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
     img: asset("assets/event-party-girl-tour.jpg"),
   },
@@ -26,6 +33,7 @@ const EVENTS = [
     status: "upcoming",
     date: "to be confirmed",
     description: "",
+    cta: "Pre register",
     link: "https://happengroup.fillout.com/dannyrants",
     img: asset("assets/event-off-the-record-tour.png"),
   },
@@ -34,8 +42,27 @@ const EVENTS = [
     status: "upcoming",
     date: "31st dec 2026",
     description: "",
+    cta: "Pre register",
     link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
     img: asset("assets/event-chaper-nye-2026.jpg"),
+  },
+  {
+    title: "Good things - Retail vendor applications 2026",
+    status: "acceptingapplications",
+    date: "to be confirmed",
+    description: "Retail vendor stall applications 2026",
+    cta: "Get your stall",
+    link: "https://form.jotform.com/261311126413846",
+    img: asset("assets/market-stall-good-things.png"),
+  },
+  {
+    title: "Beyond the valley - Retail vendor applications 2026",
+    status: "acceptingapplications",
+    date: "to be confirmed",
+    description: "Retail vendor stall applications 2026",
+    cta: "Get your stall",
+    link: "https://form.jotform.com/261448233625861",
+    img: asset("assets/market-stall-btv.jpg"),
   },
 ];
 
@@ -72,7 +99,7 @@ export default function WhatsOn() {
                       className={`cta${soldout ? " cta-disabled" : ""}`}
                       aria-disabled={soldout || undefined}
                     >
-                      {soldout ? "Sold out" : "Get tickets ↗"}
+                      {soldout ? "Sold out" : ev.cta || "Get tickets"}
                     </a>
                   </div>
                 </div>
@@ -175,6 +202,11 @@ export default function WhatsOn() {
             background: transparent;
             color: #7a756a;
             border: 1px solid #d8d3c5;
+          }
+
+          .status-acceptingapplications {
+            background: orange;
+            color: #fff;
           }
 
           .title {
