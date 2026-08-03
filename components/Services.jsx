@@ -12,54 +12,54 @@ const CARD_SWAP_DELAY_MS = 55; // must stay <= CARD_FADE_MS so content swaps whi
 
 const SERVICES = [
   {
-    meta: "Plan · Deliver · Manage · Operate",
     title: "Artist Services",
-    desc: "End-to-end artist services and liaison for festivals and major events — from advancing and on-ground operations to individual artist care and everything in between.",
+    meta: "Plan · Deliver · Manage · Operate",
+    desc: "We work alongside artists, promoters and venues from the first advance through to the final load-out, delivering artist liaison and touring support at the highest level.",
   },
   {
-    meta: "Plan · Stock · Host · Deliver",
     title: "Artist Hospitality",
-    desc: "Dressing rooms, riders, and green rooms — set, stocked, and on-point. Full hospitality management from advance through to show day.",
+    meta: "Plan · Stock · Host · Deliver",
+    desc: "Dressing rooms, artist facilities and communal spaces. Planned, prepared and ready for your artists at your next event.",
   },
   {
-    meta: "Book · Negotiate · Contract · Confirm",
     title: "Artist Management",
-    desc: "From offer and routing to contracts, deposits and lock-in. We book your flights, organise ground transfers, handle accounts and get you playing at Australia's biggest events.",
+    meta: "Book · Negotiate · Contract · Confirm",
+    desc: "The paperwork is just as important as the performance. We handle offers, routing, contracts, deposits and lock-ins so our artists can focus on making dance floors hum.",
   },
   {
-    meta: "Advance · Book · Move · Track",
     title: "Artist Tour Logistics",
-    desc: "Flights, hotels, ground transfers, visas, per diems. All in. All sorted. Always smiling.",
+    meta: "Advance · Book · Move · Track",
+    desc: "Flights, hotels, ground transfers, visas, per diems. All in. All sorted.",
   },
   {
-    meta: "Program · Advance · Tour · Deliver",
     title: "Comedy & Podcast Tours",
-    desc: "Venue sourcing, routing, budgeting, support act bookings, ticketing coordination, production planning, flights, accommodation, advancing, tour management, settlements and reporting across Australia and New Zealand.",
+    meta: "Program · Advance · Tour · Deliver",
+    desc: "Whether you've got a fully planned tour or just an idea, we'll help bring it to life. With a trusted network across Australia and New Zealand, we connect the right people, venues and logistics to get your tour on the road.",
   },
   {
-    meta: "Source · Brief · Deploy · Deliver",
     title: "Event Staffing",
-    desc: "The secret sauce behind events and festivals that run without a hitch — from front gate / box office, drivers, artist liaisons, stage managers and everything in between.",
+    meta: "Source · Brief · Deploy · Deliver",
+    desc: "Great events start with great staff. Tap into our trusted network of experienced professionals, built over years of working in events across Australia & New Zealand.",
   },
   {
+    title: "Retail Precinct",
     meta: "Source · Curate · Build · Operate · Remit",
-    title: "Market Villages",
-    desc: "Drawing from a vast network of vendors across Australia. We handle the entire process — from applications through to show day — with a curated mix of retail and service offerings.",
+    desc: "Drawing on our wide network of vendors, we handle the whole process. We source the right mix of traders, vet every application, design the retail offering, manage operations on event day and settle the accounts once it's all wrapped up.",
   },
   {
-    meta: "Connect · Pair · Program · Deliver",
     title: "Venue Bookings",
+    meta: "Connect · Pair · Program · Deliver",
     desc: "Matching the right space to the right crowd via deep industry relationships across the Australian music scene.",
   },
   {
-    meta: "Design · Curate · Build · Staff · Operate",
     title: "Wellness & Activations",
-    desc: "Purpose-built spaces within festivals — from yoga and sound healing to breathwork, meditation, talks, speed dating and trivia. Custom infrastructure designed to suit your audience.",
+    meta: "Design · Curate · Build · Staff · Operate",
+    desc: "Purpose-built spaces within festivals. We design and deliver wellness, connection and entertainment experiences tailored to your audience.",
   },
   {
-    meta: "Recruit · Activate · Track · Amplify",
     title: "Community Building",
-    desc: "A modernised street team — hosts and promoters raising awareness & selling tickets directly to their networks, with digital tracking and seamless management.",
+    meta: "Recruit · Activate · Track · Amplify",
+    desc: "We build and manage teams of hosts and promoters who sell tickets to your event through their own networks. It's the old-school street team, reimagined for today.",
   },
 ];
 
