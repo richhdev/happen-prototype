@@ -6,188 +6,210 @@ const labels = { upcoming: "Upcoming", onsale: "On sale", soldout: "Sold out" };
 
 const EVENTS = [
   {
-    tag: "upcoming",
-    title: "Chapter",
-    when: "Date · Artists",
-    img: asset("/assets/event-chapter.png"),
+    title: "Party Girl Tour",
+    status: "upcoming",
+    date: "Sep 5th 2026",
+    description: "Torrensville, SA Thebarton Theatre",
+    link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
+    img: asset("assets/event-party-girl-tour.jpg"),
   },
   {
-    tag: "onsale",
-    title: "Party Girl",
-    when: "Date · Artists",
-    img: asset("/assets/event-partygirl.png"),
+    title: "Party Girl Tour",
+    status: "Sold Out",
+    date: "Sept 09 2026",
+    description: "Auckland, NZ, New Zealand, The Civic, Auckland,",
+    img: asset("assets/event-party-girl-tour.jpg"),
   },
   {
-    tag: "soldout",
-    title: "Overdrive",
-    when: "Date · Artists",
-    img: asset("/assets/event-overdrive.png"),
+    title: "Danny Rants - off the record",
+    status: "Upcoming",
+    date: "to be confirmed",
+    description: "",
+    img: asset("assets/event-off-the-record-tour.png"),
+  },
+  {
+    title: "Chapter NYE 2026",
+    status: "Upcoming",
+    date: "31st dec 2026",
+    description: "",
+    img: asset("assets/event-chaper-nye-2026.jpg"),
   },
 ];
 
 export default function WhatsOn() {
   return (
-    <section id="a-whatson" className="whatson">
-      <Reveal>
-        <div className="heading-group">
-          <span className="eyebrow">What&apos;s On</span>
-          <h2 className="heading">What&apos;s Happening</h2>
-        </div>
-      </Reveal>
+    <div>
+      <section id="a-whatson" className="whatson">
+        <Reveal>
+          <div className="heading-group">
+            <span className="eyebrow">What&apos;s On</span>
+            <h2 className="heading">What&apos;s Happening</h2>
+          </div>
+        </Reveal>
 
-      <div className="grid">
-        {EVENTS.map((ev, i) => {
-          const soldout = ev.tag === "soldout";
-          return (
-            <Reveal key={i} once={false} amount={0.5} delay={i * 130}>
-              <div className="card">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={ev.img} alt={ev.title} className="image" />
-                <div className="body">
-                  <span className={`tag tag-${ev.tag}`}>{labels[ev.tag]}</span>
-                  <h3 className="title">{ev.title}</h3>
-                  <div className="when">{ev.when}</div>
-                  <a
-                    href="#"
-                    className={`cta${soldout ? " cta-disabled" : ""}`}
-                    aria-disabled={soldout || undefined}
-                  >
-                    {soldout ? "Sold out" : "Get tickets ↗"}
-                  </a>
+        <div className="grid">
+          {EVENTS.map((ev, i) => {
+            const soldout = ev.status === "soldout";
+            return (
+              <Reveal key={i} once={false} amount={0.5} delay={i * 130}>
+                <div className="card">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={ev.img} alt={ev.title} className="image" />
+                  <div className="body">
+                    <span className={`status status-${ev.status}`}>
+                      {labels[ev.status]}
+                    </span>
+                    <h3 className="title">{ev.title}</h3>
+                    <div className="date">{ev.date}</div>
+                    <div className="description">{ev.description}</div>
+                    <a
+                      href="#"
+                      className={`cta${soldout ? " cta-disabled" : ""}`}
+                      aria-disabled={soldout || undefined}
+                    >
+                      {soldout ? "Sold out" : "Get tickets ↗"}
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </Reveal>
-          );
-        })}
-      </div>
+              </Reveal>
+            );
+          })}
+        </div>
 
-      <style jsx>{`
-        .whatson {
-          padding: 120px 48px;
-          min-height: 100vh;
-          box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-
-        .heading-group {
-          margin: 0 auto 44px;
-          max-width: 760px;
-          text-align: center;
-        }
-
-        .eyebrow {
-          display: block;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #ca0013;
-          margin-bottom: 14px;
-        }
-
-        .heading {
-          font-size: 52px;
-          font-weight: 900;
-          letter-spacing: -0.03em;
-          white-space: nowrap;
-          text-transform: uppercase;
-          line-height: 0.98;
-          margin: 0;
-        }
-
-        .grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 20px;
-          max-width: 800px;
-          width: 100%;
-          margin: 0 auto;
-        }
-
-        @media (min-width: 768px) {
-          .grid {
-            grid-template-columns: repeat(3, 1fr);
+        <style jsx>{`
+          .whatson {
+            padding: 120px 48px;
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
           }
-        }
 
-        .card {
-          background: #fff;
-          border: 1px solid #d8d3c5;
-          overflow: hidden;
-        }
+          .heading-group {
+            margin: 0 auto 44px;
+            max-width: 760px;
+            text-align: center;
+          }
 
-        .image {
-          display: block;
-          width: 100%;
-          aspect-ratio: 4 / 3;
-          height: auto;
-          object-fit: cover;
-          object-position: center top;
-          background: #dcd6c8;
-        }
+          .eyebrow {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #ca0013;
+            margin-bottom: 14px;
+          }
 
-        .body {
-          padding: 22px;
-        }
+          .heading {
+            font-size: 52px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            white-space: nowrap;
+            text-transform: uppercase;
+            line-height: 0.98;
+            margin: 0;
+          }
 
-        .tag {
-          display: inline-block;
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          padding: 4px 9px;
-        }
+          .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+          }
 
-        .tag-upcoming {
-          background: #111;
-          color: #fff;
-        }
+          @media (min-width: 768px) {
+            .grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
 
-        .tag-onsale {
-          background: #ca0013;
-          color: #fff;
-        }
+          .card {
+            background: #fff;
+            border: 1px solid #d8d3c5;
+            overflow: hidden;
+          }
 
-        .tag-soldout {
-          background: transparent;
-          color: #7a756a;
-          border: 1px solid #d8d3c5;
-        }
+          .image {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            height: auto;
+            object-fit: cover;
+            object-position: center top;
+            background: #dcd6c8;
+          }
 
-        .title {
-          font-size: 19px;
-          font-weight: 800;
-          margin: 12px 0 6px;
-        }
+          .body {
+            padding: 22px;
+          }
 
-        .when {
-          font-size: 12px;
-          color: #7a756a;
-          margin-bottom: 18px;
-        }
+          .status {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 9px;
+          }
 
-        .cta {
-          display: inline-flex;
-          padding: 10px 18px;
-          font-size: 11.5px;
-          font-weight: 700;
-          letter-spacing: 0.03em;
-          text-transform: uppercase;
-          text-decoration: none;
-          color: #111;
-          border: 1.5px solid #111;
-        }
+          .status-upcoming {
+            background: #111;
+            color: #fff;
+          }
 
-        .cta-disabled {
-          color: #7a756a;
-          border: 1.5px solid #d8d3c5;
-          opacity: 0.6;
-          pointer-events: none;
-        }
-      `}</style>
-    </section>
+          .status-onsale {
+            background: #ca0013;
+            color: #fff;
+          }
+
+          .status-soldout {
+            background: transparent;
+            color: #7a756a;
+            border: 1px solid #d8d3c5;
+          }
+
+          .title {
+            font-size: 19px;
+            font-weight: 800;
+            margin: 12px 0 6px;
+          }
+
+          .date {
+            font-size: 12px;
+            color: #7a756a;
+            margin-bottom: 18px;
+          }
+
+          .description {
+            font-size: 12px;
+            color: #7a756a;
+            margin-bottom: 18px;
+          }
+
+          .cta {
+            display: inline-flex;
+            padding: 10px 18px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #111;
+            border: 1.5px solid #111;
+          }
+
+          .cta-disabled {
+            color: #7a756a;
+            border: 1.5px solid #d8d3c5;
+            opacity: 0.6;
+            pointer-events: none;
+          }
+        `}</style>
+      </section>
+    </div>
   );
 }
