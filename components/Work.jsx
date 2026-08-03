@@ -9,6 +9,8 @@ import {
 import { SectionHead, useIsoLayoutEffect } from "@/components/ui";
 import { asset } from "@/lib/data";
 
+const HOLD_PX = 400;
+
 const WORK = [
   {
     title: "Knotfest",
@@ -19,52 +21,122 @@ const WORK = [
   },
   {
     title: "Good Things Festival",
-    tag: "BOH Management — Nationwide",
+    tag: "BOH Management — Nationwide / Retail Precinct Management",
     logo: asset("/assets/client-goodthings-v2.png"),
     logoH: 52,
     bg: asset("/assets/venue-brown-alley.webp"),
   },
   {
     title: "Beyond The Valley",
-    tag: "Front Market Villages",
+    tag: "Retail Precinct Management",
     logo: asset("/assets/client-btv.svg"),
     logoH: 34,
     bg: asset("/assets/artist-laura-king.jpg"),
   },
   {
     title: "A3 Festival",
-    tag: "Role — to be supplied",
+    tag: "Artist Services / Volunteer Management / Front Gate Management / Box Office Management / Accreditation",
     logo: asset("/assets/client-a3.png"),
     logoH: 46,
     bg: asset("/assets/event-chapter.png"),
   },
   {
     title: "Let Them Eat Cake",
-    tag: "Role — to be supplied",
+    tag: "Artist Services / Industry Ticketing / Community Building",
     logo: asset("/assets/client-let-them-eat-cake.svg"),
     logoH: 34,
     bg: asset("/assets/artist-sasha-fern.jpg"),
   },
   {
     title: "Promiseland",
-    tag: "Role — to be supplied",
+    tag: "Artist Services / Industry Ticketing / Community Building / Retail Precinct Management",
     logo: asset("/assets/client-promiseland.png"),
     logoH: 96,
     bg: asset("/assets/venue-bourke-st-courtyard.png"),
   },
   {
     title: "Eden Festival (NZ)",
-    tag: "Role — to be supplied",
+    tag: "Artist Services",
     logo: asset("/assets/client-eden-fest.png"),
     logoH: 104,
     bg: asset("/assets/artist-vanna.jpg"),
   },
   {
     title: "Souled Out",
-    tag: "Role — to be supplied",
+    tag: "Artist Services — Nationwide / Industry Ticketing / Community Building",
     logo: asset("/assets/client-souled-out-v2.png"),
     logoH: 76,
     bg: asset("/assets/event-overdrive.png"),
+  },
+  {
+    title: "Happy Hour",
+    tag: "End-to-end Event Delivery — Nationwide",
+    logo: asset("/assets/client-happy-hour.png"),
+    logoH: 40,
+    bg: asset("/assets/svc-bg-1.jpg"),
+  },
+  {
+    title: "Our City Our Sound",
+    tag: "Artist Services / Box Office / Accreditation",
+    logo: asset("/assets/client-our-city-our-sound.svg"),
+    logoH: 70,
+    bg: asset("/assets/svc-bg-2.jpg"),
+  },
+  {
+    title: "Pitch Music and Arts",
+    tag: "Industry Ticketing / Community Building / Retail Precinct Management",
+    logo: asset("/assets/client-pitch.png"),
+    logoH: 36,
+    bg: asset("/assets/svc-bg-3.jpg"),
+  },
+  {
+    title: "Strummingbird",
+    tag: "Artist Services — Nationwide",
+    logo: asset("/assets/client-strummingbird.svg"),
+    logoH: 34,
+    bg: asset("/assets/svc-bg-4.jpg"),
+  },
+  {
+    title: "Chapter",
+    tag: "End-to-end Event Delivery",
+    logo: asset("/assets/client-chapter.png"),
+    logoH: 200,
+    bg: asset("/assets/svc-bg-5.jpg"),
+  },
+  {
+    title: "Strawberry Fields",
+    tag: "Industry Ticketing / Community Building",
+    logo: asset("/assets/client-strawberry-fields.png"),
+    logoH: 64,
+    bg: asset("/assets/event-off-the-record-tour.png"),
+  },
+  {
+    title: "Afrosoul",
+    tag: "Industry Ticketing / Community Building",
+    logo: asset("/assets/client-afrosoul.svg"),
+    logoH: 40,
+    bg: asset("/assets/event-party-girl-tour.jpg"),
+  },
+  {
+    title: "Live Nation",
+    tag: "Industry Ticketing / Community Building",
+    logo: asset("/assets/client-live-nation.png"),
+    logoH: 40,
+    bg: asset("/assets/event-partygirl.png"),
+  },
+  {
+    title: "Astral People",
+    tag: "Industry Ticketing / Community Building",
+    logo: asset("/assets/client-astral-people.svg"),
+    logoH: 56,
+    bg: asset("/assets/event-chaper-nye-2026.jpg"),
+  },
+  {
+    title: "S.A.S.H",
+    tag: "Artist Advancing — Nationwide",
+    logo: asset("/assets/client-sash.svg"),
+    logoH: 40,
+    bg: asset("/assets/venue-brown-alley-c.jpg"),
   },
 ];
 
@@ -78,12 +150,10 @@ export default function Work() {
 
   useIsoLayoutEffect(() => {
     const measure = () => {
-      if (!trackRef.current || !wrapRef.current) return;
-      const m = Math.max(
-        0,
-        trackRef.current.scrollWidth - wrapRef.current.clientWidth,
-      );
-      setMax(m);
+      const first = cardRefs.current[0];
+      const last = cardRefs.current[cardRefs.current.length - 1];
+      if (!first || !last) return;
+      setMax(Math.max(0, last.offsetLeft - first.offsetLeft));
     };
     measure();
     window.addEventListener("resize", measure);
@@ -94,7 +164,9 @@ export default function Work() {
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  const x = useTransform(scrollYProgress, (v) => -(v * max));
+  const total = max + HOLD_PX;
+  const panEnd = total > 0 ? max / total : 0;
+  const x = useTransform(scrollYProgress, [0, panEnd], [0, -max]);
   const bgY = useTransform(scrollYProgress, [0, 1], ["0px", "-400px"]);
 
   useMotionValueEvent(x, "change", () => {
@@ -119,7 +191,11 @@ export default function Work() {
 
   return (
     <section id="b-work" className="work">
-      <div ref={containerRef} className="work-container">
+      <div
+        ref={containerRef}
+        className="work-container"
+        style={{ height: `calc(100vh + ${max + HOLD_PX}px)` }}
+      >
         <motion.div
           className="work-sticky"
           style={{ backgroundPositionY: bgY }}
@@ -179,7 +255,7 @@ export default function Work() {
         }
 
         .work-container {
-          height: 280vh;
+          height: 100vh;
         }
 
         :global(.work-sticky) {
