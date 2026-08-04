@@ -42,7 +42,7 @@ export default function Contact() {
               href="https://www.instagram.com/happengroupau/"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link social-link-instagram"
+              className="social-link "
             >
               Instagram
             </a>
@@ -50,7 +50,7 @@ export default function Contact() {
               href="https://www.facebook.com/happengroupau"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link social-link-facebook"
+              className="social-link "
             >
               Facebook
             </a>
@@ -58,7 +58,7 @@ export default function Contact() {
               href="https://www.youtube.com/@HappenGroup"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link social-link-youtube"
+              className="social-link "
             >
               YouTube
             </a>
@@ -66,7 +66,7 @@ export default function Contact() {
               href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link social-link-spotify"
+              className="social-link "
             >
               Spotify
             </a>
@@ -109,7 +109,7 @@ export default function Contact() {
           >
             <div>
               <h3 className="link-title">
-                Good Things 2026 Retail vendor applications
+                Retail vendor applications - Good Things 2026
               </h3>
               <p className="link-desc">
                 Apply for a retail vendor stall at Good Things Festival 2026
@@ -125,7 +125,7 @@ export default function Contact() {
           >
             <div>
               <h3 className="link-title">
-                Beyond The Valley 2026 Retail vendor applications
+                Retail vendor applications - Beyond The Valley 2026
               </h3>
               <p className="link-desc">
                 Apply for a retail vendor stall at Beyond The Valley 2026
