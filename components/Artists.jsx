@@ -8,8 +8,6 @@ import {
 } from "motion/react";
 import { asset, EASE } from "@/lib/data";
 
-const cssEase = "cubic-bezier(.16,1,.3,1)";
-
 const ARTISTS = [
   {
     genre: "Electronic",
@@ -52,155 +50,6 @@ const ARTISTS = [
     music: "https://soundcloud.com/vannaspins",
   },
 ];
-
-const SPREAD = 0.4;
-const N = ARTISTS.length;
-const SCATTER = [
-  { sx: -115, sy: -140, ex: -220, ey: -0.68, r: -7, sz: -820 },
-  { sx: 145, sy: -155, ex: 205, ey: -0.82, r: 5, sz: -980 },
-  { sx: -120, sy: 90, ex: -245, ey: 0.66, r: 4, sz: -680 },
-  { sx: 115, sy: 100, ex: 185, ey: 0.78, r: -8, sz: -900 },
-];
-
-function progresses(p, i) {
-  const s = SCATTER[i];
-  const start = (i / N) * SPREAD;
-  const pr = Math.max(0, Math.min(1, (p - start) / (1 - SPREAD)));
-  const p_i = 1 - Math.pow(1 - pr, 3);
-  return { s, p_i, a: 1 - p_i };
-}
-
-function ArtistCard({ ar, i, progress, bioOpen, active, onClick }) {
-  const s = SCATTER[i];
-  const txv = useTransform(progress, (p) => {
-    const { p_i, a } = progresses(p, i);
-    return s.sx * a + s.ex * p_i;
-  });
-  const tyv = useTransform(progress, (p) => {
-    const { p_i, a } = progresses(p, i);
-    return `calc(${s.sy * a}px + (50vh - 160px) * ${s.ey * p_i})`;
-  });
-  const tzv = useTransform(progress, (p) => {
-    const { a } = progresses(p, i);
-    return s.sz * a;
-  });
-  const rotv = useTransform(progress, (p) => {
-    const { p_i } = progresses(p, i);
-    return s.r * (1 - p_i * 0.6);
-  });
-  const transform = useMotionTemplate`translate(-50%,-50%) translate3d(${txv}px, ${tyv}, ${tzv}px) rotate(${rotv}deg)`;
-
-  return (
-    <motion.div
-      onClick={onClick}
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: "50%",
-        width: 240,
-        height: 280,
-        cursor: "pointer",
-        background: "#1a1a1a",
-        border: "1px solid #262626",
-        overflow: "hidden",
-        backgroundImage: ar.img ? `url("${ar.img}")` : "none",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        transform,
-        zIndex: active ? 15 : 14 - i,
-        willChange: "transform",
-      }}
-    >
-      <div className="artist-overlay">
-        <div className="artist-badge">{ar.genre}</div>
-        <h3 className="artist-name">{ar.name}</h3>
-        <p
-          className="artist-desc"
-          style={{
-            opacity: bioOpen ? 1 : 0,
-            maxHeight: bioOpen ? 200 : 0,
-            transition: `opacity 420ms ${cssEase}, max-height 420ms ${cssEase}`,
-          }}
-        >
-          {ar.desc}
-        </p>
-
-        {ar.instagram && ar.instagramHandle && (
-          <div style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}>
-            <a
-              href={ar.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}
-            >
-              {ar.instagramHandle}
-            </a>
-          </div>
-        )}
-
-        {ar.music && ar.musicHandle && (
-          <div style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}>
-            <a
-              href={ar.music}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: 11, color: "#c9c4b7", fontWeight: 600 }}
-            >
-              {ar.musicHandle}
-            </a>
-          </div>
-        )}
-      </div>
-      <style jsx>{`
-        .artist-overlay {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          padding: 90px 20px 20px;
-          pointer-events: none;
-          background: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.92) 0%,
-            rgba(0, 0, 0, 0.55) 42%,
-            rgba(0, 0, 0, 0.05) 100%
-          );
-        }
-
-        .artist-badge {
-          display: inline-block;
-          align-self: flex-start;
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #111;
-          background: #ca0013;
-          padding: 5px 10px;
-          margin-bottom: 12px;
-        }
-
-        .artist-name {
-          font-size: 21px;
-          font-weight: 900;
-          letter-spacing: -0.02em;
-          text-transform: uppercase;
-          color: #fff;
-          margin: 0 0 8px;
-        }
-
-        .artist-desc {
-          fontSize: 12.5;
-          color: #dedad0;
-          lineHeight: 1.55;
-          margin: 0 0 8px;
-          overflow: hidden:
-        }
-      `}</style>
-    </motion.div>
-  );
-}
 
 export default function Artists() {
   const containerRef = useRef(null);
@@ -294,6 +143,7 @@ export default function Artists() {
           ))}
         </motion.div>
       </div>
+
       <style jsx>{`
         .artists-section {
           background: #111;
@@ -314,5 +164,167 @@ export default function Artists() {
         }
       `}</style>
     </section>
+  );
+}
+
+const cssEase = "cubic-bezier(.16,1,.3,1)";
+
+const SPREAD = 0.4;
+const N = ARTISTS.length;
+const SCATTER = [
+  { sx: -115, sy: -140, ex: -220, ey: -0.68, r: -7, sz: -820 },
+  { sx: 145, sy: -155, ex: 205, ey: -0.82, r: 5, sz: -980 },
+  { sx: -120, sy: 90, ex: -245, ey: 0.66, r: 4, sz: -680 },
+  { sx: 115, sy: 100, ex: 185, ey: 0.78, r: -8, sz: -900 },
+];
+
+function progresses(p, i) {
+  const s = SCATTER[i];
+  const start = (i / N) * SPREAD;
+  const pr = Math.max(0, Math.min(1, (p - start) / (1 - SPREAD)));
+  const p_i = 1 - Math.pow(1 - pr, 3);
+  return { s, p_i, a: 1 - p_i };
+}
+
+function ArtistCard({ ar, i, progress, bioOpen, active, onClick }) {
+  const s = SCATTER[i];
+  const txv = useTransform(progress, (p) => {
+    const { p_i, a } = progresses(p, i);
+    return s.sx * a + s.ex * p_i;
+  });
+  const tyv = useTransform(progress, (p) => {
+    const { p_i, a } = progresses(p, i);
+    return `calc(${s.sy * a}px + (50vh - 160px) * ${s.ey * p_i})`;
+  });
+  const tzv = useTransform(progress, (p) => {
+    const { a } = progresses(p, i);
+    return s.sz * a;
+  });
+  const rotv = useTransform(progress, (p) => {
+    const { p_i } = progresses(p, i);
+    return s.r * (1 - p_i * 0.6);
+  });
+  const transform = useMotionTemplate`translate(-50%,-50%) translate3d(${txv}px, ${tyv}, ${tzv}px) rotate(${rotv}deg)`;
+
+  return (
+    <motion.div
+      onClick={onClick}
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        width: 240,
+        height: 280,
+        cursor: "pointer",
+        background: "#1a1a1a",
+        border: "1px solid #262626",
+        overflow: "hidden",
+        backgroundImage: ar.img ? `url("${ar.img}")` : "none",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        transform,
+        zIndex: active ? 15 : 14 - i,
+        willChange: "transform",
+      }}
+    >
+      <div className="artist-overlay">
+        <div className="artist-badge">{ar.genre}</div>
+        <h3 className="artist-name">{ar.name}</h3>
+        <p
+          className="artist-desc"
+          style={{
+            opacity: bioOpen ? 1 : 0,
+            maxHeight: bioOpen ? 200 : 0,
+            transition: `opacity 420ms ${cssEase}, max-height 420ms ${cssEase}`,
+          }}
+        >
+          {ar.desc}
+        </p>
+
+        {ar.instagram && ar.instagramHandle && (
+          <ArtistLink href={ar.instagram}>{ar.instagramHandle}</ArtistLink>
+        )}
+
+        {ar.music && ar.musicHandle && (
+          <ArtistLink href={ar.music}>{ar.musicHandle}</ArtistLink>
+        )}
+      </div>
+      <style jsx>{`
+        .artist-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 90px 20px 20px;
+          pointer-events: none;
+          background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.92) 0%,
+            rgba(0, 0, 0, 0.55) 42%,
+            rgba(0, 0, 0, 0.05) 100%
+          );
+        }
+
+        .artist-badge {
+          display: inline-block;
+          align-self: flex-start;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #111;
+          background: #ca0013;
+          padding: 5px 10px;
+          margin-bottom: 12px;
+        }
+
+        .artist-name {
+          font-size: 21px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          text-transform: uppercase;
+          color: #fff;
+          margin: 0 0 8px;
+        }
+
+        .artist-desc {
+          font-size: 12.5px;
+          color: #dedad0;
+          line-height: 1.55;
+          margin: 0 0 8px;
+          overflow: hidden;
+        }
+      `}</style>
+    </motion.div>
+  );
+}
+
+function ArtistLink({ href, children }) {
+  return (
+    <div className="artist-link">
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </a>
+      <style jsx>{`
+        .artist-link {
+          font-size: 11px;
+          color: #c9c4b7;
+          font-weight: 600;
+          pointer-events: auto;
+        }
+
+        .artist-link a {
+          font-size: 11px;
+          color: #c9c4b7;
+          font-weight: 600;
+        }
+      `}</style>
+    </div>
   );
 }
