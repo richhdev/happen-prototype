@@ -46,6 +46,9 @@ const EVENTS = [
     link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
     img: asset("assets/event-chaper-nye-2026.jpg"),
   },
+];
+
+const RETAIL_EVENTS = [
   {
     title: "Good things - Retail vendor applications 2026",
     status: "acceptingapplications",
@@ -79,6 +82,47 @@ export default function WhatsOn() {
 
         <div className="grid">
           {EVENTS.map((ev, i) => {
+            const soldout = ev.status === "soldout";
+            return (
+              <Reveal key={i} once={false} amount={0.5} delay={i * 130}>
+                <div className="card">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={ev.img} alt={ev.title} className="image" />
+                  <div className="body">
+                    <span className={`status status-${ev.status}`}>
+                      {labels[ev.status]}
+                    </span>
+                    <h3 className="title">{ev.title}</h3>
+                    <div className="date">{ev.date}</div>
+                    <div className="description">{ev.description}</div>
+                    <a
+                      href={ev.link}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className={`cta${soldout ? " cta-disabled" : ""}`}
+                      aria-disabled={soldout || undefined}
+                    >
+                      {soldout ? "Sold out" : ev.cta || "Get tickets"}
+                    </a>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+
+        <Reveal>
+          <div className="heading-group" style={{ marginTop: "80px" }}>
+            <span className="eyebrow"> Retail vendor applications</span>
+            <h3 className="heading heading-sm">
+              Set up as a retail vendor <br />
+              at a major festival
+            </h3>
+          </div>
+        </Reveal>
+
+        <div className="grid">
+          {RETAIL_EVENTS.map((ev, i) => {
             const soldout = ev.status === "soldout";
             return (
               <Reveal key={i} once={false} amount={0.5} delay={i * 130}>
@@ -142,6 +186,10 @@ export default function WhatsOn() {
             text-transform: uppercase;
             line-height: 0.98;
             margin: 0;
+          }
+
+          .heading-sm {
+            font-size: 32px;
           }
 
           .grid {
