@@ -36,7 +36,7 @@ const ARTISTS = [
     desc: "Known for all things steezy, in style and in sound. A tasteful flow of Tech & Latino House, Jackin', Garage and bouncy rhythms. Has warmed up for Peggy Gou, Sharam Jey and Boys Noize.",
     instagramHandle: "@sashafernn",
     instagram: "https://instagram.com/sashafernn",
-    musicHandle: "Soundcloud",
+    musicHandle: "",
     music: "",
   },
   {
@@ -55,7 +55,6 @@ export default function Artists() {
   const containerRef = useRef(null);
   const [bioOpen, setBioOpen] = useState({});
   const [activeCard, setActiveCard] = useState(null);
-
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -71,9 +70,12 @@ export default function Artists() {
   };
 
   const handleClick = (i) => {
-    setBioOpen((prev) => ({ ...prev, [i]: !prev[i] }));
+    setBioOpen((prev) => {
+      const opening = !prev[i];
+      if (opening) scrollToEnd();
+      return { ...prev, [i]: opening };
+    });
     setActiveCard(i);
-    scrollToEnd();
   };
 
   return (
