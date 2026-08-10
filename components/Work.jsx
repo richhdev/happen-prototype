@@ -138,6 +138,13 @@ const WORK = [
     logoH: 40,
     bg: asset("/assets/venue-brown-alley-c.jpg"),
   },
+  {
+    title: "Leonardo Da Vinci Immersive Exhibition",
+    tag: "End-to-end Event Delivery",
+    logo: asset("/assets/client-leonaro-da-vinci.png"),
+    logoH: 90,
+    bg: asset("/assets/event-leonardo-da-vinci.png"),
+  },
 ];
 
 export default function Work() {
