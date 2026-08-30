@@ -1,0 +1,37 @@
+/* Box + text style from the Figma Button component (screenshots, not in
+   happen-token-structure.md — that doc only defines the button text tokens,
+   reused here as font-size/line-height per size). */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-small);
+  border: none;
+  background: var(--color-red);
+  color: var(--color-white);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.outline {
+  background: none;
+  color: var(--color-cream);
+  border: 2px solid var(--color-cream);
+}
+
+.large {
+  padding: var(--space-16) var(--space-32);
+  font-size: var(--button-large-size);
+  line-height: var(--button-large-line-height);
+}
+
+.medium {
+  padding: var(--space-8) var(--space-16);
+  font-size: var(--button-medium-size);
+  line-height: var(--button-medium-line-height);
+}

@@ -1,0 +1,17 @@
+/* Box + text style from the Figma Badge component (screenshot, not in
+   happen-token-structure.md). Fill color is set per-instance by the component. */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-small);
+  /* Figma has 9px horizontal padding; rounded down to the nearest space token. */
+  padding: var(--space-4) var(--space-8);
+  color: var(--color-white);
+  font-size: var(--badge-size);
+  line-height: var(--badge-line-height);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}

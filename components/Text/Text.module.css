@@ -1,0 +1,71 @@
+.xxlarge {
+  font-size: var(--text-xxlarge-size);
+  line-height: var(--text-xxlarge-line-height);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.xlarge {
+  font-size: var(--text-xlarge-size);
+  line-height: var(--text-xlarge-line-height);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.large {
+  font-size: var(--text-large-size);
+  line-height: var(--text-large-line-height);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.medium {
+  font-size: var(--text-medium-size);
+  line-height: var(--text-medium-line-height);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.small {
+  font-size: var(--text-small-size);
+  line-height: var(--text-small-line-height);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.overline {
+  font-size: var(--text-overline-size);
+  line-height: var(--text-overline-line-height);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.buttonTextLarge {
+  font-size: var(--button-large-size);
+  line-height: var(--button-large-line-height);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.buttonTextMedium {
+  font-size: var(--button-medium-size);
+  line-height: var(--button-medium-line-height);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badgeText {
+  font-size: var(--badge-size);
+  line-height: var(--badge-line-height);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}

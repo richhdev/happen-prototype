@@ -1,0 +1,94 @@
+/* Design tokens synced from Figma (happen-token-structure.md). Edit there first, then mirror here. */
+
+:root {
+  /* Color */
+  --color-red: #ca0013;
+  --color-charcoal: #111111;
+  --color-black: #000000;
+  --color-grey-900: #191919;
+  --color-grey-700: #433b3a;
+  --color-cream: #ebe6de;
+  --color-white: #ffffff;
+  --color-orange: #ce620a;
+
+  /* Space */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+  --space-120: 120px;
+
+  /* Layout */
+  --layout-max-width: 1200px;
+  --layout-padding-x: var(--space-32);
+  --layout-padding-y: var(--space-40);
+
+  @media (min-width: 768px) {
+    --layout-padding-x: var(--space-64);
+    --layout-padding-y: var(--space-80);
+  }
+
+  /* Headings */
+  --heading1-size: 40px;
+  --heading1-line-height: 44px;
+  --heading2-size: 36px;
+  --heading2-line-height: 40px;
+  --heading3-size: 30px;
+  --heading3-line-height: 34px;
+  --heading4-size: 20px;
+  --heading4-line-height: 26px;
+
+  @media (min-width: 768px) {
+    --heading1-size: 70px;
+    --heading1-line-height: 74px;
+    --heading2-size: 60px;
+    --heading2-line-height: 64px;
+    --heading3-size: 40px;
+    --heading3-line-height: 44px;
+    --heading4-size: 22px;
+    --heading4-line-height: 30px;
+  }
+
+  /* Text */
+  --text-xxlarge-size: 20px;
+  --text-xxlarge-line-height: 30px;
+  --text-xlarge-size: 18px;
+  --text-xlarge-line-height: 26px;
+  --text-large-size: 18px;
+  --text-large-line-height: 26px;
+  --text-medium-size: 16px;
+  --text-medium-line-height: 24px;
+  --text-small-size: 14px;
+  --text-small-line-height: 20px;
+  --text-overline-size: 16px;
+  --text-overline-line-height: 24px;
+
+  @media (min-width: 768px) {
+    --text-xxlarge-size: 22px;
+    --text-xxlarge-line-height: 36px;
+    --text-xlarge-size: 22px;
+    --text-xlarge-line-height: 36px;
+  }
+
+  /* Radius */
+  --radius-small: 3px;
+  --radius-medium: 6px;
+  --radius-large: 10px;
+
+  /* Button  */
+  --button-large-size: 18px;
+  --button-large-line-height: 22px;
+  --button-medium-size: 16px;
+  --button-medium-line-height: 20px;
+
+  /* Badge  */
+  --badge-size: 14px;
+  --badge-line-height: 18px;
+}

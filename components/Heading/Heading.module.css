@@ -1,0 +1,44 @@
+.heading1 {
+  margin: 0;
+  font-size: var(--heading1-size);
+  line-height: var(--heading1-line-height);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+}
+
+.heading2 {
+  margin: 0;
+  font-size: var(--heading2-size);
+  line-height: var(--heading2-line-height);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+}
+
+.heading3 {
+  margin: 0;
+  font-size: var(--heading3-size);
+  line-height: var(--heading3-line-height);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.heading3Sentence {
+  margin: 0;
+  font-size: var(--heading3-size);
+  line-height: var(--heading3-line-height);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.heading4 {
+  margin: 0;
+  font-size: var(--heading4-size);
+  line-height: var(--heading4-line-height);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
