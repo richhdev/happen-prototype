@@ -1,0 +1,21 @@
+/* Matches the Figma page fill stack: video at 10% / luminosity over charcoal. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  /* Behind the in-flow content but above the body background. */
+  z-index: -1;
+  background: var(--color-charcoal);
+  /* Contains the video's blend so it mixes with the charcoal fill only. */
+  isolation: isolate;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.1;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+}

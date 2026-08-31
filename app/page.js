@@ -1,5 +1,6 @@
+import SiteBackground from "@/components/SiteBackground/SiteBackground";
 import Nav from "@/components/Nav/Nav";
-import Hero from "@/components/Hero";
+import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services";
 import Work from "@/components/Work";
 import Testimonials from "@/components/Testimonials";
@@ -14,19 +15,22 @@ import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <main style={{ width: "100%", background: "#EEEBE3" }}>
-      <Nav />
-      <Hero />
-      <WhatsOn />
-      <Work />
-      <Services />
-      <Testimonials />
-      <Artists />
-      <Venues />
-      <About />
-      <Traders />
-      <Instagram />
-      <Contact />
-    </main>
+    <>
+      <SiteBackground />
+      <main style={{ width: "100%" }}>
+        <Nav />
+        <Hero />
+        <WhatsOn />
+        <Work />
+        <Services />
+        <Testimonials />
+        <Artists />
+        <Venues />
+        <About />
+        <Traders />
+        <Instagram />
+        <Contact />
+      </main>
+    </>
   );
 }

@@ -7,6 +7,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -15,20 +17,10 @@ html {
 
 body {
   margin: 0;
-  background: #dedad0;
+  background: var(--color-charcoal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 /* a { color: #111; }
 a:hover { color: #CA0013; } */
-
-/* Trusted-by marquee in the hero */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
