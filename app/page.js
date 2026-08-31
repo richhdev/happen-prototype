@@ -2,7 +2,7 @@ import SiteBackground from "@/components/SiteBackground/SiteBackground";
 import Nav from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services";
-import Work from "@/components/Work";
+import Work from "@/components/Work/Work";
 import Vendors from "@/components/Vendors/Vendors";
 import Testimonials from "@/components/Testimonials";
 import Artists from "@/components/Artists";
