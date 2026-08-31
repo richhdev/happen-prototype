@@ -3,6 +3,7 @@ import Nav from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services";
 import Work from "@/components/Work";
+import Vendors from "@/components/Vendors/Vendors";
 import Testimonials from "@/components/Testimonials";
 import Artists from "@/components/Artists";
 import Venues from "@/components/Venues";
@@ -21,6 +22,7 @@ export default function Home() {
         <Nav />
         <Hero />
         <Events />
+        <Vendors />
         <Work />
         <Services />
         <Testimonials />
