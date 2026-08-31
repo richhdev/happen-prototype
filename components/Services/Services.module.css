@@ -1,0 +1,235 @@
+.services {
+  --row-min-height: 225px;
+  --card-gap: var(--space-120);
+}
+
+@media (min-width: 768px) {
+  .services {
+    --row-min-height: 225px;
+    --card-gap: 0px;
+  }
+}
+
+/* Panel ------------------------------------------------------------------ */
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-40) var(--space-16);
+  border-radius: var(--radius-large);
+  overflow: hidden;
+}
+
+/* Leaves the right edge of the inner clear for the card to hang over. */
+@media (min-width: 768px) {
+  .panel {
+    margin-right: var(--space-80);
+    padding: 110px 0 160px;
+  }
+}
+
+.panelBg {
+  position: absolute;
+  inset: 0;
+  background: var(--color-cream);
+  mix-blend-mode: screen;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  text-align: center;
+  color: var(--color-black);
+}
+
+@media (min-width: 768px) {
+  .head {
+    width: 100%;
+    max-width: 721px;
+    padding-left: var(--space-80);
+  }
+}
+
+.heading,
+.intro {
+  margin-inline: auto;
+}
+
+.intro {
+  color: var(--color-charcoal);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    max-width: 465px;
+  }
+
+  .intro {
+    max-width: 387px;
+  }
+}
+
+/* List ------------------------------------------------------------------- */
+
+/* The runway below the last row is what lets it travel up to the focus line —
+   everything below it in the viewport has to be scrollable past. Desktop
+   focuses on the viewport centre, mobile roughly a quarter down, hence the
+   bigger tail there. The panel's own bottom padding counts towards it. */
+.list {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--space-64);
+  padding-bottom: calc(60vh - var(--space-80));
+  /* padding-left: var(--space-40); */
+}
+
+@media (min-width: 768px) {
+  .list {
+    width: 100%;
+    max-width: 721px;
+    padding-top: 175px;
+    padding-bottom: calc(50vh - 160px);
+    padding-left: var(--space-80);
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  /* A floor, not a fixed height: the longest titles and meta lines wrap on
+     narrow viewports and the row has to grow rather than run into its neighbour. */
+  min-height: var(--row-min-height);
+  padding: var(--space-8) var(--space-4);
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  color: var(--color-charcoal);
+  opacity: 0.5;
+  transition:
+    color 320ms ease,
+    opacity 320ms ease;
+}
+
+.row[data-active] {
+  color: var(--color-red);
+  opacity: 1;
+}
+
+/* Both wrap on narrow viewports — the longest of each run past 320px. */
+.rowTitle,
+.rowMeta {
+  text-wrap: balance;
+}
+
+/* Preview card ----------------------------------------------------------- */
+
+.preview {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.previewSticky {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100vh;
+  padding-inline: var(--space-16);
+  padding-bottom: var(--card-gap);
+}
+
+@media (min-width: 768px) {
+  .previewSticky {
+    justify-content: center;
+    padding-inline: 0;
+  }
+}
+
+/* Sits inside the panel, a little wider than the text column. The 50vh ceiling
+   is capped on the width, not the height — the card is square, so clamping the
+   height would leave the width at 100% and break the ratio. */
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 50vh;
+  margin-inline: auto;
+  aspect-ratio: 1;
+  border-radius: var(--radius-large);
+  border-bottom: 1px solid var(--color-grey-700);
+  background: var(--color-charcoal);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .card {
+    width: 475px;
+    max-width: 100%;
+    margin-inline: auto 0;
+  }
+}
+
+/* All ten stack; only the active one is opaque, so the swap is a plain CSS
+   cross-fade of image and copy together. */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-32);
+  opacity: 0;
+  transition: opacity 360ms ease;
+}
+
+@media (min-width: 768px) {
+  .slide {
+    padding: var(--space-32) var(--space-80);
+  }
+}
+
+.slide[data-active] {
+  opacity: 1;
+}
+
+.slideImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+.slideGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 17, 17, 0) 0%,
+    var(--color-charcoal) 100%
+  );
+}
+
+.slideText {
+  position: relative;
+  color: var(--color-white);
+  text-align: center;
+}
