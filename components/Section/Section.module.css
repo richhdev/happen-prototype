@@ -1,0 +1,13 @@
+.section {
+  position: relative;
+  width: 100%;
+  padding: var(--layout-padding-y) var(--layout-padding-x);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+}
