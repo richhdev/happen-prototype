@@ -7,7 +7,7 @@ import Testimonials from "@/components/Testimonials";
 import Artists from "@/components/Artists";
 import Venues from "@/components/Venues";
 import About from "@/components/About";
-import WhatsOn from "@/components/WhatsOn";
+import Events from "@/components/Events/Events";
 import WhatsOnCms from "@/components/WhatsOnCms";
 import Traders from "@/components/Traders";
 import Instagram from "@/components/Instagram";
@@ -16,11 +16,11 @@ import Contact from "@/components/Contact";
 export default function Home() {
   return (
     <>
-      <SiteBackground />
+      {/* <SiteBackground /> */}
       <main style={{ width: "100%" }}>
         <Nav />
         <Hero />
-        <WhatsOn />
+        <Events />
         <Work />
         <Services />
         <Testimonials />

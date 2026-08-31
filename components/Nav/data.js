@@ -1,5 +1,5 @@
 export const LINKS = [
-  { id: "a-whatson", label: "What's On" },
+  { id: "a-events", label: "Events" },
   { id: "b-work", label: "Work" },
   { id: "a-services", label: "Services" },
   // { id: "a-testimonials", label: "Testimonials" },

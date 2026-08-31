@@ -71,7 +71,8 @@ for (const viewport of viewports) {
   if (opts.wait) await page.waitForSelector(opts.wait);
   if (opts.scroll) {
     await page.mouse.wheel(0, opts.scroll);
-    await page.waitForTimeout(300);
+    // Long enough for the Reveal fade-ins (0.64s) plus their stagger to settle.
+    await page.waitForTimeout(1100);
   }
   for (const selector of opts.clicks) {
     await page.click(selector);
