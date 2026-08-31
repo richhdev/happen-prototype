@@ -7,20 +7,23 @@ description: Launch and visually check this Next.js site — start the dev serve
 
 ## 1. Is the server already up?
 
-The dev server is usually already running — the user keeps it open in Chrome. Check before starting another:
+The dev server is almost always already running — the user keeps it open in Chrome on port 3000. Check both whether something is listening and what it actually returns:
 
 ```bash
-curl -sf http://localhost:3000 >/dev/null && echo UP || echo DOWN
+lsof -nP -iTCP:3000 -sTCP:LISTEN
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3000
 ```
 
-If DOWN:
+**A listener means the server is up — use it, whatever the status code.** Don't use `curl -sf` as the readiness test: `-f` fails on any status >= 400, so a page erroring for a moment reads as "down" and you start a redundant second server while the user watches a stale tab. If there's a listener but the status is 500, wait a few seconds and re-curl; it's usually mid-recompile.
+
+Only if nothing is listening:
 
 ```bash
 (npm run dev > /tmp/happen-dev.log 2>&1 &)
-for i in $(seq 1 40); do curl -sf http://localhost:3000 >/dev/null && echo READY && break; sleep 1; done
+for i in $(seq 1 40); do curl -s -o /dev/null http://localhost:3000 && echo READY && break; sleep 1; done
 ```
 
-Don't restart a server that's already up — it costs ~10s and interrupts the user's own browser session. To stop one you started: `lsof -ti:3000 -sTCP:LISTEN | xargs -r kill`.
+Next picks a different port when 3000 is taken — read `/tmp/happen-dev.log` for the real one and pass it via `--url`. Needing that flag is a signal you started a server you didn't need. To stop one you started: `lsof -ti:3001 -sTCP:LISTEN | xargs kill`.
 
 ## 2. Screenshot with `scripts/screenshot.mjs`
 
@@ -44,4 +47,5 @@ The Playwright MCP server is also configured (user scope). Prefer it for interac
 
 - **`timeout` doesn't exist on macOS.** Poll with a `for` + `curl` loop instead, as above.
 - **Never wait on `networkidle`.** Next's dev server holds an HMR websocket open, so it never settles. `screenshot.mjs` waits on `load`; use `--wait <selector>` when you need something specific.
+- **Don't run `next build` to check a visual change.** This project sets no `distDir`, so `next build` and `next dev` share `.next/` — the build overwrites the directory the user's dev server is serving from and knocks it over mid-session. HMR on the running server already reflects your edit. Build only when a production build is itself the thing being verified.
 - **Node resolves modules from the script's own location**, not cwd — a Playwright script written into a scratchpad dir can't find `playwright`. Another reason to use `scripts/screenshot.mjs`, which lives in the repo.
