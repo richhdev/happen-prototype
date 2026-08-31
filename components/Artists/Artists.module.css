@@ -1,0 +1,201 @@
+/* Vertical rhythm comes from the pinned 100vh below, not from section padding. */
+.artists {
+  padding-block: 0;
+}
+
+/* Taller than the viewport by --pin-scroll; that surplus is the distance the
+   grid spends stuck while the cards zoom in. */
+.track {
+  --pin-scroll: 80vh;
+  height: calc(100vh + var(--pin-scroll));
+}
+
+.pinned {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Two by two at both breakpoints — only the gaps and the card padding change.
+   900px is the design's grid width (2 x 390 + 120 gap). */
+.grid {
+  --row-gap: var(--space-80);
+  --col-gap: var(--space-16);
+  /* Breathing room between the grid and the edges of the pinned viewport. */
+  --fit-inset: var(--space-64);
+
+  position: relative;
+  display: grid;
+  /* minmax(0,...) rather than a bare 1fr: the cards hold nowrap link text, and
+     an auto minimum would let that content hold the columns open and push the
+     grid past the viewport on narrow screens. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--row-gap) var(--col-gap);
+
+  /* Pinning only works if the whole grid fits the viewport it is pinned to, and
+     at design size it is over 1000px tall — taller than a laptop. The cards are
+     a fixed ratio, so height is a function of width, and that inverts: this is
+     the width at which the two rows plus the gap between them come to exactly
+     the height available. 0.8316 is 390/469, the card ratio. Below the 900px
+     design width the grid simply scales down rather than overflowing the pin.  */
+  width: 100%;
+  max-width: min(
+    900px,
+    calc((100vh - var(--fit-inset) - var(--row-gap)) * 0.8316 + var(--col-gap))
+  );
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    --row-gap: var(--space-120);
+    --col-gap: var(--space-120);
+    --fit-inset: var(--space-96);
+  }
+}
+
+/* Spans the whole grid and centres the title inside it, which lands it in the
+   row gap. Absolute, so the two rows stay a plain 2x2 rather than the heading
+   becoming a third row of its own. */
+.headingWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.heading {
+  color: var(--color-cream);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Card ------------------------------------------------------------------- */
+
+/* The design's cards are 390x469 on desktop and 182x218 on mobile — near
+   enough the same ratio, so one aspect-ratio covers both and the card can
+   simply fill its grid column. */
+.card {
+  /* How far this card has zoomed in, 0 (small) to 1 (full size), written every
+     frame from the section's scroll progress. */
+  --t: 0;
+  /* Where it starts. The scale resolves to exactly 1 at rest, so the card lands
+     on its grid slot with no transform of its own. */
+  --zoom-from: 0.72;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  aspect-ratio: 390 / 469;
+  border-radius: var(--radius-large);
+  border-bottom: 1px solid var(--color-grey-700);
+  overflow: hidden;
+
+  transform: scale(calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--t)));
+  will-change: transform;
+
+  /* Everything inside sizes off the card, not the viewport. When the grid is
+     scaled down to fit a short pinned viewport a card can end up 185px wide on
+     a 1280px screen — on a viewport query it would still be serving the 390px
+     desktop layout and the bio would pour straight out of the card. */
+  container-type: inline-size;
+}
+
+/* The zoom is scroll-position dressing — hold the cards at full size. */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transform: none;
+  }
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 17, 17, 0) 0%,
+    var(--color-charcoal) 100%
+  );
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  padding: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+}
+
+.name {
+  color: var(--color-white);
+}
+
+/* The shared Badge is white-on-fill; this one instance is charcoal-on-red. */
+.badge {
+  color: var(--color-charcoal);
+}
+
+/* A small card has no room for the bio — the design drops it on mobile and
+   shows the name, genre and links only. Keyed to the card rather than the
+   viewport, so a card shrunk to fit the pin gets the same treatment. 320px sits
+   between the design's two card widths, 182 and 390. */
+.bio {
+  display: none;
+  color: var(--color-cream);
+}
+
+/* Stacked by default: two links side by side won't fit a 180px card. */
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@container (min-width: 320px) {
+  .content {
+    padding: var(--space-24);
+  }
+
+  .bio {
+    display: block;
+    padding-block: var(--space-8);
+  }
+
+  .links {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-16);
+  }
+}
+
+.link {
+  color: var(--color-cream);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Only the name is underlined in the design; the arrow sits outside it. */
+.linkLabel {
+  text-decoration: underline;
+}

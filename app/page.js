@@ -5,7 +5,7 @@ import Services from "@/components/Services/Services";
 import Work from "@/components/Work/Work";
 import Vendors from "@/components/Vendors/Vendors";
 import Testimonials from "@/components/Testimonials";
-import Artists from "@/components/Artists";
+import Artists from "@/components/Artists/Artists";
 import Venues from "@/components/Venues";
 import About from "@/components/About";
 import Events from "@/components/Events/Events";
@@ -25,10 +25,10 @@ export default function Home() {
         <Vendors />
         <Work />
         <Services />
-        <Testimonials />
         <Artists />
         <Venues />
         <About />
+        <Testimonials />
         <Traders />
         <Instagram />
         <Contact />
