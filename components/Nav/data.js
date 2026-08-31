@@ -1,0 +1,10 @@
+export const NAV_LINKS = [
+  { id: "a-whatson", label: "What's On" },
+  { id: "b-work", label: "Work" },
+  { id: "a-services", label: "Services" },
+  // { id: "a-testimonials", label: "Testimonials" },
+  { id: "b-artists", label: "Artists" },
+  // { id: "a-venues", label: "Venues" },
+  { id: "a-about", label: "About" },
+  { id: "a-traders", label: "Traders" },
+];

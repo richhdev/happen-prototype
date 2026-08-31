@@ -1,4 +1,4 @@
-import Nav from "@/components/Nav";
+import Nav from "@/components/Nav/Nav";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Work from "@/components/Work";

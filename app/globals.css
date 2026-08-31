@@ -1,10 +1,17 @@
 @import "./styles/tokens.css";
+@import "./styles/utilities.css";
 
-:root { color-scheme: light; }
+:root {
+  color-scheme: light;
+}
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -13,11 +20,15 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-a { color: #111; }
-a:hover { color: #CA0013; }
+/* a { color: #111; }
+a:hover { color: #CA0013; } */
 
 /* Trusted-by marquee in the hero */
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
