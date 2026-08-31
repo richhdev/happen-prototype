@@ -1,4 +1,4 @@
-export const NAV_LINKS = [
+export const LINKS = [
   { id: "a-whatson", label: "What's On" },
   { id: "b-work", label: "Work" },
   { id: "a-services", label: "Services" },

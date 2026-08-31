@@ -1,9 +1,7 @@
 import styles from "./Button.module.css";
 
-// One component per Figma Button variant (filled/outline x large/medium).
-// Passing `href` renders an <a> instead of a <button>; `as` overrides the tag
-// explicitly when neither fits. `type` defaults to "button" on a real <button>
-// so it never accidentally submits a surrounding form.
+// Default button for general use — outline/medium is the most common variant.
+export const Button = ButtonOutlineMedium;
 
 export function ButtonLarge({ as, type, className, children, ...rest }) {
   const Tag = as ?? (rest.href ? "a" : "button");
@@ -44,7 +42,13 @@ export function ButtonOutlineLarge({ as, type, className, children, ...rest }) {
   );
 }
 
-export function ButtonOutlineMedium({ as, type, className, children, ...rest }) {
+export function ButtonOutlineMedium({
+  as,
+  type,
+  className,
+  children,
+  ...rest
+}) {
   const Tag = as ?? (rest.href ? "a" : "button");
   return (
     <Tag
