@@ -1,17 +1,21 @@
-.row {
+.main {
+  width: 100%;
+}
+
+.testimonialsHostsGroup {
   display: flex;
   flex-direction: column;
   gap: var(--space-80);
 }
 
 @media (min-width: 768px) {
-  .row {
+  .testimonialsHostsGroup {
     flex-direction: row;
     align-items: stretch;
     gap: var(--space-64);
   }
 
-  .row > * {
+  .testimonialsHostsGroup > * {
     flex: 1 1 0;
     min-width: 0;
   }

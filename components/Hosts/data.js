@@ -1,4 +1,4 @@
-export const TRADER_CARDS = [
+export const HOST_CARDS = [
   {
     title: "Hosts & Promoters",
     description: "Turn your network into a side hustle.",

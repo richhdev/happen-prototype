@@ -12,14 +12,14 @@ import Instagram from "@/components/Instagram/Instagram";
 import Contact from "@/components/Contact/Contact";
 import Section from "@/components/Section/Section";
 import Testimonials from "@/components/Testimonials/Testimonials";
-import Traders from "@/components/Traders/Traders";
+import Hosts from "@/components/Hosts/Hosts";
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <>
       <SiteBackground />
-      <main style={{ width: "100%" }}>
+      <main className={styles.main}>
         <Nav />
         <Hero />
         <Events />
@@ -29,9 +29,9 @@ export default function Home() {
         <Artists />
         <Venues />
         <About />
-        <Section innerClassName={styles.row}>
+        <Section innerClassName={styles.testimonialsHostsGroup}>
           <Testimonials />
-          <Traders />
+          <Hosts />
         </Section>
         <Instagram />
         <Contact />
