@@ -1,0 +1,94 @@
+/* Traders 473:7820 (desktop) / traders-mobile 509:11537 */
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  width: 100%;
+  padding: var(--space-32) var(--space-24);
+  overflow: hidden;
+  border-radius: var(--radius-large);
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.title {
+  position: relative;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.cards {
+  position: relative;
+  display: flex;
+  gap: var(--space-16);
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  display: flex;
+  flex: 0 0 284px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  height: 167px;
+  padding: var(--space-16);
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  background: var(--color-charcoal);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  text-align: center;
+}
+
+.cardTitle {
+  color: var(--color-white);
+}
+
+.cardBody {
+  color: var(--color-cream);
+}
+
+@media (min-width: 768px) {
+  .panel {
+    gap: var(--space-64);
+    padding: var(--space-64) var(--space-32);
+  }
+
+  .cards {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-40);
+    overflow-x: visible;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    gap: var(--space-24);
+    width: 362px;
+    max-width: 100%;
+    height: 213px;
+    padding: var(--space-16) var(--space-24);
+    border-radius: var(--radius-medium);
+  }
+}

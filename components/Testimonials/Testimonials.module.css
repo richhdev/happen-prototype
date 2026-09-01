@@ -1,0 +1,39 @@
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  width: 100%;
+  /* Fixed so the phone below is clipped by it, as designed. */
+  height: 372px;
+  padding-top: var(--space-32);
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  background: var(--color-cream);
+}
+
+.title {
+  color: var(--color-black);
+  text-align: center;
+}
+
+/* Taller than the panel on purpose — it runs off the bottom edge. Width is set
+   per breakpoint and the height follows the asset's own ratio. */
+.phone {
+  width: 318px;
+  max-width: none;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    gap: var(--space-64);
+    height: 698px;
+    padding: var(--space-64) var(--space-32) 0;
+  }
+
+  .phone {
+    width: 391px;
+  }
+}

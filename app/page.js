@@ -4,20 +4,21 @@ import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services/Services";
 import Work from "@/components/Work/Work";
 import Vendors from "@/components/Vendors/Vendors";
-import Testimonials from "@/components/Testimonials";
 import Artists from "@/components/Artists/Artists";
-import Venues from "@/components/Venues";
-import About from "@/components/About";
+import Venues from "@/components/Venues/Venues";
+import About from "@/components/About/About";
 import Events from "@/components/Events/Events";
-import WhatsOnCms from "@/components/WhatsOnCms";
-import Traders from "@/components/Traders";
-import Instagram from "@/components/Instagram";
-import Contact from "@/components/Contact";
+import Instagram from "@/components/Instagram/Instagram";
+import Contact from "@/components/Contact/Contact";
+import Section from "@/components/Section/Section";
+import Testimonials from "@/components/Testimonials/Testimonials";
+import Traders from "@/components/Traders/Traders";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <>
-      {/* <SiteBackground /> */}
+      <SiteBackground />
       <main style={{ width: "100%" }}>
         <Nav />
         <Hero />
@@ -28,8 +29,10 @@ export default function Home() {
         <Artists />
         <Venues />
         <About />
-        <Testimonials />
-        <Traders />
+        <Section innerClassName={styles.row}>
+          <Testimonials />
+          <Traders />
+        </Section>
         <Instagram />
         <Contact />
       </main>

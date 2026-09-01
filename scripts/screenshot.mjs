@@ -32,6 +32,7 @@ for (let i = 0; i < argv.length; i++) {
   else if (flag === "--scroll") opts.scroll = Number(value());
   else if (flag === "--click") opts.clicks.push(value());
   else if (flag === "--wait") opts.wait = value();
+  else if (flag === "--section") opts.section = value();
   else if (flag === "--name") opts.name = value();
   else if (flag === "--full") opts.full = true;
   else {
@@ -80,7 +81,17 @@ for (const viewport of viewports) {
   }
 
   const file = `${OUT_DIR}/${name}-${viewport.label}.png`;
-  await page.screenshot({ path: file, fullPage: Boolean(opts.full) });
+  if (opts.section) {
+    // Framing one section by pixel offset is brittle — the pinned sections are
+    // sized in vh and images settle after load, so the same --scroll lands
+    // somewhere different at a different viewport. Ask for the element instead.
+    const target = page.locator(opts.section);
+    await target.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    await target.screenshot({ path: file });
+  } else {
+    await page.screenshot({ path: file, fullPage: Boolean(opts.full) });
+  }
   console.log(file);
   await page.close();
 }

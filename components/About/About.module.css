@@ -1,0 +1,64 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-40);
+  width: 100%;
+  padding-block: var(--space-64);
+  border-radius: var(--radius-large);
+  background: var(--color-red);
+}
+
+.title {
+  color: var(--color-white);
+  text-align: center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--text-xxlarge-line-height);
+  padding-inline: var(--space-16);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  text-align: center;
+}
+
+/* A display number with no matching type token — one-off at both breakpoints.
+   Both sizes carry the same -0.05em tracking the headings use. */
+.statNumber {
+  font-size: 100px;
+  line-height: 70px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: var(--color-charcoal);
+}
+
+.statLabel {
+  color: var(--color-white);
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    padding: var(--space-120) var(--space-32);
+  }
+
+  .copy {
+    max-width: 640px;
+    padding-inline: 0;
+  }
+
+  .statNumber {
+    font-size: 130px;
+    line-height: 130px;
+  }
+}
