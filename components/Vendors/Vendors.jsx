@@ -39,32 +39,38 @@ function VendorTile({ event }) {
 export default function Vendors() {
   return (
     <Section id="a-vendors" className={styles.vendors}>
-      <Reveal>
-        <div className={styles.card}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={asset("/assets/vendor-bg-graphic.jpg")}
-            alt=""
-            className={styles.cardImage}
-          />
+      <div className={styles.card}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/assets/bg-graphic.png")}
+          alt=""
+          className={styles.cardImage}
+        />
 
-          <div className={styles.copy}>
-            <Heading3 as="h2" className={styles.heading}>
-              Festival retail vendors
-            </Heading3>
-            <TextMedium className={styles.body}>
-              We&rsquo;re on the lookout for market stall holders to join us at
-              the festival and help bring the space to life.
-            </TextMedium>
-          </div>
-
-          <div className={styles.tiles}>
-            {VENDOR_EVENTS.map((event) => (
-              <VendorTile key={event.name} event={event} />
-            ))}
-          </div>
+        <div className={styles.copy}>
+          <Heading3 as="h2" className={styles.heading}>
+            Festival retail vendors
+          </Heading3>
+          <TextMedium className={styles.body}>
+            We&rsquo;re on the lookout for market stall holders to join us at
+            the festival and help bring the space to life.
+          </TextMedium>
         </div>
-      </Reveal>
+
+        <div className={styles.tiles}>
+          {VENDOR_EVENTS.map((event, i) => (
+            <Reveal
+              key={i}
+              className={styles.tileOuter}
+              once={true}
+              amount={0}
+              delay={i * 130}
+            >
+              <VendorTile event={event} />
+            </Reveal>
+          ))}
+        </div>
+      </div>
     </Section>
   );
 }

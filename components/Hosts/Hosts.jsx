@@ -10,7 +10,7 @@ export default function Hosts() {
     <div id="a-hosts" className={styles.panel}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={asset("/assets/vendor-bg-graphic.jpg")}
+        src={asset("/assets/bg-graphic.png")}
         alt=""
         className={styles.background}
       />

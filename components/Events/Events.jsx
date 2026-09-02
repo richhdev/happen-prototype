@@ -58,16 +58,14 @@ export default function Events() {
       className={styles.events}
       innerClassName={styles.inner}
     >
-      <Reveal>
-        <Heading2 className={styles.heading}>What&apos;s Happening</Heading2>
-      </Reveal>
+      <Heading2 className={styles.heading}>What&apos;s Happening</Heading2>
 
       <div className={styles.scroller}>
         {EVENTS.map((event, i) => (
           <Reveal
             key={i}
             className={styles.cardWrap}
-            once={false}
+            once={true}
             amount={0}
             delay={i * 130}
           >

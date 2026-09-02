@@ -135,8 +135,7 @@ export default function Work() {
         <div className={styles.pinned}>
           <div className={styles.panel}>
             <Heading2 className={styles.heading}>
-              The proof is
-              <br />
+              The proof is <br className="desktop-only" />
               in the Happening
             </Heading2>
 

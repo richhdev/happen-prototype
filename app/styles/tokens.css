@@ -27,11 +27,11 @@
   /* Layout */
   --layout-max-width: 1200px;
   --layout-padding-x: var(--space-32);
-  --layout-padding-y: var(--space-40);
+  --layout-padding-y: var(--space-80);
 
   @media (min-width: 768px) {
     --layout-padding-x: var(--space-64);
-    --layout-padding-y: var(--space-80);
+    --layout-padding-y: var(--space-120);
   }
 
   /* Headings */
@@ -82,10 +82,15 @@
   --radius-large: 10px;
 
   /* Button  */
-  --button-large-size: 18px;
-  --button-large-line-height: 22px;
+  --button-large-size: 16px;
+  --button-large-line-height: 20px;
   --button-medium-size: 16px;
   --button-medium-line-height: 20px;
+
+  @media (min-width: 768px) {
+    --button-large-size: 18px;
+    --button-large-line-height: 22px;
+  }
 
   /* Badge  */
   --badge-size: 14px;

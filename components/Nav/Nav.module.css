@@ -10,8 +10,10 @@
   padding: var(--space-32) var(--space-32);
   background: transparent;
   transition: padding 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  height: var(--space-80);
 
   @media (min-width: 641px) {
+    height: var(--space-120);
     padding: var(--space-32) var(--space-64);
   }
 }

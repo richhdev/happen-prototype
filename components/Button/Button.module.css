@@ -21,7 +21,7 @@
 }
 
 .large {
-  padding: var(--space-16) var(--space-32);
+  padding: var(--space-16) var(--space-24);
   font-size: var(--button-large-size);
   line-height: var(--button-large-line-height);
 }

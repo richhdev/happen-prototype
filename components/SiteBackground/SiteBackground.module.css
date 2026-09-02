@@ -1,4 +1,3 @@
-/* Matches the Figma page fill stack: video at 10% / luminosity over charcoal. */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -15,7 +14,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.1;
+  opacity: 0.08;
   mix-blend-mode: luminosity;
   pointer-events: none;
 }

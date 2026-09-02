@@ -86,6 +86,16 @@
   display: none;
 }
 
+.tileOuter {
+  display: flex;
+  flex: none;
+
+  @media (min-width: 768px) {
+    flex: 1;
+    align-self: stretch;
+  }
+}
+
 .tile {
   position: relative;
   flex: none;
@@ -97,7 +107,7 @@
 
   @media (min-width: 768px) {
     flex: 1;
-    width: auto;
+    width: 100%;
     border-radius: var(--radius-medium);
   }
 }
@@ -111,7 +121,7 @@
   max-width: none;
   object-fit: cover;
   object-position: bottom;
-  filter: grayscale(1) brightness(0.45);
+  filter: grayscale(1) brightness(0.15);
   pointer-events: none;
 }
 

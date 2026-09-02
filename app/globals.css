@@ -12,15 +12,14 @@
 }
 
 html {
+  width: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
+  width: 100%;
   background: var(--color-charcoal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-
-/* a { color: #111; }
-a:hover { color: #CA0013; } */
