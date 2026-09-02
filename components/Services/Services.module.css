@@ -1,45 +1,104 @@
 .services {
   --row-min-height: 225px;
-  --card-gap: var(--space-120);
+  /* The gaps the pinned surface leaves above and below itself in the viewport. */
+  --surface-top: var(--space-80);
+  --surface-bottom: var(--space-80);
+  /* How far the card clears the bottom edge of the surface; 0 sits it flush,
+     a negative value overhangs. Moving it re-times the list on its own — the
+     runway below the last row is measured from it. */
+  --card-inset: 0px;
+  /* The card is square and fills the width it is given, so this is its height
+     as well — the list needs it to work out how much runway to leave. */
+  --card-size: min(100vw - 96px, 50vh);
 
   @media (min-width: 768px) {
-    --row-min-height: 225px;
-    --card-gap: 0px;
+    --surface-top: var(--space-120);
+    --surface-bottom: var(--space-48);
   }
 }
 
-/* Panel ------------------------------------------------------------------ */
+/* Surface and card ------------------------------------------------------- */
 
-.panel {
-  position: relative;
+/* One overlay for both of the section's fixtures. It has to be an overlay
+   rather than a wrapper because they hold still while the title and list scroll
+   through them, so it can't be the element containing those. No z-index of its
+   own: without one it raises no stacking context, which is what lets the two
+   settle on opposite sides of the copy. */
+.surface {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 100%;
+  pointer-events: none;
+}
+
+/* Both fixtures pin independently from the top of the overlay. Sharing one grid
+   cell is what stops normal flow stacking them: a sticky box is still in flow,
+   so the surface's near-viewport height would otherwise push the card below it. */
+.surfaceBg,
+.cardSticky {
+  grid-area: 1 / 1;
+  align-self: start;
+}
+
+.surfaceBg {
+  position: sticky;
+  top: var(--surface-top);
+  height: calc(100vh - var(--surface-top) - var(--surface-bottom));
+  border-radius: var(--radius-large);
+  background: var(--color-cream);
+  mix-blend-mode: screen;
+
+  /* Stops short of the right edge so the card hangs over it. */
+  @media (min-width: 768px) {
+    margin-right: var(--space-120);
+  }
+}
+
+/* Sticky boxes stay pinned while their margin box fits the overlay, so the two
+   margins here buy the card the same travel the surface gets: they start together,
+   because the surface settles as soon as the section clears its own top gap and
+   this box is a viewport tall, and they leave together, so the last row meets
+   the card before either moves. Neither margin shifts the card once pinned. */
+.cardSticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin-top: calc(-1 * var(--surface-top));
+  margin-bottom: calc(-1 * var(--surface-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-40) var(--space-16);
-  border-radius: var(--radius-large);
-  overflow: hidden;
+  justify-content: flex-end;
+  height: 100vh;
+  padding-inline: var(--space-16);
+  padding-bottom: calc(var(--surface-bottom) + var(--card-inset) - 16px);
 
-  /* Leaves the right edge of the inner clear for the card to hang over. */
+  /* Flush with the right of the section, so it overhangs the surface. */
   @media (min-width: 768px) {
-    margin-right: var(--space-80);
-    padding: 110px 0 160px;
+    align-items: flex-end;
+    justify-content: center;
+    padding-inline: 0;
+    padding-bottom: 0;
   }
 }
 
-.panelBg {
-  position: absolute;
-  inset: 0;
-  background: var(--color-cream);
-  mix-blend-mode: screen;
-}
+/* Copy ------------------------------------------------------------------- */
 
 .container {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: var(--space-40) var(--space-16) 0;
+
+  @media (min-width: 768px) {
+    padding: 110px 0 0;
+  }
 }
 
+/* Sits against the left edge of the surface, clear of the card on the right. */
 .head {
   display: flex;
   flex-direction: column;
@@ -48,9 +107,8 @@
   color: var(--color-black);
 
   @media (min-width: 768px) {
-    width: 100%;
-    max-width: 721px;
-    padding-left: var(--space-80);
+    width: 721px;
+    max-width: 100%;
   }
 }
 
@@ -74,22 +132,21 @@
 /* List ------------------------------------------------------------------- */
 
 /* The runway below the last row is what lets it travel up to the focus line —
-   everything below it in the viewport has to be scrollable past. Desktop
-   focuses on the viewport centre, mobile roughly a quarter down, hence the
-   bigger tail there. The panel's own bottom padding counts towards it. */
+   everything below it in the viewport has to be scrollable past. Both tails are
+   measured so the end of the section lands on the bottom of the surface, and the
+   surface unpins just as the last row arrives: mobile focuses on the top edge of
+   the card, desktop on its centre line. */
 .list {
   display: flex;
   flex-direction: column;
   padding-top: var(--space-64);
-  padding-bottom: calc(60vh - var(--space-80));
-  /* padding-left: var(--space-40); */
+  padding-bottom: calc(var(--card-inset) + var(--card-size));
 
   @media (min-width: 768px) {
-    width: 100%;
-    max-width: 721px;
+    width: 721px;
+    max-width: 100%;
     padding-top: 175px;
     padding-bottom: calc(50vh - 160px);
-    padding-left: var(--space-80);
   }
 }
 
@@ -126,38 +183,14 @@
   text-wrap: balance;
 }
 
-/* Preview card ----------------------------------------------------------- */
+/* Card ------------------------------------------------------------------ */
 
-.preview {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.previewSticky {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100vh;
-  padding-inline: var(--space-16);
-  padding-bottom: var(--card-gap);
-
-  @media (min-width: 768px) {
-    justify-content: center;
-    padding-inline: 0;
-  }
-}
-
-/* Sits inside the panel, a little wider than the text column. The 50vh ceiling
-   is capped on the width, not the height — the card is square, so clamping the
-   height would leave the width at 100% and break the ratio. */
+/* --card-size caps the width, not the height — the card is square, so clamping
+   the height would leave the width at 100% and break the ratio. */
 .card {
   position: relative;
   width: 100%;
-  max-width: 50vh;
-  margin-inline: auto;
+  max-width: var(--card-size);
   aspect-ratio: 1;
   border-radius: var(--radius-large);
   border-bottom: 1px solid var(--color-grey-700);
@@ -167,7 +200,6 @@
   @media (min-width: 768px) {
     width: 475px;
     max-width: 100%;
-    margin-inline: auto 0;
   }
 }
 

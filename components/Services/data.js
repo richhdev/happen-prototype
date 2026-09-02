@@ -10,9 +10,7 @@ export const SERVICES = [
   {
     title: "Artist Hospitality",
     meta: "Plan · Stock · Host · Deliver",
-    // The Figma card for this slot carries the Venue Bookings copy (a paste slip
-    // in the design file), so the existing hospitality copy is kept.
-    desc: "Dressing rooms, artist facilities and communal spaces. Planned, prepared and ready for your artists at your next event.",
+    desc: "We plan, manage and deliver artist compounds, dressing rooms and communal spaces. Designed around the needs of your artists and crew so they can focus on the event.",
     img: asset("/assets/svc-artist-hospitality.jpg"),
   },
   {
