@@ -1,29 +1,149 @@
+/* Mobile first: the thread sits straight on the cream panel and is clipped by
+   it. From 768px up it moves inside the phone (see Phone.module.css) and
+   scrolls within the screen. */
+
 .panel {
+  /* How far down the first message starts, and how tall the fade above it is.
+     Sized to clear the heading at its tallest (three lines in a narrow
+     column), so the thread never surfaces from behind it mid-word. */
+  --thread-top: 158px;
+
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-16);
+  gap: var(--space-24);
   width: 100%;
-  /* Fixed so the phone below is clipped by it, as designed. */
-  height: 372px;
-  padding-top: var(--space-32);
+  /* Fixed so the thread below is clipped by it, as designed. */
+  height: 499px;
+  padding: 30px var(--space-24) 0;
   overflow: hidden;
   border-radius: var(--radius-large);
   background: var(--color-cream);
 }
 
 .title {
+  position: relative;
+  z-index: 2;
   color: var(--color-black);
   text-align: center;
 }
 
-/* Taller than the panel on purpose — it runs off the bottom edge. Width is set
-   per breakpoint and the height follows the asset's own ratio. */
-.phone {
-  width: 318px;
-  max-width: none;
-  height: auto;
+/* Sits under the heading and fades the thread out as it scrolls up behind it. */
+.scrim {
+  position: absolute;
+  /* Above the phone, which is positioned too and would otherwise paint over it. */
+  z-index: 1;
+  top: 0;
+  right: var(--space-16);
+  left: var(--space-16);
+  height: var(--thread-top);
+  background: linear-gradient(
+    0deg,
+    rgb(235 230 222 / 0) 3%,
+    rgb(235 230 222 / 0.9) 61%
+  );
+  backdrop-filter: blur(2px);
+}
+
+/* --- Thread ------------------------------------------------------------ */
+
+/* Scrolls within whatever is holding it — the panel on mobile, the phone's
+   screen on desktop. The top padding is what lets the first message sit clear
+   of the heading while later ones can still travel up behind it. */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-40);
+  height: 100%;
+  padding: var(--thread-top) var(--space-24) var(--space-64);
+  overflow-y: auto;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.feed::-webkit-scrollbar {
+  display: none;
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* Odd entries mirror: avatar on the left, bubble pushed right. */
+.rowFlipped {
+  flex-direction: row-reverse;
+}
+
+.bubble {
+  --bubble-bg: var(--color-red);
+
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px var(--space-16);
+  border-radius: 20px;
+  background: var(--bubble-bg);
+}
+
+.rowFlipped .bubble {
+  /* One-off charcoal that reads as the "other side" of the thread — close to
+     but deliberately not --color-grey-900. */
+  --bubble-bg: #26252a;
+}
+
+.author {
+  font-size: var(--text-small-size);
+  font-weight: 500;
+  line-height: 20px;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.rowFlipped .author {
+  color: var(--color-white);
+}
+
+.quote {
+  font-size: var(--text-small-size);
+  font-weight: 300;
+  line-height: 18px;
+  color: var(--color-white);
+}
+
+/* One mask for both directions — the fill follows the bubble's own colour.
+   Inlined rather than a file so it survives NEXT_PUBLIC_BASE_PATH, which CSS
+   url() can't be rewritten for. */
+.tail {
+  --tail-shape: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224.35%22%20height%3D%2220%22%20viewBox%3D%220%200%2024.35%2020%22%3E%3Cpath%20d%3D%22M24.35%2019.5469C12.2779%2021.7416%203.08662%2015.4318%200%2012.0025L0.342958%201.71464C3.65822%202.4005%2010.8375%203.01777%2013.0324%200C12.6894%2012.3454%2021.9493%2018.5181%2024.35%2019.5469Z%22%2F%3E%3C%2Fsvg%3E");
+
+  position: absolute;
+  right: -0.35px;
+  bottom: -7px;
+  width: 24.35px;
+  height: 20px;
+  background: var(--bubble-bg);
+  -webkit-mask: var(--tail-shape) center / contain no-repeat;
+  mask: var(--tail-shape) center / contain no-repeat;
+}
+
+.rowFlipped .tail {
+  right: auto;
+  bottom: -8.23px;
+  left: -1.4px;
+  transform: scaleX(-1);
+}
+
+.avatar {
+  flex: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 @media (min-width: 768px) {
@@ -33,7 +153,13 @@
     padding: var(--space-64) var(--space-32) 0;
   }
 
-  .phone {
-    width: 391px;
+  .scrim {
+    display: none;
+  }
+
+  /* Inside the phone the bezel already separates the thread from the heading,
+     so the thread gets even padding instead of the mobile fade offset. */
+  .feed {
+    padding: var(--space-64) var(--space-32);
   }
 }

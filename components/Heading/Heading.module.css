@@ -5,6 +5,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.05em;
+  text-wrap: balance;
 }
 
 .heading2 {
@@ -14,6 +15,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.05em;
+  text-wrap: balance;
 }
 
 .heading3 {
@@ -23,6 +25,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.05em;
+  text-wrap: balance;
 }
 
 .heading3Sentence {
@@ -32,6 +35,7 @@
   font-weight: 800;
   text-transform: none;
   letter-spacing: -0.05em;
+  text-wrap: balance;
 }
 
 .heading4 {
@@ -40,4 +44,5 @@
   line-height: var(--heading4-line-height);
   font-weight: 800;
   letter-spacing: 0;
+  text-wrap: balance;
 }

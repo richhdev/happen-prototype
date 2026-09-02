@@ -1,0 +1,56 @@
+.phone {
+  position: absolute;
+  inset: 0;
+}
+
+.screen {
+  height: 100%;
+}
+
+.phoneFrame {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .phone {
+    /* The PNG's own 1x size (it ships at 3x). Figma's phone is taller than
+       this — the export stops where the panel clips it, which is why .screen
+       runs to the bottom rather than to a height of its own. */
+    --phone-width: 399.33px;
+    --phone-height: 485.33px;
+
+    /* The screen hole, measured off the Figma node. */
+    --screen-top: 18.69px;
+    --screen-left: 21.38px;
+    --screen-right: 19.6px;
+
+    position: relative;
+    inset: auto;
+    flex: none;
+    width: var(--phone-width);
+    height: var(--phone-height);
+  }
+
+  .screen {
+    position: absolute;
+    top: var(--screen-top);
+    right: var(--screen-right);
+    bottom: 0;
+    left: var(--screen-left);
+    /* top/bottom size it here — the mobile 100% would overshoot the frame. */
+    height: auto;
+    overflow: hidden;
+    /* Only the top corners are ever on screen. */
+    border-radius: 45px 45px 0 0;
+    background: var(--color-charcoal);
+  }
+
+  .phoneFrame {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+}
