@@ -32,8 +32,12 @@
 .cards {
   position: relative;
   display: flex;
+  align-self: stretch;
   gap: var(--space-16);
-  width: 100%;
+  /* Bleed the track out through the panel's padding so cards scroll edge to
+     edge, then pad it back in so the first and last card still line up. */
+  margin-inline: calc(-1 * var(--space-24));
+  padding-inline: var(--space-24);
   overflow-x: auto;
   /* The Reveal rises 30px into place; keep that off the vertical axis so the
      scroller never grows a second scrollbar mid-animation. */
@@ -44,6 +48,8 @@
     flex-direction: column;
     align-items: center;
     gap: var(--space-40);
+    margin-inline: 0;
+    padding-inline: 0;
     overflow-x: visible;
     overflow-y: visible;
   }
@@ -57,7 +63,9 @@
    sizing and the card just fills it. */
 .cardWrap {
   display: flex;
-  flex: 0 0 284px;
+  /* Never wider than the track, so the card can't be clipped on a narrow
+     phone; the reserved gutter keeps the next card peeking. */
+  flex: 0 0 min(284px, calc(100% - var(--space-24)));
 
   @media (min-width: 768px) {
     flex: 0 0 auto;
