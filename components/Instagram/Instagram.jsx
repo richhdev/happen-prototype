@@ -1,4 +1,5 @@
 import { Section } from "@/components/Section/Section";
+import { RevealGroup, RevealItem } from "@/components/ui";
 import { SOCIALS } from "@/lib/data";
 import { IG_PROFILE, IG_TILES } from "./data";
 import styles from "./Instagram.module.css";
@@ -7,10 +8,11 @@ export default function Instagram() {
   return (
     <Section id="a-instagram" className={styles.instagram}>
       <div className={styles.content}>
-        <div className={styles.grid}>
+        <RevealGroup className={styles.grid}>
           {IG_TILES.map((src) => (
-            <a
+            <RevealItem
               key={src}
+              as="a"
               className={styles.tile}
               href={IG_PROFILE}
               target="_blank"
@@ -19,9 +21,9 @@ export default function Instagram() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" className={styles.tileImage} />
-            </a>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
 
         <div className={styles.social}>
           <span className={styles.followLabel}>Follow us</span>

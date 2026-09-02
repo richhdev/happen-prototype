@@ -46,6 +46,51 @@ export function Reveal({
   );
 }
 
+// One trigger for a whole set. The group watches the viewport and the items
+// ride its timeline, so a grid whose lower rows are still below the fold still
+// waves in as a single run rather than row by row on their own entry.
+export function RevealGroup({
+  children,
+  stagger = 130,
+  once = false,
+  amount = 0,
+  as = "div",
+  ...rest
+}) {
+  const M = motion[as] || motion.div;
+  return (
+    <M
+      initial="hidden"
+      whileInView="shown"
+      viewport={{ once, amount, margin: "0px 0px -60px 0px" }}
+      variants={{
+        hidden: {},
+        shown: { transition: { staggerChildren: stagger / 1000 } },
+      }}
+      {...rest}
+    >
+      {children}
+    </M>
+  );
+}
+
+// A child of RevealGroup: the same fade + rise as Reveal, but with its timing
+// handed down by the group instead of read from its own scroll position.
+export function RevealItem({ children, y = 30, as = "div", ...rest }) {
+  const M = motion[as] || motion.div;
+  return (
+    <M
+      variants={{
+        hidden: { opacity: 0, y },
+        shown: { opacity: 1, y: 0, transition: { duration: 0.64, ease: EASE } },
+      }}
+      {...rest}
+    >
+      {children}
+    </M>
+  );
+}
+
 // Section heading: eyebrow + title where the title's letter-spacing opens wide
 // and tightens as it enters view (the signature Happen reveal).
 export function SectionHead({
