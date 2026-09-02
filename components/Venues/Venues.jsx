@@ -1,4 +1,5 @@
 import { Section } from "@/components/Section/Section";
+import { Reveal } from "@/components/ui";
 import { Heading3, Heading4 } from "@/components/Heading/Heading";
 import { TextSmall, TextMedium } from "@/components/Text/Text";
 import { Badge } from "@/components/Badge/Badge";
@@ -14,27 +15,34 @@ export default function Venues() {
         </Heading3>
 
         <div className={styles.cards}>
-          {VENUES.map((venue) => (
-            <article
+          {VENUES.map((venue, i) => (
+            <Reveal
               key={venue.name}
-              className={styles.card}
-              style={{ backgroundImage: `url("${venue.img}")` }}
+              className={styles.cardWrap}
+              once={false}
+              amount={0}
+              delay={i * 130}
             >
-              <div className={styles.overlay} />
-              <Badge className={styles.badge}>{venue.capacity}</Badge>
-              <div className={styles.content}>
-                <Heading4 as="h3" className={styles.name}>
-                  {venue.name}
-                </Heading4>
-                <TextSmall className={styles.address}>
-                  {venue.address}
-                </TextSmall>
-                {/* Desktop only — the mobile card is too short to carry it. */}
-                <TextMedium className={styles.description}>
-                  {venue.description}
-                </TextMedium>
-              </div>
-            </article>
+              <article
+                className={styles.card}
+                style={{ backgroundImage: `url("${venue.img}")` }}
+              >
+                <div className={styles.overlay} />
+                <Badge className={styles.badge}>{venue.capacity}</Badge>
+                <div className={styles.content}>
+                  <Heading4 as="h3" className={styles.name}>
+                    {venue.name}
+                  </Heading4>
+                  <TextSmall className={styles.address}>
+                    {venue.address}
+                  </TextSmall>
+                  {/* Desktop only — the mobile card is too short to carry it. */}
+                  <TextMedium className={styles.description}>
+                    {venue.description}
+                  </TextMedium>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
