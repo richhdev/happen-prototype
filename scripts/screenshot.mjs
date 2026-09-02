@@ -4,6 +4,7 @@
 //   node scripts/screenshot.mjs --path /work                             a specific route
 //   node scripts/screenshot.mjs --w 390 --click "[aria-label='Open menu']"
 //   node scripts/screenshot.mjs --scroll 1000                            past the hero
+//   node scripts/screenshot.mjs --section "#a-testimonials" --settle 4500  long staggered reveals
 //   node scripts/screenshot.mjs --full                                   whole page, not just viewport
 //
 // Writes to .screenshots/<name>-<viewport>.png and prints each path.
@@ -33,6 +34,7 @@ for (let i = 0; i < argv.length; i++) {
   else if (flag === "--click") opts.clicks.push(value());
   else if (flag === "--wait") opts.wait = value();
   else if (flag === "--section") opts.section = value();
+  else if (flag === "--settle") opts.settle = Number(value());
   else if (flag === "--name") opts.name = value();
   else if (flag === "--full") opts.full = true;
   else {
@@ -73,7 +75,8 @@ for (const viewport of viewports) {
   if (opts.scroll) {
     await page.mouse.wheel(0, opts.scroll);
     // Long enough for the Reveal fade-ins (0.64s) plus their stagger to settle.
-    await page.waitForTimeout(1100);
+    // --settle buys more for sections that play a longer sequence.
+    await page.waitForTimeout(opts.settle ?? 1100);
   }
   for (const selector of opts.clicks) {
     await page.click(selector);
@@ -87,7 +90,7 @@ for (const viewport of viewports) {
     // somewhere different at a different viewport. Ask for the element instead.
     const target = page.locator(opts.section);
     await target.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(opts.settle ?? 600);
     await target.screenshot({ path: file });
   } else {
     await page.screenshot({ path: file, fullPage: Boolean(opts.full) });

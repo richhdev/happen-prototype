@@ -86,11 +86,15 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
+  /* The pop-open scale grows out of the tail corner, so a message unfolds from
+     where it's anchored rather than from its middle. */
+  transform-origin: bottom right;
 }
 
 /* Odd entries mirror: avatar on the left, bubble pushed right. */
 .rowFlipped {
   flex-direction: row-reverse;
+  transform-origin: bottom left;
 }
 
 .bubble {

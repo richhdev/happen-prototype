@@ -1,7 +1,7 @@
 import { Heading3 } from "@/components/Heading/Heading";
 import styles from "./Testimonials.module.css";
 import Phone from "./Phone";
-import { TESTIMONIALS } from "./data";
+import Thread from "./Thread";
 
 export default function Testimonials() {
   return (
@@ -15,36 +15,7 @@ export default function Testimonials() {
       </Heading3>
 
       <Phone>
-        <ol className={styles.feed}>
-          {TESTIMONIALS.map((item, i) => {
-            // Even entries sit on the left in red, odd on the right in
-            // charcoal, mirroring a two-way message thread.
-            const flipped = i % 2 === 1;
-            return (
-              <li
-                key={`${item.name}-${i}`}
-                className={`${styles.row} ${flipped ? styles.rowFlipped : ""}`}
-              >
-                <figure className={styles.bubble}>
-                  <figcaption className={styles.author}>
-                    {item.name} - {item.role}
-                  </figcaption>
-                  <blockquote className={styles.quote}>{item.quote}</blockquote>
-                  <span className={styles.tail} aria-hidden="true" />
-                </figure>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.avatar}
-                  alt={`${item.name}, ${item.role}`}
-                  className={styles.avatar}
-                  width={50}
-                  height={50}
-                  loading="lazy"
-                />
-              </li>
-            );
-          })}
-        </ol>
+        <Thread />
       </Phone>
     </div>
   );
