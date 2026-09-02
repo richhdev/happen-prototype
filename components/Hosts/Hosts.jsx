@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/ui";
 import { Heading3, Heading4 } from "@/components/Heading/Heading";
 import { TextMedium } from "@/components/Text/Text";
 import { ButtonOutlineMedium } from "@/components/Button/Button";
@@ -20,24 +21,32 @@ export default function Hosts() {
       </Heading3>
 
       <div className={styles.cards}>
-        {HOST_CARDS.map((card) => (
-          <article key={card.title} className={styles.card}>
-            <div className={styles.content}>
-              <Heading4 as="h3" className={styles.cardTitle}>
-                {card.title}
-              </Heading4>
-              <TextMedium className={styles.cardBody}>
-                {card.description}
-              </TextMedium>
-            </div>
-            <ButtonOutlineMedium
-              href={card.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {card.label}
-            </ButtonOutlineMedium>
-          </article>
+        {HOST_CARDS.map((card, i) => (
+          <Reveal
+            key={card.title}
+            className={styles.cardWrap}
+            once={false}
+            amount={0}
+            delay={i * 130}
+          >
+            <article className={styles.card}>
+              <div className={styles.content}>
+                <Heading4 as="h3" className={styles.cardTitle}>
+                  {card.title}
+                </Heading4>
+                <TextMedium className={styles.cardBody}>
+                  {card.description}
+                </TextMedium>
+              </div>
+              <ButtonOutlineMedium
+                href={card.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {card.label}
+              </ButtonOutlineMedium>
+            </article>
+          </Reveal>
         ))}
       </div>
     </div>

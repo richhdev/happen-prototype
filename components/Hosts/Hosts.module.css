@@ -35,6 +35,9 @@
   gap: var(--space-16);
   width: 100%;
   overflow-x: auto;
+  /* The Reveal rises 30px into place; keep that off the vertical axis so the
+     scroller never grows a second scrollbar mid-animation. */
+  overflow-y: hidden;
   scrollbar-width: none;
 
   @media (min-width: 768px) {
@@ -42,6 +45,7 @@
     align-items: center;
     gap: var(--space-40);
     overflow-x: visible;
+    overflow-y: visible;
   }
 }
 
@@ -49,9 +53,23 @@
   display: none;
 }
 
-.card {
+/* The Reveal wrapper sits between .cards and .card, so it carries the track
+   sizing and the card just fills it. */
+.cardWrap {
   display: flex;
   flex: 0 0 284px;
+
+  @media (min-width: 768px) {
+    flex: 0 0 auto;
+    width: 362px;
+    max-width: 100%;
+  }
+}
+
+.card {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -63,10 +81,7 @@
   background: var(--color-charcoal);
 
   @media (min-width: 768px) {
-    flex: 0 0 auto;
     gap: var(--space-24);
-    width: 362px;
-    max-width: 100%;
     height: 213px;
     padding: var(--space-16) var(--space-24);
     border-radius: var(--radius-medium);
