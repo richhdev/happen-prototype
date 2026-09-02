@@ -5,13 +5,16 @@ import { EASE } from "@/lib/data";
 import styles from "./Testimonials.module.css";
 import { TESTIMONIALS } from "./data";
 
-// The thread plays like messages landing one after another: every bubble starts
-// minimised at its tail, pops open in turn, and the feed scrolls itself so the
-// one that just landed sits at the bottom of the screen.
+// The thread plays like messages being written one after another: a bubble pops
+// in at its tail as a typing pill — avatar plus three dots — then expands into
+// the message itself, and the feed scrolls so the live one sits at the bottom
+// of the screen.
 
-// Pause before the first message, then how long each one holds the thread
-// before the next lands. Milliseconds.
+// Pause before the first message, how long the dots run before the message
+// expands, and how long a message holds the thread before the next starts
+// typing. Milliseconds.
 const LEAD_IN = 500;
+const TYPING = 900;
 const STEP = 2400;
 
 // Breathing room left under a message once it has been scrolled into place.
@@ -22,41 +25,60 @@ const bubble = {
   shown: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: EASE } },
 };
 
+// The pill-to-message growth. A motion layout animation rather than a CSS
+// height transition because it puts the row at its final size in the DOM
+// straight away and fakes the old one with transforms — which is what lets the
+// scroll below measure where the message ends up while it's still opening.
+const expand = { duration: 0.45, ease: EASE };
+
 export default function Thread() {
   const feedRef = useRef(null);
   const rowRefs = useRef([]);
-  // Index of the last message to have landed; -1 is the whole thread minimised.
+  // Index of the last message to have expanded, and of the one currently
+  // showing its dots; -1 each means the thread hasn't got there yet.
   const [landed, setLanded] = useState(-1);
+  const [typing, setTyping] = useState(-1);
   const inView = useInView(feedRef, { amount: 0.2 });
+  // The row at the live end of the thread, whether it's still typing or done.
+  const active = Math.max(landed, typing);
 
   // Rewinds when the section leaves view so it replays on the way back, the
   // same as the Reveal fades elsewhere on the page.
   useEffect(() => {
     if (!inView) {
       setLanded(-1);
+      setTyping(-1);
       feedRef.current?.scrollTo({ top: 0 });
       return;
     }
-    let i = -1;
-    let timer;
-    const step = () => {
-      i += 1;
-      setLanded(i);
-      if (i < TESTIMONIALS.length - 1) timer = setTimeout(step, STEP);
-    };
-    timer = setTimeout(step, LEAD_IN);
-    return () => clearTimeout(timer);
+    // One pair of timers per message rather than a self-rescheduling step: each
+    // bubble has two beats now, and a flat timeline keeps them from drifting.
+    const timers = TESTIMONIALS.flatMap((_, i) => {
+      const at = LEAD_IN + i * STEP;
+      return [
+        setTimeout(() => setTyping(i), at),
+        setTimeout(() => {
+          setTyping(-1);
+          setLanded(i);
+        }, at + TYPING),
+      ];
+    });
+    return () => timers.forEach(clearTimeout);
   }, [inView]);
 
+  // Runs on both beats: once to bring the dots into view, again once the
+  // message has expanded and pushed the bottom of the thread down.
   useEffect(() => {
     const feed = feedRef.current;
-    const row = rowRefs.current[landed];
-    if (landed < 0 || !feed || !row) return;
+    const row = rowRefs.current[active];
+    if (active < 0 || !feed || !row) return;
 
     // offsetTop rather than a client rect: the row is still scaled down at this
-    // point, and offsets are layout values that transforms don't touch. Rows
-    // and the feed share an offsetParent (the phone, or its screen on desktop),
-    // so the difference is the row's position within the feed's content.
+    // point, and offsets are layout values that transforms don't touch — which
+    // is also why the message's final height is readable while it's still
+    // opening. Rows and the feed share an offsetParent (the phone, or its
+    // screen on desktop), so the difference is the row's position within the
+    // feed's content.
     const top = row.offsetTop - feed.offsetTop;
     // A message taller than the screen aligns to the top instead, so the part
     // that gets cut off is its tail rather than its opening line. It lands on
@@ -71,7 +93,7 @@ export default function Thread() {
       : top + row.offsetHeight - feed.clientHeight + BOTTOM_INSET;
 
     feed.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
-  }, [landed]);
+  }, [active, landed]);
 
   return (
     <ol className={styles.feed} ref={feedRef}>
@@ -88,17 +110,43 @@ export default function Thread() {
             className={`${styles.row} ${flipped ? styles.rowFlipped : ""}`}
             variants={bubble}
             initial="hidden"
-            animate={i <= landed ? "shown" : "hidden"}
+            animate={i <= active ? "shown" : "hidden"}
           >
-            <figure className={styles.bubble}>
-              <figcaption className={styles.author}>
-                {item.name} - {item.role}
-              </figcaption>
-              <blockquote className={styles.quote}>{item.quote}</blockquote>
-              <span className={styles.tail} aria-hidden="true" />
-            </figure>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <motion.figure
+              layout
+              transition={expand}
+              className={`${styles.bubble} ${
+                i > landed ? styles.bubbleTyping : ""
+              }`}
+            >
+              {i > landed ? (
+                <span className={styles.dots} aria-hidden="true">
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
+                </span>
+              ) : (
+                // Fades up over the growing bubble, which also covers the
+                // moment the layout animation is still scaling the text.
+                <div className={styles.message}>
+                  <figcaption className={styles.author}>
+                    {item.name} - {item.role}
+                  </figcaption>
+                  <blockquote className={styles.quote}>{item.quote}</blockquote>
+                </div>
+              )}
+              {/* Both carry layout of their own so the growth doesn't stretch
+                  the tail or leave the avatar stranded mid-animation. */}
+              <motion.span
+                layout
+                transition={expand}
+                className={styles.tail}
+                aria-hidden="true"
+              />
+            </motion.figure>
+            <motion.img
+              layout
+              transition={expand}
               src={item.avatar}
               alt={`${item.name}, ${item.role}`}
               className={styles.avatar}

@@ -84,6 +84,10 @@
 
 .row {
   display: flex;
+  /* Packs the pair against its own side of the thread, which only shows while
+     the bubble is a typing pill and doesn't fill the row. row-reverse flips
+     what "end" means, so this holds for both sides. */
+  justify-content: flex-end;
   align-items: flex-end;
   gap: 10px;
   /* The pop-open scale grows out of the tail corner, so a message unfolds from
@@ -104,17 +108,77 @@
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
-  gap: 5px;
   min-width: 0;
   padding: 10px var(--space-16);
   border-radius: 20px;
   background: var(--bubble-bg);
 }
 
+/* Before the message lands the bubble is only as wide as its three dots. */
+.bubbleTyping {
+  flex: 0 0 auto;
+}
+
 .rowFlipped .bubble {
   /* One-off charcoal that reads as the "other side" of the thread — close to
      but deliberately not --color-grey-900. */
   --bubble-bg: #26252a;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  animation: messageIn 0.35s ease 0.05s both;
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+  }
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 20px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-white);
+  animation: typing 1.2s infinite ease-in-out;
+
+  /* The dots still read as "writing" sitting still at a steady opacity. */
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
 .author {
@@ -155,7 +219,9 @@
   right: auto;
   bottom: -8.23px;
   left: -1.4px;
-  transform: scaleX(-1);
+  /* The standalone scale property, not transform: the tail carries a motion
+     layout animation, which owns transform and writes over anything set here. */
+  scale: -1 1;
 }
 
 .avatar {
