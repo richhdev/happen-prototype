@@ -8,7 +8,7 @@ export default function Instagram() {
   return (
     <Section id="a-instagram" className={styles.instagram}>
       <div className={styles.content}>
-        <RevealGroup className={styles.grid}>
+        <RevealGroup className={styles.grid} once={true}>
           {IG_TILES.map((src) => (
             <RevealItem
               key={src}

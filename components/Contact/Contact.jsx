@@ -1,4 +1,5 @@
 import { Section } from "@/components/Section/Section";
+import { RevealGroup, RevealItem } from "@/components/ui";
 import { Heading3 } from "@/components/Heading/Heading";
 import { TextMedium, TextSmall } from "@/components/Text/Text";
 import { SOCIALS } from "@/lib/data";
@@ -51,9 +52,13 @@ export default function Contact() {
             <ContactForm />
           </div>
 
-          <div className={styles.column}>
+          <RevealGroup className={styles.column} once={true}>
             {LINK_CARDS.map((card) => (
-              <article key={card.title} className={styles.linkCard}>
+              <RevealItem
+                key={card.title}
+                as="article"
+                className={styles.linkCard}
+              >
                 <h3 className={styles.linkTitle}>{card.title}</h3>
                 <TextSmall className={styles.linkBody}>
                   {card.description}
@@ -67,9 +72,9 @@ export default function Contact() {
                   <span className={styles.linkCtaText}>{card.label}</span>
                   <span aria-hidden="true"> ↗</span>
                 </a>
-              </article>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </div>
     </Section>

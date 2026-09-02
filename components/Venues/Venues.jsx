@@ -1,5 +1,5 @@
 import { Section } from "@/components/Section/Section";
-import { Reveal } from "@/components/ui";
+import { RevealGroup, RevealItem } from "@/components/ui";
 import { Heading3, Heading4 } from "@/components/Heading/Heading";
 import { TextSmall, TextMedium } from "@/components/Text/Text";
 import { Badge } from "@/components/Badge/Badge";
@@ -14,15 +14,9 @@ export default function Venues() {
           The rooms we fill
         </Heading3>
 
-        <div className={styles.cards}>
-          {VENUES.map((venue, i) => (
-            <Reveal
-              key={venue.name}
-              className={styles.cardWrap}
-              once={false}
-              amount={0}
-              delay={i * 130}
-            >
+        <RevealGroup className={styles.cards} once={true}>
+          {VENUES.map((venue) => (
+            <RevealItem key={venue.name} className={styles.cardWrap}>
               <article
                 className={styles.card}
                 style={{ backgroundImage: `url("${venue.img}")` }}
@@ -42,9 +36,9 @@ export default function Venues() {
                   </TextMedium>
                 </div>
               </article>
-            </Reveal>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </Section>
   );
