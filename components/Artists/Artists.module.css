@@ -11,12 +11,23 @@
 }
 
 .pinned {
+  /* Matches the fixed nav's own height at each breakpoint. */
+  --nav-height: var(--space-80);
+
   position: sticky;
   top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  /* The nav is fixed over the top of the pin, so centring in the whole viewport
+     parks the top row of cards underneath it. Reserving its height centres the
+     grid in the space below instead. */
+  padding-top: var(--nav-height);
+
+  @media (min-width: 641px) {
+    --nav-height: var(--space-120);
+  }
 }
 
 /* Two by two at both breakpoints — only the gaps and the card padding change.
@@ -24,8 +35,10 @@
 .grid {
   --row-gap: var(--space-80);
   --col-gap: var(--space-16);
-  /* Breathing room between the grid and the edges of the pinned viewport. */
-  --fit-inset: var(--space-64);
+  /* Slack left over after the grid is fitted, split evenly above and below it
+     by the centring. Half what it was: the nav height reserved above the pin
+     now supplies most of the room the top edge needs. */
+  --fit-inset: var(--space-32);
 
   position: relative;
   display: grid;
@@ -39,19 +52,23 @@
      at design size it is over 1000px tall — taller than a laptop. The cards are
      a fixed ratio, so height is a function of width, and that inverts: this is
      the width at which the two rows plus the gap between them come to exactly
-     the height available. 0.8316 is 390/469, the card ratio. Below the 900px
-     design width the grid simply scales down rather than overflowing the pin.  */
+     the height available, once the nav strip reserved above is taken off it.
+     0.8316 is 390/469, the card ratio. Below the 900px design width the grid
+     simply scales down rather than overflowing the pin. */
   width: 100%;
   max-width: min(
     900px,
-    calc((100vh - var(--fit-inset) - var(--row-gap)) * 0.8316 + var(--col-gap))
+    calc(
+      (100vh - var(--nav-height) - var(--fit-inset) - var(--row-gap)) * 0.8316 +
+        var(--col-gap)
+    )
   );
   margin-inline: auto;
 
   @media (min-width: 768px) {
     --row-gap: var(--space-120);
     --col-gap: var(--space-120);
-    --fit-inset: var(--space-96);
+    --fit-inset: var(--space-48);
   }
 }
 
@@ -80,12 +97,26 @@
    enough the same ratio, so one aspect-ratio covers both and the card can
    simply fill its grid column. */
 .card {
-  /* How far this card has zoomed in, 0 (small) to 1 (full size), written every
-     frame from the section's scroll progress. */
+  /* How far this card has travelled, 0 (small, gathered at the centre) to 1
+     (full size in its grid slot), written every frame from the section's
+     scroll progress. */
   --t: 0;
-  /* Where it starts. The scale resolves to exactly 1 at rest, so the card lands
-     on its grid slot with no transform of its own. */
-  --zoom-from: 0.72;
+  /* Where it starts. Both resolve to no transform at all at t = 1, so the card
+     lands on its grid slot exactly. */
+  --zoom-from: 0.6;
+  /* How far it starts pulled in towards the middle of the grid, as a fraction
+     of its own size — enough to gather the four around the title without them
+     touching. Per axis, because the two gaps are not alike: the columns sit
+     16px apart until 768px, so a pull that reads well between the rows would
+     close that up entirely and overlap the cards. Raised to match once the
+     column gap widens to the row gap's 120px. */
+  --pull-x: 0.15;
+  --pull-y: 0.3;
+  /* Which way that pull points. The grid is a fixed 2x2, so the quadrant a card
+     sits in — and therefore the way it travels back out — is decided by the
+     column count right here in CSS, not passed down from the component. */
+  --dx: 0;
+  --dy: 0;
 
   position: relative;
   display: flex;
@@ -97,7 +128,13 @@
   border-bottom: 1px solid var(--color-grey-700);
   overflow: hidden;
 
-  transform: scale(calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--t)));
+  /* Translate first, then scale: the scale is applied in the already-shifted
+     frame, so it never rescales the offset and the two can be tuned apart. */
+  transform: translate(
+      calc(var(--dx) * var(--pull-x) * (1 - var(--t)) * 100%),
+      calc(var(--dy) * var(--pull-y) * (1 - var(--t)) * 100%)
+    )
+    scale(calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--t)));
   will-change: transform;
 
   /* Everything inside sizes off the card, not the viewport. When the grid is
@@ -106,10 +143,32 @@
      desktop layout and the bio would pour straight out of the card. */
   container-type: inline-size;
 
-  /* The zoom is scroll-position dressing — hold the cards at full size. */
+  @media (min-width: 768px) {
+    --pull-x: 0.3;
+  }
+
+  /* The gather is scroll-position dressing — hold the cards in their slots. */
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
+}
+
+/* The heading is a div and the cards are articles, so of-type counts the four
+   cards on their own: left column pulls right, top row pulls down. */
+.card:nth-of-type(odd) {
+  --dx: 1;
+}
+
+.card:nth-of-type(even) {
+  --dx: -1;
+}
+
+.card:nth-of-type(-n + 2) {
+  --dy: 1;
+}
+
+.card:nth-of-type(n + 3) {
+  --dy: -1;
 }
 
 .image {
@@ -151,15 +210,10 @@
   color: var(--color-white);
 }
 
-/* The shared Badge is white-on-fill; this one instance is charcoal-on-red. */
 .badge {
   color: var(--color-charcoal);
 }
 
-/* A small card has no room for the bio — the design drops it on mobile and
-   shows the name, genre and links only. Keyed to the card rather than the
-   viewport, so a card shrunk to fit the pin gets the same treatment. 320px sits
-   between the design's two card widths, 182 and 390. */
 .bio {
   display: none;
   color: var(--color-cream);
@@ -170,7 +224,6 @@
   }
 }
 
-/* Stacked by default: two links side by side won't fit a 180px card. */
 .links {
   display: flex;
   flex-direction: column;
@@ -189,7 +242,6 @@
   white-space: nowrap;
 }
 
-/* Only the name is underlined in the design; the arrow sits outside it. */
 .linkLabel {
   text-decoration: underline;
 }
