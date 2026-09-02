@@ -16,6 +16,10 @@
   width: 100%;
   max-width: 894px;
   margin-inline: auto;
+
+  @media (min-width: 768px) {
+    gap: var(--space-32);
+  }
 }
 
 .grid {
@@ -23,6 +27,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-8);
   width: 100%;
+
+  @media (min-width: 768px) {
+    gap: var(--space-32);
+  }
 }
 
 .tile {
@@ -32,6 +40,10 @@
   overflow: hidden;
   border-bottom: 1px solid var(--color-grey-700);
   border-radius: var(--radius-large);
+
+  @media (min-width: 768px) {
+    border-radius: var(--radius-medium);
+  }
 }
 
 .tileImage {
@@ -49,6 +61,10 @@
   gap: var(--space-16) 30px;
   width: 100%;
   padding-inline: var(--space-16);
+
+  @media (min-width: 768px) {
+    padding: var(--space-24) 30px;
+  }
 }
 
 /* Set here rather than through TextMedium: the label is the one bold item in
@@ -85,31 +101,13 @@
    on them here. */
 .socialLink:not(:first-child) {
   display: none;
+
+  @media (min-width: 768px) {
+    display: inline-flex;
+  }
 }
 
 .socialIcon {
   width: 20px;
   height: 20px;
-}
-
-@media (min-width: 768px) {
-  .socialLink:not(:first-child) {
-    display: inline-flex;
-  }
-
-  .content {
-    gap: var(--space-32);
-  }
-
-  .grid {
-    gap: var(--space-32);
-  }
-
-  .tile {
-    border-radius: var(--radius-medium);
-  }
-
-  .social {
-    padding: var(--space-24) 30px;
-  }
 }

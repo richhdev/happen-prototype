@@ -47,10 +47,8 @@
     calc((100vh - var(--fit-inset) - var(--row-gap)) * 0.8316 + var(--col-gap))
   );
   margin-inline: auto;
-}
 
-@media (min-width: 768px) {
-  .grid {
+  @media (min-width: 768px) {
     --row-gap: var(--space-120);
     --col-gap: var(--space-120);
     --fit-inset: var(--space-96);
@@ -107,11 +105,9 @@
      a 1280px screen — on a viewport query it would still be serving the 390px
      desktop layout and the bio would pour straight out of the card. */
   container-type: inline-size;
-}
 
-/* The zoom is scroll-position dressing — hold the cards at full size. */
-@media (prefers-reduced-motion: reduce) {
-  .card {
+  /* The zoom is scroll-position dressing — hold the cards at full size. */
+  @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
 }
@@ -145,6 +141,10 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-8);
+
+  @container (min-width: 320px) {
+    padding: var(--space-24);
+  }
 }
 
 .name {
@@ -163,6 +163,11 @@
 .bio {
   display: none;
   color: var(--color-cream);
+
+  @container (min-width: 320px) {
+    display: block;
+    padding-block: var(--space-8);
+  }
 }
 
 /* Stacked by default: two links side by side won't fit a 180px card. */
@@ -170,19 +175,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
 
-@container (min-width: 320px) {
-  .content {
-    padding: var(--space-24);
-  }
-
-  .bio {
-    display: block;
-    padding-block: var(--space-8);
-  }
-
-  .links {
+  @container (min-width: 320px) {
     flex-direction: row;
     align-items: center;
     gap: var(--space-16);

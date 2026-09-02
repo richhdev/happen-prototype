@@ -8,6 +8,10 @@
   padding-block: var(--space-64);
   border-radius: var(--radius-large);
   background: var(--color-red);
+
+  @media (min-width: 768px) {
+    padding: var(--space-120) var(--space-32);
+  }
 }
 
 .title {
@@ -22,6 +26,11 @@
   padding-inline: var(--space-16);
   color: var(--color-white);
   text-align: center;
+
+  @media (min-width: 768px) {
+    max-width: 640px;
+    padding-inline: 0;
+  }
 }
 
 .stat {
@@ -32,33 +41,20 @@
   text-align: center;
 }
 
-/* A display number with no matching type token — one-off at both breakpoints.
-   Both sizes carry the same -0.05em tracking the headings use. */
 .statNumber {
   font-size: 100px;
   line-height: 70px;
   font-weight: 900;
   letter-spacing: -0.05em;
   color: var(--color-charcoal);
+
+  @media (min-width: 768px) {
+    font-size: 130px;
+    line-height: 130px;
+  }
 }
 
 .statLabel {
   color: var(--color-white);
   text-transform: uppercase;
-}
-
-@media (min-width: 768px) {
-  .panel {
-    padding: var(--space-120) var(--space-32);
-  }
-
-  .copy {
-    max-width: 640px;
-    padding-inline: 0;
-  }
-
-  .statNumber {
-    font-size: 130px;
-    line-height: 130px;
-  }
 }

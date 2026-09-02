@@ -1,10 +1,8 @@
 .services {
   --row-min-height: 225px;
   --card-gap: var(--space-120);
-}
 
-@media (min-width: 768px) {
-  .services {
+  @media (min-width: 768px) {
     --row-min-height: 225px;
     --card-gap: 0px;
   }
@@ -20,11 +18,9 @@
   padding: var(--space-40) var(--space-16);
   border-radius: var(--radius-large);
   overflow: hidden;
-}
 
-/* Leaves the right edge of the inner clear for the card to hang over. */
-@media (min-width: 768px) {
-  .panel {
+  /* Leaves the right edge of the inner clear for the card to hang over. */
+  @media (min-width: 768px) {
     margin-right: var(--space-80);
     padding: 110px 0 160px;
   }
@@ -50,31 +46,27 @@
   gap: 13px;
   text-align: center;
   color: var(--color-black);
-}
 
-@media (min-width: 768px) {
-  .head {
+  @media (min-width: 768px) {
     width: 100%;
     max-width: 721px;
     padding-left: var(--space-80);
   }
 }
 
-.heading,
-.intro {
+.heading {
   margin-inline: auto;
-}
 
-.intro {
-  color: var(--color-charcoal);
-}
-
-@media (min-width: 768px) {
-  .heading {
+  @media (min-width: 768px) {
     max-width: 465px;
   }
+}
 
-  .intro {
+.intro {
+  margin-inline: auto;
+  color: var(--color-charcoal);
+
+  @media (min-width: 768px) {
     max-width: 387px;
   }
 }
@@ -91,10 +83,8 @@
   padding-top: var(--space-64);
   padding-bottom: calc(60vh - var(--space-80));
   /* padding-left: var(--space-40); */
-}
 
-@media (min-width: 768px) {
-  .list {
+  @media (min-width: 768px) {
     width: 100%;
     max-width: 721px;
     padding-top: 175px;
@@ -153,10 +143,8 @@
   height: 100vh;
   padding-inline: var(--space-16);
   padding-bottom: var(--card-gap);
-}
 
-@media (min-width: 768px) {
-  .previewSticky {
+  @media (min-width: 768px) {
     justify-content: center;
     padding-inline: 0;
   }
@@ -175,10 +163,8 @@
   border-bottom: 1px solid var(--color-grey-700);
   background: var(--color-charcoal);
   overflow: hidden;
-}
 
-@media (min-width: 768px) {
-  .card {
+  @media (min-width: 768px) {
     width: 475px;
     max-width: 100%;
     margin-inline: auto 0;
@@ -196,10 +182,8 @@
   padding: var(--space-32);
   opacity: 0;
   transition: opacity 360ms ease;
-}
 
-@media (min-width: 768px) {
-  .slide {
+  @media (min-width: 768px) {
     padding: var(--space-32) var(--space-80);
   }
 }

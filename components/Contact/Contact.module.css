@@ -10,6 +10,10 @@
   align-items: center;
   gap: var(--space-32);
   width: 100%;
+
+  @media (min-width: 768px) {
+    gap: var(--space-48);
+  }
 }
 
 .header {
@@ -27,6 +31,11 @@
 
 .intro {
   color: var(--color-cream);
+
+  @media (min-width: 768px) {
+    max-width: 640px;
+    margin-inline: auto;
+  }
 }
 
 .body {
@@ -35,6 +44,12 @@
   gap: var(--space-16);
   width: 100%;
   max-width: 900px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-32);
+  }
 }
 
 .column {
@@ -43,6 +58,10 @@
   flex-direction: column;
   gap: var(--space-16);
   min-width: 0;
+
+  @media (min-width: 768px) {
+    gap: 10px;
+  }
 }
 
 /* Every panel in this section shares one treatment. */
@@ -56,6 +75,11 @@
   border-bottom: 1px solid var(--color-grey-700);
   border-radius: var(--radius-large);
   background: var(--color-grey-900);
+
+  @media (min-width: 768px) {
+    padding: var(--space-24);
+    border-radius: var(--radius-medium);
+  }
 }
 
 .cardLabel {
@@ -122,6 +146,13 @@
 
 .linkCard {
   gap: var(--space-8);
+
+  /* The four cards share the column's height evenly, matching the form beside
+     them. */
+  @media (min-width: 768px) {
+    flex: 1 1 0;
+    justify-content: center;
+  }
 }
 
 .linkTitle {
@@ -135,6 +166,10 @@
 .linkBody {
   display: none;
   color: var(--color-cream);
+
+  @media (min-width: 768px) {
+    display: block;
+  }
 }
 
 .linkCta {
@@ -146,43 +181,4 @@
 
 .linkCtaText {
   text-decoration: underline;
-}
-
-@media (min-width: 768px) {
-  .content {
-    gap: var(--space-48);
-  }
-
-  .body {
-    flex-direction: row;
-    align-items: stretch;
-    gap: var(--space-32);
-  }
-
-  .column {
-    gap: 10px;
-  }
-
-  .intro {
-    max-width: 640px;
-    margin-inline: auto;
-  }
-
-  .card,
-  .form,
-  .linkCard {
-    padding: var(--space-24);
-    border-radius: var(--radius-medium);
-  }
-
-  /* The four cards share the column's height evenly, matching the form beside
-     them. */
-  .linkCard {
-    flex: 1 1 0;
-    justify-content: center;
-  }
-
-  .linkBody {
-    display: block;
-  }
 }

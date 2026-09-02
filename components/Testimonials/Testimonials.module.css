@@ -20,6 +20,12 @@
   overflow: hidden;
   border-radius: var(--radius-large);
   background: var(--color-cream);
+
+  @media (min-width: 768px) {
+    gap: var(--space-64);
+    height: 698px;
+    padding: var(--space-64) var(--space-32) 0;
+  }
 }
 
 .title {
@@ -44,6 +50,10 @@
     rgb(235 230 222 / 0.9) 61%
   );
   backdrop-filter: blur(2px);
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 }
 
 /* --- Thread ------------------------------------------------------------ */
@@ -60,6 +70,12 @@
   overflow-y: auto;
   list-style: none;
   scrollbar-width: none;
+
+  /* Inside the phone the bezel already separates the thread from the heading,
+     so the thread gets even padding instead of the mobile fade offset. */
+  @media (min-width: 768px) {
+    padding: var(--space-64) var(--space-32);
+  }
 }
 
 .feed::-webkit-scrollbar {
@@ -144,22 +160,4 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-}
-
-@media (min-width: 768px) {
-  .panel {
-    gap: var(--space-64);
-    height: 698px;
-    padding: var(--space-64) var(--space-32) 0;
-  }
-
-  .scrim {
-    display: none;
-  }
-
-  /* Inside the phone the bezel already separates the thread from the heading,
-     so the thread gets even padding instead of the mobile fade offset. */
-  .feed {
-    padding: var(--space-64) var(--space-32);
-  }
 }

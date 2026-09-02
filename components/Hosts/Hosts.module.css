@@ -8,6 +8,11 @@
   padding: var(--space-32) var(--space-24);
   overflow: hidden;
   border-radius: var(--radius-large);
+
+  @media (min-width: 768px) {
+    gap: var(--space-64);
+    padding: var(--space-64) var(--space-32);
+  }
 }
 
 .background {
@@ -31,6 +36,13 @@
   width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
+
+  @media (min-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-40);
+    overflow-x: visible;
+  }
 }
 
 .cards::-webkit-scrollbar {
@@ -49,6 +61,16 @@
   overflow: hidden;
   border-radius: var(--radius-large);
   background: var(--color-charcoal);
+
+  @media (min-width: 768px) {
+    flex: 0 0 auto;
+    gap: var(--space-24);
+    width: 362px;
+    max-width: 100%;
+    height: 213px;
+    padding: var(--space-16) var(--space-24);
+    border-radius: var(--radius-medium);
+  }
 }
 
 .content {
@@ -65,28 +87,4 @@
 
 .cardBody {
   color: var(--color-cream);
-}
-
-@media (min-width: 768px) {
-  .panel {
-    gap: var(--space-64);
-    padding: var(--space-64) var(--space-32);
-  }
-
-  .cards {
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-40);
-    overflow-x: visible;
-  }
-
-  .card {
-    flex: 0 0 auto;
-    gap: var(--space-24);
-    width: 362px;
-    max-width: 100%;
-    height: 213px;
-    padding: var(--space-16) var(--space-24);
-    border-radius: var(--radius-medium);
-  }
 }

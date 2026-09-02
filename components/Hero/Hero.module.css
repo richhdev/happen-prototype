@@ -20,6 +20,13 @@
   flex-direction: column;
   align-items: start;
   gap: var(--space-32);
+
+  @media (min-width: 768px) {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
 }
 
 .headlineGroup span {
@@ -31,17 +38,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-@media (min-width: 768px) {
-  .headlineGroup {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0;
-  }
-
-  .logoWrap {
+  @media (min-width: 768px) {
     flex: 1;
   }
 }

@@ -15,6 +15,14 @@
   border-radius: var(--radius-large);
   border-bottom: 1px solid var(--color-grey-700);
   overflow: hidden;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-40);
+    padding: var(--space-32);
+    min-height: 309px;
+  }
 }
 
 .cardImage {
@@ -34,6 +42,18 @@
   flex-direction: column;
   gap: var(--space-8);
   padding-inline: var(--space-24);
+
+  /* 349 : 747 is the copy-to-tiles split the design uses inside the card. */
+  @media (min-width: 768px) {
+    flex: 349;
+    gap: var(--space-16);
+    padding: 0 36px 0 var(--space-16);
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      rgba(17, 17, 17, 0.8) 37.5%,
+      rgba(17, 17, 17, 0) 100%
+    );
+  }
 }
 
 .heading {
@@ -52,6 +72,14 @@
   padding-inline: var(--space-16);
   overflow-x: auto;
   scrollbar-width: none;
+
+  @media (min-width: 768px) {
+    flex: 747;
+    align-self: stretch;
+    gap: var(--space-16);
+    padding-inline: 0;
+    overflow: visible;
+  }
 }
 
 .tiles::-webkit-scrollbar {
@@ -66,6 +94,12 @@
   flex-direction: column;
   border-radius: var(--radius-large);
   overflow: hidden;
+
+  @media (min-width: 768px) {
+    flex: 1;
+    width: auto;
+    border-radius: var(--radius-medium);
+  }
 }
 
 .tileImage {
@@ -90,6 +124,10 @@
   justify-content: center;
   gap: var(--space-16);
   padding: var(--space-24);
+
+  @media (min-width: 768px) {
+    gap: var(--space-24);
+  }
 }
 
 .logo {
@@ -97,48 +135,8 @@
   height: var(--logo-h);
   width: auto;
   object-fit: contain;
-}
 
-@media (min-width: 768px) {
-  .card {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-40);
-    padding: var(--space-32);
-    min-height: 309px;
-  }
-
-  /* 349 : 747 is the copy-to-tiles split the design uses inside the card. */
-  .copy {
-    flex: 349;
-    gap: var(--space-16);
-    padding: 0 36px 0 var(--space-16);
-    background: radial-gradient(
-      ellipse 50% 50% at 50% 50%,
-      rgba(17, 17, 17, 0.8) 37.5%,
-      rgba(17, 17, 17, 0) 100%
-    );
-  }
-
-  .tiles {
-    flex: 747;
-    align-self: stretch;
-    gap: var(--space-16);
-    padding-inline: 0;
-    overflow: visible;
-  }
-
-  .tile {
-    flex: 1;
-    width: auto;
-    border-radius: var(--radius-medium);
-  }
-
-  .tileBody {
-    gap: var(--space-24);
-  }
-
-  .logo {
+  @media (min-width: 768px) {
     height: var(--logo-h-md);
   }
 }

@@ -1,18 +1,8 @@
 .phone {
   position: absolute;
   inset: 0;
-}
 
-.screen {
-  height: 100%;
-}
-
-.phoneFrame {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .phone {
+  @media (min-width: 768px) {
     /* The PNG's own 1x size (it ships at 3x). Figma's phone is taller than
        this — the export stops where the panel clips it, which is why .screen
        runs to the bottom rather than to a height of its own. */
@@ -30,8 +20,12 @@
     width: var(--phone-width);
     height: var(--phone-height);
   }
+}
 
-  .screen {
+.screen {
+  height: 100%;
+
+  @media (min-width: 768px) {
     position: absolute;
     top: var(--screen-top);
     right: var(--screen-right);
@@ -44,8 +38,12 @@
     border-radius: 45px 45px 0 0;
     background: var(--color-charcoal);
   }
+}
 
-  .phoneFrame {
+.phoneFrame {
+  display: none;
+
+  @media (min-width: 768px) {
     position: absolute;
     inset: 0;
     display: block;

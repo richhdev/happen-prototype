@@ -4,10 +4,8 @@
   --card-gap: var(--space-16);
   --card-radius: var(--radius-large);
   padding-block: 0;
-}
 
-@media (min-width: 768px) {
-  .work {
+  @media (min-width: 768px) {
     --card: 280;
     --card-active: 420;
     --card-gap: var(--space-40);
@@ -32,10 +30,8 @@
   padding: var(--space-40) var(--space-32);
   border-radius: var(--radius-large);
   background: #b4111b;
-}
 
-@media (min-width: 768px) {
-  .panel {
+  @media (min-width: 768px) {
     gap: var(--space-64);
     padding: var(--space-80) 0;
   }
