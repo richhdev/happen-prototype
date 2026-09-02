@@ -42,6 +42,8 @@
 }
 
 .statNumber {
+  /* Fixed-width digits so the count-up doesn't jitter the label. */
+  font-variant-numeric: tabular-nums;
   font-size: 100px;
   line-height: 70px;
   font-weight: 900;

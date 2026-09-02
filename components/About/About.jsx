@@ -1,6 +1,7 @@
 import { Section } from "@/components/Section/Section";
 import { Heading2, Heading4 } from "@/components/Heading/Heading";
 import { TextXXLarge } from "@/components/Text/Text";
+import { StatCounter } from "./StatCounter";
 import styles from "./About.module.css";
 
 export default function About() {
@@ -25,7 +26,7 @@ export default function About() {
         </div>
 
         <div className={styles.stat}>
-          <span className={styles.statNumber}>10+</span>
+          <StatCounter value={10} suffix="+" className={styles.statNumber} />
           <Heading4 as="p" className={styles.statLabel}>
             Years doing the work
           </Heading4>
