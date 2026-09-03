@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
 import {
+  cubicBezier,
   motion,
   useMotionValueEvent,
   useScroll,
@@ -12,9 +13,10 @@ import { Heading2 } from "@/components/Heading/Heading";
 import { Reveal, useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Work.module.css";
 
-// Extra scroll left at the end so the last card can sit centred for a beat
-// before the section unpins.
-const HOLD_PX = 400;
+// The red surface's pull-back curve: quick off the viewport edges, then easing
+// down into the frame. Roughly easeOutQuad — steeper front-loads the break away
+// but leaves a long crawl at the end.
+const SHRINK_EASE = cubicBezier(0.5, 1, 0.89, 1);
 
 // How centred a card is, 0 (a full step away or more) to 1 (dead centre), on a
 // smoothstep curve so it holds its size for a beat at the centre and hands over
@@ -94,11 +96,17 @@ export default function Work() {
     offset: ["start start", "end end"],
   });
 
-  // Pan the track across its full width over the section's scroll distance,
-  // then hold on the last card for the remaining HOLD_PX.
-  const total = max + HOLD_PX;
-  const panEnd = total > 0 ? max / total : 0;
-  const x = useTransform(scrollYProgress, [0, panEnd], [0, -max]);
+  // The track pans its full width across the section's whole scroll distance, so
+  // the section unpins on the frame the last card reaches the centre.
+  const x = useTransform(scrollYProgress, [0, 1], [0, -max]);
+
+  // The surface pulls back over that same stretch, landing framed as the last
+  // card does. Eased out so it breaks away from the viewport edges quickly and
+  // then creeps the last of the way in — a linear run this long reads as the
+  // frame barely moving at the start.
+  const framed = useTransform(scrollYProgress, [0, 1], [0, 1], {
+    ease: SHRINK_EASE,
+  });
 
   // The card nearest the viewport centre is the featured one. The track's
   // padding centres card 0 at x=0 and every card occupies the same layout step,
@@ -125,10 +133,12 @@ export default function Work() {
     <Section id="b-work" className={styles.work}>
       <div
         ref={containerRef}
-        style={{ height: `calc(100vh + ${max + HOLD_PX}px)` }}
+        style={{ height: `calc(100vh + ${max}px)` }}
       >
         <div className={styles.pinned}>
-          <div className={styles.panel}>
+          <motion.div className={styles.panel} style={{ "--p": framed }}>
+            <div className={styles.surface} />
+
             <Heading2 className={styles.heading}>
               The proof is <br className="desktop-only" />
               in the Happening
@@ -147,7 +157,7 @@ export default function Work() {
                 />
               ))}
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Section>

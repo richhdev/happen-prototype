@@ -22,14 +22,17 @@
 }
 
 .panel {
+  /* How framed the red surface is, 0 (full-bleed over the whole viewport) to 1
+     (inset to the panel box). Written every frame from the section's scroll
+     progress, so the surface is scrubbed by the scrollbar. */
+  --p: 0;
+
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 60px;
   width: 100%;
   padding: var(--space-40) var(--space-32);
-  border-radius: var(--radius-large);
-  background: #b4111b;
 
   @media (min-width: 768px) {
     gap: var(--space-48);
@@ -37,12 +40,38 @@
   }
 }
 
+/* The red surface, drawn behind the heading and the cards so it can grow past
+   the panel without taking the content with it.
+
+   The panel is centred both ways inside the 100vh sticky box, so the distance
+   from a panel edge out to the matching viewport edge is (50vw - half the panel
+   width) across and (50vh - half the panel height) down. Inset percentages
+   resolve against the panel's own size, which is what makes `50% - 50vw` that
+   distance without measuring anything in JS. At --p: 1 both terms fall away and
+   the surface lands exactly on the panel box. */
+.surface {
+  position: absolute;
+  top: calc((50% - 50vh) * (1 - var(--p)));
+  bottom: calc((50% - 50vh) * (1 - var(--p)));
+  left: calc((50% - 50vw) * (1 - var(--p)));
+  right: calc((50% - 50vw) * (1 - var(--p)));
+  z-index: 0;
+
+  border-radius: calc(var(--radius-large) * var(--p));
+  background: #b4111b;
+  pointer-events: none;
+}
+
 .heading {
+  position: relative;
+  z-index: 1;
   color: var(--color-white);
   text-align: center;
 }
 
 .track {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: var(--card-gap);
