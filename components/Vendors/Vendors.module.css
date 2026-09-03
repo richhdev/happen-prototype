@@ -1,4 +1,5 @@
-.vendors {
+.section {
+  padding-top: 0;
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
     rgba(17, 17, 17, 0.8) 37.5%,

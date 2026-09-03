@@ -38,7 +38,7 @@ function VendorTile({ event }) {
 
 export default function Vendors() {
   return (
-    <Section id="a-vendors" className={styles.vendors}>
+    <Section id="a-vendors" className={styles.section}>
       <div className={styles.card}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
