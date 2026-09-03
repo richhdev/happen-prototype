@@ -1,0 +1,11 @@
+.logo {
+  display: block;
+  height: 175px;
+  width: auto;
+  transform-origin: center center;
+  will-change: transform;
+
+  @media (min-width: 768px) {
+    height: 286px;
+  }
+}

@@ -1,10 +1,6 @@
 .hero {
   position: relative;
   color: #eeebe3;
-  /* The nav placeholder above already consumes the nav's height, so a bare
-     100svh here pushes the hero that far past the fold and clips the marquee.
-     Design has the hero fill exactly what's left below the nav. */
-  /* height: calc(100svh - var(--nav-height-mobile)); */
   min-height: 690px;
   display: flex;
   align-items: center;
@@ -12,16 +8,7 @@
 
   @media (min-width: 641px) {
     min-height: 740px;
-
     height: calc(100svh - var(--nav-height-desktop));
-  }
-}
-
-/* Design is top-weighted rather than evenly padded: the section is then almost
-   exactly as tall as the hero, so centring lands it on the design's 24/80. */
-.hero > section {
-  @media (min-width: 768px) {
-    padding-block: var(--space-24) var(--space-120);
   }
 }
 
@@ -65,13 +52,6 @@
   }
 }
 
-.logo {
-  display: block;
-  width: auto;
-  transform-origin: center center;
-  will-change: transform;
-}
-
 .copyGroup {
   display: flex;
   flex-direction: column;
@@ -92,11 +72,11 @@
 
 .trusted {
   /* Design puts 80 between the copy and the marquee. This is a gapped column,
-     so the gap above already supplies part of it — only the remainder goes
-     here, or the two stack and the marquee sits 80 clear of a 32 gap. */
+     so on mobile the 24 gap above already supplies part of it and only the
+     remainder goes here. Desktop has no gap, so it carries the full 80. */
   margin-top: calc(var(--space-80) - var(--space-24));
 
   @media (min-width: 768px) {
-    margin-top: calc(var(--space-80) - var(--space-32));
+    margin-top: var(--space-80);
   }
 }
