@@ -24,6 +24,10 @@
   --space-96: 96px;
   --space-120: 120px;
 
+  /* Nav */
+  --nav-height-mobile: var(--space-80);
+  --nav-height-desktop: var(--space-120);
+
   /* Layout */
   --layout-max-width: 1200px;
   --layout-padding-x: var(--space-32);

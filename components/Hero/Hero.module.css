@@ -1,25 +1,46 @@
 .hero {
   position: relative;
   color: #eeebe3;
-  height: 100svh;
-  min-height: 560px;
+  /* The nav placeholder above already consumes the nav's height, so a bare
+     100svh here pushes the hero that far past the fold and clips the marquee.
+     Design has the hero fill exactly what's left below the nav. */
+  /* height: calc(100svh - var(--nav-height-mobile)); */
+  min-height: 690px;
   display: flex;
   align-items: center;
   overflow: hidden;
+
+  @media (min-width: 641px) {
+    min-height: 740px;
+
+    height: calc(100svh - var(--nav-height-desktop));
+  }
+}
+
+/* Design is top-weighted rather than evenly padded: the section is then almost
+   exactly as tall as the hero, so centring lands it on the design's 24/80. */
+.hero > section {
+  @media (min-width: 768px) {
+    padding-block: var(--space-24) var(--space-120);
+  }
 }
 
 .sectionInner {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--space-32);
+  gap: var(--space-24);
+
+  @media (min-width: 768px) {
+    gap: 0;
+  }
 }
 
 .headlineGroup {
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: var(--space-32);
+  gap: var(--space-24);
 
   @media (min-width: 768px) {
     flex-direction: row-reverse;
@@ -70,5 +91,12 @@
 }
 
 .trusted {
-  margin-top: var(--layout-padding-y);
+  /* Design puts 80 between the copy and the marquee. This is a gapped column,
+     so the gap above already supplies part of it — only the remainder goes
+     here, or the two stack and the marquee sits 80 clear of a 32 gap. */
+  margin-top: calc(var(--space-80) - var(--space-24));
+
+  @media (min-width: 768px) {
+    margin-top: calc(var(--space-80) - var(--space-32));
+  }
 }

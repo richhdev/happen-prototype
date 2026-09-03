@@ -86,3 +86,7 @@ export default function Nav() {
     </>
   );
 }
+
+export function NavPlaceholder() {
+  return <div className={styles.navPlaceholder} />;
+}
