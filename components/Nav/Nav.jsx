@@ -42,13 +42,13 @@ export default function Nav() {
             {n.label}
           </TextOverline>
         ))}
-        <Button
+        {/* <Button
           href="#a-contact"
           onClick={(e) => scrollToSection(e, "a-contact")}
           className={styles.cta}
         >
           Work with us
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
@@ -79,7 +79,7 @@ export default function Nav() {
         </div>
       </nav>
 
-      {/* Outside <nav>: nav's mix-blend-mode would swallow this panel's background. */}
+      {/* Mobile nav list */}
       <div className={`${styles.overlay}${menuOpen ? ` ${styles.open}` : ""}`}>
         <LinkList />
       </div>
