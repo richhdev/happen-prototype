@@ -1,14 +1,14 @@
 .work {
-  --card: 240;
+  --card: 172;
   --card-active: 320;
-  --card-gap: var(--space-16);
+  --card-gap: var(--space-8);
   --card-radius: var(--radius-large);
   padding-block: 0;
 
   @media (min-width: 768px) {
     --card: 280;
     --card-active: 420;
-    --card-gap: var(--space-40);
+    --card-gap: var(--space-32);
     --card-radius: var(--radius-medium);
   }
 }
@@ -32,7 +32,7 @@
   background: #b4111b;
 
   @media (min-width: 768px) {
-    gap: var(--space-64);
+    gap: var(--space-48);
     padding: var(--space-80) 0;
   }
 }
@@ -42,15 +42,11 @@
   text-align: center;
 }
 
-/* The track is only visually anchored by the panel — cards keep running past
-   its rounded edge onto the page background, as they do in the design. */
 .track {
   display: flex;
   align-items: center;
   gap: var(--card-gap);
 
-  /* The featured card grows by transform, which leaves layout untouched — the
-     row still has to reserve its full height or it crowds the panel's edge. */
   min-height: calc(var(--card-active) * 1px);
   margin-inline: calc(50% - 50vw);
 
@@ -61,34 +57,35 @@
 
 .card {
   /* How centred this card is, 0 to 1. Written every frame from the pan offset,
-     so scale, background and image dim are scrubbed by the scrollbar rather
+     so the card's size and its caption are scrubbed by the scrollbar rather
      than transitioned on a timer when the active card flips. */
   --t: 0;
+
+  /* The card is drawn at its featured size and shrinks when it is not the
+     centred one */
+  --min-scale: calc(var(--card) / var(--card-active));
+  --scale: calc(var(--min-scale) + (1 - var(--min-scale)) * var(--t));
 
   position: relative;
   flex: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: calc(var(--card) * 1px);
-  height: calc(var(--card) * 1px);
-  padding: var(--space-24);
-  border-radius: var(--card-radius);
+  width: calc(var(--card-active) * 1px);
+  height: calc(var(--card-active) * 1px);
   overflow: hidden;
 
-  /* Sizes stay in CSS so the breakpoint still governs how big a featured card
-     gets — JS only supplies the eased progress between the two. */
-  transform: scale(calc(1 + (var(--card-active) / var(--card) - 1) * var(--t)));
-  background: color-mix(
-    in srgb,
-    var(--color-charcoal) calc(var(--t) * 100%),
-    transparent
-  );
+  margin-inline: calc((var(--card) - var(--card-active)) * 0.5px);
+  padding: var(--space-24);
+  border-radius: var(--card-radius);
+
+  transform: scale(var(--scale));
+
+  background: var(--color-charcoal);
   border-bottom: 1px solid var(--color-grey-700);
 }
 
-/* Ordering is the one thing that can't be continuous — z-index takes integers
-   only — so the nearest card still wins it outright. */
+/* Active card should be displayed above others */
 .cardActive {
   z-index: 2;
 }
@@ -101,19 +98,31 @@
   height: 100%;
   max-width: none;
   object-fit: cover;
-  opacity: calc(1 - 0.7 * var(--t));
   pointer-events: none;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
+  background-image: linear-gradient(
     to bottom,
-    rgba(17, 17, 17, 0) 0%,
+    transparent 0%,
     var(--color-charcoal) 100%
   );
   pointer-events: none;
+}
+
+.overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-charcoal);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.cardActive .overlay::before {
+  opacity: 0;
 }
 
 .logoWrap {
@@ -127,8 +136,8 @@
 
 .logo {
   display: block;
-  width: calc(var(--logo-w) * 1px * var(--card) / 280);
-  height: calc(var(--logo-h) * 1px * var(--card) / 280);
+  width: calc(var(--logo-w) * 1px * var(--card-active) / 280);
+  height: calc(var(--logo-h) * 1px * var(--card-active) / 280);
   max-width: 100%;
   object-fit: contain;
   opacity: var(--logo-opacity, 1);
@@ -138,13 +147,23 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  opacity: var(--t);
+  text-align: left;
+
+  @media (min-width: 768px) {
+    text-align: center;
+  }
 }
 
-.name {
+.text {
   color: var(--color-cream);
-}
+  font-size: var(--text-medium-size);
+  line-height: var(--text-medium-line-height);
+  font-weight: 500;
+  text-align: center;
 
-.tag {
-  color: var(--color-cream);
+  @media (min-width: 768px) {
+    font-size: var(--text-xlarge-size);
+    line-height: var(--text-xlarge-line-height);
+  }
 }

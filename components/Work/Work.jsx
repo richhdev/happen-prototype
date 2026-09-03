@@ -8,8 +8,7 @@ import {
 } from "motion/react";
 import { WORK } from "./data";
 import { Section } from "@/components/Section/Section";
-import { Heading2, Heading4 } from "@/components/Heading/Heading";
-import { TextSmall } from "@/components/Text/Text";
+import { Heading2 } from "@/components/Heading/Heading";
 import { Reveal, useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Work.module.css";
 
@@ -60,14 +59,11 @@ function WorkCard({ item, index, step, x, active, cardRef }) {
       </div>
 
       <div className={styles.content}>
-        <Heading4 as="h3" className={styles.name}>
-          {item.name}
-        </Heading4>
-        <TextSmall as="div" className={styles.tag}>
+        <div className={styles.text}>
           {item.tag.map((line) => (
             <div key={line}>{line}</div>
           ))}
-        </TextSmall>
+        </div>
       </div>
     </motion.article>
   );
@@ -79,9 +75,8 @@ export default function Work() {
   const [max, setMax] = useState(0);
   const [active, setActive] = useState(0);
 
-  // How far the track has to travel to bring the last card to the centre. Card
-  // widths are fixed (the featured card grows by transform), so this only has
-  // to be remeasured when the viewport changes.
+  // Determine how long the track needs to be to bring the last card to the centre of the viewport.
+  // Remeasured if the viewport resizes.
   useIsoLayoutEffect(() => {
     const measure = () => {
       const first = cardRefs.current[0];

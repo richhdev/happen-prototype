@@ -24,7 +24,6 @@ export const WORK = [
     logo: asset("/assets/client-btv.svg"),
     logoWidth: 170,
     logoHeight: 21,
-    logoOpacity: 0.82,
   },
   {
     name: "A3 Festival",
@@ -39,7 +38,6 @@ export const WORK = [
     logo: asset("/assets/client-a3.png"),
     logoWidth: 112,
     logoHeight: 22,
-    logoOpacity: 0.82,
   },
   {
     name: "Let Them Eat Cake",
