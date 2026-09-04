@@ -20,9 +20,8 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  /* The nav is fixed over the top of the pin, so centring in the whole viewport
-     parks the top row of cards underneath it. Reserving its height centres the
-     grid in the space below instead. */
+  /* The fixed nav sits over the pin, so reserving its height centres the grid
+     in the space below rather than parking the top row underneath it. */
   padding-top: var(--nav-height);
 
   @media (min-width: 641px) {
@@ -35,26 +34,20 @@
 .grid {
   --row-gap: var(--space-80);
   --col-gap: var(--space-16);
-  /* Slack left over after the grid is fitted, split evenly above and below it
-     by the centring. Half what it was: the nav height reserved above the pin
-     now supplies most of the room the top edge needs. */
+  /* Slack left after the grid is fitted, split above and below by the centring.
+     Only half the old value now the pin reserves the nav height above. */
   --fit-inset: var(--space-32);
 
   position: relative;
   display: grid;
-  /* minmax(0,...) rather than a bare 1fr: the cards hold nowrap link text, and
-     an auto minimum would let that content hold the columns open and push the
-     grid past the viewport on narrow screens. */
+  /* minmax(0,...) not 1fr: the cards' nowrap link text would otherwise hold the
+     columns open and push the grid past the viewport on narrow screens. */
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--row-gap) var(--col-gap);
 
-  /* Pinning only works if the whole grid fits the viewport it is pinned to, and
-     at design size it is over 1000px tall — taller than a laptop. The cards are
-     a fixed ratio, so height is a function of width, and that inverts: this is
-     the width at which the two rows plus the gap between them come to exactly
-     the height available, once the nav strip reserved above is taken off it.
-     0.8316 is 390/469, the card ratio. Below the 900px design width the grid
-     simply scales down rather than overflowing the pin. */
+  /* The grid must fit the viewport it's pinned to, and at design size it is over
+     1000px tall. Cards are a fixed ratio, so this inverts height to width: the
+     width at which two rows plus the gap fill the height left under the nav. */
   width: 100%;
   max-width: min(
     900px,
@@ -72,9 +65,6 @@
   }
 }
 
-/* Spans the whole grid and centres the title inside it, which lands it in the
-   row gap. Absolute, so the two rows stay a plain 2x2 rather than the heading
-   becoming a third row of its own. */
 .headingWrap {
   position: absolute;
   inset: 0;
@@ -93,15 +83,11 @@
 
 /* Card ------------------------------------------------------------------- */
 
-/* Desktop cards are 390x469 and mobile 182x218 — near enough the same ratio
-   that one aspect-ratio covers both and the card just fills its grid column. */
 .card {
-  /* How far this card has travelled, 0 (small, gathered at the centre) to 1
-     (full size in its grid slot), written every frame from scroll progress. */
+  /* How far this card has travelled, 0 - 1 */
   --travelled: 0;
 
-  /* Like the work cards: laid out at its finished size, so the animation is
-     only a scale down and --travelled: 1 leaves the card untransformed. */
+  /* The cards start poisition is scaled down, scales to 1 as they travel. */
   --zoom-from: 0.6;
   --scale: calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--travelled));
 
@@ -142,19 +128,12 @@
   transform-origin: var(--ox) var(--oy);
   will-change: transform;
 
-  /* Everything inside sizes off the card, not the viewport. When the grid is
-     scaled down to fit a short pinned viewport a card can end up 185px wide on
-     a 1280px screen — on a viewport query it would still be serving the 390px
-     desktop layout and the bio would pour straight out of the card. */
   container-type: inline-size;
 
-  /* The heading nearly doubles at this breakpoint and the cards grow with it,
-     so it wants a wider margin, not just the taller line box. */
   @media (min-width: 768px) {
     --heading-inset: var(--space-24);
   }
 
-  /* The gather is scroll-position dressing — hold the cards in their slots. */
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }

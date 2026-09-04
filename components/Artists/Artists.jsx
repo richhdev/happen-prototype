@@ -75,9 +75,9 @@ export default function Artists() {
       <div ref={trackRef} className={styles.track}>
         <div className={styles.pinned}>
           <div className={styles.grid}>
-            <Reveal className={styles.headingWrap}>
+            <div className={styles.headingWrap}>
               <Heading2 className={styles.heading}>Our artists</Heading2>
-            </Reveal>
+            </div>
 
             {ARTISTS.map((artist, i) => (
               <ArtistCard
