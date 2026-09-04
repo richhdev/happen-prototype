@@ -33,7 +33,7 @@
 }
 
 .title {
-  color: #e2231a;
+  color: var(--color-red);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -75,7 +75,7 @@
   opacity: 1;
 }
 
-button.menuToggle {
+.menuToggle {
   display: block;
   color: var(--color-white);
   background: transparent;
