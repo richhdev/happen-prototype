@@ -235,13 +235,6 @@
   /* The shut state carries no transition, so the bio is gone the frame the
      card starts home. Easing it back out left the text sliding on its own
      while the card flew the other way, which read as two separate moves. */
-
-  @container (min-width: 320px) {
-    grid-template-rows: 1fr;
-    padding-block: var(--space-8);
-    margin-block-end: 0;
-    opacity: 1;
-  }
 }
 
 .bio {
