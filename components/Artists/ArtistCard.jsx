@@ -88,7 +88,12 @@ export function ArtistCard({
             {artist.genre}
           </Badge>
 
-          <TextMedium className={styles.bio}>{artist.bio}</TextMedium>
+          {/* The box, not the text, is what opens: it collapses to nothing
+              while the card is shut so the bio can grow the content upwards
+              instead of appearing in one frame. */}
+          <div className={styles.bioBox}>
+            <TextMedium className={styles.bio}>{artist.bio}</TextMedium>
+          </div>
 
           <div className={styles.links}>
             {artist.links.map((link) => (

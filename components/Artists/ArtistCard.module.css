@@ -214,14 +214,41 @@
   color: var(--color-charcoal);
 }
 
-.bio {
-  display: none;
-  color: var(--color-cream);
+/* Toggling the bio's `display` shunted the rest of the content up in a single
+   frame as the card opened. Instead the box around it is a one-row grid that
+   goes from 0fr to 1fr, so it has a height to animate; the content is anchored
+   to the bottom of the card, so the row opening pushes the name, badge and
+   links up out of the way as it grows. */
+.bioBox {
+  display: grid;
+  grid-template-rows: 0fr;
+  /* The collapsed box is still a flex item, so it still draws a gap either
+     side of itself. This drops one of them, leaving the shut card with the
+     same badge-to-links gap it had when the bio wasn't in the flow at all. */
+  margin-block-end: calc(-1 * var(--space-8));
+  /* The bio's own breathing room lives out here on the container: padding on
+     the row's item would hold the collapsed row open at the height of that
+     padding, where the container's collapses with everything else. */
+  padding-block: 0;
+  overflow: hidden;
+  opacity: 0;
+  /* The shut state carries no transition, so the bio is gone the frame the
+     card starts home. Easing it back out left the text sliding on its own
+     while the card flew the other way, which read as two separate moves. */
 
   @container (min-width: 320px) {
-    display: block;
+    grid-template-rows: 1fr;
     padding-block: var(--space-8);
+    margin-block-end: 0;
+    opacity: 1;
   }
+}
+
+.bio {
+  /* A grid item's automatic minimum size would hold the row open at the text's
+     full height, which is exactly what the 0fr is trying to take away. */
+  min-height: 0;
+  color: var(--color-cream);
 }
 
 .links {
@@ -253,9 +280,25 @@
   padding: var(--space-24);
 }
 
-.cardActive .bio {
-  display: block;
+/* An open card shows its bio whatever width it lands at, including under the
+   320px the container query above switches at. */
+.cardActive .bioBox {
+  grid-template-rows: 1fr;
   padding-block: var(--space-8);
+  margin-block-end: 0;
+  opacity: 1;
+  /* Only the opening state transitions — a transition belongs to the state
+     being moved to, so this runs on the way in and nothing runs on the way
+     out. */
+  transition:
+    grid-template-rows 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    padding-block 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    margin-block-end 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 300ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .cardActive .links {
