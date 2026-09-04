@@ -1,15 +1,19 @@
 .services {
-  --row-min-height: 225px;
-  /* The gaps the pinned surface leaves above and below itself in the viewport. */
+  --list-item-min-height: 300px;
+  /* Gaps the pinned surface leaves above and below itself in the viewport. */
   --surface-top: var(--space-80);
   --surface-bottom: var(--space-80);
-  /* How far the card clears the bottom edge of the surface; 0 sits it flush,
-     a negative value overhangs. Moving it re-times the list on its own — the
-     runway below the last row is measured from it. */
+  /* How far the card clears the surface's bottom edge; negative overhangs.
+     The list's runway is measured from it, so moving it re-times the list. */
   --card-inset: 0px;
-  /* The card is square and fills the width it is given, so this is its height
-     as well — the list needs it to work out how much runway to leave. */
+  /* The card is square and fills its width, so this is its height too — the
+     list needs it to work out how much runway to leave. */
   --card-size: min(100vw - 96px, 50vh);
+  /* How grown the surface is: 0 framed inside the section, 1 filling the
+     viewport. Written every frame from scroll progress, so it is scrubbed
+     rather than timed. The card's sticky window opens by the same amount,
+     or the two would stop unpinning together. */
+  --p: 0;
 
   @media (min-width: 768px) {
     --surface-top: var(--space-120);
@@ -19,53 +23,47 @@
 
 /* Surface and card ------------------------------------------------------- */
 
-/* One overlay for both of the section's fixtures. It has to be an overlay
-   rather than a wrapper because they hold still while the title and list scroll
-   through them, so it can't be the element containing those. No z-index of its
-   own: without one it raises no stacking context, which is what lets the two
-   settle on opposite sides of the copy. */
-.surface {
+/* A layer each, rather than one shared overlay: a sticky box is still in flow,
+   so two in the same box would stack, and the surface's near-viewport height
+   would push the card down. Both are out of flow and fill the section's content
+   box, which is the box each one pins inside. Both layers and the copy between
+   them are positioned, so document order alone paints surface, copy, card —
+   no z-index anywhere in the section. */
+.surfaceLayer,
+.cardLayer {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-rows: 100%;
   pointer-events: none;
 }
 
-/* Both fixtures pin independently from the top of the overlay. Sharing one grid
-   cell is what stops normal flow stacking them: a sticky box is still in flow,
-   so the surface's near-viewport height would otherwise push the card below it. */
-.surfaceBg,
-.cardSticky {
-  grid-area: 1 / 1;
-  align-self: start;
-}
-
-.surfaceBg {
+/* The gaps close as --p runs to 1, growing the surface onto the viewport edges
+   while it stays pinned. Margin percentages resolve against the containing
+   block — the section's centred content width — so `50% - 50vw` reaches the
+   viewport edge without measuring anything in JS. */
+.surface {
   position: sticky;
-  top: var(--surface-top);
-  height: calc(100vh - var(--surface-top) - var(--surface-bottom));
-  border-radius: var(--radius-large);
+  top: calc(var(--surface-top) * (1 - var(--p)));
+  height: calc(
+    100vh - (var(--surface-top) + var(--surface-bottom)) * (1 - var(--p))
+  );
+  margin-left: calc((50% - 50vw) * var(--p));
+  margin-right: calc((50% - 50vw) * var(--p));
+  border-radius: calc(var(--radius-large) * (1 - var(--p)));
   background: var(--color-cream);
   mix-blend-mode: screen;
 
-  /* Stops short of the right edge so the card hangs over it. */
+  /* Holds short of the right edge, grown or not: the card needs an edge to
+     hang over. */
   @media (min-width: 768px) {
     margin-right: var(--space-120);
   }
 }
 
-/* Sticky boxes stay pinned while their margin box fits the overlay, so the two
-   margins here buy the card the same travel the surface gets: they start together,
-   because the surface settles as soon as the section clears its own top gap and
-   this box is a viewport tall, and they leave together, so the last row meets
-   the card before either moves. Neither margin shifts the card once pinned. */
 .cardSticky {
   position: sticky;
   top: 0;
-  z-index: 2;
-  margin-top: calc(-1 * var(--surface-top));
-  margin-bottom: calc(-1 * var(--surface-bottom));
+  margin-top: calc(-1 * var(--surface-top) * (1 - var(--p)));
+  margin-bottom: calc(-1 * var(--surface-bottom) * (1 - var(--p)));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,9 +83,9 @@
 
 /* Copy ------------------------------------------------------------------- */
 
-.container {
+/* Positioned so it paints in document order with the two layers, between them. */
+.copy {
   position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -130,35 +128,30 @@
 }
 
 /* List ------------------------------------------------------------------- */
-
-/* The runway below the last row is what lets it travel up to the focus line —
-   everything below it in the viewport has to be scrollable past. Both tails are
-   measured so the end of the section lands on the bottom of the surface, and the
-   surface unpins just as the last row arrives: mobile focuses on the top edge of
-   the card, desktop on its centre line. */
 .list {
   display: flex;
   flex-direction: column;
   padding-top: var(--space-64);
-  padding-bottom: calc(var(--card-inset) + var(--card-size));
+  /* runway makes sure the last list item can reach the focus line before section unsticks */
+  padding-bottom: calc(
+    var(--card-inset) + var(--card-size) + var(--surface-bottom)
+  );
 
   @media (min-width: 768px) {
     width: 721px;
     max-width: 100%;
     padding-top: 175px;
-    padding-bottom: calc(50vh - 160px);
+    padding-bottom: calc(50vh - 160px + var(--surface-bottom));
   }
 }
 
-.row {
+.listItem {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-8);
-  /* A floor, not a fixed height: the longest titles and meta lines wrap on
-     narrow viewports and the row has to grow rather than run into its neighbour. */
-  min-height: var(--row-min-height);
+  min-height: var(--list-item-min-height);
   padding: var(--space-8) var(--space-4);
   border: 0;
   background: none;
@@ -167,26 +160,19 @@
   cursor: pointer;
   color: var(--color-charcoal);
   opacity: 0.5;
+  text-wrap: balance;
   transition:
     color 320ms ease,
     opacity 320ms ease;
 }
 
-.row[data-active] {
+.listItem[data-active] {
   color: var(--color-red);
   opacity: 1;
 }
 
-/* Both wrap on narrow viewports — the longest of each run past 320px. */
-.rowTitle,
-.rowMeta {
-  text-wrap: balance;
-}
-
 /* Card ------------------------------------------------------------------ */
 
-/* --card-size caps the width, not the height — the card is square, so clamping
-   the height would leave the width at 100% and break the ratio. */
 .card {
   position: relative;
   width: 100%;
@@ -203,8 +189,6 @@
   }
 }
 
-/* All ten stack; only the active one is opaque, so the swap is a plain CSS
-   cross-fade of image and copy together. */
 .slide {
   position: absolute;
   inset: 0;

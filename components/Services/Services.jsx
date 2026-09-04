@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { cubicBezier, motion, useScroll, useTransform } from "motion/react";
 import { SERVICES } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2, Heading3 } from "@/components/Heading/Heading";
@@ -10,14 +11,26 @@ import styles from "./Services.module.css";
 const centre = (r) => r.top + r.height / 2;
 
 export default function Services() {
-  const rowRefs = useRef([]);
+  const sectionRef = useRef(null);
+  const itemRefs = useRef([]);
   const [active, setActive] = useState(0);
+
+  // Track the section's scroll progress while the section is sticky
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Ease the growth of the cream surface, so it doesn't slam into the viewport edges
+  const grown = useTransform(scrollYProgress, [0, 1], [0, 1], {
+    ease: cubicBezier(0.45, 0, 0.55, 1),
+  });
 
   const sync = useCallback(() => {
     const line = window.innerHeight / 2;
     let best = 0;
     let bestDist = Infinity;
-    rowRefs.current.forEach((node, i) => {
+    itemRefs.current.forEach((node, i) => {
       if (!node) return;
       const dist = Math.abs(centre(node.getBoundingClientRect()) - line);
       if (dist < bestDist) {
@@ -37,22 +50,30 @@ export default function Services() {
     };
   }, [sync]);
 
-  // Scroll listeners only fire on later updates, so the card would show service
-  // one until the first scroll — wrong on a reload part-way down the page.
   useIsoLayoutEffect(sync, [sync]);
 
-  const scrollToRow = (i) => {
-    const node = rowRefs.current[i];
-    if (!node) return;
+  // Scroll to a specific service item
+  const scrollToItem = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     window.scrollBy({
-      top: centre(node.getBoundingClientRect()) - window.innerHeight / 2,
+      top: centre(rect) - window.innerHeight / 2,
       behavior: "smooth",
     });
   };
 
   return (
-    <Section id="a-services" className={styles.services}>
-      <div className={styles.container}>
+    <Section
+      as={motion.section}
+      id="a-services"
+      className={styles.services}
+      ref={sectionRef}
+      style={{ "--p": grown }}
+    >
+      <div className={styles.surfaceLayer} aria-hidden>
+        <div className={styles.surface} />
+      </div>
+
+      <div className={styles.copy}>
         <div className={styles.head}>
           <Heading2 className={styles.heading}>How we make it Happen</Heading2>
           <TextMedium className={styles.intro}>
@@ -66,24 +87,21 @@ export default function Services() {
             <button
               key={service.title}
               type="button"
-              ref={(el) => (rowRefs.current[i] = el)}
-              onClick={() => scrollToRow(i)}
-              className={styles.row}
+              ref={(el) => (itemRefs.current[i] = el)}
+              onClick={scrollToItem}
+              className={styles.listItem}
               data-active={i === active ? "" : undefined}
             >
-              <Heading3 as="span" sentence className={styles.rowTitle}>
+              <Heading3 as="span" sentence>
                 {service.title}
               </Heading3>
-              <TextOverline className={styles.rowMeta}>
-                {service.meta}
-              </TextOverline>
+              <TextOverline>{service.meta}</TextOverline>
             </button>
           ))}
         </div>
       </div>
 
-      <div className={styles.surface} aria-hidden>
-        <div className={styles.surfaceBg} />
+      <div className={styles.cardLayer} aria-hidden>
         <div className={styles.cardSticky}>
           <div className={styles.card}>
             {SERVICES.map((service, i) => (

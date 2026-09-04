@@ -5,10 +5,11 @@ export function Section({
   className,
   innerClassName,
   children,
+  ref,
   ...rest
 }) {
   return (
-    <Tag className={`${styles.section} ${className ?? ""}`} {...rest}>
+    <Tag ref={ref} className={`${styles.section} ${className ?? ""}`} {...rest}>
       <div className={`${styles.inner} ${innerClassName ?? ""}`}>
         {children}
       </div>
