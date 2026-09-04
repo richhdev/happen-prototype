@@ -1,68 +1,24 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { Reveal } from "@/components/ui";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useReducedMotion, useScroll } from "motion/react";
 import { ARTISTS } from "./data";
+import { ArtistCard } from "./ArtistCard";
 import { Section } from "@/components/Section/Section";
-import { Heading2, Heading4 } from "@/components/Heading/Heading";
-import { TextMedium } from "@/components/Text/Text";
-import { Badge } from "@/components/Badge/Badge";
+import { Heading2 } from "@/components/Heading/Heading";
 import styles from "./Artists.module.css";
 
-/**
- * How far a card has travelled, 0 (small, gathered at the centre) to 1 (full
- * size in its slot). Cards start in turn across STAGGER, each takes DURATION.
- */
-function useSettle(progress, index) {
-  const STAGGER = 0.35;
-  const DURATION = 0.45;
-  const start = (index / ARTISTS.length) * STAGGER;
-  return useTransform(progress, [start, start + DURATION], [0, 1], {
-    clamp: true,
-  });
-}
-
-function ArtistCard({ artist, index, progress }) {
-  const settle = useSettle(progress, index);
-
-  return (
-    <motion.article className={styles.card} style={{ "--travelled": settle }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={artist.img} alt="" className={styles.image} />
-      <div className={styles.overlay} />
-
-      <div className={styles.content}>
-        <Heading4 as="h3" className={styles.name}>
-          {artist.name}
-        </Heading4>
-
-        <Badge color="red" className={styles.badge}>
-          {artist.genre}
-        </Badge>
-
-        <TextMedium className={styles.bio}>{artist.bio}</TextMedium>
-
-        <div className={styles.links}>
-          {artist.links.map((link) => (
-            <TextMedium
-              key={link.label}
-              as="a"
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.link}
-            >
-              <span className={styles.linkLabel}>{link.label}</span> ↗
-            </TextMedium>
-          ))}
-        </div>
-      </div>
-    </motion.article>
-  );
-}
+/* How far from the pin's rest point the viewer has to scroll before the open
+   card closes, as a share of the viewport. Proportional rather than a fixed
+   distance, so the buffer feels the same on a phone as on a desktop. */
+const CLOSE_FRACTION = 1 / 3;
 
 export default function Artists() {
   const trackRef = useRef(null);
+  // Where the pin comes to rest, and so where an open card sits.
+  const restTopRef = useRef(0);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const isOpen = activeIndex !== null;
+  const reduceMotion = useReducedMotion();
 
   // Track the scroll progress of the sticky section
   const { scrollYProgress } = useScroll({
@@ -70,10 +26,67 @@ export default function Artists() {
     offset: ["start start", "end end"],
   });
 
+  // The far end of the pin, where the cards have finished settling. Opening a
+  // card scrolls here so the grid behind it is at rest rather than caught
+  // mid-zoom.
+  const scrollToRest = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const { top, height } = track.getBoundingClientRect();
+    restTopRef.current = top + window.scrollY + height - window.innerHeight;
+    window.scrollTo({
+      top: restTopRef.current,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [reduceMotion]);
+
+  const toggle = (index) => {
+    if (index === activeIndex) {
+      setActiveIndex(null);
+      return;
+    }
+    setActiveIndex(index);
+    scrollToRest();
+  };
+
+  // Scrolling away in either direction closes the open card: the card is only
+  // legible with the grid parked at the end of the pin, and it can't follow the
+  // section out of the viewport.
+  useEffect(() => {
+    if (!isOpen) return;
+    // Opening scrolls to the rest point itself, and that scroll can still be in
+    // flight here. Distance to the rest point tells the two apart without a
+    // timer to guess at: ours only ever closes it, the viewer's opens it up.
+    let lastDrift = Infinity;
+    const closeDistance = window.innerHeight * CLOSE_FRACTION;
+    const onScroll = () => {
+      const drift = Math.abs(window.scrollY - restTopRef.current);
+      const movingAway = drift > lastDrift;
+      lastDrift = drift;
+      if (movingAway && drift > closeDistance) setActiveIndex(null);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [activeIndex, isOpen]);
+
+  // Escape closes the open card, alongside the dim layer's click-away.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => e.key === "Escape" && setActiveIndex(null);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isOpen]);
+
   return (
     <Section id="b-artists" className={styles.artists}>
       <div ref={trackRef} className={styles.track}>
         <div className={styles.pinned}>
+          <div
+            className={`${styles.dim} ${isOpen ? styles.dimVisible : ""}`}
+            onClick={() => setActiveIndex(null)}
+            aria-hidden="true"
+          />
+
           <div className={styles.grid}>
             <div className={styles.headingWrap}>
               <Heading2 className={styles.heading}>Our artists</Heading2>
@@ -85,6 +98,9 @@ export default function Artists() {
                 artist={artist}
                 index={i}
                 progress={scrollYProgress}
+                active={i === activeIndex}
+                dimmed={isOpen && i !== activeIndex}
+                onToggle={() => toggle(i)}
               />
             ))}
           </div>

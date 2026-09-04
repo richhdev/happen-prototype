@@ -1,0 +1,265 @@
+/* The grid slot. Holds the scroll-settle transform and, because it keeps its
+   own height, stops the row collapsing when the active card lifts out of it. */
+.wrap {
+  /* How far this card has travelled, 0 - 1 */
+  --travelled: 0;
+
+  /* The cards start poisition is scaled down, scales to 1 as they travel. */
+  --zoom-from: 0.6;
+  --scale: calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--travelled));
+
+  /* The gaps the shrunken cluster should show. Grid gaps are absolute px and
+     don't shrink with the cards, so scaling about each card's own centre would
+     leave the four spread apart — hence the pushed-out origin below. */
+  --start-gap-x: var(--space-8);
+  /* The heading sits in the row gap, so keep its line box plus a margin either
+     side. Must stay under --row-gap, or the rows open instead of closing. */
+  --heading-inset: var(--space-16);
+  --start-gap-y: calc(var(--heading2-line-height) + 2 * var(--heading-inset));
+
+  /* `gap - 2d(1 - zoom-from) = start-gap` solved for d, the distance from the
+     card's inner edge out to the origin. Irrelevant at --travelled: 1, where a
+     scale of 1 is the identity transform wherever its origin sits. */
+  --origin-x: calc(
+    (var(--col-gap) - var(--start-gap-x)) / (2 * (1 - var(--zoom-from)))
+  );
+  --origin-y: calc(
+    (var(--row-gap) - var(--start-gap-y)) / (2 * (1 - var(--zoom-from)))
+  );
+  /* Which corner the card gathers towards. The grid is a fixed 2x2, so the
+     quadrant is decided here in CSS, not passed down from the component. */
+  --ox: calc(100% + var(--origin-x));
+  --oy: calc(100% + var(--origin-y));
+
+  width: 100%;
+  aspect-ratio: 390 / 469;
+
+  /* Above the backdrop dim, so an open card doesn't take the other three out
+     of reach — the veil below dims them without covering them. */
+  z-index: 3;
+  transform: scale(var(--scale));
+  transform-origin: var(--ox) var(--oy);
+  will-change: transform;
+
+  @media (min-width: 768px) {
+    --heading-inset: var(--space-24);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+}
+
+/* Only articles are counted, so the heading div doesn't shift the quadrants. The left column and top row gather towards their
+   bottom-right, which is the default above; the other two mirror it. */
+.wrap:nth-of-type(even) {
+  --ox: calc(0px - var(--origin-x));
+}
+
+.wrap:nth-of-type(n + 3) {
+  --oy: calc(0px - var(--origin-y));
+}
+
+/* A transform — or the will-change that promotes it — makes the wrapper the
+   containing block for the absolutely positioned card below, which would pin
+   it inside its own slot instead of centring it on the grid. The card only
+   opens once the settle has finished, where the scale is the identity anyway,
+   so dropping both here costs nothing.
+
+   The z-index has to be raised here rather than on the card: a grid item with
+   a z-index is a stacking context, so the card can never climb past its own
+   wrapper's level however high its own z-index goes. */
+.wrapActive {
+  z-index: 5;
+  transform: none;
+  will-change: auto;
+}
+
+/* A card that has just closed keeps a lift over the idle three until it has
+   landed back in its slot — dropping it the moment the class went would let
+   them paint over it mid-flight. It stays below an incoming card, so switching
+   still reads as one card handing over to the next. */
+.wrapReturning {
+  z-index: 4;
+}
+
+/* Card -------------------------------------------------------------------- */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-large);
+  border-bottom: 1px solid var(--color-grey-700);
+  overflow: hidden;
+
+  container-type: inline-size;
+}
+
+/* Centred in the grid box, at the size the design draws a card at, so the
+   contents lay out for real rather than being scaled up. `inset: 0` with a
+   fixed size and `margin: auto` centres on both axes without a transform,
+   which the layout animation is free to use. */
+.cardActive {
+  --active-height: min(
+    469px,
+    calc(100vh - var(--nav-height) - 2 * var(--space-32))
+  );
+  --active-width: min(
+    390px,
+    calc(var(--active-height) * 390 / 469),
+    calc(100vw - 2 * var(--layout-padding-x))
+  );
+
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--active-width);
+  height: calc(var(--active-width) * 469 / 390);
+}
+
+/* Dims a card while another one is open. The backdrop layer can't do this any
+   more now the cards sit above it, and doing it per card is what keeps them
+   clickable: the veil never takes a pointer event. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: rgba(17, 17, 17, 0.72);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.cardDimmed::after {
+  opacity: 1;
+}
+
+/* A dimmed card is one target: clicking it swaps the open card rather than
+   following a link the viewer can barely read. */
+.cardDimmed .link {
+  pointer-events: none;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 17, 17, 0) 0%,
+    var(--color-charcoal) 100%
+  );
+  pointer-events: none;
+}
+
+/* Covers the card, but sits under .content so the links keep their own hit
+   area in both states. */
+.toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.toggleLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-16);
+  /* Lets a click anywhere but a link fall through to the toggle beneath, which
+     matters most on the small cards, where the text covers the card's middle. */
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+
+  @container (min-width: 320px) {
+    padding: var(--space-24);
+  }
+}
+
+.name {
+  color: var(--color-white);
+}
+
+.badge {
+  color: var(--color-charcoal);
+}
+
+.bio {
+  display: none;
+  color: var(--color-cream);
+
+  @container (min-width: 320px) {
+    display: block;
+    padding-block: var(--space-8);
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  @container (min-width: 320px) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-16);
+  }
+}
+
+.link {
+  pointer-events: auto;
+  color: var(--color-cream);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.linkLabel {
+  text-decoration: underline;
+}
+
+/* The open card always reads as the full design, even where it lands under the
+   320px the container queries above switch at. */
+.cardActive .content {
+  padding: var(--space-24);
+}
+
+.cardActive .bio {
+  display: block;
+  padding-block: var(--space-8);
+}
+
+.cardActive .links {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-16);
+}

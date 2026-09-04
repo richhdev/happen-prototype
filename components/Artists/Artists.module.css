@@ -81,146 +81,26 @@
   white-space: nowrap;
 }
 
-/* Card ------------------------------------------------------------------- */
+/* The dim layer between the open card and the rest of the section. It fills
+   the pin, which is the section's whole visible area while a card can be
+   opened, and stops there — the nav above it stays live. The grid isn't a
+   stacking context, so the cards inside it still order against this directly.
 
-.card {
-  /* How far this card has travelled, 0 - 1 */
-  --travelled: 0;
-
-  /* The cards start poisition is scaled down, scales to 1 as they travel. */
-  --zoom-from: 0.6;
-  --scale: calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--travelled));
-
-  /* The gaps the shrunken cluster should show. Grid gaps are absolute px and
-     don't shrink with the cards, so scaling about each card's own centre would
-     leave the four spread apart — hence the pushed-out origin below. */
-  --start-gap-x: var(--space-8);
-  /* The heading sits in the row gap, so keep its line box plus a margin either
-     side. Must stay under --row-gap, or the rows open instead of closing. */
-  --heading-inset: var(--space-16);
-  --start-gap-y: calc(var(--heading2-line-height) + 2 * var(--heading-inset));
-
-  /* `gap - 2d(1 - zoom-from) = start-gap` solved for d, the distance from the
-     card's inner edge out to the origin. Irrelevant at --travelled: 1, where a
-     scale of 1 is the identity transform wherever its origin sits. */
-  --origin-x: calc(
-    (var(--col-gap) - var(--start-gap-x)) / (2 * (1 - var(--zoom-from)))
-  );
-  --origin-y: calc(
-    (var(--row-gap) - var(--start-gap-y)) / (2 * (1 - var(--zoom-from)))
-  );
-  /* Which corner the card gathers towards. The grid is a fixed 2x2, so the
-     quadrant is decided here in CSS, not passed down from the component. */
-  --ox: calc(100% + var(--origin-x));
-  --oy: calc(100% + var(--origin-y));
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  width: 100%;
-  aspect-ratio: 390 / 469;
-  border-radius: var(--radius-large);
-  border-bottom: 1px solid var(--color-grey-700);
-  overflow: hidden;
-
-  transform: scale(var(--scale));
-  transform-origin: var(--ox) var(--oy);
-  will-change: transform;
-
-  container-type: inline-size;
-
-  @media (min-width: 768px) {
-    --heading-inset: var(--space-24);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
-  }
-}
-
-/* The heading is a div and the cards are articles, so of-type counts the four
-   cards on their own. The left column and top row gather towards their
-   bottom-right, which is the default above; the other two mirror it. */
-.card:nth-of-type(even) {
-  --ox: calc(0px - var(--origin-x));
-}
-
-.card:nth-of-type(n + 3) {
-  --oy: calc(0px - var(--origin-y));
-}
-
-.image {
+   The horizontal inset undoes the section's padding and centred max-width, so
+   the layer reaches the section's own edges instead of stopping at the column
+   the cards are laid out in. */
+.dim {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
+  inset: 0 calc(50% - 50vw);
+  z-index: 2;
+  background: rgba(17, 17, 17, 0.72);
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 300ms ease;
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(17, 17, 17, 0) 0%,
-    var(--color-charcoal) 100%
-  );
-  pointer-events: none;
-}
-
-.content {
-  position: relative;
-  padding: var(--space-16);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-8);
-
-  @container (min-width: 320px) {
-    padding: var(--space-24);
-  }
-}
-
-.name {
-  color: var(--color-white);
-}
-
-.badge {
-  color: var(--color-charcoal);
-}
-
-.bio {
-  display: none;
-  color: var(--color-cream);
-
-  @container (min-width: 320px) {
-    display: block;
-    padding-block: var(--space-8);
-  }
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  @container (min-width: 320px) {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-16);
-  }
-}
-
-.link {
-  color: var(--color-cream);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.linkLabel {
-  text-decoration: underline;
+.dimVisible {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
 }
