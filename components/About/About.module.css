@@ -7,7 +7,8 @@
   width: 100%;
   padding-block: var(--space-64);
   border-radius: var(--radius-large);
-  background: var(--color-red);
+  /* background: var(--color-red); */
+  background: rgba(207, 08, 19, 0.8);
 
   @media (min-width: 768px) {
     padding: var(--space-120) var(--space-32);

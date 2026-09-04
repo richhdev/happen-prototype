@@ -132,7 +132,7 @@ export default function Work() {
 
   return (
     <>
-      <Ribbon name="services" />
+      {/* <Ribbon name="services" /> */}
       <Section id="b-work" className={styles.work}>
         <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
           <div className={styles.pinned}>

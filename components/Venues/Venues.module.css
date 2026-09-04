@@ -15,7 +15,8 @@
   margin-inline: auto;
   padding-block: var(--space-32);
   border-radius: var(--radius-large);
-  background: var(--color-cream);
+  /* background: var(--color-cream); */
+  background: rgba(255, 250, 242, 0.8);
 
   @media (min-width: 768px) {
     gap: var(--space-40);

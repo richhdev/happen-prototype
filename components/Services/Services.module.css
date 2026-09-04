@@ -50,8 +50,8 @@
   margin-left: calc((50% - 50vw) * var(--progress));
   margin-right: calc((50% - 50vw) * var(--progress));
   border-radius: var(--radius-large);
-  background: var(--color-cream);
-  mix-blend-mode: screen;
+  /* background: var(--color-cream); */
+  background: rgba(255, 250, 242, 0.8);
 
   /* Holds short of the right edge, grown or not: the card needs an edge to
      hang over. */
