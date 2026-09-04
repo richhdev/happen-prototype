@@ -31,7 +31,11 @@ export default function Services() {
   // so it travels the same way as the list scrolling past it, just slower.
   // Straight off scroll progress rather than the eased surface growth, or the
   // drift would stall in the middle of the section and hurry at both ends.
-  const ribbonDrift = useTransform(scrollYProgress, [0, 1], ["80px", "-80px"]);
+  const ribbonDrift = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["180px", "-180px"],
+  );
 
   const sync = useCallback(() => {
     const line = window.innerHeight / 2;

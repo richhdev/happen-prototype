@@ -12,6 +12,7 @@ import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";
 import { Reveal, useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Work.module.css";
+import Ribbon from "../Ribbons/Ribbons";
 
 // The red surface's pull-back curve: quick off the viewport edges, then easing
 // down into the frame. Roughly easeOutQuad — steeper front-loads the break away
@@ -130,33 +131,39 @@ export default function Work() {
   useIsoLayoutEffect(() => syncActive(x.get()), [syncActive, x]);
 
   return (
-    <Section id="b-work" className={styles.work}>
-      <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
-        <div className={styles.pinned}>
-          <motion.div className={styles.panel} style={{ "--progress": framed }}>
-            <div className={styles.surface} />
+    <>
+      <Ribbon name="services" />
+      <Section id="b-work" className={styles.work}>
+        <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
+          <div className={styles.pinned}>
+            <motion.div
+              className={styles.panel}
+              style={{ "--progress": framed }}
+            >
+              <div className={styles.surface} />
 
-            <Heading2 className={styles.heading}>
-              The proof is <br className="desktop-only" />
-              in the Happening
-            </Heading2>
+              <Heading2 className={styles.heading}>
+                The proof is <br className="desktop-only" />
+                in the Happening
+              </Heading2>
 
-            <motion.div className={styles.track} style={{ x }}>
-              {WORK.map((item, i) => (
-                <WorkCard
-                  key={item.name}
-                  item={item}
-                  index={i}
-                  step={step}
-                  x={x}
-                  active={i === active}
-                  cardRef={(el) => (cardRefs.current[i] = el)}
-                />
-              ))}
+              <motion.div className={styles.track} style={{ x }}>
+                {WORK.map((item, i) => (
+                  <WorkCard
+                    key={item.name}
+                    item={item}
+                    index={i}
+                    step={step}
+                    x={x}
+                    active={i === active}
+                    cardRef={(el) => (cardRefs.current[i] = el)}
+                  />
+                ))}
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+    </>
   );
 }

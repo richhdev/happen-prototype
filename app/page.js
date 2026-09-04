@@ -13,6 +13,7 @@ import Contact from "@/components/Contact/Contact";
 import Section from "@/components/Section/Section";
 import Testimonials from "@/components/Testimonials/Testimonials";
 import Hosts from "@/components/Hosts/Hosts";
+import Ribbon from "@/components/Ribbons/Ribbons";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -23,17 +24,22 @@ export default function Home() {
       <NavPlaceholder />
       <main className={styles.main}>
         <Hero />
+        <Ribbon name="events" />
         <Events />
         <Vendors />
         <Work />
+        <Ribbon name="services" />
         <Services />
+        <Ribbon name="artists" />
         <Artists />
         <Venues />
+        <Ribbon name="about" />
         <About />
         <Section innerClassName={styles.testimonialsHostsGroup}>
           <Testimonials />
           <Hosts />
         </Section>
+        <Ribbon name="instagram" />
         <Instagram />
         <Contact />
       </main>

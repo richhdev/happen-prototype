@@ -1,0 +1,61 @@
+/* Desktop only. The mobile design lays the same ribbons out differently —
+   bigger, turned further, and mostly off the left edge — so it is its own
+   composition rather than this one reflowed. */
+.anchor {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .anchor {
+    display: block;
+    position: relative;
+    /* Behind every section, above the fixed video backdrop: both sit at -1 in
+       the root stacking context, and this one comes later in the document. */
+    z-index: -1;
+    /* Takes no room on the boundary it marks. */
+    height: 0;
+    /* The ribbons are meant to run off both edges, so they overflow this box by
+       well over a thousand pixels either side. Cut that off here rather than
+       leaving it to `html { overflow-x: hidden }`, so a ribbon can never widen
+       the document. `clip` rather than `hidden` because only `clip` lets the
+       other axis stay visible — and it has to, since this box is zero-height
+       and the ribbon hangs out of it vertically by design. */
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+}
+
+/* The art's box before rotation, centred on the point the design puts it at.
+   Percentages resolve against the section-width marker, so `50%` is the page's
+   centre line whatever the viewport is doing.
+
+   Centred by subtracting half its own size rather than by a translate: the
+   scroll progress driving the drift is measured from this box's layout
+   position, which a transform would not move — the parallax would then run
+   half a ribbon-height late, most of it after the ribbon had left. */
+.box {
+  position: absolute;
+  left: calc(50% + var(--x) - var(--w) / 2);
+  top: calc(var(--y) - var(--h) / 2);
+  width: var(--w);
+  height: var(--h);
+  pointer-events: none;
+}
+
+/* The drift is written from scroll progress every frame; the rest of the
+   transform is the design's rotation. Drift comes first, so it stays in page
+   space rather than being turned with the art. */
+.ribbon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: translateY(var(--drift, 0px)) rotate(var(--rotate))
+    scaleY(var(--flip));
+  will-change: transform;
+
+  /* Beats the inherited value, since a declaration on the element itself wins
+     over inheritance — no JS branch needed. */
+  @media (prefers-reduced-motion: reduce) {
+    --drift: 0px;
+  }
+}

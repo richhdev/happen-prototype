@@ -88,6 +88,7 @@
    and there is no mobile design for the ribbon yet. */
 .ribbonLayer {
   display: none;
+  opacity: 0.25;
 
   @media (min-width: 768px) {
     display: block;
