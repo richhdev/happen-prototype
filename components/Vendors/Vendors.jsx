@@ -8,19 +8,13 @@ import { ButtonOutlineMedium } from "@/components/Button/Button";
 import { asset } from "@/lib/data";
 import styles from "./Vendors.module.css";
 
-function VendorTile({ event }) {
+function VendorCard({ event }) {
   return (
-    <div
-      className={styles.tile}
-      style={{
-        "--logo-h": `${event.logoHeight}px`,
-        "--logo-h-md": `${event.logoHeightMd}px`,
-      }}
-    >
+    <div className={styles.card}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.img} alt="" className={styles.tileImage} />
+      <img src={event.img} alt="" className={styles.cardImage} />
 
-      <div className={styles.tileBody}>
+      <div className={styles.cardBody}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={event.logo} alt={event.name} className={styles.logo} />
 
@@ -39,12 +33,12 @@ function VendorTile({ event }) {
 export default function Vendors() {
   return (
     <Section id="a-vendors" className={styles.section}>
-      <div className={styles.card}>
+      <div className={styles.surface}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={asset("/assets/bg-graphic.png")}
           alt=""
-          className={styles.cardImage}
+          className={styles.surfaceImage}
         />
 
         <div className={styles.copy}>
@@ -57,16 +51,16 @@ export default function Vendors() {
           </TextMedium>
         </div>
 
-        <div className={styles.tiles}>
+        <div className={styles.cards}>
           {VENDOR_EVENTS.map((event, i) => (
             <Reveal
               key={i}
-              className={styles.tileOuter}
+              className={styles.cardWrap}
               once={true}
               amount={0}
               delay={i * 130}
             >
-              <VendorTile event={event} />
+              <VendorCard event={event} />
             </Reveal>
           ))}
         </div>

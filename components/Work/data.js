@@ -13,9 +13,9 @@ export const WORK = [
     name: "Good Things Festival",
     tag: ["BOH Management, Nationwide", "Retail Precinct Management"],
     img: asset("/assets/work-good-things.jpg"),
-    logo: asset("/assets/client-goodthings-v2.png"),
+    logo: asset("/assets/client-good-things-v1.svg"),
     logoWidth: 180,
-    logoHeight: 40,
+    logoHeight: 45,
   },
   {
     name: "Beyond The Valley",

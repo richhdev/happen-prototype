@@ -3,6 +3,11 @@ import styles from "./TrustedBy.module.css";
 
 const CLIENTS = [
   { name: "Beyond The Valley", src: asset("/assets/client-btv.svg"), h: 26 },
+  {
+    name: "Good Things Festival",
+    src: asset("/assets/client-good-things-v1.svg"),
+    h: 28,
+  },
   { name: "Live Nation", src: asset("/assets/client-live-nation.png"), h: 26 },
   { name: "Novel", src: asset("/assets/client-novel.png"), h: 22 },
   { name: "Happy Hour", src: asset("/assets/client-happy-hour.png"), h: 30 },
