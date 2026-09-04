@@ -25,11 +25,12 @@
 
 /* A layer each, rather than one shared overlay: a sticky box is still in flow,
    so two in the same box would stack, and the surface's near-viewport height
-   would push the card down. Both are out of flow and fill the section's content
-   box, which is the box each one pins inside. Both layers and the copy between
-   them are positioned, so document order alone paints surface, copy, card —
-   no z-index anywhere in the section. */
+   would push the card down. All three are out of flow and fill the section's
+   content box, which is the box each one pins inside. The layers and the copy
+   between them are positioned, so document order alone paints surface, copy,
+   ribbon, card — no z-index anywhere in the section. */
 .surfaceLayer,
+.ribbonLayer,
 .cardLayer {
   position: absolute;
   inset: 0;
@@ -81,9 +82,53 @@
   }
 }
 
+/* Ribbon ----------------------------------------------------------------- */
+
+/* Desktop only. The stacked mobile layout puts the copy where the loop falls,
+   and there is no mobile design for the ribbon yet. */
+.ribbonLayer {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+/* Pins alongside the card, so the two travel together while the section is
+   sticky. */
+.ribbonSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+/* Anchored to the right of the content and hung half its width past it, so
+   the loop wraps the card and the rest runs off the screen — `html` already
+   hides the horizontal overflow that creates. Taller than the viewport by the
+   design's 1195/977, and height drives the width, so the graphic scales as
+   one. */
+.ribbon {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  height: 122vh;
+  width: auto;
+  max-width: none;
+  /* The drift is written from scroll progress every frame; the rest of the
+     transform is the anchoring above. */
+  transform: translate(50%, calc(-50% + var(--ribbon-drift, 0px)));
+  will-change: transform;
+
+  /* Beats the inherited value, since a declaration on the element itself wins
+     over inheritance — no JS branch needed. */
+  @media (prefers-reduced-motion: reduce) {
+    --ribbon-drift: 0px;
+  }
+}
+
 /* Copy ------------------------------------------------------------------- */
 
-/* Positioned so it paints in document order with the two layers, between them. */
+/* Positioned so it paints in document order with the layers, between them. */
 .copy {
   position: relative;
   display: flex;

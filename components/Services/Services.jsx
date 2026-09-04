@@ -6,6 +6,7 @@ import { Section } from "@/components/Section/Section";
 import { Heading2, Heading3 } from "@/components/Heading/Heading";
 import { TextMedium, TextOverline, TextXXLarge } from "@/components/Text/Text";
 import { useIsoLayoutEffect } from "@/components/ui";
+import { asset } from "@/lib/data";
 import styles from "./Services.module.css";
 
 const centre = (r) => r.top + r.height / 2;
@@ -25,6 +26,12 @@ export default function Services() {
   const grown = useTransform(scrollYProgress, [0, 1], [0, 1], {
     ease: cubicBezier(0.45, 0, 0.55, 1),
   });
+
+  // The ribbon creeps up with the page rather than sitting pinned to the card,
+  // so it travels the same way as the list scrolling past it, just slower.
+  // Straight off scroll progress rather than the eased surface growth, or the
+  // drift would stall in the middle of the section and hurry at both ends.
+  const ribbonDrift = useTransform(scrollYProgress, [0, 1], ["80px", "-80px"]);
 
   const sync = useCallback(() => {
     const line = window.innerHeight / 2;
@@ -67,7 +74,7 @@ export default function Services() {
       id="a-services"
       className={styles.services}
       ref={sectionRef}
-      style={{ "--progress": grown }}
+      style={{ "--progress": grown, "--ribbon-drift": ribbonDrift }}
     >
       <div className={styles.surfaceLayer} aria-hidden>
         <div className={styles.surface} />
@@ -98,6 +105,18 @@ export default function Services() {
               <TextOverline>{service.meta}</TextOverline>
             </button>
           ))}
+        </div>
+      </div>
+
+      <div className={styles.ribbonLayer} aria-hidden>
+        <div className={styles.ribbonSticky}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={asset("/assets/ribbon-services.png")}
+            alt=""
+            className={styles.ribbon}
+            loading="lazy"
+          />
         </div>
       </div>
 
