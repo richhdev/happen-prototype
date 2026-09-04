@@ -25,7 +25,7 @@
   /* How framed the red surface is, 0 (full-bleed over the whole viewport) to 1
      (inset to the panel box). Written every frame from the section's scroll
      progress, so the surface is scrubbed by the scrollbar. */
-  --p: 0;
+  --progress: 0;
 
   position: relative;
   display: flex;
@@ -47,14 +47,14 @@
    from a panel edge out to the matching viewport edge is (50vw - half the panel
    width) across and (50vh - half the panel height) down. Inset percentages
    resolve against the panel's own size, which is what makes `50% - 50vw` that
-   distance without measuring anything in JS. At --p: 1 both terms fall away and
-   the surface lands exactly on the panel box. */
+   distance without measuring anything in JS. At --progress: 1 both terms fall
+   away and the surface lands exactly on the panel box. */
 .surface {
   position: absolute;
-  top: calc((50% - 50vh) * (1 - var(--p)));
-  bottom: calc((50% - 50vh) * (1 - var(--p)));
-  left: calc((50% - 50vw) * (1 - var(--p)));
-  right: calc((50% - 50vw) * (1 - var(--p)));
+  top: calc((50% - 50vh) * (1 - var(--progress)));
+  bottom: calc((50% - 50vh) * (1 - var(--progress)));
+  left: calc((50% - 50vw) * (1 - var(--progress)));
+  right: calc((50% - 50vw) * (1 - var(--progress)));
   z-index: 0;
   border-radius: var(--radius-large);
   background: #b4111b;
@@ -87,12 +87,12 @@
   /* How centred this card is, 0 to 1. Written every frame from the pan offset,
      so the card's size and its caption are scrubbed by the scrollbar rather
      than transitioned on a timer when the active card flips. */
-  --t: 0;
+  --centred: 0;
 
   /* The card is drawn at its featured size and shrinks when it is not the
      centred one */
   --min-scale: calc(var(--card) / var(--card-active));
-  --scale: calc(var(--min-scale) + (1 - var(--min-scale)) * var(--t));
+  --scale: calc(var(--min-scale) + (1 - var(--min-scale)) * var(--centred));
 
   position: relative;
   flex: none;
@@ -175,7 +175,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  opacity: var(--t);
+  opacity: var(--centred);
   text-align: left;
 
   @media (min-width: 768px) {

@@ -9,30 +9,24 @@ import { TextMedium } from "@/components/Text/Text";
 import { Badge } from "@/components/Badge/Badge";
 import styles from "./Artists.module.css";
 
-// Both are fractions of the pinned scroll. The cards start in turn across the
-// first STAGGER of it and each takes DURATION to arrive, so the last one is
-// home around 70% in and the finished grid gets a beat to itself before the
-// section lets go.
-const STAGGER = 0.35;
-const DURATION = 0.45;
-
-// 0 while the card is zoomed out, 1 once it is full size in its grid slot.
-// Eased out cubic, so cards arrive gently rather than snapping into place.
+/**
+ * How far a card has travelled, 0 (small, gathered at the centre) to 1 (full
+ * size in its slot). Cards start in turn across STAGGER, each takes DURATION.
+ */
 function useSettle(progress, index) {
-  return useTransform(progress, (p) => {
-    const start = (index / ARTISTS.length) * STAGGER;
-    const t = Math.min(1, Math.max(0, (p - start) / DURATION));
-    return 1 - Math.pow(1 - t, 3);
+  const STAGGER = 0.35;
+  const DURATION = 0.45;
+  const start = (index / ARTISTS.length) * STAGGER;
+  return useTransform(progress, [start, start + DURATION], [0, 1], {
+    clamp: true,
   });
 }
 
 function ArtistCard({ artist, index, progress }) {
-  // Only the eased progress comes from JS; how far the card zooms is CSS, so
-  // it can be tuned per breakpoint without a second set of numbers here.
   const settle = useSettle(progress, index);
 
   return (
-    <motion.article className={styles.card} style={{ "--t": settle }}>
+    <motion.article className={styles.card} style={{ "--travelled": settle }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={artist.img} alt="" className={styles.image} />
       <div className={styles.overlay} />
@@ -70,10 +64,7 @@ function ArtistCard({ artist, index, progress }) {
 export default function Artists() {
   const trackRef = useRef(null);
 
-  // The track is taller than the viewport; the grid inside it sticks. Progress
-  // runs from the moment the top of the track reaches the top of the viewport
-  // to the moment its bottom comes back up — i.e. exactly the stretch the grid
-  // spends pinned, with every card on screen for all of it.
+  // Track the scroll progress of the sticky section
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
@@ -84,10 +75,6 @@ export default function Artists() {
       <div ref={trackRef} className={styles.track}>
         <div className={styles.pinned}>
           <div className={styles.grid}>
-            {/* Sits dead centre of the grid, in the gap between the two rows,
-                as in the design. Centred by inset + flex rather than a
-                translate, so the Reveal's own transform has nothing to fight
-                over. */}
             <Reveal className={styles.headingWrap}>
               <Heading2 className={styles.heading}>Our artists</Heading2>
             </Reveal>

@@ -67,7 +67,7 @@ export default function Services() {
       id="a-services"
       className={styles.services}
       ref={sectionRef}
-      style={{ "--p": grown }}
+      style={{ "--progress": grown }}
     >
       <div className={styles.surfaceLayer} aria-hidden>
         <div className={styles.surface} />

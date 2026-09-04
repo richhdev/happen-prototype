@@ -13,7 +13,7 @@
      viewport. Written every frame from scroll progress, so it is scrubbed
      rather than timed. The card's sticky window opens by the same amount,
      or the two would stop unpinning together. */
-  --p: 0;
+  --progress: 0;
 
   @media (min-width: 768px) {
     --surface-top: var(--space-120);
@@ -36,18 +36,18 @@
   pointer-events: none;
 }
 
-/* The gaps close as --p runs to 1, growing the surface onto the viewport edges
-   while it stays pinned. Margin percentages resolve against the containing
-   block — the section's centred content width — so `50% - 50vw` reaches the
-   viewport edge without measuring anything in JS. */
+/* The gaps close as --progress runs to 1, growing the surface onto the viewport
+   edges while it stays pinned. Margin percentages resolve against the
+   containing block — the section's centred content width — so `50% - 50vw`
+   reaches the viewport edge without measuring anything in JS. */
 .surface {
   position: sticky;
-  top: calc(var(--surface-top) * (1 - var(--p)));
+  top: calc(var(--surface-top) * (1 - var(--progress)));
   height: calc(
-    100vh - (var(--surface-top) + var(--surface-bottom)) * (1 - var(--p))
+    100vh - (var(--surface-top) + var(--surface-bottom)) * (1 - var(--progress))
   );
-  margin-left: calc((50% - 50vw) * var(--p));
-  margin-right: calc((50% - 50vw) * var(--p));
+  margin-left: calc((50% - 50vw) * var(--progress));
+  margin-right: calc((50% - 50vw) * var(--progress));
   border-radius: var(--radius-large);
   background: var(--color-cream);
   mix-blend-mode: screen;
@@ -62,8 +62,8 @@
 .cardSticky {
   position: sticky;
   top: 0;
-  margin-top: calc(-1 * var(--surface-top) * (1 - var(--p)));
-  margin-bottom: calc(-1 * var(--surface-bottom) * (1 - var(--p)));
+  margin-top: calc(-1 * var(--surface-top) * (1 - var(--progress)));
+  margin-bottom: calc(-1 * var(--surface-bottom) * (1 - var(--progress)));
   display: flex;
   flex-direction: column;
   align-items: center;

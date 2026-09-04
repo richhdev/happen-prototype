@@ -93,30 +93,40 @@
 
 /* Card ------------------------------------------------------------------- */
 
-/* The design's cards are 390x469 on desktop and 182x218 on mobile — near
-   enough the same ratio, so one aspect-ratio covers both and the card can
-   simply fill its grid column. */
+/* Desktop cards are 390x469 and mobile 182x218 — near enough the same ratio
+   that one aspect-ratio covers both and the card just fills its grid column. */
 .card {
   /* How far this card has travelled, 0 (small, gathered at the centre) to 1
-     (full size in its grid slot), written every frame from the section's
-     scroll progress. */
-  --t: 0;
-  /* Where it starts. Both resolve to no transform at all at t = 1, so the card
-     lands on its grid slot exactly. */
+     (full size in its grid slot), written every frame from scroll progress. */
+  --travelled: 0;
+
+  /* Like the work cards: laid out at its finished size, so the animation is
+     only a scale down and --travelled: 1 leaves the card untransformed. */
   --zoom-from: 0.6;
-  /* How far it starts pulled in towards the middle of the grid, as a fraction
-     of its own size — enough to gather the four around the title without them
-     touching. Per axis, because the two gaps are not alike: the columns sit
-     16px apart until 768px, so a pull that reads well between the rows would
-     close that up entirely and overlap the cards. Raised to match once the
-     column gap widens to the row gap's 120px. */
-  --pull-x: 0.15;
-  --pull-y: 0.3;
-  /* Which way that pull points. The grid is a fixed 2x2, so the quadrant a card
-     sits in — and therefore the way it travels back out — is decided by the
-     column count right here in CSS, not passed down from the component. */
-  --dx: 0;
-  --dy: 0;
+  --scale: calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--travelled));
+
+  /* The gaps the shrunken cluster should show. Grid gaps are absolute px and
+     don't shrink with the cards, so scaling about each card's own centre would
+     leave the four spread apart — hence the pushed-out origin below. */
+  --start-gap-x: var(--space-8);
+  /* The heading sits in the row gap, so keep its line box plus a margin either
+     side. Must stay under --row-gap, or the rows open instead of closing. */
+  --heading-inset: var(--space-16);
+  --start-gap-y: calc(var(--heading2-line-height) + 2 * var(--heading-inset));
+
+  /* `gap - 2d(1 - zoom-from) = start-gap` solved for d, the distance from the
+     card's inner edge out to the origin. Irrelevant at --travelled: 1, where a
+     scale of 1 is the identity transform wherever its origin sits. */
+  --origin-x: calc(
+    (var(--col-gap) - var(--start-gap-x)) / (2 * (1 - var(--zoom-from)))
+  );
+  --origin-y: calc(
+    (var(--row-gap) - var(--start-gap-y)) / (2 * (1 - var(--zoom-from)))
+  );
+  /* Which corner the card gathers towards. The grid is a fixed 2x2, so the
+     quadrant is decided here in CSS, not passed down from the component. */
+  --ox: calc(100% + var(--origin-x));
+  --oy: calc(100% + var(--origin-y));
 
   position: relative;
   display: flex;
@@ -128,13 +138,8 @@
   border-bottom: 1px solid var(--color-grey-700);
   overflow: hidden;
 
-  /* Translate first, then scale: the scale is applied in the already-shifted
-     frame, so it never rescales the offset and the two can be tuned apart. */
-  transform: translate(
-      calc(var(--dx) * var(--pull-x) * (1 - var(--t)) * 100%),
-      calc(var(--dy) * var(--pull-y) * (1 - var(--t)) * 100%)
-    )
-    scale(calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--t)));
+  transform: scale(var(--scale));
+  transform-origin: var(--ox) var(--oy);
   will-change: transform;
 
   /* Everything inside sizes off the card, not the viewport. When the grid is
@@ -143,8 +148,10 @@
      desktop layout and the bio would pour straight out of the card. */
   container-type: inline-size;
 
+  /* The heading nearly doubles at this breakpoint and the cards grow with it,
+     so it wants a wider margin, not just the taller line box. */
   @media (min-width: 768px) {
-    --pull-x: 0.3;
+    --heading-inset: var(--space-24);
   }
 
   /* The gather is scroll-position dressing — hold the cards in their slots. */
@@ -154,21 +161,14 @@
 }
 
 /* The heading is a div and the cards are articles, so of-type counts the four
-   cards on their own: left column pulls right, top row pulls down. */
-.card:nth-of-type(odd) {
-  --dx: 1;
-}
-
+   cards on their own. The left column and top row gather towards their
+   bottom-right, which is the default above; the other two mirror it. */
 .card:nth-of-type(even) {
-  --dx: -1;
-}
-
-.card:nth-of-type(-n + 2) {
-  --dy: 1;
+  --ox: calc(0px - var(--origin-x));
 }
 
 .card:nth-of-type(n + 3) {
-  --dy: -1;
+  --oy: calc(0px - var(--origin-y));
 }
 
 .image {

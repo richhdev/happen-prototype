@@ -40,7 +40,7 @@ function WorkCard({ item, index, step, x, active, cardRef }) {
     <motion.article
       ref={cardRef}
       className={`${styles.card} ${active ? styles.cardActive : ""}`}
-      style={{ "--t": centred }}
+      style={{ "--centred": centred }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={item.img} alt="" className={styles.image} style={item.crop} />
@@ -131,12 +131,9 @@ export default function Work() {
 
   return (
     <Section id="b-work" className={styles.work}>
-      <div
-        ref={containerRef}
-        style={{ height: `calc(100vh + ${max}px)` }}
-      >
+      <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
         <div className={styles.pinned}>
-          <motion.div className={styles.panel} style={{ "--p": framed }}>
+          <motion.div className={styles.panel} style={{ "--progress": framed }}>
             <div className={styles.surface} />
 
             <Heading2 className={styles.heading}>
