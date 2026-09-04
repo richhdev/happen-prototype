@@ -48,7 +48,7 @@
   );
   margin-left: calc((50% - 50vw) * var(--p));
   margin-right: calc((50% - 50vw) * var(--p));
-  border-radius: calc(var(--radius-large) * (1 - var(--p)));
+  border-radius: var(--radius-large);
   background: var(--color-cream);
   mix-blend-mode: screen;
 
