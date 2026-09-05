@@ -4,7 +4,7 @@
   line-height: var(--heading1-line-height);
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
@@ -45,4 +45,18 @@
   font-weight: 800;
   letter-spacing: 0;
   text-wrap: balance;
+}
+
+/* Reduced motion: hold the tracking at the value each level rests at, overriding
+   the inline letter-spacing the scroll-in animation writes. Keep these in step
+   with the `tracking` props in Heading.jsx. */
+@media (prefers-reduced-motion: reduce) {
+  .heading1 {
+    letter-spacing: -0.035em !important;
+  }
+
+  .heading2,
+  .heading3 {
+    letter-spacing: -0.05em !important;
+  }
 }

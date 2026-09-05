@@ -1,6 +1,5 @@
 "use client";
 import { useRef } from "react";
-import { motion } from "motion/react";
 import { Section } from "@/components/Section/Section";
 import { Heading1 } from "@/components/Heading/Heading";
 import { TextXXLarge } from "@/components/Text/Text";
@@ -19,13 +18,7 @@ export default function Hero() {
           <div className={styles.logoWrap}>
             <RollingLogo trackRef={headerRef} />
           </div>
-          <Heading1
-            as={motion.h1}
-            initial={{ letterSpacing: "0em" }}
-            whileInView={{ letterSpacing: "-0.035em" }}
-            viewport={{ once: false, amount: 0.9 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <Heading1>
             <span>Behind every</span>
             <span>event, is a team</span>
             <span>making it Happen</span>
