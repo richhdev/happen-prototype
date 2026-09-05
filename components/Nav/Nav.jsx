@@ -66,7 +66,7 @@ export default function Nav() {
     document.getElementById(id)?.scrollIntoView({
       behavior: "smooth",
       // when scrolling artists section. anchor should be in the middle of viewport which is the end of the scroll animation.
-      block: id === "b-artists" ? "center" : "start",
+      block: id === "b-artists" ? "end" : "start",
     });
     document.getElementById(id);
   };
