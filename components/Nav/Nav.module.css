@@ -56,6 +56,7 @@
 }
 
 .links {
+  position: relative;
   display: flex;
   gap: 26px;
   align-items: center;
@@ -63,6 +64,9 @@
   min-width: 0;
   justify-content: flex-end;
   overflow-x: auto;
+  /* overflow-x also makes overflow-y a scroll box, which would clip the
+     underline sitting below the links — symmetric padding keeps it inside. */
+  padding-block: 0.75em;
 }
 
 .link {
@@ -74,6 +78,40 @@
 
 .link.active {
   opacity: 1;
+}
+
+/*
+  Positioned and sized from JS against the list box, see LinkList.jsx. It sits
+  at the link's bottom edge, offset down by the margin.
+*/
+.underline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 5px;
+  height: 2px;
+  background: var(--color-white);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    width 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms linear;
+}
+
+.underline.underlineVisible {
+  opacity: 1;
+}
+
+/* Matches the links, see the hueGuard note at the bottom of this file. */
+.hueGuard .underline {
+  background: var(--color-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .underline {
+    transition: opacity 200ms linear;
+  }
 }
 
 .menuToggle {

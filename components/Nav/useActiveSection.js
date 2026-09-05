@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
 
-// Tracks which nav link's section is centered in the viewport, so the
-// matching link can be highlighted as the user scrolls.
+// Tracks which nav link's section owns the viewport, so the matching link can
+// be underlined as the user scrolls. A section qualifies once it covers the
+// majority of the viewport — or, for sections shorter than half the viewport,
+// once the majority of the section itself is on screen — and the qualifier
+// showing the most pixels wins. Nothing qualifies over the hero, so the nav
+// starts with no link underlined.
 export function useActiveSection(links) {
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    // find the active section in the viewport and make the nav link active
     const getActiveSection = () => {
-      const viewportCenter = window.innerHeight / 2;
+      const viewportHeight = window.innerHeight;
       let activeSectionId = null;
+      let mostVisible = 0;
       links.forEach(({ id }) => {
         const r = document.getElementById(id)?.getBoundingClientRect();
         if (!r) return;
-        if (r.top <= viewportCenter && r.bottom >= viewportCenter)
-          activeSectionId = id;
+        const visible =
+          Math.min(r.bottom, viewportHeight) - Math.max(r.top, 0);
+        const majority = Math.min(viewportHeight, r.height) / 2;
+        if (visible <= majority || visible <= mostVisible) return;
+        mostVisible = visible;
+        activeSectionId = id;
       });
       setActiveId(activeSectionId);
     };
