@@ -30,7 +30,7 @@ function useCentred(x, index, step) {
   });
 }
 
-function WorkCard({ item, index, step, x, active, cardRef }) {
+function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
   // The featured-state visuals — scale, background, image dim — are derived
   // from this in CSS, so the transition tracks the scrollbar instead of firing
   // a fixed-duration transition when the active card flips.
@@ -41,6 +41,7 @@ function WorkCard({ item, index, step, x, active, cardRef }) {
       ref={cardRef}
       className={`${styles.card} ${active ? styles.cardActive : ""}`}
       style={{ "--centred": centred }}
+      onClick={active ? undefined : () => onActivate(index)}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={item.img} alt="" className={styles.image} style={item.crop} />
@@ -125,6 +126,21 @@ export default function Work() {
 
   useMotionValueEvent(x, "change", syncActive);
 
+  // Clicking a card scrolls it to the centre rather than setting `active`
+  // directly: the featured state is derived from the pan offset, so the scroll
+  // position is the source of truth and anything else would snap back on the
+  // next frame. Progress runs 0..1 over the track's `max` px of scroll, and
+  // card i is centred at progress i / (count - 1), i.e. i * step px in.
+  const scrollToCard = useCallback(
+    (index) => {
+      const container = containerRef.current;
+      if (!container || !step) return;
+      const top = container.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top + index * step, behavior: "smooth" });
+    },
+    [step],
+  );
+
   // "change" only fires on later updates, so the track would keep card 0
   // featured until the first scroll — wrong for a reload part-way down the page.
   useIsoLayoutEffect(() => syncActive(x.get()), [syncActive, x]);
@@ -156,6 +172,7 @@ export default function Work() {
                   x={x}
                   active={i === active}
                   cardRef={(el) => (cardRefs.current[i] = el)}
+                  onActivate={scrollToCard}
                 />
               ))}
             </motion.div>

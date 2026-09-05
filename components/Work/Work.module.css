@@ -112,11 +112,15 @@
 
   background: var(--color-charcoal);
   border-bottom: 1px solid var(--color-grey-700);
+
+  /* Only the off-centre cards are clickable — clicking one scrolls it in. */
+  cursor: pointer;
 }
 
 /* Active card should be displayed above others */
 .cardActive {
   z-index: 2;
+  cursor: default;
 }
 
 .image {
