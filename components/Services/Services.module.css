@@ -164,6 +164,11 @@
   transition:
     color 320ms ease,
     opacity 320ms ease;
+
+  &:hover {
+    color: var(--color-charcoal);
+    opacity: 1;
+  }
 }
 
 .listItem[data-active] {
