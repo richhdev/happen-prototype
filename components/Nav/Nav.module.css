@@ -11,6 +11,7 @@
   background: transparent;
   transition: padding 200ms cubic-bezier(0.16, 1, 0.3, 1);
   height: var(--nav-height-mobile);
+  mix-blend-mode: difference;
 
   @media (min-width: 641px) {
     height: var(--nav-height-desktop);
@@ -36,6 +37,7 @@
   color: var(--color-red);
   white-space: nowrap;
   flex-shrink: 0;
+  text-decoration: none;
 }
 
 .linkGroup {
@@ -61,7 +63,6 @@
   min-width: 0;
   justify-content: flex-end;
   overflow-x: auto;
-  mix-blend-mode: difference;
 }
 
 .link {
@@ -136,4 +137,26 @@
   @media (min-width: 641px) {
     height: var(--nav-height-desktop);
   }
+}
+
+/*
+  The nav blends with difference, which inverts whatever is behind it — the
+  inverse of the brand red is cyan, so the title and links read green over the
+  red sections and the light panels. This is a painted-only copy of the bar
+  sitting on top of the real one, blending in hue: within the glyphs it forces
+  whatever difference produced back into the red family, keeping its lightness
+  (so the contrast difference bought us survives) and leaving neutrals — white,
+  grey, black — untouched, since they have no hue to shift. Nothing outside the
+  glyphs is painted, so the artwork passing under the bar is left alone.
+*/
+.nav.hueGuard {
+  z-index: 51;
+  pointer-events: none;
+  mix-blend-mode: hue;
+}
+
+.hueGuard .title,
+.hueGuard .link,
+.hueGuard .menuToggle {
+  color: var(--color-red);
 }

@@ -53,31 +53,43 @@ export default function Nav() {
     </div>
   );
 
+  const Bar = ({ className, hidden }) => (
+    <nav
+      className={`${styles.nav}${className ? ` ${className}` : ""}`}
+      aria-hidden={hidden ? "true" : undefined}
+      inert={hidden || undefined}
+    >
+      <div className={styles.inner}>
+        <TextOverline
+          as="a"
+          href="#a-hero"
+          className={styles.title}
+          onClick={(e) => scrollToSection(e, "a-hero")}
+        >
+          Happen Group
+        </TextOverline>
+
+        <button
+          type="button"
+          className={styles.menuToggle}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <TextOverline>{menuOpen ? "Close" : "Menu"}</TextOverline>
+        </button>
+
+        <LinkList />
+      </div>
+    </nav>
+  );
+
   return (
     <>
-      <nav className={styles.nav}>
-        <div className={styles.inner}>
-          <TextOverline
-            as="a"
-            className={styles.title}
-            onClick={(e) => scrollToSection(e, "a-hero")}
-          >
-            Happen Group
-          </TextOverline>
+      <Bar />
 
-          <button
-            type="button"
-            className={styles.menuToggle}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-          >
-            <TextOverline>{menuOpen ? "Close" : "Menu"}</TextOverline>
-          </button>
-
-          <LinkList />
-        </div>
-      </nav>
+      {/* Keeps the difference blend out of the greens, see Nav.module.css */}
+      <Bar className={styles.hueGuard} hidden />
 
       {/* Mobile nav list */}
       <div className={`${styles.overlay}${menuOpen ? ` ${styles.open}` : ""}`}>
