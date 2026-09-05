@@ -1,68 +1,63 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll } from "motion/react";
-import { RIBBONS } from "./data";
+import { useEffect, useRef } from "react";
+import { asset } from "@/lib/data";
 import styles from "./Ribbons.module.css";
 
-// One placement of one ribbon, as the custom properties the stylesheet draws
-// from. Both placements are written out on every ribbon under their own names,
-// and the stylesheet picks which set to read at the breakpoint — a media query
-// cannot reach an inline style, but it can point the properties the art is
-// drawn from at the other half of what is written here.
-function placement(design, suffix) {
-  return {
-    [`--x${suffix}`]: `${design.x}px`,
-    [`--y${suffix}`]: `${design.y}px`,
-    [`--w${suffix}`]: `${design.width}px`,
-    [`--h${suffix}`]: `${design.height}px`,
-    [`--rotate${suffix}`]: `${design.rotate}deg`,
-    [`--flip${suffix}`]: design.flip ? -1 : 1,
-  };
-}
+// The whole ribbon composition is one piece of art, laid out in Figma against
+// the full scroll length of the page (node 711:6959) rather than assembled here
+// out of ribbons keyed to sections. So there is nothing to place — only the
+// drift to drive, and the stylesheet does that off a scroll timeline wherever
+// there is one to use.
+export default function Ribbons() {
+  const ref = useRef(null);
 
-// A ribbon is placed by a zero-height marker dropped on a section's top edge,
-// so it travels with the section it belongs to. The marker sits behind the
-// sections rather than between them: negative z-index in the page's root
-// stacking context, which is also where the video backdrop sits, one step
-// earlier in the document.
-export function Ribbon({ name }) {
-  const ribbon = RIBBONS[name];
-  const boxRef = useRef(null);
+  // Firefox has no scroll timelines — not even the `animation-timeline` property
+  // — so the CSS upgrade never applies there and the sheet would sit still while
+  // every other browser parallaxed it. This hands that one case the same
+  // progress the timeline would have produced, and the same stylesheet rule
+  // turns it into the same drift.
+  //
+  // Deliberately not motion's `useScroll`: it would run this listener in every
+  // browser, including the ones already doing the work on the compositor.
+  useEffect(() => {
+    if (CSS.supports("animation-timeline: scroll()")) return;
 
-  // 0 as the ribbon's box meets the bottom of the viewport, 1 as it leaves the
-  // top — so the scroll it runs over is the viewport plus the box's own height,
-  // which is what the stylesheet multiplies the rate by to get pixels. Handed
-  // over raw rather than turned into a distance here: a fixed distance divided
-  // by that pass is a different speed for every ribbon, which is what made the
-  // layer look like four unrelated things.
-  const { scrollYProgress } = useScroll({
-    target: boxRef,
-    offset: ["start end", "end start"],
-  });
+    const layer = ref.current;
+    let frame = 0;
+
+    // Scroll fires faster than the screen repaints, so coalesce to one write per
+    // frame — the drift can only show up on a frame boundary anyway.
+    const write = () => {
+      frame = 0;
+      const max =
+        document.documentElement.scrollHeight - window.innerHeight;
+      layer.style.setProperty(
+        "--ribbon-progress",
+        max > 0 ? window.scrollY / max : 0,
+      );
+    };
+    const schedule = () => {
+      frame ||= requestAnimationFrame(write);
+    };
+
+    write();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
 
   return (
-    <div
-      className={styles.anchor}
-      aria-hidden
-      style={{
-        ...placement(ribbon.mobile, ""),
-        ...placement(ribbon.desktop, "-md"),
-      }}
-    >
-      {/* Carries the progress but no transform of its own beyond centring, so
-          the scroll it is measured on can't be moved by the drift that comes
-          out of it — and so the image can still refuse that drift outright
-          under reduced motion, which an inline value on the image could not. */}
-      <motion.div
-        ref={boxRef}
-        className={styles.box}
-        style={{ "--ribbon-progress": scrollYProgress }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={ribbon.src} alt="" className={styles.ribbon} loading="lazy" />
-      </motion.div>
+    <div ref={ref} className={styles.layer} aria-hidden>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={asset("/assets/ribbons-layer.webp")}
+        alt=""
+        className={styles.art}
+      />
     </div>
   );
 }
-
-export default Ribbon;

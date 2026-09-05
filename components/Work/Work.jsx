@@ -11,7 +11,6 @@ import { WORK } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";
 import { Reveal, useIsoLayoutEffect } from "@/components/ui";
-import { asset } from "@/lib/data";
 import styles from "./Work.module.css";
 
 // The red surface's pull-back curve: quick off the viewport edges, then easing
@@ -138,25 +137,8 @@ export default function Work() {
             className={styles.panel}
             style={{
               "--progress": framed,
-              // Raw scroll progress, not the eased surface growth, or the drift
-              // would stall mid-section and hurry at both ends. Paired with the
-              // scroll it runs over — the whole of `max`, since the container
-              // is a viewport plus that — so the stylesheet can take the site's
-              // one ribbon rate off it, the same way every other ribbon does.
-              "--ribbon-progress": scrollYProgress,
-              "--ribbon-pass": `${max}px`,
             }}
           >
-            <div className={styles.ribbonLayer} aria-hidden>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={asset("/assets/ribbon-loop.webp")}
-                alt=""
-                className={styles.ribbon}
-                loading="lazy"
-              />
-            </div>
-
             <div className={styles.surface} />
 
             <Heading2 className={styles.heading}>

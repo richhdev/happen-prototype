@@ -1,93 +1,96 @@
-/* The mobile design lays the same ribbons out differently — bigger, turned
-   further, and mostly off the left edge — so it is its own composition rather
-   than the desktop one reflowed. Both are drawn by the rules below; mobile is
-   the base and the desktop numbers are switched in at the breakpoint. */
-.anchor {
-  position: relative;
-  /* Behind every section, above the fixed video backdrop: both sit at -1 in
-     the root stacking context, and this one comes later in the document. */
-  z-index: -1;
-  /* Takes no room on the boundary it marks. */
-  height: 0;
-  /* The ribbons are meant to run off both edges, so they overflow this box by
-     well over a thousand pixels either side. Cut that off here rather than
-     leaving it to `html { overflow-x: hidden }`, so a ribbon can never widen
-     the document. `clip` rather than `hidden` because only `clip` lets the
-     other axis stay visible — and it has to, since this box is zero-height
-     and the ribbon hangs out of it vertically by design. */
-  overflow-x: clip;
-  overflow-y: visible;
-}
-
-/* The art's box before rotation, centred on the point the design puts it at.
-   Percentages resolve against the section-width marker, so `50%` is the page's
-   centre line whatever the viewport is doing.
-
-   Centred by subtracting half its own size rather than by a translate: the
-   scroll progress driving the drift is measured from this box's layout
-   position, which a transform would not move — the parallax would then run
-   half a ribbon-height late, most of it after the ribbon had left. */
-.box {
+/* One sheet of art behind the whole page, drifting slower than the page it sits
+   behind. The parallax is bought by making the sheet shorter than the document
+   rather than by moving it out of the document's ends: it covers `--ribbon-rate`
+   of the page and travels down through the gap it leaves as you scroll, so it is
+   flush with the top of the document at the top of the scroll and flush with the
+   bottom at the bottom, and never runs out of art at either end. */
+.layer {
   position: absolute;
-  left: calc(50% + var(--x) - var(--w) / 2);
-  top: calc(var(--y) - var(--h) / 2);
-  width: var(--w);
-  height: var(--h);
+  left: 0;
+  right: 0;
+  top: 0;
+  /* Behind every section, above the fixed video backdrop: both sit at -1 in the
+     page's root stacking context, and this one comes later in the document. */
+  z-index: -1;
   pointer-events: none;
-}
+  /* The sheet holds a floor width the art is drawn at, so on a narrow viewport
+     it runs off both edges rather than shrinking to fit. Cut the overflow off
+     here rather than leaving it to `html`, so the sheet can never widen the
+     document. `clip` rather than `hidden` because only `clip` lets the other
+     axis stay visible, and the drift moves the sheet on that axis. */
+  overflow-x: clip;
 
-/* The drift is the scroll the ribbon has been measured over — the viewport plus
-   its own box, which is the span `useScroll` normalises against — taken at the
-   shared rate, and offset so the art sits on its designed mark halfway through.
-   Doing the arithmetic here rather than in JS is what lets one rate govern every
-   ribbon: the pass differs per ribbon, so a distance fixed in JS would land as a
-   different speed on each one.
+  height: calc(100% * var(--ribbon-rate));
 
-   `100vh` rather than `100dvh` on purpose: dvh changes as a mobile browser's
-   toolbar hides, and a rate that shifts underfoot would jog the whole layer. It
-   costs a few percent of accuracy against the real viewport, which for art this
-   far in the background is nothing.
+  /* The gap left below the sheet, as a share of the sheet's own height — which
+     is what a percentage translate resolves against. Covering `rate` of the
+     document leaves (1 - rate) of it, so the sheet has (1 - rate)/rate of
+     itself to travel, and crossing that over the full scroll is what puts the
+     art on screen at `rate` times the page's speed.
 
-   The fallback holds the art on its mark for the first paint, before motion has
-   written a progress — without it the whole transform would be invalid for a
-   frame and the ribbon would flash up unrotated. */
-.ribbon {
-  --drift: calc(
-    (var(--ribbon-progress, 0.5) - 0.5) * (100vh + var(--h)) * var(--ribbon-rate)
+     Driven from a progress the component writes. That is the fallback path —
+     the @supports below takes it over wherever there is a scroll timeline, and
+     the component only bothers writing the property where there isn't one. */
+  translate: 0 calc(
+    var(--ribbon-progress, 0) * (100% / var(--ribbon-rate) - 100%)
   );
+}
 
-  display: block;
-  width: 100%;
-  height: 100%;
-  /* Drift comes first, so it stays in page space rather than being turned with
-     the art. */
-  transform: translateY(var(--drift)) rotate(var(--rotate)) scaleY(var(--flip));
-  will-change: transform;
+/* The same drift, off the page's own scroll instead of a scroll listener. That
+   is not a micro-optimisation: this page scrolls on the compositor while Work
+   and Services already run their own scroll work on the main thread, so a sheet
+   parallaxed from JS updates a frame late, by a different amount each frame,
+   against content that never misses one — which is exactly what reads as
+   jitter. A scroll timeline runs the drift where the scrolling happens, so the
+   sheet cannot fall out of step with the page whatever the main thread is doing.
 
-  /* Beats the inherited value, since a declaration on the element itself wins
-     over inheritance — and holding the progress at its midpoint is what the
-     drift above reads as standing still. No JS branch needed. */
-  @media (prefers-reduced-motion: reduce) {
-    --ribbon-progress: 0.5;
+   A running animation outranks the `translate` declaration above, so where this
+   applies it simply takes over, and the fallback's progress goes unread. */
+@supports (animation-timeline: scroll()) {
+  .layer {
+    animation: ribbon-drift linear both;
+    /* The document scroller, named rather than left to `nearest`, since nothing
+       between here and the root scrolls and the intent is the page's scroll. */
+    animation-timeline: scroll(root block);
   }
 }
 
-/* Both compositions are written onto the anchor as inline custom properties,
-   which no media query can reach. These do the swap instead, on the same
-   footing as the reduced-motion rule above: a declaration on the element that
-   reads a property beats the value it would otherwise inherit from the anchor,
-   so aiming --x at --x-md here hands the whole placement over to the desktop
-   set without a second element or a JS branch. */
-@media (min-width: 768px) {
-  .box {
-    --x: var(--x-md);
-    --y: var(--y-md);
-    --w: var(--w-md);
-    --h: var(--h-md);
+@keyframes ribbon-drift {
+  from {
+    translate: 0 0;
   }
+  to {
+    translate: 0 calc(100% / var(--ribbon-rate) - 100%);
+  }
+}
 
-  .ribbon {
-    --rotate: var(--rotate-md);
-    --flip: var(--flip-md);
+/* One rule covers both paths, because rate 1 is a sheet the exact height of the
+   document with nowhere to travel: the keyframe's endpoint and the fallback's
+   translate both resolve to zero on their own. The art still lands in the same
+   places on the page, it just stops moving relative to it. */
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    --ribbon-rate: 1;
   }
+}
+
+/* Stretched rather than scaled to fit. The art is drawn against a page whose
+   sections are not the heights ours are — Work and Services alone pin for
+   several screens each — so keeping its aspect ratio would either run the
+   composition out before the footer or bleed most of it past the bottom. It is
+   soft, abstract and out of focus by design, and takes the stretch without
+   reading as distorted.
+
+   Sideways it stops shrinking at the floor and starts bleeding instead, centred
+   on the page. Squeezing the whole 1512px composition into a phone turned every
+   ribbon into a thin vertical smear — the floor keeps them at a weight the eye
+   still reads as ribbons, at the price of only seeing the middle of the
+   composition, which is the half the sections sit over anyway. */
+.art {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: max(100%, var(--ribbon-min-width));
+  height: 100%;
+  transform: translateX(-50%);
 }

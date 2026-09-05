@@ -27,11 +27,9 @@
    so two in the same box would stack, and the surface's near-viewport height
    would push the card down. All three are out of flow and fill the section's
    content box, which is the box each one pins inside. The layers and the copy
-   between them are positioned, so document order alone paints ribbon, surface,
-   copy, card — no z-index anywhere in the section. The loop coming first is
-   what puts it behind the cream rather than over it. */
+   between them are positioned, so document order alone paints surface, copy,
+   card — no z-index anywhere in the section. */
 .surfaceLayer,
-.ribbonLayer,
 .cardLayer {
   position: absolute;
   inset: 0;
@@ -80,64 +78,6 @@
     justify-content: center;
     padding-inline: 0;
     padding-bottom: 0;
-  }
-}
-
-/* Ribbon ----------------------------------------------------------------- */
-
-/* Desktop only, and the one ribbon that stays that way: the mobile frame (node
-   653:3771) carries no loop over Services at all — the oval that crosses it
-   there belongs to the page-level set and is keyed to Artists. */
-.ribbonLayer {
-  display: none;
-  opacity: 0.25;
-
-  @media (min-width: 768px) {
-    display: block;
-  }
-}
-
-/* Pins alongside the card, so the two travel together while the section is
-   sticky. */
-.ribbonSticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-}
-
-/* Anchored to the right of the content and hung half its width past it, so
-   the loop wraps the card and the rest runs off the screen — `html` already
-   hides the horizontal overflow that creates. Taller than the viewport by the
-   design's 1195/977, and height drives the width, so the graphic scales as
-   one. */
-.ribbon {
-  /* The section's own scroll taken at the site's one ribbon rate, so this loop
-     travels at the same speed as the ribbons between the sections rather than
-     at whatever a distance hardcoded here happened to work out as. Signed to
-     creep up the screen, like Work's — this one is pinned alongside the card,
-     so the drift is the whole of its movement, and it should climb with the
-     list going past rather than slide back down against it. */
-  --drift: calc(
-    (0.5 - var(--ribbon-progress, 0.5)) * var(--ribbon-pass) *
-      var(--ribbon-rate)
-  );
-
-  position: absolute;
-  top: 50%;
-  right: 0;
-  height: 122vh;
-  width: auto;
-  max-width: none;
-  /* The drift is written from scroll progress every frame; the rest of the
-     transform is the anchoring above. */
-  transform: translate(50%, calc(-50% + var(--drift)));
-  will-change: transform;
-
-  /* Beats the inherited value, since a declaration on the element itself wins
-     over inheritance — and holding the progress at its midpoint is what the
-     drift above reads as standing still. No JS branch needed. */
-  @media (prefers-reduced-motion: reduce) {
-    --ribbon-progress: 0.5;
   }
 }
 

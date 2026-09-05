@@ -29,13 +29,23 @@
   --nav-height-desktop: var(--space-120);
 
   /* Ribbons */
-  /* How far the ribbons lag the page, as a fraction of the scroll each one is
-     measured over. Every ribbon on the site derives its drift from this — the
-     page-level ones and the two owned by the sections that pin — so the whole
-     layer travels as one sheet instead of at a rate that falls out of how big
-     each piece of art happens to be. Turn it up for a heavier parallax; 0
-     stops the layer dead. */
-  --ribbon-rate: 0.1;
+  /* The share of the page's scroll the ribbon sheet keeps. The sheet is one
+     piece of art behind the whole document, so this is the whole of the
+     parallax: at 0.9 the art climbs the screen at nine tenths of the page,
+     just slow enough to sit behind it. Turn it down for a heavier parallax; 1
+     pins the sheet to the page and it stops reading as a background at all.
+
+     It also sets how much the art is squashed, since the travel is bought by
+     making the sheet that fraction of the document's height — so a rate far
+     below about 0.8 starts to show as a compressed composition rather than a
+     slower one. */
+  --ribbon-rate: 0.7;
+
+  /* The narrowest the ribbon sheet is ever drawn. Below this the sheet stops
+     shrinking with the viewport and bleeds off both edges instead: the art is
+     laid out against a 1512px page, and squeezed into a phone every ribbon in it
+     collapses into a thin vertical smear. */
+  --ribbon-min-width: 900px;
 
   /* Layout */
   --layout-max-width: 1200px;
