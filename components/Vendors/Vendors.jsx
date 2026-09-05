@@ -42,7 +42,7 @@ export default function Vendors() {
         />
 
         <div className={styles.copy}>
-          <Heading3 as="h2" className={styles.heading}>
+          <Heading3 as="h2" className={styles.heading} animateTracking={false}>
             Festival retail vendors
           </Heading3>
           <TextMedium className={styles.body}>
