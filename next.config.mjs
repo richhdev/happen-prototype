@@ -12,7 +12,6 @@ const nextConfig = {
   images: { unoptimized: true }, // required for `output: export`
   basePath: basePath || undefined,
   trailingSlash: true,         // /path/ -> /path/index.html, friendlier for static hosts
-  eslint: { ignoreDuringBuilds: true }, // prototype export — don't fail build on lint nits
 };
 
 export default nextConfig;

@@ -9,7 +9,7 @@ import styles from "./Contact.module.css";
 
 export default function Contact() {
   return (
-    <Section id="a-contact" className={styles.contact}>
+    <Section as="footer" id="a-contact" className={styles.contact}>
       <div className={styles.content}>
         <div className={styles.header}>
           <Heading3 as="h2" className={styles.title}>

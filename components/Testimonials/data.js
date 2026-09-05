@@ -4,15 +4,15 @@ import { asset } from "@/lib/data";
 // automatically — index order is the only thing that decides which way a
 // bubble faces, so adding or removing one re-flows the whole thread.
 //
-// Every avatar points at the generic placeholder until the real headshots
-// come through — swap each one out per person as they land.
+// Avatars fall back to the generic placeholder until a real headshot comes
+// through — swap each one out per person as they land.
 export const TESTIMONIALS = [
   {
     name: "Jeff Moss",
     role: "Sound Event Group",
     quote:
       "Collaborating with the guys from Happen Group is a pleasure. Their understanding of what is required at a festival and knowledge of site infrastructure ensures a seamless exercise. They are prepared to roll up their sleeves to get the job done and have the finesse to design exciting and dynamic spaces.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-jeff-moss.jpg"),
   },
   {
     name: "Jacob Malmo",
@@ -54,7 +54,7 @@ export const TESTIMONIALS = [
     role: "Director, LTEC",
     quote:
       "Working with The Happen Group for artist liaison, logistics, and artist services at the LTEC Festival was an absolute pleasure from start to finish. Their team consistently went above and beyond, anticipating needs before we even had to ask and thinking outside the box to solve challenges quickly and creatively. Every aspect of artist care and logistics was handled with efficiency and professionalism, and they maintained an exceptionally high standard throughout the entire event. Their dedication and attention to detail made a real difference to our artists' experience, and we wouldn't hesitate to work with The Happen Group again.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-jerry-poon.jpg"),
   },
   {
     name: "Fil Palermo",
