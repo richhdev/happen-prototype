@@ -97,6 +97,13 @@
   overflow: hidden;
 
   container-type: inline-size;
+
+  outline: 3px solid transparent;
+  transition: outline-color 100ms ease;
+
+  &:hover:not(.cardActive) {
+    outline-color: var(--color-grey-700);
+  }
 }
 
 /* Centred in the grid box, at the size the design draws a card at, so the
