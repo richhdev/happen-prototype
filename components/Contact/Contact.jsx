@@ -70,7 +70,6 @@ export default function Contact() {
                   rel="noopener noreferrer"
                 >
                   <span className={styles.linkCtaText}>{card.label}</span>
-                  <span aria-hidden="true"> ↗</span>
                 </a>
               </RevealItem>
             ))}

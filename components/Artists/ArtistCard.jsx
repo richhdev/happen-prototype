@@ -105,7 +105,7 @@ export function ArtistCard({
                 rel="noopener noreferrer"
                 className={styles.link}
               >
-                <span className={styles.linkLabel}>{link.label}</span> ↗
+                <span className={styles.linkLabel}>{link.label}</span>
               </TextMedium>
             ))}
           </div>
