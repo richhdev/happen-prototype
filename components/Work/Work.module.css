@@ -13,6 +13,12 @@
   }
 }
 
+/* Horizontal drags are handed to useSidewaysScroll, which turns them into page
+   scroll, so the browser must not claim them as a native sideways pan first. */
+.container {
+  touch-action: pan-y pinch-zoom;
+}
+
 .pinned {
   position: sticky;
   top: 0;

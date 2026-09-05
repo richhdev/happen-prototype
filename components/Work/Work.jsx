@@ -11,6 +11,7 @@ import { WORK } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";
 import { Reveal, useIsoLayoutEffect } from "@/components/ui";
+import { useSidewaysScroll } from "./useSidewaysScroll";
 import styles from "./Work.module.css";
 
 // The red surface's pull-back curve: quick off the viewport edges, then easing
@@ -141,13 +142,21 @@ export default function Work() {
     [step],
   );
 
+  // A sideways gesture over the section drives the same vertical scroll, so
+  // reaching for the cards directly moves them instead of doing nothing.
+  useSidewaysScroll(containerRef);
+
   // "change" only fires on later updates, so the track would keep card 0
   // featured until the first scroll — wrong for a reload part-way down the page.
   useIsoLayoutEffect(() => syncActive(x.get()), [syncActive, x]);
 
   return (
     <Section id="b-work" className={styles.work}>
-      <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
+      <div
+        ref={containerRef}
+        className={styles.container}
+        style={{ height: `calc(100vh + ${max}px)` }}
+      >
         <div className={styles.pinned}>
           <motion.div
             className={styles.panel}
