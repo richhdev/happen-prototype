@@ -15,6 +15,7 @@ export default function Services() {
   const sectionRef = useRef(null);
   const itemRefs = useRef([]);
   const [active, setActive] = useState(0);
+  const [pass, setPass] = useState(0);
 
   // Track the section's scroll progress while the section is sticky
   const { scrollYProgress } = useScroll({
@@ -26,16 +27,6 @@ export default function Services() {
   const grown = useTransform(scrollYProgress, [0, 1], [0, 1], {
     ease: cubicBezier(0.45, 0, 0.55, 1),
   });
-
-  // The ribbon creeps up with the page rather than sitting pinned to the card,
-  // so it travels the same way as the list scrolling past it, just slower.
-  // Straight off scroll progress rather than the eased surface growth, or the
-  // drift would stall in the middle of the section and hurry at both ends.
-  const ribbonDrift = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["180px", "-180px"],
-  );
 
   const sync = useCallback(() => {
     const line = window.innerHeight / 2;
@@ -50,6 +41,17 @@ export default function Services() {
       }
     });
     setActive((prev) => (prev === best ? prev : best));
+
+    // The scroll this section takes, which is its height less the viewport it
+    // pins against — the span `scrollYProgress` runs over, and so the distance
+    // the stylesheet takes the site's one ribbon rate off. Read here rather
+    // than in an effect of its own because this already runs on scroll and
+    // resize, so it keeps up with the section changing height under it.
+    const section = sectionRef.current;
+    if (section) {
+      const span = Math.max(0, section.offsetHeight - window.innerHeight);
+      setPass((prev) => (prev === span ? prev : span));
+    }
   }, []);
 
   useEffect(() => {
@@ -78,8 +80,28 @@ export default function Services() {
       id="a-services"
       className={styles.services}
       ref={sectionRef}
-      style={{ "--progress": grown, "--ribbon-drift": ribbonDrift }}
+      style={{
+        "--progress": grown,
+        // Raw scroll progress rather than the eased surface growth, or the
+        // drift would stall in the middle of the section and hurry at both
+        // ends. Paired with the scroll it runs over, so the stylesheet can take
+        // the site's one ribbon rate off it like every other ribbon does.
+        "--ribbon-progress": scrollYProgress,
+        "--ribbon-pass": `${pass}px`,
+      }}
     >
+      <div className={styles.ribbonLayer} aria-hidden>
+        <div className={styles.ribbonSticky}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={asset("/assets/ribbon-services.png")}
+            alt=""
+            className={styles.ribbon}
+            loading="lazy"
+          />
+        </div>
+      </div>
+
       <div className={styles.surfaceLayer} aria-hidden>
         <div className={styles.surface} />
       </div>
@@ -109,18 +131,6 @@ export default function Services() {
               <TextOverline>{service.meta}</TextOverline>
             </button>
           ))}
-        </div>
-      </div>
-
-      <div className={styles.ribbonLayer} aria-hidden>
-        <div className={styles.ribbonSticky}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={asset("/assets/ribbon-services.png")}
-            alt=""
-            className={styles.ribbon}
-            loading="lazy"
-          />
         </div>
       </div>
 

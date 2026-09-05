@@ -1,16 +1,24 @@
 "use client";
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll } from "motion/react";
 import { RIBBONS } from "./data";
 import styles from "./Ribbons.module.css";
 
-// How far a ribbon travels either side of its designed position across one full
-// pass of the viewport. Runs positive as the ribbon leaves, so it lags the page
-// instead of outrunning it — these sit behind every section and should read as
-// further away. A pass covers the viewport plus the ribbon's own height, well
-// over 2000px, so this is around a tenth of the page's own speed: enough to
-// notice, not enough to pull the art off its mark. Turn it up here to taste.
-const DRIFT = 360;
+// One placement of one ribbon, as the custom properties the stylesheet draws
+// from. Both placements are written out on every ribbon under their own names,
+// and the stylesheet picks which set to read at the breakpoint — a media query
+// cannot reach an inline style, but it can point the properties the art is
+// drawn from at the other half of what is written here.
+function placement(design, suffix) {
+  return {
+    [`--x${suffix}`]: `${design.x}px`,
+    [`--y${suffix}`]: `${design.y}px`,
+    [`--w${suffix}`]: `${design.width}px`,
+    [`--h${suffix}`]: `${design.height}px`,
+    [`--rotate${suffix}`]: `${design.rotate}deg`,
+    [`--flip${suffix}`]: design.flip ? -1 : 1,
+  };
+}
 
 // A ribbon is placed by a zero-height marker dropped on a section's top edge,
 // so it travels with the section it belongs to. The marker sits behind the
@@ -21,37 +29,34 @@ export function Ribbon({ name }) {
   const ribbon = RIBBONS[name];
   const boxRef = useRef(null);
 
+  // 0 as the ribbon's box meets the bottom of the viewport, 1 as it leaves the
+  // top — so the scroll it runs over is the viewport plus the box's own height,
+  // which is what the stylesheet multiplies the rate by to get pixels. Handed
+  // over raw rather than turned into a distance here: a fixed distance divided
+  // by that pass is a different speed for every ribbon, which is what made the
+  // layer look like four unrelated things.
   const { scrollYProgress } = useScroll({
     target: boxRef,
     offset: ["start end", "end start"],
   });
-  const drift = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [`${-DRIFT}px`, `${DRIFT}px`],
-  );
 
   return (
     <div
       className={styles.anchor}
       aria-hidden
       style={{
-        "--x": `${ribbon.x}px`,
-        "--y": `${ribbon.y}px`,
-        "--w": `${ribbon.width}px`,
-        "--h": `${ribbon.height}px`,
-        "--rotate": `${ribbon.rotate}deg`,
-        "--flip": ribbon.flip ? -1 : 1,
+        ...placement(ribbon.mobile, ""),
+        ...placement(ribbon.desktop, "-md"),
       }}
     >
-      {/* Carries the drift but no transform of its own beyond centring, so the
-          scroll progress it is measured on can't be moved by the drift it
-          produces — and so the image can still refuse it outright under
-          reduced motion, which an inline value on the image could not. */}
+      {/* Carries the progress but no transform of its own beyond centring, so
+          the scroll it is measured on can't be moved by the drift that comes
+          out of it — and so the image can still refuse that drift outright
+          under reduced motion, which an inline value on the image could not. */}
       <motion.div
         ref={boxRef}
         className={styles.box}
-        style={{ "--drift": drift }}
+        style={{ "--ribbon-progress": scrollYProgress }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={ribbon.src} alt="" className={styles.ribbon} loading="lazy" />

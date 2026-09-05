@@ -28,6 +28,15 @@
   --nav-height-mobile: var(--space-80);
   --nav-height-desktop: var(--space-120);
 
+  /* Ribbons */
+  /* How far the ribbons lag the page, as a fraction of the scroll each one is
+     measured over. Every ribbon on the site derives its drift from this — the
+     page-level ones and the two owned by the sections that pin — so the whole
+     layer travels as one sheet instead of at a rate that falls out of how big
+     each piece of art happens to be. Turn it up for a heavier parallax; 0
+     stops the layer dead. */
+  --ribbon-rate: 0.1;
+
   /* Layout */
   --layout-max-width: 1200px;
   --layout-padding-x: var(--space-32);

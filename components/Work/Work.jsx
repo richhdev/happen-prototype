@@ -109,17 +109,6 @@ export default function Work() {
     ease: SHRINK_EASE,
   });
 
-  // The ribbon creeps up behind the panel rather than holding dead still for
-  // the whole pin — the only cue that the page is moving while the section is
-  // stuck, and slow enough to read as further away than the cards panning over
-  // it. Straight off scroll progress, not the eased surface growth, or the
-  // drift would stall mid-section and hurry at both ends.
-  const ribbonDrift = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["180px", "-180px"],
-  );
-
   // The card nearest the viewport centre is the featured one. The track's
   // padding centres card 0 at x=0 and every card occupies the same layout step,
   // so the index falls straight out of the pan offset. Reading rects instead
@@ -147,10 +136,17 @@ export default function Work() {
         <div className={styles.pinned}>
           <motion.div
             className={styles.panel}
-            style={{ "--progress": framed, "--ribbon-drift": ribbonDrift }}
+            style={{
+              "--progress": framed,
+              // Raw scroll progress, not the eased surface growth, or the drift
+              // would stall mid-section and hurry at both ends. Paired with the
+              // scroll it runs over — the whole of `max`, since the container
+              // is a viewport plus that — so the stylesheet can take the site's
+              // one ribbon rate off it, the same way every other ribbon does.
+              "--ribbon-progress": scrollYProgress,
+              "--ribbon-pass": `${max}px`,
+            }}
           >
-            <div className={styles.surface} />
-
             <div className={styles.ribbonLayer} aria-hidden>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -160,6 +156,8 @@ export default function Work() {
                 loading="lazy"
               />
             </div>
+
+            <div className={styles.surface} />
 
             <Heading2 className={styles.heading}>
               The proof is <br className="desktop-only" />

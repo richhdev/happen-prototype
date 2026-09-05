@@ -1,28 +1,22 @@
-/* Desktop only. The mobile design lays the same ribbons out differently —
-   bigger, turned further, and mostly off the left edge — so it is its own
-   composition rather than this one reflowed. */
+/* The mobile design lays the same ribbons out differently — bigger, turned
+   further, and mostly off the left edge — so it is its own composition rather
+   than the desktop one reflowed. Both are drawn by the rules below; mobile is
+   the base and the desktop numbers are switched in at the breakpoint. */
 .anchor {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .anchor {
-    display: block;
-    position: relative;
-    /* Behind every section, above the fixed video backdrop: both sit at -1 in
-       the root stacking context, and this one comes later in the document. */
-    z-index: -1;
-    /* Takes no room on the boundary it marks. */
-    height: 0;
-    /* The ribbons are meant to run off both edges, so they overflow this box by
-       well over a thousand pixels either side. Cut that off here rather than
-       leaving it to `html { overflow-x: hidden }`, so a ribbon can never widen
-       the document. `clip` rather than `hidden` because only `clip` lets the
-       other axis stay visible — and it has to, since this box is zero-height
-       and the ribbon hangs out of it vertically by design. */
-    overflow-x: clip;
-    overflow-y: visible;
-  }
+  position: relative;
+  /* Behind every section, above the fixed video backdrop: both sit at -1 in
+     the root stacking context, and this one comes later in the document. */
+  z-index: -1;
+  /* Takes no room on the boundary it marks. */
+  height: 0;
+  /* The ribbons are meant to run off both edges, so they overflow this box by
+     well over a thousand pixels either side. Cut that off here rather than
+     leaving it to `html { overflow-x: hidden }`, so a ribbon can never widen
+     the document. `clip` rather than `hidden` because only `clip` lets the
+     other axis stay visible — and it has to, since this box is zero-height
+     and the ribbon hangs out of it vertically by design. */
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 /* The art's box before rotation, centred on the point the design puts it at.
@@ -42,20 +36,58 @@
   pointer-events: none;
 }
 
-/* The drift is written from scroll progress every frame; the rest of the
-   transform is the design's rotation. Drift comes first, so it stays in page
-   space rather than being turned with the art. */
+/* The drift is the scroll the ribbon has been measured over — the viewport plus
+   its own box, which is the span `useScroll` normalises against — taken at the
+   shared rate, and offset so the art sits on its designed mark halfway through.
+   Doing the arithmetic here rather than in JS is what lets one rate govern every
+   ribbon: the pass differs per ribbon, so a distance fixed in JS would land as a
+   different speed on each one.
+
+   `100vh` rather than `100dvh` on purpose: dvh changes as a mobile browser's
+   toolbar hides, and a rate that shifts underfoot would jog the whole layer. It
+   costs a few percent of accuracy against the real viewport, which for art this
+   far in the background is nothing.
+
+   The fallback holds the art on its mark for the first paint, before motion has
+   written a progress — without it the whole transform would be invalid for a
+   frame and the ribbon would flash up unrotated. */
 .ribbon {
+  --drift: calc(
+    (var(--ribbon-progress, 0.5) - 0.5) * (100vh + var(--h)) * var(--ribbon-rate)
+  );
+
   display: block;
   width: 100%;
   height: 100%;
-  transform: translateY(var(--drift, 0px)) rotate(var(--rotate))
-    scaleY(var(--flip));
+  /* Drift comes first, so it stays in page space rather than being turned with
+     the art. */
+  transform: translateY(var(--drift)) rotate(var(--rotate)) scaleY(var(--flip));
   will-change: transform;
 
   /* Beats the inherited value, since a declaration on the element itself wins
-     over inheritance — no JS branch needed. */
+     over inheritance — and holding the progress at its midpoint is what the
+     drift above reads as standing still. No JS branch needed. */
   @media (prefers-reduced-motion: reduce) {
-    --drift: 0px;
+    --ribbon-progress: 0.5;
+  }
+}
+
+/* Both compositions are written onto the anchor as inline custom properties,
+   which no media query can reach. These do the swap instead, on the same
+   footing as the reduced-motion rule above: a declaration on the element that
+   reads a property beats the value it would otherwise inherit from the anchor,
+   so aiming --x at --x-md here hands the whole placement over to the desktop
+   set without a second element or a JS branch. */
+@media (min-width: 768px) {
+  .box {
+    --x: var(--x-md);
+    --y: var(--y-md);
+    --w: var(--w-md);
+    --h: var(--h-md);
+  }
+
+  .ribbon {
+    --rotate: var(--rotate-md);
+    --flip: var(--flip-md);
   }
 }
