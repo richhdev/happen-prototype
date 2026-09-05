@@ -1,3 +1,4 @@
+import Preloader from "@/components/Preloader/Preloader";
 import SiteBackground from "@/components/SiteBackground/SiteBackground";
 import Nav, { NavPlaceholder } from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
@@ -19,6 +20,7 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <>
+      <Preloader />
       <SiteBackground />
       <Nav />
       <NavPlaceholder />

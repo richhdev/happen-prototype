@@ -1,0 +1,44 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  /* Over everything, the nav (51) included. */
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  /* The same charcoal the body is painted in, so the fade is the video and the
+     content arriving rather than the ground changing colour under them. */
+  background: var(--color-charcoal);
+  transition: opacity var(--preloader-fade) ease;
+}
+
+.leaving {
+  opacity: 0;
+  /* Nothing behind it should have to wait out the fade to be clickable. */
+  pointer-events: none;
+}
+
+.logo {
+  width: clamp(140px, 30vw, 220px);
+}
+
+.logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The class is the artwork's own, from inside logo-draw.svg — inlined, so it
+     is an ordinary part of this document and can be reached from here. Two
+     class names beat the one in the file's <style>, so this wins. A finished
+     dashoffset of 0 is the whole logo, drawn: the mask opens on the mark
+     rather than travelling across it. */
+  .overlay :global(.happen-ink) {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .overlay {
+    transition-duration: 1ms;
+  }
+}
