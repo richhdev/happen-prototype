@@ -13,14 +13,31 @@
      page's root stacking context, and this one comes later in the document. */
   z-index: -1;
   pointer-events: none;
-  /* The sheet holds a floor width the art is drawn at, so on a narrow viewport
-     it runs off both edges rather than shrinking to fit. Cut the overflow off
-     here rather than leaving it to `html`, so the sheet can never widen the
-     document. `clip` rather than `hidden` because only `clip` lets the other
-     axis stay visible, and the drift moves the sheet on that axis. */
-  overflow-x: clip;
 
   height: calc(100% * var(--ribbon-rate));
+
+  /* The art is a tile, repeated down the sheet rather than stretched to fill it
+     — so it keeps its own proportions whatever the page ends up being, and the
+     composition never has to be laid out against a known page height. Anchored
+     at the top so the first tile lands where the art was drawn to; whatever the
+     document's length works out to is absorbed by the last repeat running off
+     the bottom, which the sections cover anyway.
+
+     Sideways it is drawn wider than the page and centred, so the composition
+     hangs off both edges rather than being fitted inside them — that overhang
+     is what keeps the ribbons at the weight they were drawn at, with the ones
+     at the edges reading as passing through rather than sitting in frame. The
+     bleed needs no clipping of its own: a background is painted to the
+     element's box and can't widen the document. */
+  background-image: var(--ribbon-art);
+  background-repeat: repeat-y;
+  background-position: var(--ribbon-position-x) top;
+  background-size: max(100% * var(--ribbon-scale), var(--ribbon-min-width)) auto;
+
+  /* move the ribbons up into the fold on desktop */
+  @media (min-width: 768px) {
+    background-position: var(--ribbon-position-x) -40vh;
+  }
 
   /* The gap left below the sheet, as a share of the sheet's own height — which
      is what a percentage translate resolves against. Covering `rate` of the
@@ -31,9 +48,8 @@
      Driven from a progress the component writes. That is the fallback path —
      the @supports below takes it over wherever there is a scroll timeline, and
      the component only bothers writing the property where there isn't one. */
-  translate: 0 calc(
-    var(--ribbon-progress, 0) * (100% / var(--ribbon-rate) - 100%)
-  );
+  translate: 0
+    calc(var(--ribbon-progress, 0) * (100% / var(--ribbon-rate) - 100%));
 }
 
 /* The same drift, off the page's own scroll instead of a scroll listener. That
@@ -66,31 +82,10 @@
 
 /* One rule covers both paths, because rate 1 is a sheet the exact height of the
    document with nowhere to travel: the keyframe's endpoint and the fallback's
-   translate both resolve to zero on their own. The art still lands in the same
-   places on the page, it just stops moving relative to it. */
+   translate both resolve to zero on their own. The art still tiles at the same
+   size, it just stops moving relative to the page. */
 @media (prefers-reduced-motion: reduce) {
   .layer {
     --ribbon-rate: 1;
   }
-}
-
-/* Stretched rather than scaled to fit. The art is drawn against a page whose
-   sections are not the heights ours are — Work and Services alone pin for
-   several screens each — so keeping its aspect ratio would either run the
-   composition out before the footer or bleed most of it past the bottom. It is
-   soft, abstract and out of focus by design, and takes the stretch without
-   reading as distorted.
-
-   Sideways it stops shrinking at the floor and starts bleeding instead, centred
-   on the page. Squeezing the whole 1512px composition into a phone turned every
-   ribbon into a thin vertical smear — the floor keeps them at a weight the eye
-   still reads as ribbons, at the price of only seeing the middle of the
-   composition, which is the half the sections sit over anyway. */
-.art {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: max(100%, var(--ribbon-min-width));
-  height: 100%;
-  transform: translateX(-50%);
 }

@@ -3,11 +3,11 @@ import { useEffect, useRef } from "react";
 import { asset } from "@/lib/data";
 import styles from "./Ribbons.module.css";
 
-// The whole ribbon composition is one piece of art, laid out in Figma against
-// the full scroll length of the page (node 711:6959) rather than assembled here
-// out of ribbons keyed to sections. So there is nothing to place — only the
-// drift to drive, and the stylesheet does that off a scroll timeline wherever
-// there is one to use.
+// The ribbon composition is one piece of art, drawn in Figma as a tile the
+// stylesheet repeats down the page rather than assembled here out of ribbons
+// keyed to sections. So there is nothing to place — only the drift to drive,
+// and the stylesheet does that off a scroll timeline wherever there is one to
+// use.
 export default function Ribbons() {
   const ref = useRef(null);
 
@@ -29,8 +29,7 @@ export default function Ribbons() {
     // frame — the drift can only show up on a frame boundary anyway.
     const write = () => {
       frame = 0;
-      const max =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
       layer.style.setProperty(
         "--ribbon-progress",
         max > 0 ? window.scrollY / max : 0,
@@ -50,14 +49,15 @@ export default function Ribbons() {
     };
   }, []);
 
+  // The art is a repeating background rather than an element, so its URL has to
+  // reach the stylesheet from here: a `url()` written into the CSS would be
+  // root-relative and 404 on the sub-path builds `asset` exists to cover.
   return (
-    <div ref={ref} className={styles.layer} aria-hidden>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={asset("/assets/ribbons-layer.webp")}
-        alt=""
-        className={styles.art}
-      />
-    </div>
+    <div
+      ref={ref}
+      className={styles.layer}
+      style={{ "--ribbon-art": `url(${asset("/assets/ribbons-layer-6.png")})` }}
+      aria-hidden
+    />
   );
 }
