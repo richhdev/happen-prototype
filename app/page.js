@@ -28,7 +28,6 @@ export default function Home() {
         <Events />
         <Vendors />
         <Work />
-        <Ribbon name="services" />
         <Services />
         <Ribbon name="artists" />
         <Artists />

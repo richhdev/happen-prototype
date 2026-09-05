@@ -62,6 +62,57 @@
   pointer-events: none;
 }
 
+/* Ribbon ----------------------------------------------------------------- */
+
+/* Desktop only, like every other ribbon: the mobile design is its own
+   composition rather than this one reflowed.
+
+   Sits between the surface and the content — the surface is at 0 in the panel's
+   stacking context and comes first, the heading and the track are at 1 — so the
+   loop reads as marking on the red rather than as another card on top of it. */
+.ribbonLayer {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.85;
+  pointer-events: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+/* The design centres this loop on Work, not on the boundary below it, so it is
+   anchored in the section rather than dropped on a section edge the way the
+   ribbons between sections are: the panel is pinned for Work's whole length, and
+   a marker on an edge would scroll away while the section stood still.
+
+   Geometry is the wide Figma frame's (node 691:4739), in its own units: the art
+   1321.973 x 1416.742 before rotation, turned -52.35deg, centred 957.278px left
+   of the page's centre line. Percentages resolve against the panel, which is the
+   centred content column, so 50% is that line at any viewport width — and the
+   loop runs a long way off the left edge, which `html` already hides. */
+.ribbon {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 957.278px);
+  width: 1321.973px;
+  height: 1416.742px;
+  max-width: none;
+  /* Drift first, so it stays in page space rather than being turned with the
+     art. */
+  transform: translate(-50%, calc(-50% + var(--ribbon-drift, 0px)))
+    rotate(-52.35deg);
+  will-change: transform;
+
+  /* Beats the inherited value, since a declaration on the element itself wins
+     over inheritance — no JS branch needed. */
+  @media (prefers-reduced-motion: reduce) {
+    --ribbon-drift: 0px;
+  }
+}
+
 .heading {
   position: relative;
   z-index: 1;

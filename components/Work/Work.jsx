@@ -11,8 +11,8 @@ import { WORK } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";
 import { Reveal, useIsoLayoutEffect } from "@/components/ui";
+import { asset } from "@/lib/data";
 import styles from "./Work.module.css";
-import Ribbon from "../Ribbons/Ribbons";
 
 // The red surface's pull-back curve: quick off the viewport edges, then easing
 // down into the frame. Roughly easeOutQuad — steeper front-loads the break away
@@ -109,6 +109,17 @@ export default function Work() {
     ease: SHRINK_EASE,
   });
 
+  // The ribbon creeps up behind the panel rather than holding dead still for
+  // the whole pin — the only cue that the page is moving while the section is
+  // stuck, and slow enough to read as further away than the cards panning over
+  // it. Straight off scroll progress, not the eased surface growth, or the
+  // drift would stall mid-section and hurry at both ends.
+  const ribbonDrift = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["180px", "-180px"],
+  );
+
   // The card nearest the viewport centre is the featured one. The track's
   // padding centres card 0 at x=0 and every card occupies the same layout step,
   // so the index falls straight out of the pan offset. Reading rects instead
@@ -131,39 +142,46 @@ export default function Work() {
   useIsoLayoutEffect(() => syncActive(x.get()), [syncActive, x]);
 
   return (
-    <>
-      {/* <Ribbon name="services" /> */}
-      <Section id="b-work" className={styles.work}>
-        <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
-          <div className={styles.pinned}>
-            <motion.div
-              className={styles.panel}
-              style={{ "--progress": framed }}
-            >
-              <div className={styles.surface} />
+    <Section id="b-work" className={styles.work}>
+      <div ref={containerRef} style={{ height: `calc(100vh + ${max}px)` }}>
+        <div className={styles.pinned}>
+          <motion.div
+            className={styles.panel}
+            style={{ "--progress": framed, "--ribbon-drift": ribbonDrift }}
+          >
+            <div className={styles.surface} />
 
-              <Heading2 className={styles.heading}>
-                The proof is <br className="desktop-only" />
-                in the Happening
-              </Heading2>
+            <div className={styles.ribbonLayer} aria-hidden>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset("/assets/ribbon-loop.webp")}
+                alt=""
+                className={styles.ribbon}
+                loading="lazy"
+              />
+            </div>
 
-              <motion.div className={styles.track} style={{ x }}>
-                {WORK.map((item, i) => (
-                  <WorkCard
-                    key={item.name}
-                    item={item}
-                    index={i}
-                    step={step}
-                    x={x}
-                    active={i === active}
-                    cardRef={(el) => (cardRefs.current[i] = el)}
-                  />
-                ))}
-              </motion.div>
+            <Heading2 className={styles.heading}>
+              The proof is <br className="desktop-only" />
+              in the Happening
+            </Heading2>
+
+            <motion.div className={styles.track} style={{ x }}>
+              {WORK.map((item, i) => (
+                <WorkCard
+                  key={item.name}
+                  item={item}
+                  index={i}
+                  step={step}
+                  x={x}
+                  active={i === active}
+                  cardRef={(el) => (cardRefs.current[i] = el)}
+                />
+              ))}
             </motion.div>
-          </div>
+          </motion.div>
         </div>
-      </Section>
-    </>
+      </div>
+    </Section>
   );
 }

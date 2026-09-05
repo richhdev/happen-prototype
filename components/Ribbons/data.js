@@ -20,6 +20,9 @@ const OVAL = asset("/assets/ribbon-oval.webp");
 //            Services alone is several times taller once it is scrolling.
 //   width /  the art's size before rotation. The rotated bounding box the
 //   height   frame reports falls out of these, so it isn't stored.
+// The loop the design centres on Work is not here: Work pins for its whole
+// length, so a marker on a section edge would scroll away while the section
+// stood still. It is anchored inside the section instead — see Work.module.css.
 export const RIBBONS = {
   events: {
     src: LOOP,
@@ -29,17 +32,6 @@ export const RIBBONS = {
     y: 526.5,
     rotate: -90,
     flip: true,
-  },
-  // Keyed to the top of Services rather than into Work, where the design puts
-  // its centre: Work's red panel is full-bleed here, so anything behind it is
-  // simply gone. This is the same boundary, read from the other side.
-  services: {
-    src: LOOP,
-    width: 1321.973,
-    height: 1416.742,
-    x: -957.278,
-    y: -195,
-    rotate: -52.35,
   },
   artists: {
     src: OVAL,
