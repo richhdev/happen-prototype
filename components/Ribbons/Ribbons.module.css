@@ -29,13 +29,27 @@
      at the edges reading as passing through rather than sitting in frame. The
      bleed needs no clipping of its own: a background is painted to the
      element's box and can't widen the document. */
-  background-image: var(--ribbon-art);
+  /* Two cuts of the same art. The tile is drawn to `--ribbon-min-width` on a
+     phone — 4000px, an order of magnitude wider than the page — so a phone
+     downloads the whole sheet to show a tenth of it, and the full-size cut is
+     mostly bytes for canvas that is never on screen. The narrow cut is the
+     same composition at 2400px: drawn to the same size by the rule below, so
+     the framing is untouched and only the resolution behind it drops, which on
+     art this diffuse costs nothing visible at the size a phone draws it.
+
+     Both URLs come from the component for the same reason one did — see there
+     — and the choice is made here rather than by `image-set()` so it keys off
+     the page width that decides the tile's size, not the device's pixel ratio.
+     Only the URL the matching rule uses is fetched: the other stays an unread
+     custom property. */
+  background-image: var(--ribbon-art-narrow);
   background-repeat: repeat-y;
   background-position: var(--ribbon-position-x) top;
   background-size: max(100% * var(--ribbon-scale), var(--ribbon-min-width)) auto;
 
   /* move the ribbons up into the fold on desktop */
   @media (min-width: 768px) {
+    background-image: var(--ribbon-art);
     background-position: var(--ribbon-position-x) -40vh;
   }
 

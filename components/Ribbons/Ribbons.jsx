@@ -51,12 +51,17 @@ export default function Ribbons() {
 
   // The art is a repeating background rather than an element, so its URL has to
   // reach the stylesheet from here: a `url()` written into the CSS would be
-  // root-relative and 404 on the sub-path builds `asset` exists to cover.
+  // root-relative and 404 on the sub-path builds `asset` exists to cover. Both
+  // cuts of it travel the same way; which one is painted is the stylesheet's
+  // call, and only that one is ever fetched.
   return (
     <div
       ref={ref}
       className={styles.layer}
-      style={{ "--ribbon-art": `url(${asset("/assets/ribbons-layer-6.png")})` }}
+      style={{
+        "--ribbon-art": `url(${asset("/assets/ribbons-layer-6.webp")})`,
+        "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-6-mobile.webp")})`,
+      }}
       aria-hidden
     />
   );
