@@ -3,11 +3,13 @@ import { RevealGroup, RevealItem } from "@/components/ui";
 import { SOCIALS } from "@/lib/data";
 import { IG_PROFILE, IG_TILES } from "./data";
 import styles from "./Instagram.module.css";
+import { Heading3 } from "../Heading/Heading";
 
 export default function Instagram() {
   return (
     <Section id="a-instagram" className={styles.instagram}>
       <div className={styles.content}>
+        <Heading3 style={{ color: "var(--color-white)" }}>Instagram</Heading3>
         <RevealGroup className={styles.grid} once={true}>
           {IG_TILES.map((src) => (
             <RevealItem
