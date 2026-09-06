@@ -1,15 +1,15 @@
 import { asset } from "@/lib/data";
-import styles from "./SiteBackground.module.css";
+import styles from "./VideoBackground.module.css";
 
 // The video is a page-level fill, not a hero element: it sits fixed behind the
 // whole site and every section scrolls over it. Sections with their own opaque
 // background hide it; transparent ones (the hero) let it through.
-export function SiteBackground() {
+export function VideoBackground() {
   return (
     <div className={styles.backdrop} aria-hidden="true">
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video
-        src={asset("/assets/hero-bg.mp4")}
+        src={asset("/assets/hero-bg-baked.mp4")}
         autoPlay
         muted
         loop
@@ -21,4 +21,4 @@ export function SiteBackground() {
   );
 }
 
-export default SiteBackground;
+export default VideoBackground;

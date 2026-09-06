@@ -1,5 +1,5 @@
 import Preloader from "@/components/Preloader/Preloader";
-import SiteBackground from "@/components/SiteBackground/SiteBackground";
+import VideoBackground from "@/components/VideoBackground/VideoBackground";
 import Nav, { NavPlaceholder } from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services/Services";
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       <Preloader />
-      <SiteBackground />
+      <VideoBackground />
       <Nav />
       <NavPlaceholder />
       <main className={styles.main}>
