@@ -8,11 +8,30 @@ import { TextMedium, TextOverline, TextXXLarge } from "@/components/Text/Text";
 import { useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Services.module.css";
 
-const centre = (r) => r.top + r.height / 2;
+/* Where a title has to get to before it is the current service, and which of
+   its edges has to get there. Both breakpoints measure against the card, since
+   that is what the title is being read alongside — but against opposite edges
+   of it, because the card sits in a different place in each. On desktop it is
+   beside the list, so a title takes over as it draws level with the card's
+   bottom. On mobile it is over the lower half of the screen, so the line is the
+   card's top and it is the title's bottom that has to cross it — the moment the
+   whole title has been revealed from behind the card. */
+const focusLine = (cardEl) => {
+  const card = cardEl?.getBoundingClientRect();
+  const fallback = window.innerHeight / 2;
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    return {
+      at: card ? card.bottom : fallback,
+      edgeOf: (r) => r.top + r.height / 2,
+    };
+  }
+  return { at: card ? card.top : fallback, edgeOf: (r) => r.bottom };
+};
 
 export default function Services() {
   const sectionRef = useRef(null);
   const itemRefs = useRef([]);
+  const cardRef = useRef(null);
   const [active, setActive] = useState(0);
 
   // Track the section's scroll progress while the section is sticky
@@ -27,18 +46,17 @@ export default function Services() {
   });
 
   const sync = useCallback(() => {
-    const line = window.innerHeight / 2;
-    let best = 0;
-    let bestDist = Infinity;
+    const { at, edgeOf } = focusLine(cardRef.current);
+    // The last title to have crossed the line, rather than the one nearest it.
+    // Nearest flips at the midpoint between two titles, so a title would take
+    // over while it was still half a gap short of the line — and these gaps are
+    // large enough that half of one is most of the way down the screen. Items
+    // are in document order, so the last one to test as crossed is the lowest.
+    let next = 0;
     itemRefs.current.forEach((node, i) => {
-      if (!node) return;
-      const dist = Math.abs(centre(node.getBoundingClientRect()) - line);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = i;
-      }
+      if (node && edgeOf(node.getBoundingClientRect()) <= at) next = i;
     });
-    setActive((prev) => (prev === best ? prev : best));
+    setActive((prev) => (prev === next ? prev : next));
   }, []);
 
   useEffect(() => {
@@ -52,11 +70,11 @@ export default function Services() {
 
   useIsoLayoutEffect(sync, [sync]);
 
-  // Scroll to a specific service item
+  // Scroll a service up to the same line, so clicking it makes it the current one
   const scrollToItem = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+    const { at, edgeOf } = focusLine(cardRef.current);
     window.scrollBy({
-      top: centre(rect) - window.innerHeight / 2,
+      top: edgeOf(e.currentTarget.getBoundingClientRect()) - at,
       behavior: "smooth",
     });
   };
@@ -105,7 +123,7 @@ export default function Services() {
 
       <div className={styles.cardLayer} aria-hidden>
         <div className={styles.cardSticky}>
-          <div className={styles.card}>
+          <div className={styles.card} ref={cardRef}>
             {SERVICES.map((service, i) => (
               <div
                 key={service.title}

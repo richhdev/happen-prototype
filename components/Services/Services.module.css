@@ -1,8 +1,22 @@
 .services {
-  --list-item-min-height: 300px;
-  /* Gaps the pinned surface leaves above and below itself in the viewport. */
-  --surface-top: var(--space-80);
-  --surface-bottom: var(--space-80);
+  /* Space between one service and the next. The rows hug their titles, so this
+     alone sets the list's rhythm — and with it the scroll pacing, since a
+     service goes by per row-plus-gap of travel. The board draws 98px here and
+     120px on desktop; both are opened up from that. */
+  --list-gap: 180px;
+  /* Gaps the pinned surface leaves above and below itself in the viewport.
+     Off the scale, and deliberately large: they are the room the surface has to
+     grow into, so the board's framing is also its animation's throw. */
+  --surface-top: 164px;
+  --surface-bottom: 192px;
+  /* Where the heading sits inside the surface, measured from its top edge, so
+     the copy travels with the surface rather than being placed against the
+     section. */
+  --copy-inset: 76px;
+  /* The card's own distance from the bottom of the viewport. The board holds it
+     still while the surface grows past it, so it is not measured off the
+     surface's bottom gap. Mobile only — the card is centred on desktop. */
+  --card-bottom: 73px;
   /* How far the card clears the surface's bottom edge; negative overhangs.
      The list's runway is measured from it, so moving it re-times the list. */
   --card-inset: 0px;
@@ -16,8 +30,10 @@
   --progress: 0;
 
   @media (min-width: 768px) {
-    --surface-top: var(--space-120);
-    --surface-bottom: var(--space-48);
+    --list-gap: 320px;
+    --surface-top: 171px;
+    --surface-bottom: 171px;
+    --copy-inset: 229px;
   }
 }
 
@@ -52,10 +68,14 @@
   /* background: var(--color-cream); */
   background: rgba(255, 250, 242, 0.8);
 
-  /* Holds short of the right edge, grown or not: the card needs an edge to
-     hang over. */
+  /* Holds short of the right edge, grown or not: the card needs an edge to hang
+     over. The clearance halves as the surface grows, so the card's overhang
+     tightens instead of holding — 240px down to 120px at the 1200px content
+     width the board is drawn at. Percentages rather than those two numbers
+     because between 768px and the max width there is no room to give away: a
+     fixed 240px would leave the surface narrower than the card it sits behind. */
   @media (min-width: 768px) {
-    margin-right: var(--space-120);
+    margin-right: calc(20% - 10% * var(--progress));
   }
 }
 
@@ -70,7 +90,7 @@
   justify-content: flex-end;
   height: 100vh;
   padding-inline: var(--space-16);
-  padding-bottom: calc(var(--surface-bottom) + var(--card-inset) - 16px);
+  padding-bottom: calc(var(--card-bottom) + var(--card-inset));
 
   /* Flush with the right of the section, so it overhangs the surface. */
   @media (min-width: 768px) {
@@ -89,10 +109,16 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: var(--space-40) var(--space-16) 0;
+  /* Placed against the surface's top edge, not the section's, so the two stay
+     in register when --surface-top moves. The section's own padding is already
+     spent by the time this box starts, hence subtracting it back off. */
+  padding: calc(
+      var(--surface-top) + var(--copy-inset) - var(--layout-padding-y)
+    )
+    var(--space-16) 0;
 
   @media (min-width: 768px) {
-    padding: 110px 0 0;
+    padding-inline: 0;
   }
 }
 
@@ -131,7 +157,10 @@
 .list {
   display: flex;
   flex-direction: column;
-  padding-top: var(--space-64);
+  gap: var(--list-gap);
+  /* The board's lead-in above the first title. A row starts at its title, so
+     this is that number as drawn. */
+  padding-top: 64px;
   /* runway makes sure the last list item can reach the focus line before section unsticks */
   padding-bottom: calc(
     var(--card-inset) + var(--card-size) + var(--surface-bottom)
@@ -140,8 +169,12 @@
   @media (min-width: 768px) {
     width: 721px;
     max-width: 100%;
-    padding-top: 175px;
-    padding-bottom: calc(50vh - 160px + var(--surface-bottom));
+    padding-top: 95px;
+    /* Deliberately a little long: the last title's height depends on how many
+       lines it takes, and rather than encode that, leave a clear half-viewport
+       so it reaches the focus line whatever it wraps to — and holds there for a
+       beat before the section unpins. */
+    padding-bottom: calc(50vh + var(--surface-bottom));
   }
 }
 
@@ -149,10 +182,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: var(--space-8);
-  min-height: var(--list-item-min-height);
-  padding: var(--space-8) var(--space-4);
+  padding: 0 var(--space-4);
   border: 0;
   background: none;
   font: inherit;
