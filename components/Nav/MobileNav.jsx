@@ -2,16 +2,6 @@ import styles from "./MobileNav.module.css";
 import { LINKS } from "./data";
 import { Heading3 } from "@/components/Heading/Heading";
 
-/* The full-screen menu behind the bar's Menu button. It's a separate component
-   from the bar's LinkList because almost nothing is shared: heading-sized
-   links, each clipped by its own mask so the label can slide up into place,
-   staggered down the stack and back out in reverse when the menu closes, and
-   the active link marked by dimming the others rather than by the bar's
-   sliding rule.
-
-   The stagger is two custom properties per link rather than JS timers: --i
-   counts down the list for the entrance, --r counts back up it for the exit,
-   and each state picks the one it needs as its transition-delay. */
 export default function MobileNav({ open, activeId, scrollToSection }) {
   return (
     <div

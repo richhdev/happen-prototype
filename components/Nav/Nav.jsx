@@ -23,8 +23,7 @@ export default function Nav() {
     setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({
       behavior: "smooth",
-      // when scrolling artists section. anchor should be in the middle of viewport which is the end of the scroll animation.
-      block: id === "b-artists" ? "end" : "start",
+      block: id === "b-artists" ? "end" : "start", // artists section should land at the end of its animation
     });
   };
 
@@ -37,7 +36,7 @@ export default function Nav() {
         scrollToSection={scrollToSection}
       />
 
-      {/* Keeps the difference blend out of the greens, see Nav.module.css */}
+      {/* keeps the navlinks from turning weird colors from `difference` */}
       <Bar
         className={styles.hueGuard}
         hidden
@@ -56,7 +55,7 @@ export default function Nav() {
   );
 }
 
-// Reserves the fixed bar's height in the page flow, see app/page.js.
+// Reserves the fixed bar's height in the page flow
 export function NavPlaceholder() {
   return <div className={styles.navPlaceholder} />;
 }
