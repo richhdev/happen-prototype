@@ -20,7 +20,6 @@ export const EVENTS = [
     cta: "Get tickets",
     link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
     img: asset("/assets/event-party-girl-auckland.jpg"),
-    // crop: { width: "237.18%", height: "100%", left: "-38.3%", top: 0 },
   },
   {
     title: "Danny Rants Off TheRecord",
@@ -31,12 +30,6 @@ export const EVENTS = [
     cta: "Pre register",
     link: "https://happengroup.fillout.com/dannyrants",
     img: asset("/assets/event-off-the-record-tour.png"),
-    // crop: {
-    //   width: "118.66%",
-    //   height: "123.58%",
-    //   left: "-4.13%",
-    //   top: "-2.87%",
-    // },
   },
   {
     title: "Chapter NYE 2026",

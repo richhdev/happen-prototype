@@ -8,15 +8,39 @@ import { Badge } from "@/components/Badge/Badge";
 import { ButtonOutlineMedium } from "@/components/Button/Button";
 import styles from "./Events.module.css";
 
+export default function Events() {
+  return (
+    <Section
+      id="a-events"
+      className={styles.section}
+      innerClassName={styles.inner}
+    >
+      <Heading2 className={styles.heading}>What&apos;s Happening</Heading2>
+      <div className={styles.scroller}>
+        {EVENTS.map((event, i) => (
+          <Reveal
+            key={i}
+            className={styles.cardWrap}
+            once={true}
+            amount={0}
+            delay={i * 130}
+          >
+            <EventCard event={event} />
+          </Reveal>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 const STATUSES = {
   upcoming: { label: "Upcoming", color: "charcoal" },
   onsale: { label: "On sale", color: "orange" },
-  soldout: { label: "Sold out", color: "red" },
+  soldout: { label: "Sold out", color: "red", soldout: true },
 };
 
 function EventCard({ event }) {
-  const status = STATUSES[event.status];
-  const soldout = event.status === "soldout";
+  const { label, color, soldout } = STATUSES[event.status];
 
   return (
     <article className={styles.card}>
@@ -24,7 +48,7 @@ function EventCard({ event }) {
       <img src={event.img} alt="" className={styles.image} style={event.crop} />
 
       <div className={styles.overlay}>
-        <Badge color={status.color}>{status.label}</Badge>
+        {label && <Badge color={color}>{label}</Badge>}
 
         <div className={styles.meta}>
           <TextSmall className={styles.date}>{event.date}</TextSmall>
@@ -48,31 +72,5 @@ function EventCard({ event }) {
         </ButtonOutlineMedium>
       </div>
     </article>
-  );
-}
-
-export default function Events() {
-  return (
-    <Section
-      id="a-events"
-      className={styles.events}
-      innerClassName={styles.inner}
-    >
-      <Heading2 className={styles.heading}>What&apos;s Happening</Heading2>
-
-      <div className={styles.scroller}>
-        {EVENTS.map((event, i) => (
-          <Reveal
-            key={i}
-            className={styles.cardWrap}
-            once={true}
-            amount={0}
-            delay={i * 130}
-          >
-            <EventCard event={event} />
-          </Reveal>
-        ))}
-      </div>
-    </Section>
   );
 }

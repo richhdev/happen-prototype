@@ -1,20 +1,10 @@
-.events {
+.section {
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
     rgba(17, 17, 17, 0.8) 37.5%,
     rgba(17, 17, 17, 0) 100%
   );
-  /* The card row bleeds to the viewport edge; clip so it never adds a
-     horizontal scrollbar to the page. */
   overflow-x: clip;
-
-  @media (min-width: 768px) {
-    background: radial-gradient(
-      ellipse 50% 50% at 50% 50%,
-      rgba(17, 17, 17, 0.8) 45%,
-      rgba(17, 17, 17, 0) 100%
-    );
-  }
 }
 
 .inner {
