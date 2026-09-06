@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 
-// Tracks which nav link's section owns the viewport, so the matching link can
-// be underlined as the user scrolls. A section qualifies once it covers the
-// majority of the viewport — or, for sections shorter than half the viewport,
-// once the majority of the section itself is on screen — and the qualifier
-// showing the most pixels wins. Nothing qualifies over the hero, so the nav
-// starts with no link underlined.
+// Which section owns the viewport, so its nav link can be underlined. A section
+// qualifies on covering half the viewport — or half of itself, if it's shorter
+// — and the most visible one wins. Nothing qualifies over the hero.
 export function useActiveSection(links) {
   const [activeId, setActiveId] = useState(null);
 
@@ -17,8 +14,7 @@ export function useActiveSection(links) {
       links.forEach(({ id }) => {
         const r = document.getElementById(id)?.getBoundingClientRect();
         if (!r) return;
-        const visible =
-          Math.min(r.bottom, viewportHeight) - Math.max(r.top, 0);
+        const visible = Math.min(r.bottom, viewportHeight) - Math.max(r.top, 0);
         const majority = Math.min(viewportHeight, r.height) / 2;
         if (visible <= majority || visible <= mostVisible) return;
         mostVisible = visible;

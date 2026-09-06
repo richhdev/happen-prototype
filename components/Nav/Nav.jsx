@@ -5,10 +5,62 @@ import { LINKS } from "./data";
 import { useActiveSection } from "./useActiveSection";
 import { TextOverline } from "@/components/Text/Text";
 import LinkList from "./LinkList";
+import MobileNav from "./MobileNav";
 
-// At module scope: declared inside Nav it would be a new component type on
-// every render, so each scroll would remount the links and the underline would
-// jump to the active link rather than sliding to it.
+export default function Nav() {
+  const activeId = useActiveSection(LINKS);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const scrollToSection = (e, id) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      // when scrolling artists section. anchor should be in the middle of viewport which is the end of the scroll animation.
+      block: id === "b-artists" ? "end" : "start",
+    });
+  };
+
+  return (
+    <>
+      <Bar
+        activeId={activeId}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        scrollToSection={scrollToSection}
+      />
+
+      {/* Keeps the difference blend out of the greens, see Nav.module.css */}
+      <Bar
+        className={styles.hueGuard}
+        hidden
+        activeId={activeId}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        scrollToSection={scrollToSection}
+      />
+
+      <MobileNav
+        open={menuOpen}
+        activeId={activeId}
+        scrollToSection={scrollToSection}
+      />
+    </>
+  );
+}
+
+// Reserves the fixed bar's height in the page flow, see app/page.js.
+export function NavPlaceholder() {
+  return <div className={styles.navPlaceholder} />;
+}
+
 function Bar({
   className,
   hidden,
@@ -47,57 +99,4 @@ function Bar({
       </div>
     </nav>
   );
-}
-
-export default function Nav() {
-  const activeId = useActiveSection(LINKS);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
-
-  const scrollToSection = (e, id) => {
-    e.preventDefault();
-    setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-      // when scrolling artists section. anchor should be in the middle of viewport which is the end of the scroll animation.
-      block: id === "b-artists" ? "end" : "start",
-    });
-    document.getElementById(id);
-  };
-
-  return (
-    <>
-      <Bar
-        activeId={activeId}
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        scrollToSection={scrollToSection}
-      />
-
-      {/* Keeps the difference blend out of the greens, see Nav.module.css */}
-      <Bar
-        className={styles.hueGuard}
-        hidden
-        activeId={activeId}
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        scrollToSection={scrollToSection}
-      />
-
-      {/* Mobile nav list */}
-      <div className={`${styles.overlay}${menuOpen ? ` ${styles.open}` : ""}`}>
-        <LinkList activeId={activeId} scrollToSection={scrollToSection} />
-      </div>
-    </>
-  );
-}
-
-export function NavPlaceholder() {
-  return <div className={styles.navPlaceholder} />;
 }
