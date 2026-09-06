@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "screenshot": "node scripts/screenshot.mjs"
+    "screenshot": "node scripts/screenshot.mjs",
+    "assets": "./scripts/build-assets.sh"
   },
   "dependencies": {
     "motion": "^11.15.0",
