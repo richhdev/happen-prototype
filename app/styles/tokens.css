@@ -128,4 +128,9 @@
   /* Badge  */
   --badge-size: 14px;
   --badge-line-height: 18px;
+
+  /* Media Queries */
+  --media-query-medium: (min-width: 768px);
+  --media-query-large: (min-width: 1024px);
+  --media-query-xlarge: (min-width: 1200px);
 }

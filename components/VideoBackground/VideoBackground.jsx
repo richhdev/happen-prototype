@@ -10,7 +10,7 @@ export function VideoBackground() {
         loop
         muted
         playsInline
-        poster={asset("/assets/video-background-poster.webp")}
+        poster={asset("/assets/video-background-poster.jpg")}
         preload="metadata"
       >
         <source
