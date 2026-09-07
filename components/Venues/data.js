@@ -7,7 +7,7 @@ export const VENUES = [
     description:
       "A heritage bluestone courtyard in the heart of the CBD. A combination of industrial and garden paradise, built for all-day and all-night events.",
     capacity: "Capacity 1000",
-    img: asset("/assets/venue-bourke-st-courtyard.png"),
+    img: asset("/assets/venue-bourke-st-courtyard.webp"),
   },
   {
     name: "Brown Alley",

@@ -26,6 +26,35 @@ nothing, which is what lets the framing in the design survive to the page — a
 non-square export would silently re-crop and need an `objectPosition` in
 `components/Work/data.js` to put it back.
 
+Artist cards are a fixed 390x469 box at every breakpoint, so their art is
+780x938 and is cropped to that aspect here rather than by the browser. Sasha
+Fern is the exception at 733x881: the original is only 881px square, and
+upscaling it to hit 2x would add bytes without adding detail.
+
+**Venue art is the one thing here that is deliberately not cropped.** That card
+has no fixed aspect — it is 370x357 on desktop and 244x371 on mobile, because
+its height follows its text — so there is no one crop that can be right, and
+`background-size: cover` has to keep its room to move. Crop these to a card
+aspect and one of the two breakpoints will cut the frame wrong. They ship at the
+full size of the original for the same reason.
+
+## Cards whose art is not a separate layer
+
+Work art exports straight from its own node. Artist and venue art cannot: in
+Figma the photo is a *fill* on the card frame, and the name, badge, capacity
+pill and body copy are layers on top of it, so exporting the node bakes the
+whole card into the picture. Take `rawImages` from `download_assets` instead —
+that is the uploaded photo, before the crop, the overlay and the corner radius.
+
+The design's framing then has to be re-derived, since the raw is uncropped: all
+four artists and Brown Alley are a plain centred cover crop, which is what the
+CSS already does, so the raw needs nothing done to it. Bourke Street is zoomed
+in much further in Figma, but that frame is a washed-out placeholder whose
+overlay renders its own text nearly illegible, and the site has always shown the
+centred crop. It stays centred. Re-derive this before trusting a new export —
+`rawImages` also hands back a small duplicate of each photo alongside the
+full-size one, so check the dimensions and take the larger.
+
 Export flat rectangles. The cards clip their own corners with `border-radius`
 and `overflow: hidden`, so a baked-in radius either doubles up or, on a
 transparent export, lets the page show through.
