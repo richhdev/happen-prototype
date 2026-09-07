@@ -31,6 +31,10 @@ Artist cards are a fixed 390x469 box at every breakpoint, so their art is
 Fern is the exception at 733x881: the original is only 881px square, and
 upscaling it to hit 2x would add bytes without adding detail.
 
+The Instagram tiles are a square grid: three columns across the 894px content
+width with a 32px gap, so each tile is 276.67px and the art is 554x554. The
+posts are portrait — 4:5, and one 2:3 — so each is cropped square here.
+
 **Venue art is the one thing here that is deliberately not cropped.** That card
 has no fixed aspect — it is 370x357 on desktop and 244x371 on mobile, because
 its height follows its text — so there is no one crop that can be right, and
@@ -54,6 +58,12 @@ overlay renders its own text nearly illegible, and the site has always shown the
 centred crop. It stays centred. Re-derive this before trusting a new export —
 `rawImages` also hands back a small duplicate of each photo alongside the
 full-size one, so check the dimensions and take the larger.
+
+Instagram tiles are photo fills on a link frame with nothing layered on top, so
+their node exports would be usable — except that the frame carries the tile's
+corner radius, which is the one thing the export must not bake in. Take
+`rawImages` here too. Figma crops all six to a plain centred cover crop, which
+is what a square `sips -c <width> <width>` reproduces.
 
 Export flat rectangles. The cards clip their own corners with `border-radius`
 and `overflow: hidden`, so a baked-in radius either doubles up or, on a
