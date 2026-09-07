@@ -29,54 +29,9 @@
   --nav-height-desktop: var(--space-120);
 
   /* Ribbons */
-  /* The share of the page's scroll the ribbon sheet keeps. The sheet is one
-     piece of art behind the whole document, so this is the whole of the
-     parallax: at 0.9 the art climbs the screen at nine tenths of the page,
-     just slow enough to sit behind it. Turn it down for a heavier parallax; 1
-     pins the sheet to the page and it stops reading as a background at all.
-
-     The art tiles rather than stretches, so the rate costs it no proportion —
-     a shorter sheet just fits fewer repeats, and the only limit is that far
-     below about 0.5 the drift starts to read as the background sliding. */
   --ribbon-rate: 0.7;
-
-  /* How wide the ribbon tile is drawn, as a share of the page. The art is a
-     scatter of loops with room around them, so drawing it to fit the page puts
-     the whole scatter on screen at once and every ribbon comes out small. Above
-     1 it is drawn oversized and centred, hanging off both edges: the ribbons
-     land at the weight they were drawn at, and the ones at the edges read as
-     passing through the page rather than sitting inside it. The cost is that
-     the tile gets taller with the width, so it repeats less often.
-
-     This is the desktop control. It only decides anything once the page is past
-     about 1030px, because below that the floor below is the larger of the two
-     and takes over — so turning this up widens the ribbons on a laptop and a
-     monitor without touching a phone or a tablet. 3.86 puts the tile at the
-     5833px the sheet is drawn at on the desktop board, on a 1512px page. */
   --ribbon-scale: 3.8;
-
-  /* The narrowest the ribbon tile is ever drawn, and on a phone the size that
-     actually applies — 100% * scale only overtakes it past about a 1600px page.
-     It is an absolute rather than a relative size because that is how the
-     composition is drawn: the sheet is 5833px across the desktop board and
-     4007px across the mobile one, so the ribbons are near enough a fixed
-     physical size at both, and it is the page that changes around them. Scaling
-     them with the viewport instead is what left the phone showing a third of
-     the composition at once, with a ribbon through the middle of the hero copy.
-
-     It sets the tile's height too, since that follows from the width. */
   --ribbon-min-width: 4000px;
-
-  /* Where the tile's width sits against the page's. The composition is not
-     symmetric, so on a phone — where the page is a narrow window onto a sheet
-     nine times its width — which slice of it you get is the whole difference
-     between a ribbon sweeping the bottom corner and one laid across the
-     headline. The mobile board frames its own sheet at 35% (hanging 1247px off
-     the left of 3567px of travel); this art is not that sheet, so 35% lands on
-     empty canvas and the value here is the one that reproduces the board's
-     framing rather than its number — a ribbon entering under the buttons, the
-     hero copy clear. A wide page sees enough of the sheet either side that
-     centring it is the honest answer. */
   --ribbon-position-x: 55%;
 
   @media (min-width: 768px) {
@@ -95,6 +50,7 @@
 
   /* Headings */
 
+  /* fluid -  390px → 1200px */
   --heading1-size-fluid: clamp(40px, calc(25.56px + 3.704vw), 70px);
   --heading1-line-height-fluid: clamp(44px, calc(25.76px + 4.504vw), 74px);
   --heading2-size-fluid: clamp(36px, calc(24.44px + 2.963vw), 60px);
