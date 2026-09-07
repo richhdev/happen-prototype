@@ -2,16 +2,16 @@ import { asset } from "@/lib/data";
 import styles from "./TrustedBy.module.css";
 
 const CLIENTS = [
-  { name: "Beyond The Valley", src: asset("/assets/client-beyond-the-valley.svg"), h: 26 },
   {
-    name: "Good Things Festival",
-    src: asset("/assets/client-good-things.svg"),
-    h: 28,
+    name: "Beyond The Valley",
+    src: asset("/assets/client-beyond-the-valley.svg"),
+    h: 26,
   },
   { name: "Live Nation", src: asset("/assets/client-live-nation.webp"), h: 35 },
-  { name: "Novel", src: asset("/assets/client-novel.png"), h: 22 },
+  { name: "Novel", src: asset("/assets/client-novel.webp"), h: 22 },
   { name: "Happy Hour", src: asset("/assets/client-happy-hour.webp"), h: 37 },
-  { name: "Dangerous Goods", src: asset("/assets/client-dg.png"), h: 24 },
+
+  { name: "Dangerous Goods", src: asset("/assets/client-dg.webp"), h: 24 },
   { name: "A3", src: asset("/assets/client-a3.webp"), h: 32 },
   {
     name: "Astral People",
@@ -40,10 +40,10 @@ const CLIENTS = [
     src: asset("/assets/client-our-city-our-sound.svg"),
     h: 36,
   },
+  { name: "Chapter", src: asset("/assets/client-chapter.webp"), h: 30 },
+  { name: "Afrosoul", src: asset("/assets/client-afrosoul.svg"), h: 30 },
 ];
 
-// Infinite client-logo marquee. The list is rendered twice and the track is
-// animated by -50%, so the second copy lands exactly where the first started.
 export function TrustedBy({ className, ...rest }) {
   const loop = CLIENTS.concat(CLIENTS);
 

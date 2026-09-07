@@ -162,7 +162,7 @@ export const WORK = [
     name: "Leonardo Da Vinci Immersive Exhibition",
     tag: ["End-to-end Event Delivery"],
     img: asset("/assets/work-leonardo-da-vinci.webp"),
-    logo: asset("/assets/client-leonaro-da-vinci.png"),
+    logo: asset("/assets/client-leonardo-da-vinci.webp"),
     logoWidth: 150,
     logoHeight: 68,
   },
