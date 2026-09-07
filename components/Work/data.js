@@ -4,7 +4,7 @@ export const WORK = [
   {
     name: "Knotfest",
     tag: ["BOH Management, Nationwide"],
-    img: asset("/assets/work-knotfest.jpg"),
+    img: asset("/assets/work-knotfest.webp"),
     logo: asset("/assets/client-knotfest.webp"),
     logoWidth: 200,
     logoHeight: 28,
@@ -12,7 +12,7 @@ export const WORK = [
   {
     name: "Good Things Festival",
     tag: ["BOH Management, Nationwide", "Retail Precinct Management"],
-    img: asset("/assets/work-good-things.jpg"),
+    img: asset("/assets/work-good-things.webp"),
     logo: asset("/assets/client-good-things.svg"),
     logoWidth: 180,
     logoHeight: 45,
@@ -20,7 +20,7 @@ export const WORK = [
   {
     name: "Beyond The Valley",
     tag: ["Retail Precinct Management"],
-    img: asset("/assets/work-beyond-the-valley.jpg"),
+    img: asset("/assets/work-beyond-the-valley.webp"),
     logo: asset("/assets/client-beyond-the-valley.svg"),
     logoWidth: 170,
     logoHeight: 21,
@@ -34,7 +34,7 @@ export const WORK = [
       "Box Office Management",
       "Accreditation",
     ],
-    img: asset("/assets/work-a3.jpg"),
+    img: asset("/assets/work-a3.webp"),
     logo: asset("/assets/client-a3.webp"),
     logoWidth: 156,
     logoHeight: 32,
@@ -42,7 +42,7 @@ export const WORK = [
   {
     name: "Let Them Eat Cake",
     tag: ["Artist Services", "Industry Ticketing / Community Building"],
-    img: asset("/assets/work-let-them-eat-cake.jpg"),
+    img: asset("/assets/work-let-them-eat-cake.webp"),
     logo: asset("/assets/client-let-them-eat-cake.svg"),
     logoWidth: 144,
     logoHeight: 27,
@@ -54,7 +54,7 @@ export const WORK = [
       "Industry Ticketing / Community Building",
       "Retail Precinct Management",
     ],
-    img: asset("/assets/work-promiseland.jpg"),
+    img: asset("/assets/work-promiseland.webp"),
     logo: asset("/assets/client-promiseland.webp"),
     logoWidth: 213,
     logoHeight: 97,
@@ -62,7 +62,7 @@ export const WORK = [
   {
     name: "Eden Festival (NZ)",
     tag: ["Artist Services"],
-    img: asset("/assets/work-eden-fest.jpg"),
+    img: asset("/assets/work-eden-fest.webp"),
     logo: asset("/assets/client-eden-fest.webp"),
     logoWidth: 256,
     logoHeight: 89,
@@ -70,7 +70,7 @@ export const WORK = [
   {
     name: "Souled Out",
     tag: ["Artist Services"],
-    img: asset("/assets/work-souled-out.jpg"),
+    img: asset("/assets/work-souled-out.webp"),
     logo: asset("/assets/client-souled-out.webp"),
     logoWidth: 286,
     logoHeight: 99,
@@ -78,7 +78,7 @@ export const WORK = [
   {
     name: "Happy Hour",
     tag: ["End-to-end Event Delivery, Nationwide"],
-    img: asset("/assets/work-happy-hour.jpg"),
+    img: asset("/assets/work-happy-hour.webp"),
     logo: asset("/assets/client-happy-hour.webp"),
     logoWidth: 245,
     logoHeight: 64,
@@ -86,7 +86,7 @@ export const WORK = [
   {
     name: "Our City Our Sound",
     tag: ["Artist Services", "Box Office", "Accreditation"],
-    img: asset("/assets/work-our-city-our-sound.jpg"),
+    img: asset("/assets/work-our-city-our-sound.webp"),
     logo: asset("/assets/client-our-city-our-sound.svg"),
     logoWidth: 108,
     logoHeight: 77,
@@ -97,7 +97,7 @@ export const WORK = [
       "Industry Ticketing / Community Building",
       "Retail Precinct Management",
     ],
-    img: asset("/assets/work-pitch.jpg"),
+    img: asset("/assets/work-pitch.webp"),
     logo: asset("/assets/client-pitch.webp"),
     logoWidth: 193,
     logoHeight: 68,
@@ -105,7 +105,7 @@ export const WORK = [
   {
     name: "Strummingbird",
     tag: ["Artist Services, Nationwide"],
-    img: asset("/assets/work-strummingbird.jpg"),
+    img: asset("/assets/work-strummingbird.webp"),
     logo: asset("/assets/client-strummingbird.svg"),
     logoWidth: 168,
     logoHeight: 35,
@@ -113,7 +113,7 @@ export const WORK = [
   {
     name: "Chapter",
     tag: ["End-to-end Event Delivery"],
-    img: asset("/assets/work-chapter.jpg"),
+    img: asset("/assets/work-chapter.webp"),
     logo: asset("/assets/client-chapter.webp"),
     logoWidth: 182,
     logoHeight: 85,
@@ -121,7 +121,7 @@ export const WORK = [
   {
     name: "Strawberry Fields",
     tag: ["Industry Ticketing / Community Building"],
-    img: asset("/assets/work-strawberry-fields.jpg"),
+    img: asset("/assets/work-strawberry-fields.webp"),
     logo: asset("/assets/client-strawberry-fields.webp"),
     logoWidth: 241,
     logoHeight: 57,
@@ -129,7 +129,7 @@ export const WORK = [
   {
     name: "Afrosoul",
     tag: ["Industry Ticketing / Community Building"],
-    img: asset("/assets/work-afrosoul.jpg"),
+    img: asset("/assets/work-afrosoul.webp"),
     logo: asset("/assets/client-afrosoul.svg"),
     logoWidth: 185,
     logoHeight: 55,
@@ -137,7 +137,7 @@ export const WORK = [
   {
     name: "Live Nation",
     tag: ["Industry Ticketing / Community Building"],
-    img: asset("/assets/work-live-nation.jpg"),
+    img: asset("/assets/work-live-nation.webp"),
     logo: asset("/assets/client-live-nation.webp"),
     logoWidth: 214,
     logoHeight: 53,
@@ -145,7 +145,7 @@ export const WORK = [
   {
     name: "Astral People",
     tag: ["Industry Ticketing / Community Building"],
-    img: asset("/assets/work-astral-people.jpg"),
+    img: asset("/assets/work-astral-people.webp"),
     logo: asset("/assets/client-astral-people.svg"),
     logoWidth: 98,
     logoHeight: 69,
@@ -153,17 +153,15 @@ export const WORK = [
   {
     name: "S.A.S.H",
     tag: ["Artist Advancing, Nationwide"],
-    img: asset("/assets/work-sash.jpg"),
+    img: asset("/assets/work-sash.webp"),
     logo: asset("/assets/client-sash.svg"),
     logoWidth: 180,
     logoHeight: 45,
-    // The only background the design pulls well off centre.
-    crop: { objectPosition: "53% 34%" },
   },
   {
     name: "Leonardo Da Vinci Immersive Exhibition",
     tag: ["End-to-end Event Delivery"],
-    img: asset("/assets/work-leonardo-da-vinci.jpg"),
+    img: asset("/assets/work-leonardo-da-vinci.webp"),
     logo: asset("/assets/client-leonaro-da-vinci.png"),
     logoWidth: 150,
     logoHeight: 68,

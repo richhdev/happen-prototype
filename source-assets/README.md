@@ -19,6 +19,13 @@ Export at **2x the CSS box the art renders in**, not 2x the Figma frame — the
 frame is the design size, and the two only coincide by accident. The event cards
 are 360x457, so their art is 720x914.
 
+The work cards are the one place the two do coincide: the card is a 420px square
+(`--card-active`) and so is the Figma node, so their art is 840x840. Keep it
+square. Because it matches the card's aspect exactly, `object-fit: cover` crops
+nothing, which is what lets the framing in the design survive to the page — a
+non-square export would silently re-crop and need an `objectPosition` in
+`components/Work/data.js` to put it back.
+
 Export flat rectangles. The cards clip their own corners with `border-radius`
 and `overflow: hidden`, so a baked-in radius either doubles up or, on a
 transparent export, lets the page show through.
