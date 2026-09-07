@@ -36,9 +36,11 @@ export default function Vendors() {
       <div className={styles.surface}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={asset("/assets/bg-graphic.webp")}
+          src={asset("/assets/vendor-bg.webp")}
           alt=""
           className={styles.surfaceImage}
+          fetchPriority="high"
+          decoding="async"
         />
 
         <div className={styles.copy}>
