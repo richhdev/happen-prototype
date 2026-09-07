@@ -26,3 +26,26 @@ transparent export, lets the page show through.
 Subdirectories are for organisation only; the encoder flattens them, so
 basenames must be unique across the whole tree and must match what the component
 asks for in `public/assets`.
+
+## Logos
+
+Client logos are vector wherever the client has one, and the SVG pass copies
+them straight through — an SVG is already its own best encoding. Export them on
+a transparent ground; several of these marks (S.A.S.H, Astral People) are a
+filled block with the lettering knocked out of it, which is the design and not a
+stray background.
+
+The raster-only logos encode with `-near_lossless` rather than the photo
+settings. Flat-colour type on transparency is the case lossy WebP is worst at —
+it rings along every letter edge — and on this set near-lossless also came out
+smaller than both plain lossless and q85, so there is nothing to trade off.
+
+**Watch the padding.** These were exported into a fixed 560px-wide frame, so
+each logo sits centred in however much transparent margin its shape leaves over,
+and `object-fit: contain` scales to that frame, not to the ink. That makes the
+`logoWidth`/`logoHeight` in `components/Work/data.js` and the `h` in
+`TrustedBy.jsx` specific to one export's padding: re-export the same mark with
+different margins and it silently changes size on the page. The numbers there
+are tuned so the *ink* lands at the size the design called for. Exporting each
+mark trimmed to its own bounds would make them stable — until then, re-check the
+two files against a before/after screenshot whenever a logo is replaced.

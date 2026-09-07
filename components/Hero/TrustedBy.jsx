@@ -2,17 +2,17 @@ import { asset } from "@/lib/data";
 import styles from "./TrustedBy.module.css";
 
 const CLIENTS = [
-  { name: "Beyond The Valley", src: asset("/assets/client-btv.svg"), h: 26 },
+  { name: "Beyond The Valley", src: asset("/assets/client-beyond-the-valley.svg"), h: 26 },
   {
     name: "Good Things Festival",
-    src: asset("/assets/client-good-things-v1.svg"),
+    src: asset("/assets/client-good-things.svg"),
     h: 28,
   },
-  { name: "Live Nation", src: asset("/assets/client-live-nation.png"), h: 26 },
+  { name: "Live Nation", src: asset("/assets/client-live-nation.webp"), h: 35 },
   { name: "Novel", src: asset("/assets/client-novel.png"), h: 22 },
-  { name: "Happy Hour", src: asset("/assets/client-happy-hour.png"), h: 30 },
+  { name: "Happy Hour", src: asset("/assets/client-happy-hour.webp"), h: 37 },
   { name: "Dangerous Goods", src: asset("/assets/client-dg.png"), h: 24 },
-  { name: "A3", src: asset("/assets/client-a3.png"), h: 22 },
+  { name: "A3", src: asset("/assets/client-a3.webp"), h: 32 },
   {
     name: "Astral People",
     src: asset("/assets/client-astral-people.svg"),
@@ -20,10 +20,10 @@ const CLIENTS = [
   },
   {
     name: "Strawberry Fields",
-    src: asset("/assets/client-strawberry-fields.png"),
+    src: asset("/assets/client-strawberry-fields.webp"),
     h: 40,
   },
-  { name: "Pitch", src: asset("/assets/client-pitch.png"), h: 22 },
+  { name: "Pitch", src: asset("/assets/client-pitch.webp"), h: 31 },
   {
     name: "Destroy All Lines",
     src: asset("/assets/client-destroy-all-lines.svg"),
