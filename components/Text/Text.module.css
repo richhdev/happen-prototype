@@ -1,14 +1,14 @@
 .xxlarge {
-  font-size: var(--text-xxlarge-size);
-  line-height: var(--text-xxlarge-line-height);
+  font-size: var(--text-xxlarge-size-fluid);
+  line-height: var(--text-xxlarge-line-height-fluid);
   font-weight: 500;
   text-transform: none;
   letter-spacing: 0;
 }
 
 .xlarge {
-  font-size: var(--text-xlarge-size);
-  line-height: var(--text-xlarge-line-height);
+  font-size: var(--text-xlarge-size-fluid);
+  line-height: var(--text-xlarge-line-height-fluid);
   font-weight: 500;
   text-transform: none;
   letter-spacing: 0;

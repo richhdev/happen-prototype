@@ -94,6 +94,16 @@
   }
 
   /* Headings */
+
+  --heading1-size-fluid: clamp(40px, calc(25.56px + 3.704vw), 70px);
+  --heading1-line-height-fluid: clamp(44px, calc(25.76px + 4.504vw), 74px);
+  --heading2-size-fluid: clamp(36px, calc(24.44px + 2.963vw), 60px);
+  --heading2-line-height-fluid: clamp(40px, calc(20.74px + 4.815vw), 64px);
+  --heading3-size-fluid: clamp(30px, calc(25.19px + 1.235vw), 40px);
+  --heading3-line-height-fluid: clamp(34px, calc(24.37px + 2.469vw), 44px);
+  --heading4-size-fluid: clamp(20px, calc(18.56px + 0.37vw), 22px);
+  --heading4-line-height-fluid: clamp(26px, calc(21.19px + 0.741vw), 30px);
+
   --heading1-size: 40px;
   --heading1-line-height: 44px;
   --heading2-size: 36px;
@@ -115,6 +125,14 @@
   }
 
   /* Text */
+
+  /* fluid -  390px → 1200px */
+  --text-xxlarge-size-fluid: clamp(20px, calc(19.04px + 0.246vw), 22px);
+  --text-xxlarge-line-height-fluid: clamp(30px, calc(27.11px + 0.741vw), 36px);
+  --text-xlarge-size-fluid: clamp(18px, calc(16.07px + 0.494vw), 22px);
+  --text-xlarge-line-height-fluid: clamp(26px, calc(21.18px + 1.235vw), 36px);
+
+  /* static */
   --text-xxlarge-size: 20px;
   --text-xxlarge-line-height: 30px;
   --text-xlarge-size: 18px;
