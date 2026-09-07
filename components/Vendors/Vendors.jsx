@@ -8,6 +8,47 @@ import { ButtonOutlineMedium } from "@/components/Button/Button";
 import { asset } from "@/lib/data";
 import styles from "./Vendors.module.css";
 
+export default function Vendors() {
+  return (
+    <Section id="a-vendors" className={styles.section}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={asset("/assets/vendor-bg.webp")}
+        alt=""
+        className={styles.surface}
+        fetchPriority="high"
+        decoding="async"
+      />
+
+      <div className={styles.contentGroup}>
+        <div className={styles.copy}>
+          <Heading3 as="h2" className={styles.heading} animateTracking={false}>
+            Festival retail vendors
+          </Heading3>
+          <TextMedium className={styles.body}>
+            We&rsquo;re on the lookout for market stall holders to join us at
+            the festival and help bring the space to life.
+          </TextMedium>
+        </div>
+
+        <div className={styles.cardGroup}>
+          {VENDOR_EVENTS.map((event, i) => (
+            <Reveal
+              key={i}
+              className={styles.cardWrap}
+              once={true}
+              amount={0}
+              delay={i * 130}
+            >
+              <VendorCard event={event} />
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 function VendorCard({ event }) {
   return (
     <div className={styles.card}>
@@ -27,46 +68,5 @@ function VendorCard({ event }) {
         </ButtonOutlineMedium>
       </div>
     </div>
-  );
-}
-
-export default function Vendors() {
-  return (
-    <Section id="a-vendors" className={styles.section}>
-      <div className={styles.surface}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset("/assets/vendor-bg.webp")}
-          alt=""
-          className={styles.surfaceImage}
-          fetchPriority="high"
-          decoding="async"
-        />
-
-        <div className={styles.copy}>
-          <Heading3 as="h2" className={styles.heading} animateTracking={false}>
-            Festival retail vendors
-          </Heading3>
-          <TextMedium className={styles.body}>
-            We&rsquo;re on the lookout for market stall holders to join us at
-            the festival and help bring the space to life.
-          </TextMedium>
-        </div>
-
-        <div className={styles.cards}>
-          {VENDOR_EVENTS.map((event, i) => (
-            <Reveal
-              key={i}
-              className={styles.cardWrap}
-              once={true}
-              amount={0}
-              delay={i * 130}
-            >
-              <VendorCard event={event} />
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </Section>
   );
 }
