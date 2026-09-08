@@ -3,11 +3,6 @@ import { useEffect, useRef } from "react";
 import { asset } from "@/lib/data";
 import styles from "./Ribbons.module.css";
 
-// The ribbon composition is one piece of art, drawn in Figma as a tile the
-// stylesheet repeats down the page rather than assembled here out of ribbons
-// keyed to sections. So there is nothing to place — only the drift to drive,
-// and the stylesheet does that off a scroll timeline wherever there is one to
-// use.
 export default function Ribbons() {
   const ref = useRef(null);
 
@@ -25,8 +20,7 @@ export default function Ribbons() {
     const layer = ref.current;
     let frame = 0;
 
-    // Scroll fires faster than the screen repaints, so coalesce to one write per
-    // frame — the drift can only show up on a frame boundary anyway.
+    // Scroll fires faster than the screen repaints, so coalesce to one write per frame
     const write = () => {
       frame = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -49,18 +43,13 @@ export default function Ribbons() {
     };
   }, []);
 
-  // The art is a repeating background rather than an element, so its URL has to
-  // reach the stylesheet from here: a `url()` written into the CSS would be
-  // root-relative and 404 on the sub-path builds `asset` exists to cover. Both
-  // cuts of it travel the same way; which one is painted is the stylesheet's
-  // call, and only that one is ever fetched.
   return (
     <div
       ref={ref}
       className={styles.layer}
       style={{
-        "--ribbon-art": `url(${asset("/assets/ribbons-layer-6.webp")})`,
-        "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-6-mobile.webp")})`,
+        "--ribbon-art": `url(${asset("/assets/ribbons-layer-12.webp")})`,
+        "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-9-mobile.webp")})`,
       }}
       aria-hidden
     />

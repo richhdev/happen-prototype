@@ -20,14 +20,14 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <>
-      <Preloader />
+      {/* <Preloader /> */}
       <VideoBackground />
       <Nav />
       <NavPlaceholder />
       <main className={styles.main}>
-        <Ribbons />
         <Hero />
         <Events />
+        <Ribbons />
         <Vendors />
         <Work />
         <Services />

@@ -31,6 +31,7 @@
 
 .intro {
   color: var(--color-cream);
+  text-wrap: balance;
 
   @media (min-width: 768px) {
     max-width: 640px;
