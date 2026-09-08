@@ -8,18 +8,16 @@ import { TextMedium, TextOverline, TextXXLarge } from "@/components/Text/Text";
 import { useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Services.module.css";
 
-/* Where a title has to get to before it is the current service, and which of
-   its edges has to get there. Both breakpoints measure against the card, since
-   that is what the title is being read alongside — but against opposite edges
-   of it, because the card sits in a different place in each. On desktop it is
-   beside the list, so a title takes over as it draws level with the card's
-   bottom. On mobile it is over the lower half of the screen, so the line is the
-   card's top and it is the title's bottom that has to cross it — the moment the
-   whole title has been revealed from behind the card. */
+const debugFocusLine = false;
+
+// Which edge of the card counts as "current", and which edge of a title has
+// to cross it. Desktop reads titles beside the card, so a title takes over at
+// the card's bottom edge; mobile reads them over the card, so it's the card's
+// top edge and the title's bottom.
 const focusLine = (cardEl) => {
   const card = cardEl?.getBoundingClientRect();
   const fallback = window.innerHeight / 2;
-  if (window.matchMedia("(min-width: 768px)").matches) {
+  if (window.matchMedia("(min-width: 1024px)").matches) {
     return {
       at: card ? card.bottom : fallback,
       edgeOf: (r) => r.top + r.height / 2,
@@ -32,6 +30,7 @@ export default function Services() {
   const sectionRef = useRef(null);
   const itemRefs = useRef([]);
   const cardRef = useRef(null);
+  const debugLineRef = useRef(null);
   const [active, setActive] = useState(0);
 
   // Track the section's scroll progress while the section is sticky
@@ -41,17 +40,18 @@ export default function Services() {
   });
 
   // Ease the growth of the cream surface, so it doesn't slam into the viewport edges
-  const grown = useTransform(scrollYProgress, [0, 1], [0, 1], {
+  const easedProgress = useTransform(scrollYProgress, [0, 1], [0, 1], {
     ease: cubicBezier(0.45, 0, 0.55, 1),
   });
 
   const sync = useCallback(() => {
     const { at, edgeOf } = focusLine(cardRef.current);
-    // The last title to have crossed the line, rather than the one nearest it.
-    // Nearest flips at the midpoint between two titles, so a title would take
-    // over while it was still half a gap short of the line — and these gaps are
-    // large enough that half of one is most of the way down the screen. Items
-    // are in document order, so the last one to test as crossed is the lowest.
+
+    if (debugFocusLine && debugLineRef.current)
+      debugLineRef.current.style.top = `${at}px`;
+
+    // Last item to have crossed the line, not the nearest one — nearest flips
+    // at the midpoint between titles, well before the line.
     let next = 0;
     itemRefs.current.forEach((node, i) => {
       if (node && edgeOf(node.getBoundingClientRect()) <= at) next = i;
@@ -83,20 +83,21 @@ export default function Services() {
     <Section
       as={motion.section}
       id="a-services"
-      className={styles.services}
       ref={sectionRef}
+      className={styles.section}
+      innerClassName={styles.inner}
       style={{
-        "--progress": grown,
+        "--progress": easedProgress,
       }}
     >
       <div className={styles.surfaceLayer} aria-hidden>
         <div className={styles.surface} />
       </div>
 
-      <div className={styles.copy}>
+      <div className={styles.contentGroup}>
         <div className={styles.head}>
           <Heading2 className={styles.heading}>How we make it Happen</Heading2>
-          <TextMedium className={styles.intro}>
+          <TextMedium className={styles.copy}>
             We&rsquo;ve built a broad operational capability and a national
             network to match.
           </TextMedium>
@@ -146,6 +147,23 @@ export default function Services() {
           </div>
         </div>
       </div>
+
+      {/* DEBUG: focus line */}
+      {debugFocusLine && (
+        <div
+          ref={debugLineRef}
+          aria-hidden
+          style={{
+            position: "fixed",
+            left: 0,
+            right: 0,
+            height: "2px",
+            background: "limegreen",
+            zIndex: 9999,
+            pointerEvents: "none",
+          }}
+        />
+      )}
     </Section>
   );
 }
