@@ -10,7 +10,7 @@ import {
 import { WORK } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";
-import { Reveal, useIsoLayoutEffect } from "@/components/ui";
+import { useIsoLayoutEffect } from "@/components/ui";
 import { useSidewaysScroll } from "./useSidewaysScroll";
 import styles from "./Work.module.css";
 
