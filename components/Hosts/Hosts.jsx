@@ -8,12 +8,12 @@ import styles from "./Hosts.module.css";
 
 export default function Hosts() {
   return (
-    <div id="a-hosts" className={styles.panel}>
+    <div id="a-hosts" className={styles.section}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={asset("/assets/bg-graphic.webp")}
         alt=""
-        className={styles.background}
+        className={styles.surface}
       />
 
       <Heading3 as="h2" className={styles.title}>

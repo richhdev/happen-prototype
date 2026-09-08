@@ -1,4 +1,4 @@
-.panel {
+.section {
   position: relative;
   scroll-margin-top: var(--nav-height-mobile);
   display: flex;
@@ -7,20 +7,16 @@
   gap: var(--space-16);
   width: 100%;
   padding: var(--space-32) var(--space-24);
-  overflow: hidden;
   border-radius: var(--radius-large);
 
-  @media (min-width: 641px) {
+  @media (min-width: 1024px) {
     scroll-margin-top: var(--nav-height-desktop);
-  }
-
-  @media (min-width: 768px) {
     gap: var(--space-64);
     padding: var(--space-64) var(--space-32);
   }
 }
 
-.background {
+.surface {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -39,17 +35,13 @@
   display: flex;
   align-self: stretch;
   gap: var(--space-16);
-  /* Bleed the track out through the panel's padding so cards scroll edge to
-     edge, then pad it back in so the first and last card still line up. */
-  margin-inline: calc(-1 * var(--space-24));
-  padding-inline: var(--space-24);
+  margin-inline: calc(-1 * (var(--layout-padding-x) + var(--space-24)));
+  padding-inline: calc(var(--layout-padding-x) + var(--space-24));
   overflow-x: auto;
-  /* The Reveal rises 30px into place; keep that off the vertical axis so the
-     scroller never grows a second scrollbar mid-animation. */
   overflow-y: hidden;
   scrollbar-width: none;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     flex-direction: column;
     align-items: center;
     gap: var(--space-40);
@@ -64,12 +56,8 @@
   display: none;
 }
 
-/* The Reveal wrapper sits between .cards and .card, so it carries the track
-   sizing and the card just fills it. */
 .cardWrap {
   display: flex;
-  /* Never wider than the track, so the card can't be clipped on a narrow
-     phone; the reserved gutter keeps the next card peeking. */
   flex: 0 0 min(284px, calc(100% - var(--space-24)));
 
   @media (min-width: 768px) {
@@ -86,9 +74,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
-  height: 167px;
-  padding: var(--space-16);
+  gap: var(--space-16);
+  padding: var(--space-24);
   overflow: hidden;
   border-radius: var(--radius-large);
   background: var(--color-charcoal);
