@@ -6,7 +6,7 @@
   );
 }
 
-.panel {
+.surface {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -29,14 +29,12 @@
   text-align: center;
 }
 
-.cards {
+.cardGroup {
   display: flex;
   gap: var(--space-16);
   margin-inline: calc(-1 * var(--layout-padding-x));
   padding-inline: calc(var(--layout-padding-x) + var(--space-16));
   overflow-x: auto;
-  /* The Reveal rises 30px into place; keep that off the vertical axis so the
-     scroller never grows a second scrollbar mid-animation. */
   overflow-y: hidden;
   scrollbar-width: none;
 
@@ -49,18 +47,16 @@
   }
 }
 
-.cards::-webkit-scrollbar {
+.cardGroup::-webkit-scrollbar {
   display: none;
 }
 
-/* The Reveal wrapper sits between .cards and .card, so it carries the track
-   sizing and the card just fills it. */
-.cardWrap {
+.cardReveal {
   display: flex;
-  flex: 0 0 244px;
+  /* flex: 0 0 244px; */
 
+  flex: 1 1 0;
   @media (min-width: 768px) {
-    flex: 1 1 0;
   }
 }
 
@@ -71,7 +67,7 @@
   min-width: 0;
   flex-direction: column;
   justify-content: space-between;
-  /* height: 150px; */
+  min-width: 250px;
   padding: var(--space-16);
   overflow: hidden;
   border-bottom: 1px solid var(--color-grey-700);

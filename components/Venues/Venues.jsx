@@ -9,14 +9,14 @@ import styles from "./Venues.module.css";
 export default function Venues() {
   return (
     <Section id="a-venues" className={styles.venues}>
-      <div className={styles.panel}>
+      <div className={styles.surface}>
         <Heading3 as="h2" className={styles.title}>
           The rooms we fill
         </Heading3>
 
-        <RevealGroup className={styles.cards} once={true}>
+        <RevealGroup className={styles.cardGroup} once={true}>
           {VENUES.map((venue) => (
-            <RevealItem key={venue.name} className={styles.cardWrap}>
+            <RevealItem key={venue.name} className={styles.cardReveal}>
               <article
                 className={styles.card}
                 style={{ backgroundImage: `url("${venue.img}")` }}

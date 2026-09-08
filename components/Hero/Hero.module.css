@@ -4,7 +4,7 @@
   min-height: 690px;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   @media (min-width: 768px) {
     min-height: 740px;
