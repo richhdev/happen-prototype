@@ -14,7 +14,7 @@
     opacity 300ms linear 420ms,
     visibility 0s linear 720ms;
 
-  @media (min-width: 641px) {
+  @media (min-width: 1024px) {
     display: none;
   }
 }
