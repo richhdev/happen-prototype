@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Preloader.module.css";
 
-// How long the logo takes to draw itself, and the beat it holds once finished.
-// Together they are the floor: the overlay never leaves mid-stroke, however
-// fast the page arrives.
-const DRAW_MS = 2200;
-const HOLD_MS = 250;
+// The artwork's whole timeline: the mark draws itself over the first three
+// quarters, and the last quarter is the beat it holds once finished. So this is
+// the floor on its own — the overlay never leaves mid-stroke, however fast the
+// page arrives.
+const DRAW_MS = 1500;
 
 // The fade out, and the CSS transition it drives.
 const FADE_MS = 600;
@@ -19,6 +19,8 @@ const MAX_WAIT_MS = 8000;
 export default function PreloaderOverlay({ logoMarkup }) {
   // loading -> leaving (fading out) -> gone (removed from the DOM)
   const [phase, setPhase] = useState("loading");
+  // Set inside the effect so a click can trigger the same leave() the timers use.
+  const leaveRef = useRef(() => {});
 
   useEffect(() => {
     const timers = [];
@@ -34,12 +36,13 @@ export default function PreloaderOverlay({ logoMarkup }) {
       setPhase("leaving");
       timers.push(setTimeout(() => setPhase("gone"), FADE_MS));
     };
+    leaveRef.current = leave;
 
     // Nothing to wait for the draw to finish if it was never going to run.
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const floor = reduced ? 0 : DRAW_MS + HOLD_MS;
+    const floor = reduced ? 0 : DRAW_MS;
 
     // performance.now() is measured from the navigation, and the draw starts
     // at first paint — so this is the time the animation has actually had,
@@ -73,14 +76,20 @@ export default function PreloaderOverlay({ logoMarkup }) {
       </noscript>
 
       <div
-        // The site is already in the document behind this and readable there, so
-        // announcing the cover as well would only put a second "happen" in front
-        // of the page.
-        aria-hidden="true"
+        role="button"
+        aria-label="Skip intro"
+        tabIndex={0}
         className={`${styles.overlay}${phase === "leaving" ? ` ${styles.leaving}` : ""}`}
         style={{
           "--preloader-draw": `${DRAW_MS}ms`,
           "--preloader-fade": `${FADE_MS}ms`,
+        }}
+        onClick={() => leaveRef.current()}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            leaveRef.current();
+          }
         }}
       >
         <div

@@ -9,11 +9,11 @@
      content arriving rather than the ground changing colour under them. */
   background: var(--color-charcoal);
   transition: opacity var(--preloader-fade) ease;
+  cursor: pointer;
 }
 
 .leaving {
   opacity: 0;
-  /* Nothing behind it should have to wait out the fade to be clickable. */
   pointer-events: none;
 }
 
