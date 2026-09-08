@@ -13,9 +13,7 @@
   }
 }
 
-/* Horizontal drags are handed to useSidewaysScroll, which turns them into page
-   scroll, so the browser must not claim them as a native sideways pan first. */
-.container {
+.scrollContainer {
   touch-action: pan-y pinch-zoom;
 }
 
@@ -27,16 +25,14 @@
   min-height: 100vh;
 }
 
-.panel {
-  /* How framed the red surface is, 0 (full-bleed over the whole viewport) to 1
-     (inset to the panel box). Written every frame from the section's scroll
-     progress, so the surface is scrubbed by the scrollbar. */
+.contentGroup {
+  /* Progress of the surface animation */
   --progress: 0;
 
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: var(--space-64);
   width: 100%;
   padding: var(--space-40) var(--space-32);
 
@@ -46,15 +42,7 @@
   }
 }
 
-/* The red surface, drawn behind the heading and the cards so it can grow past
-   the panel without taking the content with it.
-
-   The panel is centred both ways inside the 100vh sticky box, so the distance
-   from a panel edge out to the matching viewport edge is (50vw - half the panel
-   width) across and (50vh - half the panel height) down. Inset percentages
-   resolve against the panel's own size, which is what makes `50% - 50vw` that
-   distance without measuring anything in JS. At --progress: 1 both terms fall
-   away and the surface lands exactly on the panel box. */
+/* The red surface that animates */
 .surface {
   position: absolute;
   top: calc((50% - 50vh) * (1 - var(--progress)));
@@ -85,19 +73,16 @@
   min-height: calc(var(--card-active) * 1px);
   margin-inline: calc(50% - 50vw);
 
-  /* Puts the first card dead centre of the viewport at scroll position 0. */
+  /* Puts the first card centre of the viewport at scroll position 0. */
   padding-inline: calc(50vw - var(--card) * 0.5px);
   will-change: transform;
 }
 
 .card {
-  /* How centred this card is, 0 to 1. Written every frame from the pan offset,
-     so the card's size and its caption are scrubbed by the scrollbar rather
-     than transitioned on a timer when the active card flips. */
+  /* How centred this card is, 0 to 1. */
   --centred: 0;
 
-  /* The card is drawn at its featured size and shrinks when it is not the
-     centred one */
+  /* Size of the card based on how close it is to the centre */
   --min-scale: calc(var(--card) / var(--card-active));
   --scale: calc(var(--min-scale) + (1 - var(--min-scale)) * var(--centred));
 
@@ -109,6 +94,7 @@
   width: calc(var(--card-active) * 1px);
   height: calc(var(--card-active) * 1px);
   overflow: hidden;
+  text-wrap: balance;
 
   margin-inline: calc((var(--card) - var(--card-active)) * 0.5px);
   padding: var(--space-24);
@@ -119,11 +105,9 @@
   background: var(--color-charcoal);
   border-bottom: 1px solid var(--color-grey-700);
 
-  /* Only the off-centre cards are clickable — clicking one scrolls it in. */
   cursor: pointer;
 }
 
-/* Active card should be displayed above others */
 .cardActive {
   z-index: 2;
   cursor: default;

@@ -19,16 +19,116 @@ import styles from "./Work.module.css";
 // but leaves a long crawl at the end.
 const SHRINK_EASE = cubicBezier(0.5, 1, 0.89, 1);
 
-// How centred a card is, 0 (a full step away or more) to 1 (dead centre), on a
-// smoothstep curve so it holds its size for a beat at the centre and hands over
-// quickly in between. Card i sits at the centre when x === -i * step.
-function useCentred(x, index, step) {
-  return useTransform(x, (value) => {
-    if (!step) return 0;
-    const distance = Math.abs(value + index * step) / step;
-    const t = distance >= 1 ? 0 : 1 - distance;
-    return t * t * (3 - 2 * t);
+export default function Work() {
+  const containerRef = useRef(null);
+  const cardRefs = useRef([]);
+  const [maxOffset, setMaxOffset] = useState(0);
+  const [active, setActive] = useState(0);
+
+  // Determine how long the track needs to be to bring the last card to the centre of the viewport.
+  // Remeasured if the viewport resizes.
+  useIsoLayoutEffect(() => {
+    const measure = () => {
+      const first = cardRefs.current[0];
+      const last = cardRefs.current[cardRefs.current.length - 1];
+      if (!first || !last) return;
+      setMaxOffset(Math.max(0, last.offsetLeft - first.offsetLeft));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
   });
+
+  // The track pans its full width across the section's whole scroll distance, so
+  // the section unpins on the frame the last card reaches the centre.
+  const trackX = useTransform(scrollYProgress, [0, 1], [0, -maxOffset]);
+
+  // The surface pulls back over that same stretch, landing framed as the last
+  // card does. Eased out so it breaks away from the viewport edges quickly and
+  // then creeps the last of the way in — a linear run this long reads as the
+  // frame barely moving at the start.
+  const framed = useTransform(scrollYProgress, [0, 1], [0, 1], {
+    ease: SHRINK_EASE,
+  });
+
+  // The card nearest the viewport centre is the featured one.
+  const step = WORK.length > 1 ? maxOffset / (WORK.length - 1) : 0;
+  const syncActive = useCallback(
+    (value) => {
+      if (!step) return;
+      const i = Math.round(-value / step);
+      const next = Math.min(WORK.length - 1, Math.max(0, i));
+      setActive((prev) => (prev === next ? prev : next));
+    },
+    [step],
+  );
+
+  useMotionValueEvent(trackX, "change", syncActive);
+
+  // Clicking a card scrolls it to the center
+  const scrollToCard = useCallback(
+    (index) => {
+      const container = containerRef.current;
+      if (!container || !step) return;
+      const top = container.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top + index * step, behavior: "smooth" });
+    },
+    [step],
+  );
+
+  // A sideways gesture over the section drives the same vertical scroll, so
+  // reaching for the cards directly moves them instead of doing nothing.
+  useSidewaysScroll(containerRef);
+
+  // "change" only fires on later updates, so the track would keep card 0
+  // featured until the first scroll — wrong for a reload part-way down the page.
+  useIsoLayoutEffect(() => syncActive(trackX.get()), [syncActive, trackX]);
+
+  return (
+    <Section id="b-work" className={styles.work}>
+      <div
+        ref={containerRef}
+        className={styles.scrollContainer}
+        style={{ height: `calc(100vh + ${maxOffset}px)` }}
+      >
+        <div className={styles.pinned}>
+          <motion.div
+            className={styles.contentGroup}
+            style={{
+              "--progress": framed,
+            }}
+          >
+            <div className={styles.surface} />
+
+            <Heading2 className={styles.heading}>
+              The proof is <br className="desktop-only" />
+              in the Happening
+            </Heading2>
+
+            <motion.div className={styles.track} style={{ x: trackX }}>
+              {WORK.map((item, i) => (
+                <WorkCard
+                  key={item.name}
+                  item={item}
+                  index={i}
+                  step={step}
+                  x={trackX}
+                  active={i === active}
+                  cardRef={(el) => (cardRefs.current[i] = el)}
+                  onActivate={scrollToCard}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </Section>
+  );
 }
 
 function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
@@ -46,6 +146,7 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={item.img} alt="" className={styles.image} style={item.crop} />
+
       <div className={styles.overlay} />
 
       <div className={styles.logoWrap}>
@@ -73,121 +174,14 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
   );
 }
 
-export default function Work() {
-  const containerRef = useRef(null);
-  const cardRefs = useRef([]);
-  const [max, setMax] = useState(0);
-  const [active, setActive] = useState(0);
-
-  // Determine how long the track needs to be to bring the last card to the centre of the viewport.
-  // Remeasured if the viewport resizes.
-  useIsoLayoutEffect(() => {
-    const measure = () => {
-      const first = cardRefs.current[0];
-      const last = cardRefs.current[cardRefs.current.length - 1];
-      if (!first || !last) return;
-      setMax(Math.max(0, last.offsetLeft - first.offsetLeft));
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
+// How centred a card is, 0 (a full step away or more) to 1 (dead centre), on a
+// smoothstep curve so it holds its size for a beat at the centre and hands over
+// quickly in between. Card i sits at the centre when x === -i * step.
+function useCentred(x, index, step) {
+  return useTransform(x, (value) => {
+    if (!step) return 0;
+    const distance = Math.abs(value + index * step) / step;
+    const t = distance >= 1 ? 0 : 1 - distance;
+    return t * t * (3 - 2 * t);
   });
-
-  // The track pans its full width across the section's whole scroll distance, so
-  // the section unpins on the frame the last card reaches the centre.
-  const x = useTransform(scrollYProgress, [0, 1], [0, -max]);
-
-  // The surface pulls back over that same stretch, landing framed as the last
-  // card does. Eased out so it breaks away from the viewport edges quickly and
-  // then creeps the last of the way in — a linear run this long reads as the
-  // frame barely moving at the start.
-  const framed = useTransform(scrollYProgress, [0, 1], [0, 1], {
-    ease: SHRINK_EASE,
-  });
-
-  // The card nearest the viewport centre is the featured one. The track's
-  // padding centres card 0 at x=0 and every card occupies the same layout step,
-  // so the index falls straight out of the pan offset. Reading rects instead
-  // would measure the previous frame — "change" fires before motion paints.
-  const step = WORK.length > 1 ? max / (WORK.length - 1) : 0;
-  const syncActive = useCallback(
-    (value) => {
-      if (!step) return;
-      const i = Math.round(-value / step);
-      const next = Math.min(WORK.length - 1, Math.max(0, i));
-      setActive((prev) => (prev === next ? prev : next));
-    },
-    [step],
-  );
-
-  useMotionValueEvent(x, "change", syncActive);
-
-  // Clicking a card scrolls it to the centre rather than setting `active`
-  // directly: the featured state is derived from the pan offset, so the scroll
-  // position is the source of truth and anything else would snap back on the
-  // next frame. Progress runs 0..1 over the track's `max` px of scroll, and
-  // card i is centred at progress i / (count - 1), i.e. i * step px in.
-  const scrollToCard = useCallback(
-    (index) => {
-      const container = containerRef.current;
-      if (!container || !step) return;
-      const top = container.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top + index * step, behavior: "smooth" });
-    },
-    [step],
-  );
-
-  // A sideways gesture over the section drives the same vertical scroll, so
-  // reaching for the cards directly moves them instead of doing nothing.
-  useSidewaysScroll(containerRef);
-
-  // "change" only fires on later updates, so the track would keep card 0
-  // featured until the first scroll — wrong for a reload part-way down the page.
-  useIsoLayoutEffect(() => syncActive(x.get()), [syncActive, x]);
-
-  return (
-    <Section id="b-work" className={styles.work}>
-      <div
-        ref={containerRef}
-        className={styles.container}
-        style={{ height: `calc(100vh + ${max}px)` }}
-      >
-        <div className={styles.pinned}>
-          <motion.div
-            className={styles.panel}
-            style={{
-              "--progress": framed,
-            }}
-          >
-            <div className={styles.surface} />
-
-            <Heading2 className={styles.heading}>
-              The proof is <br className="desktop-only" />
-              in the Happening
-            </Heading2>
-
-            <motion.div className={styles.track} style={{ x }}>
-              {WORK.map((item, i) => (
-                <WorkCard
-                  key={item.name}
-                  item={item}
-                  index={i}
-                  step={step}
-                  x={x}
-                  active={i === active}
-                  cardRef={(el) => (cardRefs.current[i] = el)}
-                  onActivate={scrollToCard}
-                />
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-    </Section>
-  );
 }
