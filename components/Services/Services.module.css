@@ -1,6 +1,6 @@
 .servicesSection {
   /* Used to calculate surface animation start position */
-  --surface-top: 164px;
+  --surface-top: 80px;
   --surface-bottom: 192px;
   --card-bottom: 73px;
   --card-inset: 0px;
@@ -154,7 +154,7 @@
   height: 100vh;
   margin-top: calc(-1 * var(--surface-top) * (1 - var(--progress)));
   margin-bottom: calc(-1 * var(--surface-bottom) * (1 - var(--progress)));
-  padding-inline: var(--space-16);
+  /* padding-inline: var(--space-16); */
   padding-bottom: calc(var(--card-bottom) + var(--card-inset));
 
   display: flex;
@@ -173,13 +173,17 @@
 .servicesCard {
   position: relative;
   width: 100%;
-  max-width: 475px;
+  max-width: 400px;
   aspect-ratio: 1;
   border-radius: var(--radius-large);
   border-bottom: 1px solid var(--color-grey-700);
   background: var(--color-charcoal);
   text-wrap: balance;
   overflow: hidden;
+
+  @media (min-width: 1024px) {
+    max-width: 475px;
+  }
 }
 
 .servicesSlide {
@@ -194,6 +198,9 @@
 
   @media (min-width: 1024px) {
     padding: var(--space-32) var(--space-80);
+  }
+  @media (max-width: 440px) {
+    padding: var(--space-16);
   }
 }
 
