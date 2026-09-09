@@ -27,6 +27,12 @@ export default function Nav() {
     });
   };
 
+  const scrollToTop = (e) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <Bar
@@ -34,6 +40,7 @@ export default function Nav() {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         scrollToSection={scrollToSection}
+        scrollToTop={scrollToTop}
       />
 
       {/* keeps the navlinks from turning weird colors from `difference` */}
@@ -44,6 +51,7 @@ export default function Nav() {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         scrollToSection={scrollToSection}
+        scrollToTop={scrollToTop}
       />
 
       <MobileNav
@@ -67,6 +75,7 @@ function Bar({
   menuOpen,
   setMenuOpen,
   scrollToSection,
+  scrollToTop,
 }) {
   return (
     <nav
@@ -77,9 +86,9 @@ function Bar({
       <div className={styles.navInner}>
         <TextOverline
           as="a"
-          href="#a-hero"
+          href="/"
           className={styles.navTitle}
-          onClick={(e) => scrollToSection(e, "a-hero")}
+          onClick={scrollToTop}
         >
           Happen Group
         </TextOverline>
