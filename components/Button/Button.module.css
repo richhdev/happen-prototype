@@ -1,4 +1,4 @@
-.btn {
+.buttonBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -14,19 +14,19 @@
   letter-spacing: 0.02em;
 }
 
-.outline {
+.buttonOutline {
   background: none;
   color: var(--color-cream);
   border: 2px solid var(--color-cream);
 }
 
-.large {
+.buttonLarge {
   padding: var(--space-16) var(--space-24);
   font-size: var(--button-large-size);
   line-height: var(--button-large-line-height);
 }
 
-.medium {
+.buttonMedium {
   padding: 12px var(--space-24);
   font-size: var(--button-medium-size);
   line-height: var(--button-medium-line-height);

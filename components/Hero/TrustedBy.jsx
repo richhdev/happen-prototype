@@ -48,16 +48,16 @@ export function TrustedBy({ className, ...rest }) {
   const loop = CLIENTS.concat(CLIENTS);
 
   return (
-    <div className={`${styles.mask} ${className ?? ""}`} {...rest}>
-      <div className={styles.track}>
+    <div className={`${styles.trustedByMask} ${className ?? ""}`} {...rest}>
+      <div className={styles.trustedByTrack}>
         {loop.map((c, i) => (
-          <div className={styles.item} key={i} title={c.name}>
+          <div className={styles.trustedByItem} key={i} title={c.name}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={c.src}
               alt={c.name}
               style={{ height: c.h }}
-              className={styles.logo}
+              className={styles.trustedByLogo}
             />
           </div>
         ))}

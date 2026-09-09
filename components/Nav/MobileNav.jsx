@@ -5,24 +5,24 @@ import { Heading3 } from "@/components/Heading/Heading";
 export default function MobileNav({ open, activeId, scrollToSection }) {
   return (
     <div
-      className={`${styles.overlay}${open ? ` ${styles.open}` : ""}`}
+      className={`${styles.mobileNavOverlay}${open ? ` ${styles.mobileNavOpen}` : ""}`}
       inert={!open || undefined}
     >
-      <div className={styles.links}>
+      <div className={styles.mobileNavLinks}>
         {LINKS.map((n, i) => (
           <a
             key={n.id}
             href={`#${n.id}`}
             onClick={(e) => scrollToSection(e, n.id)}
-            className={`${styles.link}${n.id === activeId ? ` ${styles.active}` : ""}`}
+            className={`${styles.mobileNavLink}${n.id === activeId ? ` ${styles.mobileNavActive}` : ""}`}
             aria-current={n.id === activeId ? "true" : undefined}
             style={{ "--i": i, "--r": LINKS.length - 1 - i }}
           >
-            <span className={styles.mask}>
+            <span className={styles.mobileNavMask}>
               <Heading3
                 as="span"
                 animateTracking={false}
-                className={styles.label}
+                className={styles.mobileNavLabel}
               >
                 {n.label}
               </Heading3>

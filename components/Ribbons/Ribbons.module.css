@@ -4,7 +4,7 @@
    of the page and travels down through the gap it leaves as you scroll, so it is
    flush with the top of the document at the top of the scroll and flush with the
    bottom at the bottom, and never runs out of art at either end. */
-.layer {
+.ribbonsLayer {
   position: absolute;
   left: 0;
   right: 0;
@@ -77,7 +77,7 @@
    A running animation outranks the `translate` declaration above, so where this
    applies it simply takes over, and the fallback's progress goes unread. */
 @supports (animation-timeline: scroll()) {
-  .layer {
+  .ribbonsLayer {
     animation: ribbon-drift linear both;
     /* The document scroller, named rather than left to `nearest`, since nothing
        between here and the root scrolls and the intent is the page's scroll. */
@@ -99,7 +99,7 @@
    translate both resolve to zero on their own. The art still tiles at the same
    size, it just stops moving relative to the page. */
 @media (prefers-reduced-motion: reduce) {
-  .layer {
+  .ribbonsLayer {
     --ribbon-rate: 1;
   }
 }

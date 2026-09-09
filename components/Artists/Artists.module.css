@@ -1,16 +1,16 @@
 /* Vertical rhythm comes from the pinned 100vh below, not from section padding. */
-.artists {
+.artistsArtists {
   padding-block: 0;
 }
 
 /* Taller than the viewport by --pin-scroll; that surplus is the distance the
    grid spends stuck while the cards zoom in. */
-.track {
+.artistsTrack {
   --pin-scroll: 80vh;
   height: calc(100vh + var(--pin-scroll));
 }
 
-.pinned {
+.artistsPinned {
   /* Matches the fixed nav's own height at each breakpoint. */
   --nav-height: var(--nav-height-mobile);
 
@@ -31,7 +31,7 @@
 
 /* Two by two at both breakpoints — only the gaps and the card padding change.
    900px is the design's grid width (2 x 390 + 120 gap). */
-.grid {
+.artistsGrid {
   --row-gap: var(--space-80);
   --col-gap: var(--space-16);
   /* Slack left after the grid is fitted, split above and below by the centring.
@@ -65,7 +65,7 @@
   }
 }
 
-.headingWrap {
+.artistsHeadingWrap {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -75,7 +75,7 @@
   pointer-events: none;
 }
 
-.heading {
+.artistsHeading {
   color: var(--color-cream);
   text-align: center;
   white-space: nowrap;
@@ -89,7 +89,7 @@
    The horizontal inset undoes the section's padding and centred max-width, so
    the layer reaches the section's own edges instead of stopping at the column
    the cards are laid out in. */
-.dim {
+.artistsDim {
   position: absolute;
   inset: 0 calc(50% - 50vw);
   z-index: 2;
@@ -99,7 +99,7 @@
   transition: opacity 300ms ease;
 }
 
-.dimVisible {
+.artistsDimVisible {
   opacity: 1;
   pointer-events: auto;
   cursor: pointer;

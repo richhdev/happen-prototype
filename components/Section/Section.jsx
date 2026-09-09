@@ -9,8 +9,8 @@ export function Section({
   ...rest
 }) {
   return (
-    <Tag ref={ref} className={`${styles.section} ${className ?? ""}`} {...rest}>
-      <div className={`${styles.inner} ${innerClassName ?? ""}`}>
+    <Tag ref={ref} className={`${styles.sectionSection} ${className ?? ""}`} {...rest}>
+      <div className={`${styles.sectionInner} ${innerClassName ?? ""}`}>
         {children}
       </div>
     </Tag>

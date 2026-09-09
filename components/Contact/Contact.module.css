@@ -1,10 +1,10 @@
 /* contacrt-desktop 404:1123 / contact-mobile 509:11539 */
 
-.contact {
+.contactContact {
   overflow: hidden;
 }
 
-.content {
+.contactContent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@
   }
 }
 
-.header {
+.contactHeader {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -25,11 +25,11 @@
   text-align: center;
 }
 
-.title {
+.contactTitle {
   color: var(--color-white);
 }
 
-.intro {
+.contactIntro {
   color: var(--color-cream);
   text-wrap: balance;
 
@@ -39,7 +39,7 @@
   }
 }
 
-.body {
+.contactBody {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -53,7 +53,7 @@
   }
 }
 
-.column {
+.contactColumn {
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
@@ -66,9 +66,9 @@
 }
 
 /* Every panel in this section shares one treatment. */
-.card,
-.form,
-.linkCard {
+.contactCard,
+.contactForm,
+.contactLinkCard {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -83,7 +83,7 @@
   }
 }
 
-.cardLabel {
+.contactCardLabel {
   color: var(--color-red);
   font-size: var(--button-medium-size);
   line-height: var(--button-medium-line-height);
@@ -91,7 +91,7 @@
   text-transform: uppercase;
 }
 
-.email {
+.contactEmail {
   color: var(--color-cream);
   font-size: var(--text-large-size);
   line-height: var(--text-large-line-height);
@@ -99,36 +99,36 @@
   text-decoration: underline;
 }
 
-.socials {
+.contactSocials {
   display: flex;
   align-items: center;
   gap: var(--space-16);
 }
 
-.socialIcon {
+.contactSocialIcon {
   display: block;
   width: 20px;
   height: 20px;
 }
 
-.submit {
+.contactSubmit {
   align-self: flex-start;
 }
 
-.field {
+.contactField {
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
 }
 
-.fieldLabel {
+.contactFieldLabel {
   color: var(--color-cream);
   font-size: var(--text-small-size);
   line-height: var(--text-small-line-height);
   font-weight: 500;
 }
 
-.input {
+.contactInput {
   width: 100%;
   height: 38px;
   padding: var(--space-8);
@@ -140,12 +140,12 @@
   font-size: var(--text-small-size);
 }
 
-.textarea {
+.contactTextarea {
   height: 76px;
   resize: vertical;
 }
 
-.linkCard {
+.contactLinkCard {
   gap: var(--space-8);
 
   /* The four cards share the column's height evenly, matching the form beside
@@ -156,7 +156,7 @@
   }
 }
 
-.linkTitle {
+.contactLinkTitle {
   margin: 0;
   color: var(--color-white);
   font-size: var(--text-medium-size);
@@ -164,7 +164,7 @@
   font-weight: 700;
 }
 
-.linkBody {
+.contactLinkBody {
   display: none;
   color: var(--color-cream);
 
@@ -173,13 +173,13 @@
   }
 }
 
-.linkCta {
+.contactLinkCta {
   color: var(--color-white);
   font-size: var(--text-medium-size);
   line-height: var(--text-medium-line-height);
   font-weight: 500;
 }
 
-.linkCtaText {
+.contactLinkCtaText {
   text-decoration: underline;
 }

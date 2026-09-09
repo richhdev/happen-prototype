@@ -8,7 +8,7 @@ export function ButtonLarge({ as, type, className, children, ...rest }) {
   return (
     <Tag
       type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.btn} ${styles.large} ${className ?? ""}`}
+      className={`${styles.buttonBtn} ${styles.buttonLarge} ${className ?? ""}`}
       {...rest}
     >
       {children}
@@ -21,7 +21,7 @@ export function ButtonMedium({ as, type, className, children, ...rest }) {
   return (
     <Tag
       type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.btn} ${styles.medium} ${className ?? ""}`}
+      className={`${styles.buttonBtn} ${styles.buttonMedium} ${className ?? ""}`}
       {...rest}
     >
       {children}
@@ -34,7 +34,7 @@ export function ButtonOutlineLarge({ as, type, className, children, ...rest }) {
   return (
     <Tag
       type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.btn} ${styles.outline} ${styles.large} ${className ?? ""}`}
+      className={`${styles.buttonBtn} ${styles.buttonOutline} ${styles.buttonLarge} ${className ?? ""}`}
       {...rest}
     >
       {children}
@@ -53,7 +53,7 @@ export function ButtonOutlineMedium({
   return (
     <Tag
       type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.btn} ${styles.outline} ${styles.medium} ${className ?? ""}`}
+      className={`${styles.buttonBtn} ${styles.buttonOutline} ${styles.buttonMedium} ${className ?? ""}`}
       {...rest}
     >
       {children}

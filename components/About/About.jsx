@@ -7,10 +7,10 @@ import styles from "./About.module.css";
 export default function About() {
   return (
     <Section id="a-about">
-      <div className={styles.panel}>
-        <Heading2 className={styles.title}>Who we are</Heading2>
+      <div className={styles.aboutPanel}>
+        <Heading2 className={styles.aboutTitle}>Who we are</Heading2>
 
-        <div className={styles.copy}>
+        <div className={styles.aboutCopy}>
           <TextXXLarge>
             A dream team of doers and difference-makers. Sharp, reliable and
             here to get it done. Each of us brings something different to the
@@ -25,9 +25,9 @@ export default function About() {
           </TextXXLarge>
         </div>
 
-        <div className={styles.stat}>
-          <StatCounter value={10} suffix="+" className={styles.statNumber} />
-          <Heading4 as="p" className={styles.statLabel}>
+        <div className={styles.aboutStat}>
+          <StatCounter value={10} suffix="+" className={styles.aboutStatNumber} />
+          <Heading4 as="p" className={styles.aboutStatLabel}>
             Years doing the work
           </Heading4>
         </div>

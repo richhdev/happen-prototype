@@ -1,10 +1,10 @@
-.section {
+.sectionSection {
   position: relative;
   width: 100%;
   padding: var(--layout-padding-y) var(--layout-padding-x);
 }
 
-.inner {
+.sectionInner {
   position: relative;
   z-index: 1;
   width: 100%;

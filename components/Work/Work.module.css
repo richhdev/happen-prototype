@@ -1,4 +1,4 @@
-.work {
+.workWork {
   --card: 172;
   --card-active: 320;
   --card-gap: var(--space-8);
@@ -13,11 +13,11 @@
   }
 }
 
-.scrollContainer {
+.workScrollContainer {
   touch-action: pan-y pinch-zoom;
 }
 
-.pinned {
+.workPinned {
   position: sticky;
   top: 0;
   display: flex;
@@ -25,7 +25,7 @@
   min-height: 100vh;
 }
 
-.contentGroup {
+.workContentGroup {
   /* Progress of the surface animation */
   --progress: 0;
 
@@ -43,7 +43,7 @@
 }
 
 /* The red surface that animates */
-.surface {
+.workSurface {
   position: absolute;
   top: calc((50% - 50vh) * (1 - var(--progress)));
   bottom: calc((50% - 50vh) * (1 - var(--progress)));
@@ -56,14 +56,14 @@
   pointer-events: none;
 }
 
-.heading {
+.workHeading {
   position: relative;
   z-index: 1;
   color: var(--color-white);
   text-align: center;
 }
 
-.track {
+.workTrack {
   position: relative;
   z-index: 1;
   display: flex;
@@ -78,7 +78,7 @@
   will-change: transform;
 }
 
-.card {
+.workCard {
   /* How centred this card is, 0 to 1. */
   --centred: 0;
 
@@ -108,12 +108,12 @@
   cursor: pointer;
 }
 
-.cardActive {
+.workCardActive {
   z-index: 2;
   cursor: default;
 }
 
-.image {
+.workImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -124,7 +124,7 @@
   pointer-events: none;
 }
 
-.overlay {
+.workOverlay {
   position: absolute;
   inset: 0;
   background-image: linear-gradient(
@@ -135,7 +135,7 @@
   pointer-events: none;
 }
 
-.overlay::before {
+.workOverlay::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -144,11 +144,11 @@
   transition: opacity 0.3s ease;
 }
 
-.cardActive .overlay::before {
+.workCardActive .workOverlay::before {
   opacity: 0;
 }
 
-.logoWrap {
+.workLogoWrap {
   position: relative;
   flex: 1;
   min-height: 0;
@@ -157,7 +157,7 @@
   justify-content: center;
 }
 
-.logo {
+.workLogo {
   display: block;
   width: calc(var(--logo-w) * 1px * var(--card-active) / 280);
   height: calc(var(--logo-h) * 1px * var(--card-active) / 280);
@@ -166,7 +166,7 @@
   opacity: var(--logo-opacity, 1);
 }
 
-.content {
+.workContent {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -178,7 +178,7 @@
   }
 }
 
-.text {
+.workText {
   color: var(--color-cream);
   font-size: var(--text-medium-size);
   line-height: var(--text-medium-line-height);

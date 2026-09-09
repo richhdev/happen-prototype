@@ -90,27 +90,27 @@ export default function Work() {
   useIsoLayoutEffect(() => syncActive(trackX.get()), [syncActive, trackX]);
 
   return (
-    <Section id="b-work" className={styles.work}>
+    <Section id="b-work" className={styles.workWork}>
       <div
         ref={containerRef}
-        className={styles.scrollContainer}
+        className={styles.workScrollContainer}
         style={{ height: `calc(100vh + ${maxOffset}px)` }}
       >
-        <div className={styles.pinned}>
+        <div className={styles.workPinned}>
           <motion.div
-            className={styles.contentGroup}
+            className={styles.workContentGroup}
             style={{
               "--progress": framed,
             }}
           >
-            <div className={styles.surface} />
+            <div className={styles.workSurface} />
 
-            <Heading2 className={styles.heading}>
+            <Heading2 className={styles.workHeading}>
               The proof is <br className="desktop-only" />
               in the Happening
             </Heading2>
 
-            <motion.div className={styles.track} style={{ x: trackX }}>
+            <motion.div className={styles.workTrack} style={{ x: trackX }}>
               {WORK.map((item, i) => (
                 <WorkCard
                   key={item.name}
@@ -140,21 +140,21 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
   return (
     <motion.article
       ref={cardRef}
-      className={`${styles.card} ${active ? styles.cardActive : ""}`}
+      className={`${styles.workCard} ${active ? styles.workCardActive : ""}`}
       style={{ "--centred": centred }}
       onClick={active ? undefined : () => onActivate(index)}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={item.img} alt="" className={styles.image} style={item.crop} />
+      <img src={item.img} alt="" className={styles.workImage} style={item.crop} />
 
-      <div className={styles.overlay} />
+      <div className={styles.workOverlay} />
 
-      <div className={styles.logoWrap}>
+      <div className={styles.workLogoWrap}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={item.logo}
           alt={item.name}
-          className={styles.logo}
+          className={styles.workLogo}
           style={{
             "--logo-w": item.logoWidth,
             "--logo-h": item.logoHeight,
@@ -163,8 +163,8 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
         />
       </div>
 
-      <div className={styles.content}>
-        <div className={styles.text}>
+      <div className={styles.workContent}>
+        <div className={styles.workText}>
           {item.tag.map((line) => (
             <div key={line}>{line}</div>
           ))}

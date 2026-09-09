@@ -43,7 +43,7 @@ export default function Underline({ list, link }) {
   return (
     <span
       aria-hidden="true"
-      className={`${styles.underline}${rule.visible ? ` ${styles.underlineVisible}` : ""}`}
+      className={`${styles.navUnderline}${rule.visible ? ` ${styles.navUnderlineVisible}` : ""}`}
       style={{
         width: `${rule.width}px`,
         transform: `translate(${rule.x}px, ${rule.y}px)`,

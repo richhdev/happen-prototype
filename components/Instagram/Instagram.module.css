@@ -1,4 +1,4 @@
-.instagram {
+.instagramInstagram {
   background: radial-gradient(
     50% 50% at 50% 50%,
     rgba(17, 17, 17, 0.8) 37.5%,
@@ -8,7 +8,7 @@
 
 /* Narrower than the 1200px Section inner — the design lays the grid out at
    894px, so the width lives on a wrapper rather than fighting .inner. */
-.content {
+.instagramContent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +22,7 @@
   }
 }
 
-.grid {
+.instagramGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-8);
@@ -33,7 +33,7 @@
   }
 }
 
-.tile {
+.instagramTile {
   position: relative;
   display: block;
   aspect-ratio: 1;
@@ -46,14 +46,14 @@
   }
 }
 
-.tileImage {
+.instagramTileImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
 }
 
-.social {
+.instagramSocial {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -70,14 +70,14 @@
 /* Set here rather than through TextMedium: the label is the one bold item in
    the row, and a class that only raises the weight would be racing the text
    primitive's own rule for specificity. */
-.followLabel {
+.instagramFollowLabel {
   color: var(--color-white);
   font-size: var(--text-medium-size);
   line-height: var(--text-medium-line-height);
   font-weight: 700;
 }
 
-.socialLinks {
+.instagramSocialLinks {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -85,7 +85,7 @@
   gap: var(--space-16);
 }
 
-.socialLink {
+.instagramSocialLink {
   display: inline-flex;
   align-items: center;
   gap: var(--space-8);
@@ -99,7 +99,7 @@
 /* Mobile carries Instagram alone, as the design has it — the other three are
    repeated in the Contact section, so the row does not need to spend the width
    on them here. */
-.socialLink:not(:first-child) {
+.instagramSocialLink:not(:first-child) {
   display: none;
 
   @media (min-width: 768px) {
@@ -107,7 +107,7 @@
   }
 }
 
-.socialIcon {
+.instagramSocialIcon {
   width: 20px;
   height: 20px;
 }

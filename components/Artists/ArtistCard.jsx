@@ -45,8 +45,8 @@ export function ArtistCard({
     // The wrapper holds the grid slot and the scroll-settle transform; the card
     // inside it is what lifts out to the centre, so the row never collapses.
     <motion.article
-      className={`${styles.wrap} ${active ? styles.wrapActive : ""} ${
-        returning && !active ? styles.wrapReturning : ""
+      className={`${styles.artistCardWrap} ${active ? styles.artistCardWrapActive : ""} ${
+        returning && !active ? styles.artistCardWrapReturning : ""
       }`}
       style={{ "--travelled": settle }}
     >
@@ -58,44 +58,44 @@ export function ArtistCard({
             : { type: "spring", stiffness: 260, damping: 30 }
         }
         onLayoutAnimationComplete={() => setReturning(false)}
-        className={`${styles.card} ${active ? styles.cardActive : ""} ${
-          dimmed ? styles.cardDimmed : ""
+        className={`${styles.artistCardCard} ${active ? styles.artistCardCardActive : ""} ${
+          dimmed ? styles.artistCardCardDimmed : ""
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={artist.img} alt="" className={styles.image} />
-        <div className={styles.overlay} />
+        <img src={artist.img} alt="" className={styles.artistCardImage} />
+        <div className={styles.artistCardOverlay} />
 
         {/* Sits under the content so the artist's links stay clickable in
             both states, and covers the rest of the card as the toggle. */}
         <button
           type="button"
-          className={styles.toggle}
+          className={styles.artistCardToggle}
           aria-expanded={active}
           onClick={onToggle}
         >
-          <span className={styles.toggleLabel}>
+          <span className={styles.artistCardToggleLabel}>
             {active ? `Close ${artist.name}` : `Read more about ${artist.name}`}
           </span>
         </button>
 
-        <div className={styles.content}>
-          <Heading4 as="h3" className={styles.name}>
+        <div className={styles.artistCardContent}>
+          <Heading4 as="h3" className={styles.artistCardName}>
             {artist.name}
           </Heading4>
 
-          <Badge color="red" className={styles.badge}>
+          <Badge color="red" className={styles.artistCardBadge}>
             {artist.genre}
           </Badge>
 
           {/* The box, not the text, is what opens: it collapses to nothing
               while the card is shut so the bio can grow the content upwards
               instead of appearing in one frame. */}
-          <div className={styles.bioBox}>
-            <TextMedium className={styles.bio}>{artist.bio}</TextMedium>
+          <div className={styles.artistCardBioBox}>
+            <TextMedium className={styles.artistCardBio}>{artist.bio}</TextMedium>
           </div>
 
-          <div className={styles.links}>
+          <div className={styles.artistCardLinks}>
             {artist.links.map((link) => (
               <TextMedium
                 key={link.label}
@@ -103,9 +103,9 @@ export function ArtistCard({
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.link}
+                className={styles.artistCardLink}
               >
-                <span className={styles.linkLabel}>{link.label}</span>
+                <span className={styles.artistCardLinkLabel}>{link.label}</span>
               </TextMedium>
             ))}
           </div>

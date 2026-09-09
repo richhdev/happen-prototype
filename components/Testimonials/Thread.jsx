@@ -96,7 +96,7 @@ export default function Thread() {
   }, [active, landed]);
 
   return (
-    <ol className={styles.feed} ref={feedRef}>
+    <ol className={styles.testimonialsFeed} ref={feedRef}>
       {TESTIMONIALS.map((item, i) => {
         // Even entries sit on the left in red, odd on the right in charcoal,
         // mirroring a two-way message thread.
@@ -107,7 +107,7 @@ export default function Thread() {
             ref={(el) => {
               rowRefs.current[i] = el;
             }}
-            className={`${styles.row} ${flipped ? styles.rowFlipped : ""}`}
+            className={`${styles.testimonialsRow} ${flipped ? styles.testimonialsRowFlipped : ""}`}
             variants={bubble}
             initial="hidden"
             animate={i <= active ? "shown" : "hidden"}
@@ -115,24 +115,24 @@ export default function Thread() {
             <motion.figure
               layout
               transition={expand}
-              className={`${styles.bubble} ${
-                i > landed ? styles.bubbleTyping : ""
+              className={`${styles.testimonialsBubble} ${
+                i > landed ? styles.testimonialsBubbleTyping : ""
               }`}
             >
               {i > landed ? (
-                <span className={styles.dots} aria-hidden="true">
-                  <span className={styles.dot} />
-                  <span className={styles.dot} />
-                  <span className={styles.dot} />
+                <span className={styles.testimonialsDots} aria-hidden="true">
+                  <span className={styles.testimonialsDot} />
+                  <span className={styles.testimonialsDot} />
+                  <span className={styles.testimonialsDot} />
                 </span>
               ) : (
                 // Fades up over the growing bubble, which also covers the
                 // moment the layout animation is still scaling the text.
-                <div className={styles.message}>
-                  <figcaption className={styles.author}>
+                <div className={styles.testimonialsMessage}>
+                  <figcaption className={styles.testimonialsAuthor}>
                     {item.name} - {item.role}
                   </figcaption>
-                  <blockquote className={styles.quote}>{item.quote}</blockquote>
+                  <blockquote className={styles.testimonialsQuote}>{item.quote}</blockquote>
                 </div>
               )}
               {/* Both carry layout of their own so the growth doesn't stretch
@@ -140,7 +140,7 @@ export default function Thread() {
               <motion.span
                 layout
                 transition={expand}
-                className={styles.tail}
+                className={styles.testimonialsTail}
                 aria-hidden="true"
               />
             </motion.figure>
@@ -149,7 +149,7 @@ export default function Thread() {
               transition={expand}
               src={item.avatar}
               alt={`${item.name}, ${item.role}`}
-              className={styles.avatar}
+              className={styles.testimonialsAvatar}
               width={50}
               height={50}
               loading="lazy"

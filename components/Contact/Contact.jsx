@@ -9,27 +9,27 @@ import styles from "./Contact.module.css";
 
 export default function Contact() {
   return (
-    <Section as="footer" id="a-contact" className={styles.contact}>
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <Heading3 as="h2" className={styles.title}>
+    <Section as="footer" id="a-contact" className={styles.contactContact}>
+      <div className={styles.contactContent}>
+        <div className={styles.contactHeader}>
+          <Heading3 as="h2" className={styles.contactTitle}>
             Let&apos;s make it Happen
           </Heading3>
-          <TextMedium className={styles.intro}>
+          <TextMedium className={styles.contactIntro}>
             Got a festival to run? A retail precinct to fill? An artist{" "}
             <br className="desktop-only" />
             who needs looking after? Tell us what you need.
           </TextMedium>
         </div>
 
-        <div className={styles.body}>
-          <div className={styles.column}>
-            <div className={styles.card}>
-              <span className={styles.cardLabel}>General enquiries</span>
-              <a className={styles.email} href={`mailto:${CONTACT_EMAIL}`}>
+        <div className={styles.contactBody}>
+          <div className={styles.contactColumn}>
+            <div className={styles.contactCard}>
+              <span className={styles.contactCardLabel}>General enquiries</span>
+              <a className={styles.contactEmail} href={`mailto:${CONTACT_EMAIL}`}>
                 {CONTACT_EMAIL}
               </a>
-              <div className={styles.socials}>
+              <div className={styles.contactSocials}>
                 {SOCIALS.map((social) => (
                   <a
                     key={social.label}
@@ -42,7 +42,7 @@ export default function Contact() {
                     <img
                       src={social.icon}
                       alt=""
-                      className={styles.socialIcon}
+                      className={styles.contactSocialIcon}
                     />
                   </a>
                 ))}
@@ -52,24 +52,24 @@ export default function Contact() {
             <ContactForm />
           </div>
 
-          <RevealGroup className={styles.column} once={true}>
+          <RevealGroup className={styles.contactColumn} once={true}>
             {LINK_CARDS.map((card) => (
               <RevealItem
                 key={card.title}
                 as="article"
-                className={styles.linkCard}
+                className={styles.contactLinkCard}
               >
-                <h3 className={styles.linkTitle}>{card.title}</h3>
-                <TextSmall className={styles.linkBody}>
+                <h3 className={styles.contactLinkTitle}>{card.title}</h3>
+                <TextSmall className={styles.contactLinkBody}>
                   {card.description}
                 </TextSmall>
                 <a
-                  className={styles.linkCta}
+                  className={styles.contactLinkCta}
                   href={card.href}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span className={styles.linkCtaText}>{card.label}</span>
+                  <span className={styles.contactLinkCtaText}>{card.label}</span>
                 </a>
               </RevealItem>
             ))}

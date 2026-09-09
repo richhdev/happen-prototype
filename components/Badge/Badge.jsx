@@ -19,7 +19,7 @@ export function Badge({
 }) {
   return (
     <Tag
-      className={`${styles.badge} ${className ?? ""}`}
+      className={`${styles.badgeBadge} ${className ?? ""}`}
       style={{ background: BADGE_COLORS[color] ?? color, ...style }}
       {...rest}
     >

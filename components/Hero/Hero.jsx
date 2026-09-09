@@ -16,11 +16,11 @@ export default function Hero() {
       as="header"
       id="a-hero"
       ref={headerRef}
-      className={styles.section}
-      innerClassName={styles.sectionInner}
+      className={styles.heroSection}
+      innerClassName={styles.heroSectionInner}
     >
-      <div className={styles.headlineGroup}>
-        <div className={styles.logoWrap}>
+      <div className={styles.heroHeadlineGroup}>
+        <div className={styles.heroLogoWrap}>
           <RollingLogo trackRef={headerRef} />
         </div>
         <Heading1>
@@ -30,19 +30,19 @@ export default function Hero() {
         </Heading1>
       </div>
 
-      <div className={styles.copyGroup}>
-        <TextXXLarge className={styles.copy}>
+      <div className={styles.heroCopyGroup}>
+        <TextXXLarge className={styles.heroCopy}>
           We&apos;re a Melbourne-based events agency built on over 10 years of
           rolling up our sleeves and doing the work. We move fast, think
           creatively and deliver with precision.
         </TextXXLarge>
-        <div className={styles.buttonGroup}>
+        <div className={styles.heroButtonGroup}>
           <ButtonLarge href="#a-contact">Let&apos;s talk</ButtonLarge>
           <ButtonOutlineLarge href="#b-work">See our work</ButtonOutlineLarge>
         </div>
       </div>
 
-      <TrustedBy className={styles.trusted} />
+      <TrustedBy className={styles.heroTrusted} />
     </Section>
   );
 }

@@ -1,4 +1,4 @@
-.venues {
+.venuesVenues {
   background: radial-gradient(
     50% 50% at 50% 50%,
     rgba(17, 17, 17, 0.8) 37.5%,
@@ -6,7 +6,7 @@
   );
 }
 
-.surface {
+.venuesSurface {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -24,12 +24,12 @@
   }
 }
 
-.title {
+.venuesTitle {
   color: var(--color-charcoal);
   text-align: center;
 }
 
-.cardGroup {
+.venuesCardGroup {
   display: flex;
   gap: var(--space-16);
   margin-inline: calc(-1 * var(--layout-padding-x));
@@ -47,11 +47,11 @@
   }
 }
 
-.cardGroup::-webkit-scrollbar {
+.venuesCardGroup::-webkit-scrollbar {
   display: none;
 }
 
-.cardReveal {
+.venuesCardReveal {
   display: flex;
   /* flex: 0 0 244px; */
 
@@ -60,7 +60,7 @@
   }
 }
 
-.card {
+.venuesCard {
   position: relative;
   display: flex;
   flex: 1 1 auto;
@@ -80,7 +80,7 @@
   }
 }
 
-.overlay {
+.venuesOverlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -90,12 +90,12 @@
   );
 }
 
-.badge {
+.venuesBadge {
   position: relative;
   align-self: flex-start;
 }
 
-.content {
+.venuesContent {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -107,14 +107,14 @@
   }
 }
 
-.name {
+.venuesName {
   color: var(--color-white);
 }
 
-.address {
+.venuesAddress {
   color: var(--color-cream);
 }
 
-.description {
+.venuesDescription {
   color: var(--color-cream);
 }

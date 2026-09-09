@@ -84,33 +84,33 @@ export default function Services() {
       as={motion.section}
       id="a-services"
       ref={sectionRef}
-      className={styles.section}
-      innerClassName={styles.inner}
+      className={styles.servicesSection}
+      innerClassName={styles.servicesInner}
       style={{
         "--progress": easedProgress,
       }}
     >
-      <div className={styles.surfaceLayer} aria-hidden>
-        <div className={styles.surface} />
+      <div className={styles.servicesSurfaceLayer} aria-hidden>
+        <div className={styles.servicesSurface} />
       </div>
 
-      <div className={styles.contentGroup}>
-        <div className={styles.head}>
-          <Heading2 className={styles.heading}>How we make it Happen</Heading2>
-          <TextMedium className={styles.copy}>
+      <div className={styles.servicesContentGroup}>
+        <div className={styles.servicesHead}>
+          <Heading2 className={styles.servicesHeading}>How we make it Happen</Heading2>
+          <TextMedium className={styles.servicesCopy}>
             We&rsquo;ve built a broad operational capability and a national
             network to match.
           </TextMedium>
         </div>
 
-        <div className={styles.list}>
+        <div className={styles.servicesList}>
           {SERVICES.map((service, i) => (
             <button
               key={service.title}
               type="button"
               ref={(el) => (itemRefs.current[i] = el)}
               onClick={scrollToItem}
-              className={styles.listItem}
+              className={styles.servicesListItem}
               data-active={i === active ? "" : undefined}
             >
               <Heading3 as="span" sentence>
@@ -122,24 +122,24 @@ export default function Services() {
         </div>
       </div>
 
-      <div className={styles.cardLayer} aria-hidden>
-        <div className={styles.cardSticky}>
-          <div className={styles.card} ref={cardRef}>
+      <div className={styles.servicesCardLayer} aria-hidden>
+        <div className={styles.servicesCardSticky}>
+          <div className={styles.servicesCard} ref={cardRef}>
             {SERVICES.map((service, i) => (
               <div
                 key={service.title}
-                className={styles.slide}
+                className={styles.servicesSlide}
                 data-active={i === active ? "" : undefined}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={service.img}
                   alt=""
-                  className={styles.slideImage}
+                  className={styles.servicesSlideImage}
                   loading={i === 0 ? undefined : "lazy"}
                 />
-                <div className={styles.slideGradient} />
-                <TextXXLarge className={styles.slideText}>
+                <div className={styles.servicesSlideGradient} />
+                <TextXXLarge className={styles.servicesSlideText}>
                   {service.desc}
                 </TextXXLarge>
               </div>

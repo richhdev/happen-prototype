@@ -1,4 +1,4 @@
-.overlay {
+.mobileNavOverlay {
   position: fixed;
   inset: 0;
   z-index: 45;
@@ -19,7 +19,7 @@
   }
 }
 
-.overlay.open {
+.mobileNavOverlay.mobileNavOpen {
   opacity: 1;
   visibility: visible;
   transition:
@@ -27,7 +27,7 @@
     visibility 0s linear;
 }
 
-.links {
+.mobileNavLinks {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@
   gap: var(--space-24);
 }
 
-.link {
+.mobileNavLink {
   display: block;
   text-decoration: none;
   color: var(--color-white);
@@ -43,37 +43,37 @@
   opacity: 0.55;
 }
 
-.link.active {
+.mobileNavLink.mobileNavActive {
   opacity: 1;
 }
 
-.mask {
+.mobileNavMask {
   display: block;
   overflow: hidden;
   padding-inline: 0.06em;
   margin-inline: -0.06em;
 }
 
-.label {
+.mobileNavLabel {
   display: block;
   transform: translateY(110%);
   transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: calc(var(--r) * 35ms);
 }
 
-.overlay.open .label {
+.mobileNavOverlay.mobileNavOpen .mobileNavLabel {
   transform: none;
   transition-delay: calc(80ms + var(--i) * 55ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .label {
+  .mobileNavLabel {
     transform: none;
     transition: opacity 200ms linear;
     opacity: 0;
   }
 
-  .overlay.open .label {
+  .mobileNavOverlay.mobileNavOpen .mobileNavLabel {
     opacity: 1;
   }
 }

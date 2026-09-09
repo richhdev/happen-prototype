@@ -46,7 +46,7 @@ export default function Ribbons() {
   return (
     <div
       ref={ref}
-      className={styles.layer}
+      className={styles.ribbonsLayer}
       style={{
         "--ribbon-art": `url(${asset("/assets/ribbons-layer-12.webp")})`,
         "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-9-mobile.webp")})`,

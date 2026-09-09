@@ -12,15 +12,15 @@ export default function Events() {
   return (
     <Section
       id="a-events"
-      className={styles.section}
-      innerClassName={styles.inner}
+      className={styles.eventsSection}
+      innerClassName={styles.eventsInner}
     >
-      <Heading2 className={styles.heading}>What&apos;s Happening</Heading2>
-      <div className={styles.scroller}>
+      <Heading2 className={styles.eventsHeading}>What&apos;s Happening</Heading2>
+      <div className={styles.eventsScroller}>
         {EVENTS.map((event, i) => (
           <Reveal
             key={i}
-            className={styles.cardWrap}
+            className={styles.eventsCardWrap}
             once={true}
             amount={0}
             delay={i * 130}
@@ -43,21 +43,21 @@ function EventCard({ event }) {
   const { label, color, soldout } = STATUSES[event.status];
 
   return (
-    <article className={styles.card}>
+    <article className={styles.eventsCard}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.img} alt="" className={styles.image} style={event.crop} />
+      <img src={event.img} alt="" className={styles.eventsImage} style={event.crop} />
 
-      <div className={styles.overlay}>
+      <div className={styles.eventsOverlay}>
         {label && <Badge color={color}>{label}</Badge>}
 
-        <div className={styles.meta}>
-          <TextSmall className={styles.date}>{event.date}</TextSmall>
-          <Heading4 as="h3" className={styles.title}>
+        <div className={styles.eventsMeta}>
+          <TextSmall className={styles.eventsDate}>{event.date}</TextSmall>
+          <Heading4 as="h3" className={styles.eventsTitle}>
             {event.title}
           </Heading4>
         </div>
 
-        <TextMedium className={styles.description}>
+        <TextMedium className={styles.eventsDescription}>
           {event.description}
         </TextMedium>
 
@@ -65,7 +65,7 @@ function EventCard({ event }) {
           href={event.link}
           rel="noopener noreferrer"
           target="_blank"
-          className={soldout ? styles.ctaSoldOut : undefined}
+          className={soldout ? styles.eventsCtaSoldOut : undefined}
           aria-disabled={soldout || undefined}
         >
           {soldout ? "Sold out" : event.cta}

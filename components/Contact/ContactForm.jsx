@@ -8,13 +8,13 @@ import styles from "./Contact.module.css";
 // the query string. Point this at a form service or a route handler.
 export default function ContactForm() {
   return (
-    <form className={styles.form} onSubmit={(event) => event.preventDefault()}>
-      <span className={styles.cardLabel}>Contact form</span>
+    <form className={styles.contactForm} onSubmit={(event) => event.preventDefault()}>
+      <span className={styles.contactCardLabel}>Contact form</span>
 
       {FORM_FIELDS.map((field) => (
-        <div key={field.name} className={styles.field}>
+        <div key={field.name} className={styles.contactField}>
           <label
-            className={styles.fieldLabel}
+            className={styles.contactFieldLabel}
             htmlFor={`contact-${field.name}`}
           >
             {field.label}
@@ -24,7 +24,7 @@ export default function ContactForm() {
               id={`contact-${field.name}`}
               name={field.name}
               rows={field.rows}
-              className={`${styles.input} ${styles.textarea}`}
+              className={`${styles.contactInput} ${styles.contactTextarea}`}
             />
           ) : (
             <input
@@ -32,13 +32,13 @@ export default function ContactForm() {
               name={field.name}
               type={field.type}
               autoComplete={field.autoComplete}
-              className={styles.input}
+              className={styles.contactInput}
             />
           )}
         </div>
       ))}
 
-      <ButtonOutlineMedium type="submit" className={styles.submit}>
+      <ButtonOutlineMedium type="submit" className={styles.contactSubmit}>
         Send message
       </ButtonOutlineMedium>
     </form>

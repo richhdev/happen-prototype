@@ -1,9 +1,9 @@
-.main {
+.pageMain {
   width: 100%;
   position: relative;
 }
 
-.testimonialsHostsGroup {
+.pageTestimonialsHostsGroup {
   display: flex;
   flex-direction: column;
   gap: var(--space-80);

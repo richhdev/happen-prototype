@@ -2,7 +2,7 @@
    it. From 768px up it moves inside the phone (see Phone.module.css) and
    scrolls within the screen. */
 
-.panel {
+.testimonialsPanel {
   /* How far down the first message starts, and how tall the fade above it is.
      Sized to clear the heading at its tallest (three lines in a narrow
      column), so the thread never surfaces from behind it mid-word. */
@@ -29,7 +29,7 @@
   }
 }
 
-.title {
+.testimonialsTitle {
   position: relative;
   z-index: 2;
   color: var(--color-black);
@@ -37,7 +37,7 @@
 }
 
 /* Sits under the heading and fades the thread out as it scrolls up behind it. */
-.scrim {
+.testimonialsScrim {
   position: absolute;
   /* Above the phone, which is positioned too and would otherwise paint over it. */
   z-index: 1;
@@ -62,7 +62,7 @@
 /* Scrolls within whatever is holding it — the panel on mobile, the phone's
    screen on desktop. The top padding is what lets the first message sit clear
    of the heading while later ones can still travel up behind it. */
-.feed {
+.testimonialsFeed {
   display: flex;
   flex-direction: column;
   gap: var(--space-40);
@@ -79,11 +79,11 @@
   }
 }
 
-.feed::-webkit-scrollbar {
+.testimonialsFeed::-webkit-scrollbar {
   display: none;
 }
 
-.row {
+.testimonialsRow {
   display: flex;
   /* Packs the pair against its own side of the thread, which only shows while
      the bubble is a typing pill and doesn't fill the row. row-reverse flips
@@ -97,12 +97,12 @@
 }
 
 /* Odd entries mirror: avatar on the left, bubble pushed right. */
-.rowFlipped {
+.testimonialsRowFlipped {
   flex-direction: row-reverse;
   transform-origin: bottom left;
 }
 
-.bubble {
+.testimonialsBubble {
   --bubble-bg: var(--color-red);
 
   position: relative;
@@ -116,17 +116,17 @@
 }
 
 /* Before the message lands the bubble is only as wide as its three dots. */
-.bubbleTyping {
+.testimonialsBubbleTyping {
   flex: 0 0 auto;
 }
 
-.rowFlipped .bubble {
+.testimonialsRowFlipped .testimonialsBubble {
   /* One-off charcoal that reads as the "other side" of the thread — close to
      but deliberately not --color-grey-900. */
   --bubble-bg: #26252a;
 }
 
-.message {
+.testimonialsMessage {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -139,14 +139,14 @@
   }
 }
 
-.dots {
+.testimonialsDots {
   display: flex;
   gap: 6px;
   align-items: center;
   height: 20px;
 }
 
-.dot {
+.testimonialsDot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -160,11 +160,11 @@
   }
 }
 
-.dot:nth-child(2) {
+.testimonialsDot:nth-child(2) {
   animation-delay: 0.15s;
 }
 
-.dot:nth-child(3) {
+.testimonialsDot:nth-child(3) {
   animation-delay: 0.3s;
 }
 
@@ -182,18 +182,18 @@
   }
 }
 
-.author {
+.testimonialsAuthor {
   font-size: var(--text-small-size);
   font-weight: 500;
   line-height: 20px;
   color: rgb(255 255 255 / 0.9);
 }
 
-.rowFlipped .author {
+.testimonialsRowFlipped .testimonialsAuthor {
   color: var(--color-white);
 }
 
-.quote {
+.testimonialsQuote {
   font-size: var(--text-small-size);
   font-weight: 300;
   line-height: 18px;
@@ -203,7 +203,7 @@
 /* One mask for both directions — the fill follows the bubble's own colour.
    Inlined rather than a file so it survives NEXT_PUBLIC_BASE_PATH, which CSS
    url() can't be rewritten for. */
-.tail {
+.testimonialsTail {
   --tail-shape: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224.35%22%20height%3D%2220%22%20viewBox%3D%220%200%2024.35%2020%22%3E%3Cpath%20d%3D%22M24.35%2019.5469C12.2779%2021.7416%203.08662%2015.4318%200%2012.0025L0.342958%201.71464C3.65822%202.4005%2010.8375%203.01777%2013.0324%200C12.6894%2012.3454%2021.9493%2018.5181%2024.35%2019.5469Z%22%2F%3E%3C%2Fsvg%3E");
 
   position: absolute;
@@ -216,7 +216,7 @@
   mask: var(--tail-shape) center / contain no-repeat;
 }
 
-.rowFlipped .tail {
+.testimonialsRowFlipped .testimonialsTail {
   right: auto;
   bottom: -8.23px;
   left: -1.4px;
@@ -225,7 +225,7 @@
   scale: -1 1;
 }
 
-.avatar {
+.testimonialsAvatar {
   flex: none;
   width: 50px;
   height: 50px;

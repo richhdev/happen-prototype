@@ -1,4 +1,4 @@
-.heading1 {
+.headingHeading1 {
   margin: 0;
   font-size: var(--heading1-size-fluid);
   line-height: var(--heading1-line-height-fluid);
@@ -8,7 +8,7 @@
   text-wrap: balance;
 }
 
-.heading2 {
+.headingHeading2 {
   margin: 0;
   font-size: var(--heading2-size-fluid);
   line-height: var(--heading2-line-height-fluid);
@@ -18,7 +18,7 @@
   text-wrap: balance;
 }
 
-.heading3 {
+.headingHeading3 {
   margin: 0;
   font-size: var(--heading3-size-fluid);
   line-height: var(--heading3-line-height-fluid);
@@ -28,7 +28,7 @@
   text-wrap: balance;
 }
 
-.heading3Sentence {
+.headingHeading3Sentence {
   margin: 0;
   font-size: var(--heading3-size-fluid);
   line-height: var(--heading3-line-height-fluid);
@@ -38,7 +38,7 @@
   text-wrap: balance;
 }
 
-.heading4 {
+.headingHeading4 {
   margin: 0;
   font-size: var(--heading4-size-fluid);
   line-height: var(--heading4-line-height-fluid);
@@ -49,12 +49,12 @@
 
 /* Reduced motion: pause the leter spacing animation on headings */
 @media (prefers-reduced-motion: reduce) {
-  .heading1 {
+  .headingHeading1 {
     letter-spacing: -0.035em !important;
   }
 
-  .heading2,
-  .heading3 {
+  .headingHeading2,
+  .headingHeading3 {
     letter-spacing: -0.05em !important;
   }
 }

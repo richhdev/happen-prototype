@@ -10,32 +10,32 @@ import styles from "./Vendors.module.css";
 
 export default function Vendors() {
   return (
-    <Section id="a-vendors" className={styles.section}>
+    <Section id="a-vendors" className={styles.vendorsSection}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={asset("/assets/vendor-bg.webp")}
         alt=""
-        className={styles.surface}
+        className={styles.vendorsSurface}
         fetchPriority="high"
         decoding="async"
       />
 
-      <div className={styles.contentGroup}>
-        <div className={styles.copy}>
-          <Heading3 as="h2" className={styles.heading} animateTracking={false}>
+      <div className={styles.vendorsContentGroup}>
+        <div className={styles.vendorsCopy}>
+          <Heading3 as="h2" className={styles.vendorsHeading} animateTracking={false}>
             Festival retail vendors
           </Heading3>
-          <TextMedium className={styles.body}>
+          <TextMedium className={styles.vendorsBody}>
             We&rsquo;re on the lookout for market stall holders to join us at
             the festival and help bring the space to life.
           </TextMedium>
         </div>
 
-        <div className={styles.cardGroup}>
+        <div className={styles.vendorsCardGroup}>
           {VENDOR_EVENTS.map((event, i) => (
             <Reveal
               key={i}
-              className={styles.cardWrap}
+              className={styles.vendorsCardWrap}
               once={true}
               amount={0}
               delay={i * 130}
@@ -51,13 +51,13 @@ export default function Vendors() {
 
 function VendorCard({ event }) {
   return (
-    <div className={styles.card}>
+    <div className={styles.vendorsCard}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.img} alt="" className={styles.cardImage} />
+      <img src={event.img} alt="" className={styles.vendorsCardImage} />
 
-      <div className={styles.cardBody}>
+      <div className={styles.vendorsCardBody}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={event.logo} alt={event.name} className={styles.logo} />
+        <img src={event.logo} alt={event.name} className={styles.vendorsLogo} />
 
         <ButtonOutlineMedium
           href={event.link}

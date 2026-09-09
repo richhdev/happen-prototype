@@ -6,7 +6,7 @@ import styles from "./Text.module.css";
 
 export function TextXXLarge({ as: Tag = "p", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.xxlarge} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textXxlarge} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -14,7 +14,7 @@ export function TextXXLarge({ as: Tag = "p", className, children, ...rest }) {
 
 export function TextXLarge({ as: Tag = "p", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.xlarge} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textXlarge} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -22,7 +22,7 @@ export function TextXLarge({ as: Tag = "p", className, children, ...rest }) {
 
 export function TextLarge({ as: Tag = "p", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.large} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textLarge} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -30,7 +30,7 @@ export function TextLarge({ as: Tag = "p", className, children, ...rest }) {
 
 export function TextMedium({ as: Tag = "p", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.medium} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textMedium} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -38,7 +38,7 @@ export function TextMedium({ as: Tag = "p", className, children, ...rest }) {
 
 export function TextSmall({ as: Tag = "p", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.small} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textSmall} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -47,7 +47,7 @@ export function TextSmall({ as: Tag = "p", className, children, ...rest }) {
 // Short uppercase label, not a paragraph — defaults to a span.
 export function TextOverline({ as: Tag = "span", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.overline} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textOverline} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -56,7 +56,7 @@ export function TextOverline({ as: Tag = "span", className, children, ...rest })
 // Text style only — meant to sit inside an actual <button>, so it defaults to a span.
 export function ButtonTextLarge({ as: Tag = "span", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.buttonTextLarge} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textButtonTextLarge} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -64,7 +64,7 @@ export function ButtonTextLarge({ as: Tag = "span", className, children, ...rest
 
 export function ButtonTextMedium({ as: Tag = "span", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.buttonTextMedium} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textButtonTextMedium} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );
@@ -72,7 +72,7 @@ export function ButtonTextMedium({ as: Tag = "span", className, children, ...res
 
 export function BadgeText({ as: Tag = "span", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.badgeText} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.textBadgeText} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );

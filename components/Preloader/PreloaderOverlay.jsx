@@ -72,14 +72,14 @@ export default function PreloaderOverlay({ logoMarkup }) {
           charcoal rectangle. Hide it outright rather than leave a preloader
           that never finishes. */}
       <noscript>
-        <style>{`.${styles.overlay}{display:none}`}</style>
+        <style>{`.${styles.preloaderOverlay}{display:none}`}</style>
       </noscript>
 
       <div
         role="button"
         aria-label="Skip intro"
         tabIndex={0}
-        className={`${styles.overlay}${phase === "leaving" ? ` ${styles.leaving}` : ""}`}
+        className={`${styles.preloaderOverlay}${phase === "leaving" ? ` ${styles.preloaderLeaving}` : ""}`}
         style={{
           "--preloader-draw": `${DRAW_MS}ms`,
           "--preloader-fade": `${FADE_MS}ms`,
@@ -93,7 +93,7 @@ export default function PreloaderOverlay({ logoMarkup }) {
         }}
       >
         <div
-          className={styles.logo}
+          className={styles.preloaderLogo}
           // Build-time artwork from public/assets/logo-draw.svg, not user input.
           dangerouslySetInnerHTML={{ __html: logoMarkup }}
         />

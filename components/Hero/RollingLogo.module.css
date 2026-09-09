@@ -1,4 +1,4 @@
-.logo {
+.rollingLogoLogo {
   /* fluid -  390px → 1200px */
   --logo-width-fluid: clamp(175px, calc(121.56px + 13.704vw), 286px);
 

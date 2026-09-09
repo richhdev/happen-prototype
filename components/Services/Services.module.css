@@ -1,4 +1,4 @@
-.section {
+.servicesSection {
   /* Used to calculate surface animation start position */
   --surface-top: 164px;
   --surface-bottom: 192px;
@@ -15,7 +15,7 @@
   }
 }
 
-.inner {
+.servicesInner {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,13 +27,13 @@
 
 /* Surface ------------------------------------------------------------------ */
 
-.surfaceLayer {
+.servicesSurfaceLayer {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.surface {
+.servicesSurface {
   position: sticky;
   top: calc(var(--surface-top) * (1 - var(--progress)));
   height: calc(
@@ -52,7 +52,7 @@
 
 /* Copy --------------------------------------------------------------------- */
 
-.contentGroup {
+.servicesContentGroup {
   position: relative;
   width: 100%;
   padding-top: var(--space-80);
@@ -67,7 +67,7 @@
   }
 }
 
-.head {
+.servicesHead {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -77,7 +77,7 @@
   text-wrap: balance;
 }
 
-.heading {
+.servicesHeading {
   margin-inline: auto;
 
   @media (min-width: 768px) {
@@ -85,7 +85,7 @@
   }
 }
 
-.copy {
+.servicesCopy {
   margin-inline: auto;
   color: var(--color-charcoal);
 
@@ -95,7 +95,7 @@
 }
 
 /* List ------------------------------------------------------------------- */
-.list {
+.servicesList {
   display: flex;
   flex-direction: column;
   gap: 180px;
@@ -111,7 +111,7 @@
   }
 }
 
-.listItem {
+.servicesListItem {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -135,20 +135,20 @@
   }
 }
 
-.listItem[data-active] {
+.servicesListItem[data-active] {
   color: var(--color-red);
   opacity: 1;
 }
 
 /* Card ------------------------------------------------------------------ */
 
-.cardLayer {
+.servicesCardLayer {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.cardSticky {
+.servicesCardSticky {
   position: sticky;
   top: 0;
   height: 100vh;
@@ -170,7 +170,7 @@
   }
 }
 
-.card {
+.servicesCard {
   position: relative;
   width: 100%;
   max-width: 475px;
@@ -182,7 +182,7 @@
   overflow: hidden;
 }
 
-.slide {
+.servicesSlide {
   position: absolute;
   inset: 0;
   display: flex;
@@ -197,11 +197,11 @@
   }
 }
 
-.slide[data-active] {
+.servicesSlide[data-active] {
   opacity: 1;
 }
 
-.slideImage {
+.servicesSlideImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -211,7 +211,7 @@
   object-fit: cover;
 }
 
-.slideGradient {
+.servicesSlideGradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -221,7 +221,7 @@
   );
 }
 
-.slideText {
+.servicesSlideText {
   position: relative;
   color: var(--color-white);
   text-align: center;

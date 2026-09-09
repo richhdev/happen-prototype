@@ -1,8 +1,8 @@
-.section {
+.vendorsSection {
   padding-top: 0;
 }
 
-.contentGroup {
+.vendorsContentGroup {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@
   }
 }
 
-.surface {
+.vendorsSurface {
   position: absolute;
   top: 0;
   left: 0;
@@ -33,7 +33,7 @@
   background-color: var(--color-charcoal);
 }
 
-.copy {
+.vendorsCopy {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -54,16 +54,16 @@
   }
 }
 
-.heading {
+.vendorsHeading {
   color: var(--color-cream);
 }
 
-.body {
+.vendorsBody {
   max-width: 680px;
   color: var(--color-white);
 }
 
-.cardGroup {
+.vendorsCardGroup {
   position: relative;
   display: flex;
   gap: var(--space-8);
@@ -83,11 +83,11 @@
   }
 }
 
-.cards::-webkit-scrollbar {
+.vendorsCards::-webkit-scrollbar {
   display: none;
 }
 
-.cardWrap {
+.vendorsCardWrap {
   display: flex;
   flex: none;
 
@@ -97,7 +97,7 @@
   }
 }
 
-.card {
+.vendorsCard {
   position: relative;
   flex: none;
 
@@ -113,7 +113,7 @@
   }
 }
 
-.cardImage {
+.vendorsCardImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -124,7 +124,7 @@
   pointer-events: none;
 }
 
-.cardBody {
+.vendorsCardBody {
   position: relative;
   flex: 1;
   display: flex;
@@ -139,7 +139,7 @@
   }
 }
 
-.logo {
+.vendorsLogo {
   display: block;
   width: auto;
   height: auto;

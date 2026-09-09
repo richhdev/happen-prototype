@@ -8,30 +8,30 @@ import styles from "./Venues.module.css";
 
 export default function Venues() {
   return (
-    <Section id="a-venues" className={styles.venues}>
-      <div className={styles.surface}>
-        <Heading3 as="h2" className={styles.title}>
+    <Section id="a-venues" className={styles.venuesVenues}>
+      <div className={styles.venuesSurface}>
+        <Heading3 as="h2" className={styles.venuesTitle}>
           The rooms we fill
         </Heading3>
 
-        <RevealGroup className={styles.cardGroup} once={true}>
+        <RevealGroup className={styles.venuesCardGroup} once={true}>
           {VENUES.map((venue) => (
-            <RevealItem key={venue.name} className={styles.cardReveal}>
+            <RevealItem key={venue.name} className={styles.venuesCardReveal}>
               <article
-                className={styles.card}
+                className={styles.venuesCard}
                 style={{ backgroundImage: `url("${venue.img}")` }}
               >
-                <div className={styles.overlay} />
-                <Badge className={styles.badge}>{venue.capacity}</Badge>
-                <div className={styles.content}>
-                  <Heading4 as="h3" className={styles.name}>
+                <div className={styles.venuesOverlay} />
+                <Badge className={styles.venuesBadge}>{venue.capacity}</Badge>
+                <div className={styles.venuesContent}>
+                  <Heading4 as="h3" className={styles.venuesName}>
                     {venue.name}
                   </Heading4>
-                  <TextSmall className={styles.address}>
+                  <TextSmall className={styles.venuesAddress}>
                     {venue.address}
                   </TextSmall>
                   {/* Desktop only — the mobile card is too short to carry it. */}
-                  <TextMedium className={styles.description}>
+                  <TextMedium className={styles.venuesDescription}>
                     {venue.description}
                   </TextMedium>
                 </div>

@@ -3,9 +3,9 @@ import styles from "./VideoBackground.module.css";
 
 export function VideoBackground() {
   return (
-    <div className={styles.container} aria-hidden="true">
+    <div className={styles.videoBackgroundContainer} aria-hidden="true">
       <video
-        className={styles.video}
+        className={styles.videoBackgroundVideo}
         autoPlay
         loop
         muted

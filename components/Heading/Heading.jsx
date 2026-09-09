@@ -59,7 +59,7 @@ export function Heading1({
       as={Tag}
       tracking="-0.035em"
       animate={animateTracking}
-      className={`${styles.heading1} ${className ?? ""}`}
+      className={`${styles.headingHeading1} ${className ?? ""}`}
       {...rest}
     >
       {children}
@@ -79,7 +79,7 @@ export function Heading2({
       as={Tag}
       tracking="-0.05em"
       animate={animateTracking}
-      className={`${styles.heading2} ${className ?? ""}`}
+      className={`${styles.headingHeading2} ${className ?? ""}`}
       {...rest}
     >
       {children}
@@ -99,7 +99,7 @@ export function Heading3({
   children,
   ...rest
 }) {
-  const styleClass = sentence ? styles.heading3Sentence : styles.heading3;
+  const styleClass = sentence ? styles.headingHeading3Sentence : styles.headingHeading3;
   return (
     <TrackingHeading
       as={Tag}
@@ -115,7 +115,7 @@ export function Heading3({
 
 export function Heading4({ as: Tag = "h4", className, children, ...rest }) {
   return (
-    <Tag className={`${styles.heading4} ${className ?? ""}`} {...rest}>
+    <Tag className={`${styles.headingHeading4} ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
   );

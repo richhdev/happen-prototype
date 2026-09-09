@@ -1,4 +1,4 @@
-.section {
+.eventsSection {
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
     rgba(17, 17, 17, 0.8) 37.5%,
@@ -7,7 +7,7 @@
   overflow-x: clip;
 }
 
-.inner {
+.eventsInner {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
@@ -17,11 +17,11 @@
   }
 }
 
-.heading {
+.eventsHeading {
   color: var(--color-white);
 }
 
-.scroller {
+.eventsScroller {
   display: flex;
   align-items: flex-start;
   gap: var(--space-16);
@@ -36,15 +36,15 @@
   }
 }
 
-.scroller::-webkit-scrollbar {
+.eventsScroller::-webkit-scrollbar {
   display: none;
 }
 
-.cardWrap {
+.eventsCardWrap {
   flex: none;
 }
 
-.card {
+.eventsCard {
   /* fluid -  390px → 1200px */
   --card-width-fluid: clamp(211px, calc(139.26px + 18.395vw), 360px);
 
@@ -58,7 +58,7 @@
   overflow: hidden;
 }
 
-.image {
+.eventsImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -69,7 +69,7 @@
   pointer-events: none;
 }
 
-.overlay {
+.eventsOverlay {
   position: relative;
   flex: 1;
   display: flex;
@@ -88,20 +88,20 @@
   }
 }
 
-.meta {
+.eventsMeta {
   margin-top: auto;
   width: 100%;
 }
 
-.date {
+.eventsDate {
   color: var(--color-cream);
 }
 
-.title {
+.eventsTitle {
   color: var(--color-white);
 }
 
-.description {
+.eventsDescription {
   display: none;
   color: var(--color-cream);
 
@@ -110,7 +110,7 @@
   }
 }
 
-.ctaSoldOut {
+.eventsCtaSoldOut {
   opacity: 0.25;
   pointer-events: none;
 }

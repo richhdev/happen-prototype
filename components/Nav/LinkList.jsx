@@ -9,7 +9,7 @@ export default function LinkList({ activeId, scrollToSection }) {
   const [activeLink, setActiveLink] = useState(null);
 
   return (
-    <div className={styles.links} ref={setList}>
+    <div className={styles.navLinks} ref={setList}>
       {LINKS.map((n) => (
         <TextOverline
           as="a"
@@ -17,7 +17,7 @@ export default function LinkList({ activeId, scrollToSection }) {
           href={`#${n.id}`}
           ref={n.id === activeId ? setActiveLink : null}
           onClick={(e) => scrollToSection(e, n.id)}
-          className={`${styles.link}${n.id === activeId ? ` ${styles.active}` : ""}`}
+          className={`${styles.navLink}${n.id === activeId ? ` ${styles.navActive}` : ""}`}
           aria-current={n.id === activeId ? "true" : undefined}
         >
           {n.label}

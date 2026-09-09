@@ -1,4 +1,4 @@
-.panel {
+.aboutPanel {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,12 +15,12 @@
   }
 }
 
-.title {
+.aboutTitle {
   color: var(--color-white);
   text-align: center;
 }
 
-.copy {
+.aboutCopy {
   display: flex;
   flex-direction: column;
   gap: var(--text-xxlarge-line-height);
@@ -34,7 +34,7 @@
   }
 }
 
-.stat {
+.aboutStat {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,7 +42,7 @@
   text-align: center;
 }
 
-.statNumber {
+.aboutStatNumber {
   /* Fixed-width digits so the count-up doesn't jitter the label. */
   font-variant-numeric: tabular-nums;
   font-size: 100px;
@@ -57,7 +57,7 @@
   }
 }
 
-.statLabel {
+.aboutStatLabel {
   color: var(--color-white);
   text-transform: uppercase;
 }

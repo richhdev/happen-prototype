@@ -78,18 +78,18 @@ export default function Artists() {
   }, [isOpen]);
 
   return (
-    <Section id="b-artists" className={styles.artists}>
-      <div ref={trackRef} className={styles.track}>
-        <div className={styles.pinned}>
+    <Section id="b-artists" className={styles.artistsArtists}>
+      <div ref={trackRef} className={styles.artistsTrack}>
+        <div className={styles.artistsPinned}>
           <div
-            className={`${styles.dim} ${isOpen ? styles.dimVisible : ""}`}
+            className={`${styles.artistsDim} ${isOpen ? styles.artistsDimVisible : ""}`}
             onClick={() => setActiveIndex(null)}
             aria-hidden="true"
           />
 
-          <div className={styles.grid}>
-            <div className={styles.headingWrap}>
-              <Heading2 className={styles.heading}>Our artists</Heading2>
+          <div className={styles.artistsGrid}>
+            <div className={styles.artistsHeadingWrap}>
+              <Heading2 className={styles.artistsHeading}>Our artists</Heading2>
             </div>
 
             {ARTISTS.map((artist, i) => (

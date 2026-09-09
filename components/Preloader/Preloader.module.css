@@ -1,4 +1,4 @@
-.overlay {
+.preloaderOverlay {
   position: fixed;
   inset: 0;
   /* Over everything, the nav (51) included. */
@@ -12,16 +12,16 @@
   cursor: pointer;
 }
 
-.leaving {
+.preloaderLeaving {
   opacity: 0;
   pointer-events: none;
 }
 
-.logo {
+.preloaderLogo {
   width: clamp(140px, 30vw, 220px);
 }
 
-.logo svg {
+.preloaderLogo svg {
   display: block;
   width: 100%;
   height: auto;
@@ -33,12 +33,12 @@
      class names beat the one in the file's <style>, so this wins. A finished
      dashoffset of 0 is the whole logo, drawn: the mask opens on the mark
      rather than travelling across it. */
-  .overlay :global(.happen-ink) {
+  .preloaderOverlay :global(.happen-ink) {
     animation: none;
     stroke-dashoffset: 0;
   }
 
-  .overlay {
+  .preloaderOverlay {
     transition-duration: 1ms;
   }
 }

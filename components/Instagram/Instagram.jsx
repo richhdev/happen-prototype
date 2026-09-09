@@ -7,39 +7,39 @@ import { Heading3 } from "../Heading/Heading";
 
 export default function Instagram() {
   return (
-    <Section id="a-instagram" className={styles.instagram}>
-      <div className={styles.content}>
+    <Section id="a-instagram" className={styles.instagramInstagram}>
+      <div className={styles.instagramContent}>
         <Heading3 style={{ color: "var(--color-white)" }}>Instagram</Heading3>
-        <RevealGroup className={styles.grid} once={true}>
+        <RevealGroup className={styles.instagramGrid} once={true}>
           {IG_TILES.map((src) => (
             <RevealItem
               key={src}
               as="a"
-              className={styles.tile}
+              className={styles.instagramTile}
               href={IG_PROFILE}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Happen Group Instagram post"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className={styles.tileImage} />
+              <img src={src} alt="" className={styles.instagramTileImage} />
             </RevealItem>
           ))}
         </RevealGroup>
 
-        <div className={styles.social}>
-          <span className={styles.followLabel}>Follow us</span>
-          <div className={styles.socialLinks}>
+        <div className={styles.instagramSocial}>
+          <span className={styles.instagramFollowLabel}>Follow us</span>
+          <div className={styles.instagramSocialLinks}>
             {SOCIALS.map((social) => (
               <a
                 key={social.label}
-                className={styles.socialLink}
+                className={styles.instagramSocialLink}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={social.icon} alt="" className={styles.socialIcon} />
+                <img src={social.icon} alt="" className={styles.instagramSocialIcon} />
                 {social.label}
               </a>
             ))}

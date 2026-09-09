@@ -1,4 +1,4 @@
-.nav {
+.navNav {
   position: fixed;
   top: 0;
   left: 0;
@@ -18,7 +18,7 @@
   }
 }
 
-.inner {
+.navInner {
   width: 100%;
   max-width: var(--layout-max-width);
   margin: 0 auto;
@@ -32,14 +32,14 @@
   }
 }
 
-.title {
+.navTitle {
   color: var(--color-red);
   white-space: nowrap;
   flex-shrink: 0;
   text-decoration: none;
 }
 
-.links {
+.navLinks {
   position: relative;
   /* Hidden on the bar at mobile; MobileNav takes over there. */
   display: none;
@@ -58,7 +58,7 @@
   }
 }
 
-.link {
+.navLink {
   text-decoration: none;
   color: var(--color-white);
   white-space: nowrap;
@@ -69,7 +69,7 @@
   Positioned and sized from JS against the list box, see LinkList.jsx. It sits
   at the link's bottom edge, offset down by the margin.
 */
-.underline {
+.navUnderline {
   position: absolute;
   top: 0;
   left: 0;
@@ -84,22 +84,22 @@
     opacity 200ms linear;
 }
 
-.underline.underlineVisible {
+.navUnderline.navUnderlineVisible {
   opacity: 1;
 }
 
 /* Matches the links, see the hueGuard note at the bottom of this file. */
-.hueGuard .underline {
+.navHueGuard .navUnderline {
   background: var(--color-red);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .underline {
+  .navUnderline {
     transition: opacity 200ms linear;
   }
 }
 
-.menuToggle {
+.navMenuToggle {
   display: block;
   color: var(--color-white);
   background: transparent;
@@ -125,14 +125,14 @@
 
 /* The difference blend turns the red glyphs green; this copy of the bar blends
    in hue to force them back to red, keeping lightness and sparing neutrals. */
-.nav.hueGuard {
+.navNav.navHueGuard {
   z-index: 51;
   pointer-events: none;
   mix-blend-mode: hue;
 }
 
-.hueGuard .title,
-.hueGuard .link,
-.hueGuard .menuToggle {
+.navHueGuard .navTitle,
+.navHueGuard .navLink,
+.navHueGuard .navMenuToggle {
   color: var(--color-red);
 }

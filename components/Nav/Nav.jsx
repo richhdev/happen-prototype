@@ -38,7 +38,7 @@ export default function Nav() {
 
       {/* keeps the navlinks from turning weird colors from `difference` */}
       <Bar
-        className={styles.hueGuard}
+        className={styles.navHueGuard}
         hidden
         activeId={activeId}
         menuOpen={menuOpen}
@@ -70,15 +70,15 @@ function Bar({
 }) {
   return (
     <nav
-      className={`${styles.nav}${className ? ` ${className}` : ""}`}
+      className={`${styles.navNav}${className ? ` ${className}` : ""}`}
       aria-hidden={hidden ? "true" : undefined}
       inert={hidden || undefined}
     >
-      <div className={styles.inner}>
+      <div className={styles.navInner}>
         <TextOverline
           as="a"
           href="#a-hero"
-          className={styles.title}
+          className={styles.navTitle}
           onClick={(e) => scrollToSection(e, "a-hero")}
         >
           Happen Group
@@ -86,7 +86,7 @@ function Bar({
 
         <button
           type="button"
-          className={styles.menuToggle}
+          className={styles.navMenuToggle}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((v) => !v)}

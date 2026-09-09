@@ -1,4 +1,4 @@
-.container {
+.videoBackgroundContainer {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -7,7 +7,7 @@
   pointer-events: none;
 }
 
-.video {
+.videoBackgroundVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;

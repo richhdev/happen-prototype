@@ -24,7 +24,7 @@ export default function Home() {
       <VideoBackground />
       <Nav />
       <NavPlaceholder />
-      <main className={styles.main}>
+      <main className={styles.pageMain}>
         <Hero />
         <Events />
         <Ribbons />
@@ -34,7 +34,7 @@ export default function Home() {
         <Artists />
         <Venues />
         <About />
-        <Section innerClassName={styles.testimonialsHostsGroup}>
+        <Section innerClassName={styles.pageTestimonialsHostsGroup}>
           <Testimonials />
           <Hosts />
         </Section>
