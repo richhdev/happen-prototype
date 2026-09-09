@@ -1,11 +1,11 @@
 /* Vertical rhythm comes from the pinned 100vh below, not from section padding. */
-.artistsArtists {
+.artistsSection {
   padding-block: 0;
 }
 
 /* Taller than the viewport by --pin-scroll; that surplus is the distance the
    grid spends stuck while the cards zoom in. */
-.artistsTrack {
+.artistsScrollContainer {
   --pin-scroll: 80vh;
   height: calc(100vh + var(--pin-scroll));
 }

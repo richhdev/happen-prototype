@@ -1,4 +1,4 @@
-.navNav {
+.nav {
   position: fixed;
   top: 0;
   left: 0;
@@ -125,7 +125,7 @@
 
 /* The difference blend turns the red glyphs green; this copy of the bar blends
    in hue to force them back to red, keeping lightness and sparing neutrals. */
-.navNav.navHueGuard {
+.nav.navHueGuard {
   z-index: 51;
   pointer-events: none;
   mix-blend-mode: hue;

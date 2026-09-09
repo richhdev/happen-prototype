@@ -45,8 +45,8 @@ export function ArtistCard({
     // The wrapper holds the grid slot and the scroll-settle transform; the card
     // inside it is what lifts out to the centre, so the row never collapses.
     <motion.article
-      className={`${styles.artistCardWrap} ${active ? styles.artistCardWrapActive : ""} ${
-        returning && !active ? styles.artistCardWrapReturning : ""
+      className={`${styles.artistCardContainer} ${active ? styles.artistCardContainerActive : ""} ${
+        returning && !active ? styles.artistCardContainerReturning : ""
       }`}
       style={{ "--travelled": settle }}
     >
@@ -58,8 +58,8 @@ export function ArtistCard({
             : { type: "spring", stiffness: 260, damping: 30 }
         }
         onLayoutAnimationComplete={() => setReturning(false)}
-        className={`${styles.artistCardCard} ${active ? styles.artistCardCardActive : ""} ${
-          dimmed ? styles.artistCardCardDimmed : ""
+        className={`${styles.artistCard} ${active ? styles.artistCardActive : ""} ${
+          dimmed ? styles.artistCardDimmed : ""
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -91,8 +91,10 @@ export function ArtistCard({
           {/* The box, not the text, is what opens: it collapses to nothing
               while the card is shut so the bio can grow the content upwards
               instead of appearing in one frame. */}
-          <div className={styles.artistCardBioBox}>
-            <TextMedium className={styles.artistCardBio}>{artist.bio}</TextMedium>
+          <div className={styles.artistCardBioContainer}>
+            <TextMedium className={styles.artistCardBio}>
+              {artist.bio}
+            </TextMedium>
           </div>
 
           <div className={styles.artistCardLinks}>

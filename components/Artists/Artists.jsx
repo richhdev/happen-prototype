@@ -78,8 +78,8 @@ export default function Artists() {
   }, [isOpen]);
 
   return (
-    <Section id="b-artists" className={styles.artistsArtists}>
-      <div ref={trackRef} className={styles.artistsTrack}>
+    <Section id="b-artists" className={styles.artistsSection}>
+      <div ref={trackRef} className={styles.artistsScrolledContainer}>
         <div className={styles.artistsPinned}>
           <div
             className={`${styles.artistsDim} ${isOpen ? styles.artistsDimVisible : ""}`}

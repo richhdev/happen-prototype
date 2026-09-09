@@ -3,12 +3,7 @@ import { useRef } from "react";
 import { Section } from "@/components/Section/Section";
 import { Heading1 } from "@/components/Heading/Heading";
 import { TextXXLarge } from "@/components/Text/Text";
-import {
-  ButtonLarge,
-  ButtonMedium,
-  ButtonOutlineLarge,
-  ButtonOutlineMedium,
-} from "@/components/Button/Button";
+import { ButtonLarge, ButtonOutlineLarge } from "@/components/Button/Button";
 import { TrustedBy } from "@/components/Hero/TrustedBy";
 import { RollingLogo } from "./RollingLogo";
 import styles from "./Hero.module.css";
@@ -47,10 +42,6 @@ export default function Hero() {
           <ButtonLarge href="#a-contact">Let&apos;s talk</ButtonLarge>
           <ButtonOutlineLarge href="#b-work">See our work</ButtonOutlineLarge>
         </div>
-        {/* <div className={styles.heroButtonGroup}>
-          <ButtonMedium href="#a-contact">Let&apos;s talk</ButtonMedium>
-          <ButtonOutlineMedium href="#b-work">See our work</ButtonOutlineMedium>
-        </div> */}
       </div>
 
       <TrustedBy className={styles.heroTrusted} />

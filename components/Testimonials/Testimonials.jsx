@@ -5,7 +5,7 @@ import Thread from "./Thread";
 
 export default function Testimonials() {
   return (
-    <div id="a-testimonials" className={styles.testimonialsPanel}>
+    <div id="a-testimonials" className={styles.testimonialsSurface}>
       {/* Fades the thread out as it runs up behind the heading. Mobile only —
           on desktop the phone's own bezel does that job. */}
       <div className={styles.testimonialsScrim} aria-hidden="true" />

@@ -33,7 +33,7 @@ export function RollingLogo({ trackRef }) {
       ref={logoRef}
       src={asset("/assets/logo.svg")}
       alt="Happen logo"
-      className={styles.rollingLogoLogo}
+      className={styles.rollingLogo}
       style={{ x, rotate }}
     />
   );

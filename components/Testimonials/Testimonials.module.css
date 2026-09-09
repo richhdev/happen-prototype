@@ -2,7 +2,7 @@
    it. From 768px up it moves inside the phone (see Phone.module.css) and
    scrolls within the screen. */
 
-.testimonialsPanel {
+.testimonialsSurface {
   /* How far down the first message starts, and how tall the fade above it is.
      Sized to clear the heading at its tallest (three lines in a narrow
      column), so the thread never surfaces from behind it mid-word. */

@@ -2,7 +2,7 @@
 // becomes `.heroSection`, and `styles.section` becomes `styles.heroSection`.
 //
 // The name is camelCase — the stylesheet's name with a lowercase first letter, then the
-// class name with a capital: ArtistCard.module.css yields `.artistCardWrap`. No
+// class name with a capital: ArtistCard.module.css yields `.artistCardImage`. No
 // separator, so the result stays a valid JS property and `styles.x` dot syntax keeps
 // working. (A dash would force `styles["artist-card-wrap"]` everywhere, since Next
 // doesn't turn on css-loader's camelCase export.)
@@ -70,8 +70,11 @@ const prefixOf = (f) => lowerFirst(basename(f, ".module.css"));
 // The naming rule, in one place — both halves of the rewrite go through this, so the
 // stylesheet and the JS that reads it can't drift apart. Idempotent: a name that
 // already carries the prefix comes back unchanged.
+// A class named exactly after its stylesheet (`.artistCard` in ArtistCard.module.css)
+// counts as prefixed too, or a second run would grow it into `.artistCardArtistCard`.
+// A digit ends the prefix as clearly as a capital does, so `.heading1` stays put.
 const isPrefixed = (name, p) =>
-  name.startsWith(p) && /[A-Z]/.test(name[p.length] ?? "");
+  name.startsWith(p) && (name.length === p.length || /[A-Z0-9]/.test(name[p.length]));
 const qualify = (p, name) => (isPrefixed(name, p) ? name : p + upperFirst(name));
 const read = (f) => readFileSync(f, "utf8");
 

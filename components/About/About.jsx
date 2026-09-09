@@ -7,7 +7,7 @@ import styles from "./About.module.css";
 export default function About() {
   return (
     <Section id="a-about">
-      <div className={styles.aboutPanel}>
+      <div className={styles.aboutSurface}>
         <Heading2 className={styles.aboutTitle}>Who we are</Heading2>
 
         <div className={styles.aboutCopy}>
@@ -26,7 +26,11 @@ export default function About() {
         </div>
 
         <div className={styles.aboutStat}>
-          <StatCounter value={10} suffix="+" className={styles.aboutStatNumber} />
+          <StatCounter
+            value={10}
+            suffix="+"
+            className={styles.aboutStatNumber}
+          />
           <Heading4 as="p" className={styles.aboutStatLabel}>
             Years doing the work
           </Heading4>

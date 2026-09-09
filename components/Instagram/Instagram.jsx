@@ -7,7 +7,7 @@ import { Heading3 } from "../Heading/Heading";
 
 export default function Instagram() {
   return (
-    <Section id="a-instagram" className={styles.instagramInstagram}>
+    <Section id="a-instagram" className={styles.instagramSection}>
       <div className={styles.instagramContent}>
         <Heading3 style={{ color: "var(--color-white)" }}>Instagram</Heading3>
         <RevealGroup className={styles.instagramGrid} once={true}>
@@ -39,7 +39,11 @@ export default function Instagram() {
                 rel="noopener noreferrer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={social.icon} alt="" className={styles.instagramSocialIcon} />
+                <img
+                  src={social.icon}
+                  alt=""
+                  className={styles.instagramSocialIcon}
+                />
                 {social.label}
               </a>
             ))}

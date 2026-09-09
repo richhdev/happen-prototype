@@ -9,7 +9,7 @@ import styles from "./Contact.module.css";
 
 export default function Contact() {
   return (
-    <Section as="footer" id="a-contact" className={styles.contactContact}>
+    <Section as="footer" id="a-contact" className={styles.contactSection}>
       <div className={styles.contactContent}>
         <div className={styles.contactHeader}>
           <Heading3 as="h2" className={styles.contactTitle}>
@@ -26,7 +26,10 @@ export default function Contact() {
           <div className={styles.contactColumn}>
             <div className={styles.contactCard}>
               <span className={styles.contactCardLabel}>General enquiries</span>
-              <a className={styles.contactEmail} href={`mailto:${CONTACT_EMAIL}`}>
+              <a
+                className={styles.contactEmail}
+                href={`mailto:${CONTACT_EMAIL}`}
+              >
                 {CONTACT_EMAIL}
               </a>
               <div className={styles.contactSocials}>
@@ -69,7 +72,9 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span className={styles.contactLinkCtaText}>{card.label}</span>
+                  <span className={styles.contactLinkCtaText}>
+                    {card.label}
+                  </span>
                 </a>
               </RevealItem>
             ))}

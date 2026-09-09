@@ -79,7 +79,7 @@ function Bar({
 }) {
   return (
     <nav
-      className={`${styles.navNav}${className ? ` ${className}` : ""}`}
+      className={`${styles.nav}${className ? ` ${className}` : ""}`}
       aria-hidden={hidden ? "true" : undefined}
       inert={hidden || undefined}
     >

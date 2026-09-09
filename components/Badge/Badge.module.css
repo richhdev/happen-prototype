@@ -1,7 +1,7 @@
 /* Box + text style from the Figma Badge component (screenshot, not in
    happen-token-structure.md). Fill color is set per-instance by the component. */
 
-.badgeBadge {
+.badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;

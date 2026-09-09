@@ -1,6 +1,4 @@
-/* contacrt-desktop 404:1123 / contact-mobile 509:11539 */
-
-.contactContact {
+.contactSection {
   overflow: hidden;
 }
 
@@ -65,7 +63,6 @@
   }
 }
 
-/* Every panel in this section shares one treatment. */
 .contactCard,
 .contactForm,
 .contactLinkCard {
@@ -148,8 +145,6 @@
 .contactLinkCard {
   gap: var(--space-8);
 
-  /* The four cards share the column's height evenly, matching the form beside
-     them. */
   @media (min-width: 768px) {
     flex: 1 1 0;
     justify-content: center;
