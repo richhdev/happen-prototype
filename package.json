@@ -10,7 +10,8 @@
     "lint": "next lint",
     "screenshot": "node scripts/screenshot.mjs",
     "assets": "./scripts/build-assets.sh",
-    "prefix-classes": "node scripts/prefix-classes.mjs"
+    "prefix-classes": "node scripts/prefix-classes.mjs",
+    "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs"
   },
   "dependencies": {
     "motion": "^11.15.0",

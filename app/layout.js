@@ -1,8 +1,5 @@
-import { Inter } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const TITLE = "Happen — Melbourne Events Agency";
 const DESCRIPTION =
@@ -48,7 +45,17 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en-AU">
-      <body className={inter.className}>{children}</body>
+      <head>
+        {/* Inter is pulled in by an @import in globals.css. These shave a round
+            trip off that chain, which next/font used to avoid by self-hosting. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

@@ -17,7 +17,7 @@ export default function LinkList({ activeId, scrollToSection }) {
           href={`#${n.id}`}
           ref={n.id === activeId ? setActiveLink : null}
           onClick={(e) => scrollToSection(e, n.id)}
-          className={`${styles.navLink}${n.id === activeId ? ` ${styles.navActive}` : ""}`}
+          className={styles.navLink}
           aria-current={n.id === activeId ? "true" : undefined}
         >
           {n.label}

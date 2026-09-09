@@ -1,3 +1,12 @@
+/* Inter, loaded from Google rather than next/font, so the sheet this compiles
+   into stays self-contained once it moves to Framer. Variable range covers the
+   300/500/700/800/900 weights the components ask for.
+
+   It lives here rather than in globals.css because Next inlines the local
+   @imports in place: anywhere later and this lands mid-sheet, where CSS
+   requires every @import to precede the rules, and the browser drops it. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
 :root {
   /* Color */
   --color-red: #ca0013;
