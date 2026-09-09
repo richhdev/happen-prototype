@@ -50,7 +50,7 @@
 
   /* Headings */
 
-  /* fluid -  390px → 1200px */
+  /* fluid */
   --heading1-size-fluid: clamp(40px, calc(25.56px + 3.704vw), 70px);
   --heading1-line-height-fluid: clamp(44px, calc(25.76px + 4.504vw), 74px);
   --heading2-size-fluid: clamp(36px, calc(24.44px + 2.963vw), 60px);
@@ -59,6 +59,16 @@
   --heading3-line-height-fluid: clamp(34px, calc(24.37px + 2.469vw), 44px);
   --heading4-size-fluid: clamp(20px, calc(18.56px + 0.37vw), 22px);
   --heading4-line-height-fluid: clamp(26px, calc(21.19px + 0.741vw), 30px);
+
+  /* expanded calculation eg. clamp(
+    20px,
+    calc(
+      20px + (24 - 20) * (100vw - var(--fluid-min-w) * 1px) /
+        (var(--fluid-max-w) - var(--fluid-min-w))
+    ),
+    24px
+  );
+   */
 
   --heading1-size: 40px;
   --heading1-line-height: 44px;
