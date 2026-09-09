@@ -79,7 +79,7 @@ export default function Artists() {
 
   return (
     <Section id="b-artists" className={styles.artistsSection}>
-      <div ref={trackRef} className={styles.artistsScrolledContainer}>
+      <div ref={trackRef} className={styles.artistsScrollContainer}>
         <div className={styles.artistsPinned}>
           <div
             className={`${styles.artistsDim} ${isOpen ? styles.artistsDimVisible : ""}`}
