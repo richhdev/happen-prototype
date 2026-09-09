@@ -10,6 +10,10 @@
     min-height: 740px;
     height: calc(100svh - var(--nav-height-desktop));
   }
+
+  @media (max-width: 768px) {
+    padding-top: 0;
+  }
 }
 
 .heroSectionInner {
@@ -39,7 +43,7 @@
 
 .heroHeadlineGroup span {
   display: block;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .heroLogoWrap {
@@ -50,6 +54,17 @@
   @media (min-width: 768px) {
     flex: 1;
   }
+}
+
+.heroHeading {
+  --hero-size-fluid: clamp(34px, calc(16.67px + 4.444vw), 70px);
+  --hero-line-height-fluid: clamp(38px, calc(20.67px + 4.444vw), 74px);
+
+  width: 100%;
+  max-width: 700px;
+  text-wrap: balance;
+  font-size: var(--hero-size-fluid);
+  line-height: var(--hero-line-height-fluid);
 }
 
 .heroCopyGroup {
@@ -70,10 +85,17 @@
   gap: var(--space-16);
 }
 
+.heroButtonGroup a {
+  @media (max-width: 768px) {
+    font-size: 16px !important;
+    padding: 16px;
+  }
+}
+
 .heroTrusted {
   margin-top: calc(var(--space-80) - var(--space-24));
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     margin-top: var(--space-80);
   }
 }

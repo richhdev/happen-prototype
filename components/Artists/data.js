@@ -19,7 +19,7 @@ export const ARTISTS = [
   },
   {
     name: "Laura King",
-    genre: "Techno / Trance",
+    genre: "Techno/Trance",
     img: asset("/assets/artist-laura-king.webp"),
     bio: "A leading force in Australia's contemporary techno/trance scene, bridging global trends and local flavour. High-energy sets blending hard dance, groove techno, hip hop vocals and psychedelic trance.",
     links: [

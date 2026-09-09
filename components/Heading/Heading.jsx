@@ -49,7 +49,7 @@ function TrackingHeading({
 
 export function Heading1({
   as: Tag = "h1",
-  animateTracking = true,
+  animateTracking = false,
   className,
   children,
   ...rest
@@ -69,7 +69,7 @@ export function Heading1({
 
 export function Heading2({
   as: Tag = "h2",
-  animateTracking = true,
+  animateTracking = false,
   className,
   children,
   ...rest
@@ -94,12 +94,14 @@ export function Heading2({
 export function Heading3({
   as: Tag = "h3",
   sentence = false,
-  animateTracking = true,
+  animateTracking = false,
   className,
   children,
   ...rest
 }) {
-  const styleClass = sentence ? styles.headingHeading3Sentence : styles.headingHeading3;
+  const styleClass = sentence
+    ? styles.headingHeading3Sentence
+    : styles.headingHeading3;
   return (
     <TrackingHeading
       as={Tag}

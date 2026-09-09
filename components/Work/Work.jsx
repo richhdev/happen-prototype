@@ -90,7 +90,7 @@ export default function Work() {
   useIsoLayoutEffect(() => syncActive(trackX.get()), [syncActive, trackX]);
 
   return (
-    <Section id="b-work" className={styles.workWork}>
+    <Section id="b-work" className={styles.workSection}>
       <div
         ref={containerRef}
         className={styles.workScrollContainer}
@@ -145,7 +145,12 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
       onClick={active ? undefined : () => onActivate(index)}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={item.img} alt="" className={styles.workImage} style={item.crop} />
+      <img
+        src={item.img}
+        alt=""
+        className={styles.workImage}
+        style={item.crop}
+      />
 
       <div className={styles.workOverlay} />
 

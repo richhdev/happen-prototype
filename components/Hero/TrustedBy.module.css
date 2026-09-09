@@ -21,6 +21,9 @@
   width: max-content;
   animation: marquee 26s linear infinite;
   gap: 16px;
+  @media (max-width: 768px) {
+    gap: 0;
+  }
 }
 
 .trustedByItem {
