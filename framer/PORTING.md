@@ -84,7 +84,13 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
 1. **One file per section.** Fold its private sub-components, data and hooks in as
    non-exported functions. Framer lists every export in the Insert panel, so only the
    section itself is exported. Nav absorbed six source files this way; Hero absorbed
-   three.
+   three, and `TestimonialsHosts.tsx` six.
+
+   A section is what occupies one slot in the page stack, not what has a folder. Where
+   `app/page.js` wraps two components in one `<Section>`, that group is the section and
+   the port owns the `<Section>` the page was providing. Testimonials and Hosts are
+   flex siblings from 1024px up, and Framer's page frame is a vertical stack, so
+   shipping them separately would push that breakpoint onto the canvas.
 2. **`// @ts-nocheck` on line 1**, with the standard four-line header explaining that
    this is plain JS in a `.tsx` because Framer only makes `.tsx`.
 3. **Drop `import styles from "./X.module.css"`** and rewrite every `styles.heroSection`
@@ -134,15 +140,14 @@ that file then has to be re-pasted into Framer.
 ## Status
 
 **In Framer and working:** `GlobalStylesheet.tsx`, `Primitives.tsx`, `Nav.tsx`,
-`Hero.tsx`.
+`Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
-**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, along with the
-`Reveal` additions to `Primitives.tsx` that it is the first section to need, and
-`VideoBackground.tsx` and `Ribbons.tsx`, neither of which needs a stylesheet change.
+**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
+`Services.tsx`, `Artists.tsx`, `Venues.tsx` and `TestimonialsHosts.tsx`, along with the
+`Reveal` additions to `Primitives.tsx` that Vendors is the first section to need.
 
-**Still to port:** Work, Services, Artists, Venues, About, Testimonials, Hosts,
-Instagram, Contact, Preloader. Events is skipped on purpose. Rough page order is in
-`app/page.js`.
+**Still to port:** About, Instagram, Contact, Preloader.
+Events is skipped on purpose. Rough page order is in `app/page.js`.
 
 ## Verification before handing a file over
 
@@ -162,11 +167,25 @@ Instagram, Contact, Preloader. Events is skipped on purpose. Rough page order is
 - Fixed positioning and `mix-blend-mode` break under a transformed ancestor. If the nav
   scrolls away with the page, or its red text renders green, a Framer wrapper has a
   transform and the fix is a portal into `document.body`.
-- A `z-index: -1` backdrop disappears on the published page. Framer paints the page
-  background on its `#main` wrapper, an in-flow block, which paints above any negative
-  z-index. In the Next app the same rule works because `<html>` has no background and
-  body's charcoal propagates to the canvas. `VideoBackground.tsx` carries the two-rule
-  fix that puts the colour back on body and clears `#main`.
+- A backdrop below the page content disappears on the published page. Framer paints the
+  page background on its `#main` wrapper, an in-flow block, which covers anything
+  painted under it whatever its z-index. `VideoBackground.tsx` carries the two-rule fix
+  that puts the colour on body, where it propagates to the canvas and paints behind
+  everything, and makes `#main` transparent.
+- **Framer has no `.pageMain`, and two components depend on it.** In the Next app
+  `<main class="pageMain">` is `position: relative; z-index: 3`, and that one rule does
+  two jobs: it is the box the ribbons sheet is measured against, and it is the stacking
+  context holding the sheet at 2 under the sections at 3, above the fixed video at 1.
+  The rest of the scale is in the root — video 1, page content 3, nav and mobile overlay
+  4, nav hue guard 5, preloader 100. `VideoBackground.tsx` and `Ribbons.tsx` each give
+  `#main` that position and z-index, so the 3 lives in three places and they have to move
+  together.
+- **Pick a portal target by what the element is measured against, not just to escape a
+  transform.** Nav and the video are sized to the viewport, so they portal to
+  `document.body`. The ribbons sheet has a percentage height and a percentage travel
+  resolved against the page, so body would have given it 70vh of art pinned near the top
+  of the document — visibly wrong, and wrong in a way that still looks deliberate. It
+  portals into `#main` instead.
 - On the canvas, `document.body` is the Framer editor itself, so a component that
   portals a fixed full-screen layer there covers the whole UI. Guard the portal with
   `RenderTarget.current() === RenderTarget.canvas` and render in place instead.

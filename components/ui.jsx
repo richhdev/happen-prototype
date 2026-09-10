@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { EASE } from "@/lib/data";
 
 // Runs useLayoutEffect on the client, no-op on the server (avoids SSR warning).
