@@ -147,8 +147,8 @@ that file then has to be re-pasted into Framer.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `Venues.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
-`Instagram.tsx` and `Contact.tsx`, along with the `Primitives.tsx` additions they need:
-`Reveal` for Vendors, and `SOCIALS` for Instagram and Contact.
+`Instagram.tsx`, `Contact.tsx` and `Events.tsx`, along with the `Primitives.tsx`
+additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram and Contact.
 
 The `Primitives.tsx` in Framer is older than the one in this repo and does not export
 `EASE`, so anything importing it fails with *does not provide an export named 'EASE'*.
@@ -156,8 +156,14 @@ Re-pasting `Primitives.tsx` is the whole fix. It is the file to paste first when
 section is pasted, since a section that imports a name the pasted copy lacks does not
 appear in the Insert panel.
 
-**Still to port:** Preloader.
-Events is skipped on purpose. Rough page order is in `app/page.js`.
+**Still to port:** Preloader. Rough page order is in `app/page.js`.
+
+`Events.tsx` is a throwaway. Events is still the section the client rebuilds as a Framer
+CMS collection, and the code component only exists so the section can be dropped into
+the page and reviewed in place first. Its four events are real dated placeholders, so it
+goes stale on its own. The two things worth carrying into the CMS build are the
+full-bleed horizontal scroller and the sold-out treatment, both described in the file's
+header.
 
 ## Verification before handing a file over
 
