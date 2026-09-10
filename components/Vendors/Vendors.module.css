@@ -83,7 +83,7 @@
   }
 }
 
-.vendorsCards::-webkit-scrollbar {
+.vendorsCardGroup::-webkit-scrollbar {
   display: none;
 }
 

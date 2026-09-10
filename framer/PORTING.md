@@ -50,10 +50,30 @@ HTML first — measured at roughly two seconds on a throttled connection. In the
 sheet blocks that first paint the way any stylesheet does, and `injectHappenCSS()` sees
 the `data-happen-static` marker and stands down.
 
+## Keeping Framer in sync with the repo
+
+Every file in `framer/` is stamped, so the copy pasted into Framer can be matched against
+the repo without diffing 42 kB by eye.
+
+The three generated files carry `Generated <date> · <build>`. The build id is one hash of
+the compiled sheet, shared by all three, so two files with the same id came from the same
+CSS. The date only moves when the file's content actually changes, which is what makes it
+worth reading: regenerating an unchanged sheet keeps the old date and leaves the working
+tree clean. The compile script prints the build id and says which files it updated, then
+names the ones to re-paste.
+
+The head stamp is also on the marker attribute, as
+`data-happen-static="<date> · <build>"`. View source on the published URL and read it
+there to confirm which build is actually live, rather than trusting that the paste went
+through.
+
+Hand-ported sections carry `// Last changed <date>` on line 2 instead, since nothing
+generates them. Update that line whenever you change one, or it silently rots.
+
 Paste head.html **per page, not into Site Settings**. The reset in `globals.css` is
 unscoped, so site-wide it would restyle every other page on happengroup.com.au.
 
-All 223 class names are already globally unique and camelCase-prefixed by stylesheet
+All 222 class names are already globally unique and camelCase-prefixed by stylesheet
 (`heroSection`, `navUnderline`, `artistCardWrap`). The script hard-fails if two
 stylesheets ever define the same name, or if JSX references a `styles.X` that no rule
 defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.tsx` and
@@ -105,23 +125,24 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
 - `Heading1` … `Heading4`, including the tracking-on-scroll behaviour.
 - `ButtonLarge`, `ButtonMedium`, `ButtonOutlineLarge`, `ButtonOutlineMedium`, `Button`.
 - `Badge`.
+- `Reveal`, `RevealGroup`, `RevealItem` and `useIsoLayoutEffect` — the
+  fade-and-rise on scroll, ported out of `components/ui.jsx` with Vendors.
 
 If a section needs a new shared primitive, add it to `Primitives.tsx` and say so, since
 that file then has to be re-pasted into Framer.
-
-**Not yet ported and needed by eight sections:** `components/ui.jsx`, which exports
-`Reveal`, `RevealGroup`, `RevealItem` and `useIsoLayoutEffect`. Contact, Events, Hosts,
-Instagram, Services, Vendors, Venues and Work all use it. It belongs in
-`Primitives.tsx`. Port it on the first section that needs it.
 
 ## Status
 
 **In Framer and working:** `GlobalStylesheet.tsx`, `Primitives.tsx`, `Nav.tsx`,
 `Hero.tsx`.
 
-**Still to port:** Ribbons, Vendors, Work, Services, Artists, Venues, About,
-Testimonials, Hosts, Instagram, Contact, Preloader, VideoBackground. Events is skipped
-on purpose. Rough page order is in `app/page.js`.
+**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, along with the
+`Reveal` additions to `Primitives.tsx` that it is the first section to need, and
+`VideoBackground.tsx`, which needs no stylesheet change.
+
+**Still to port:** Ribbons, Work, Services, Artists, Venues, About, Testimonials, Hosts,
+Instagram, Contact, Preloader. Events is skipped on purpose. Rough page order is in
+`app/page.js`.
 
 ## Verification before handing a file over
 
@@ -141,11 +162,20 @@ on purpose. Rough page order is in `app/page.js`.
 - Fixed positioning and `mix-blend-mode` break under a transformed ancestor. If the nav
   scrolls away with the page, or its red text renders green, a Framer wrapper has a
   transform and the fix is a portal into `document.body`.
+- A `z-index: -1` backdrop disappears on the published page. Framer paints the page
+  background on its `#main` wrapper, an in-flow block, which paints above any negative
+  z-index. In the Next app the same rule works because `<html>` has no background and
+  body's charcoal propagates to the canvas. `VideoBackground.tsx` carries the two-rule
+  fix that puts the colour back on body and clears `#main`.
+- On the canvas, `document.body` is the Framer editor itself, so a component that
+  portals a fixed full-screen layer there covers the whole UI. Guard the portal with
+  `RenderTarget.current() === RenderTarget.canvas` and render in place instead.
 - A code file that fails to compile is omitted from the Insert panel silently. If a
   component does not appear, read the error strip in Framer's code editor first.
 - A published page that flashes unstyled markup has stale or missing head custom code.
   Check it by viewing source on the live URL and searching for `data-happen-static`: it
-  has to be in the HTML the server sends, not added later by script.
+  has to be in the HTML the server sends, not added later by script. Its value is the
+  build stamp, so the same search says whether the paste is current.
 - A page with only a desktop canvas publishes as `<meta name="viewport" content="width=1200">`,
   so phones render it scaled down and none of the `max-width` media queries in the sheet
   ever fire. Adding a second canvas is what switches Framer to `width=device-width`. The

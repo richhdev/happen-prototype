@@ -9,9 +9,10 @@
   left: 0;
   right: 0;
   top: 0;
-  /* Behind every section, above the fixed video backdrop: both sit at -1 in the
-     page's root stacking context, and this one comes later in the document. */
-  z-index: -1;
+  /* Behind every section, above the fixed video backdrop: both sit at 0 in the
+     page's root stacking context, and this one comes later in the document, so
+     it paints over the video. Sections clear both at z-index 1. */
+  z-index: 20;
   pointer-events: none;
 
   height: calc(100% * var(--ribbon-rate));

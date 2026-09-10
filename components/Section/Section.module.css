@@ -1,12 +1,15 @@
 .section {
   position: relative;
+  /* Every section has to clear the two full-page backdrops that sit at 0 in the
+     root stacking context — the fixed video and the drifting ribbons sheet. */
+  z-index: 1;
   width: 100%;
   padding: var(--layout-padding-y) var(--layout-padding-x);
 }
 
 .sectionInner {
   position: relative;
-  z-index: 1;
+  z-index: 10;
   width: 100%;
   max-width: var(--layout-max-width);
   margin: 0 auto;

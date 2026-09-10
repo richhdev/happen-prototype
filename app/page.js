@@ -21,13 +21,13 @@ export default function Home() {
   return (
     <>
       <Preloader />
-      <VideoBackground />
+
       <Nav />
       <NavPlaceholder />
       <main className={styles.pageMain}>
         <Hero />
         <Events />
-        <Ribbons />
+
         <Vendors />
         <Work />
         <Services />
@@ -41,6 +41,8 @@ export default function Home() {
         <Instagram />
         <Contact />
       </main>
+      <Ribbons />
+      <VideoBackground />
     </>
   );
 }

@@ -1,4 +1,5 @@
 // @ts-nocheck
+// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -9,7 +10,7 @@
 // here is exported as a Framer component on purpose: these are text styles, not
 // things anyone should drag onto a canvas.
 
-import { forwardRef } from "react"
+import { forwardRef, useEffect, useLayoutEffect } from "react"
 import { motion } from "framer-motion"
 
 // Where every image is fetched from. All 93 assets go through asset(), so this
@@ -25,6 +26,96 @@ export const asset = (p) => `${ASSET_BASE}${p}`
 
 // Shared cubic-bezier easing used across every animation.
 export const EASE = [0.16, 1, 0.3, 1]
+
+/* Reveal -------------------------------------------------------------------
+   Ported from components/ui.jsx. The fade-and-rise that brings almost every
+   section in as it scrolls into view. Eight sections use these, so they live
+   here rather than inside whichever one happened to be ported first.
+
+   `as` picks which element motion renders, so a Reveal can be the <li> or the
+   <a> itself instead of adding a wrapper around it. Everything else is passed
+   straight through, which is how callers set className. */
+
+// useLayoutEffect on the client, useEffect on the server, so server rendering
+// does not warn. Framer renders code components on the server too.
+export const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect
+
+export function Reveal({
+  children,
+  delay = 0,
+  y = 32,
+  once = false,
+  amount = 0.12,
+  style,
+  as = "div",
+  ...rest
+}) {
+  const M = motion[as] || motion.div
+
+  return (
+    <M
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once, amount, margin: "0px 0px -60px 0px" }}
+      transition={{ duration: 0.64, ease: EASE, delay: delay / 1000 }}
+      style={style}
+      {...rest}
+    >
+      {children}
+    </M>
+  )
+}
+
+// Parent half of the staggered variant: children arrive one after another
+// rather than each timing itself off its own delay.
+export function RevealGroup({
+  children,
+  stagger = 130,
+  once = false,
+  amount = 0,
+  as = "div",
+  ...rest
+}) {
+  const M = motion[as] || motion.div
+
+  return (
+    <M
+      initial="hidden"
+      whileInView="shown"
+      viewport={{ once, amount, margin: "0px 0px -60px 0px" }}
+      variants={{
+        hidden: {},
+        shown: { transition: { staggerChildren: stagger / 1000 } },
+      }}
+      {...rest}
+    >
+      {children}
+    </M>
+  )
+}
+
+// Child of RevealGroup. Only meaningful inside one, since it has no whileInView
+// of its own and waits for the parent's variant to reach it.
+export function RevealItem({ children, y = 30, as = "div", ...rest }) {
+  const M = motion[as] || motion.div
+
+  return (
+    <M
+      variants={{
+        hidden: { opacity: 0, y },
+        shown: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.64, ease: EASE },
+        },
+      }}
+      {...rest}
+    >
+      {children}
+    </M>
+  )
+}
 
 /* Text ---------------------------------------------------------------------
    One component per Figma text style. `as` lets the tag differ from the default
