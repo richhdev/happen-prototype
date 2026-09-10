@@ -6,7 +6,7 @@ import {
   useMotionValueEvent,
   useScroll,
   useTransform,
-} from "motion/react";
+} from "framer-motion";
 import { WORK } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";

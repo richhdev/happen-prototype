@@ -8,14 +8,22 @@
 //
 //   pnpm compile-stylesheet-framer
 //
-// Writes framer/happen.css (the raw sheet, for hosting) and
-// framer/GlobalStylesheet.tsx (the same sheet as a template string plus the
-// injector). The .tsx is pasted into Framer as a code file of that name, and
-// every section component imports it: Site Settings → Custom Code does not run
-// on the Framer canvas, so a sheet pasted there leaves components unstyled
-// while you are designing.
+// Writes three files:
+//
+//   framer/happen.css          the raw sheet, for hosting
+//   framer/GlobalStylesheet.tsx  the sheet as a template string plus injectHappenCSS()
+//   framer/head.html           the sheet as a <style> block for Framer's Custom Code
+//
+// Both Framer outputs are needed, because they cover different moments. The
+// .tsx is pasted as a code file and imported by every section: custom code does
+// not run on the Framer canvas, so without it components are unstyled while you
+// design. head.html covers the published site, where Framer server-renders the
+// markup and the JS bundle arrives seconds later — long enough to paint raw
+// unstyled HTML first. In the page's head the sheet blocks that first paint the
+// way any stylesheet does, and injectHappenCSS() then stands down.
 
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
+import { transform } from "lightningcss";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -27,6 +35,19 @@ const OUT_DIR = path.join(ROOT, "framer");
 const FRAMER_FILE = "GlobalStylesheet";
 const OUT_CSS = path.join(OUT_DIR, "happen.css");
 const OUT_JS = path.join(OUT_DIR, `${FRAMER_FILE}.tsx`);
+const OUT_HEAD = path.join(OUT_DIR, "head.html");
+
+// The oldest browsers this sheet can work in at all: app/page.module.css uses
+// @container, which is Safari 16 and Chrome 105. Naming them buys two things at
+// once — the minifier knows what it is allowed to shorten, and it flattens the
+// native nesting the .module.css files are written in, which Safari only
+// understands from 16.5. The unminified sheet keeps the nesting, so the Framer
+// canvas needs a current browser; the published site does not.
+const TARGETS = { chrome: 105 << 16, safari: 16 << 16, firefox: 110 << 16, edge: 105 << 16 };
+
+const minify = (css) =>
+  transform({ filename: "happen.css", code: Buffer.from(css), minify: true, targets: TARGETS })
+    .code.toString();
 
 // Order matters: tokens define the custom properties everything else reads.
 const GLOBAL_FILES = [
@@ -151,12 +172,17 @@ async function main() {
 
   await mkdir(OUT_DIR, { recursive: true });
   await writeFile(OUT_CSS, sheet);
-  await writeFile(OUT_JS, jsModule(sheet));
+  const js = jsModule(sheet);
+  await writeFile(OUT_JS, js);
+  const head = headHtml(sheet);
+  await writeFile(OUT_HEAD, head);
 
   const unused = [...owners.keys()].filter((n) => !used.has(n));
   console.log(`✓ ${rel(OUT_CSS)}  ${moduleFiles.length + GLOBAL_FILES.length} files, ` +
     `${owners.size} class names, ${(sheet.length / 1024).toFixed(1)} kB`);
-  console.log(`✓ ${rel(OUT_JS)}`);
+  console.log(`✓ ${rel(OUT_JS)}  ${(js.length / 1024).toFixed(1)} kB`);
+  console.log(`✓ ${rel(OUT_HEAD)}  ${(head.length / 1024).toFixed(1)} kB minified, ` +
+    `down from ${(sheet.length / 1024).toFixed(1)} kB`);
   if (unused.length)
     console.log(`\nnote: ${unused.length} class name(s) defined but never used via styles.X ` +
       `(fine if applied as a descendant selector):\n  ${unused.join(", ")}`);
@@ -173,9 +199,66 @@ async function walk2(dir) {
   return out;
 }
 
+// The same sheet as a block to paste into Framer's page Custom Code → Start of
+// <head>. Two differences from the .tsx: the webfont @import becomes a real
+// <link> (an @import is only discovered once the sheet it sits in has been
+// fetched and parsed, which puts the font a whole round trip behind), and the
+// <style> carries data-happen-static, which is what tells injectHappenCSS() the
+// page already has the sheet.
+function headHtml(sheet) {
+  const urls = [...remoteImports]
+    .map((stmt) => stmt.match(/url\(\s*["']?([^"')]+)["']?\s*\)/)?.[1] ??
+      stmt.match(/["']([^"']+)["']/)?.[1])
+    .filter(Boolean);
+
+  const origins = new Set(urls.map((u) => new URL(u).origin));
+  // Google answers the CSS from one host and serves the font files from
+  // another, and the browser only learns about the second once the first has
+  // parsed. Warm both while the HTML is still arriving.
+  if (origins.has("https://fonts.googleapis.com")) origins.add("https://fonts.gstatic.com");
+
+  const links = [
+    ...[...origins].map(
+      (o) => `<link rel="preconnect" href="${o}"${o.includes("gstatic") ? " crossorigin" : ""}>`,
+    ),
+    ...urls.map((u) => `<link rel="stylesheet" href="${u}">`),
+  ];
+
+  // The @imports are re-emitted above as links, so they must not also appear
+  // inside the style block: an @import after a rule is dropped anyway.
+  // Minified, because unlike the other two outputs nobody reads this one: it is
+  // pasted once and then lives in the page's HTML, where it is roughly 40 kB
+  // instead of 72 and blocks the first paint for correspondingly less time.
+  const body = minify(sheet.replace(/^\s*@import[^;\n]+;\s*$/gm, ""));
+
+  return `<!-- Generated by scripts/compile-stylesheet-framer.mjs — do not edit.
+
+     Paste into Framer under the page's settings → Custom Code → Start of
+     <head>. Per page, not site-wide: the reset in app/globals.css is unscoped
+     and would restyle every other page on the site.
+
+     Without this the published page paints Framer's server-rendered markup
+     with no CSS at all until the JS bundle runs injectHappenCSS(), which on a
+     throttled connection is a couple of seconds of raw unstyled HTML.
+
+     Re-paste whenever the stylesheet is regenerated, alongside
+     ${FRAMER_FILE}.tsx. Minified, and the nesting is flattened for Safari 16 —
+     read framer/happen.css instead. -->
+${links.join("\n")}
+<style data-happen="happen" data-happen-static>
+${body.trim()}
+</style>
+`;
+}
+
 function jsModule(sheet) {
+  // Minified for the same reason head.html is, and it matters more here: a JS
+  // minifier cannot touch the inside of a string literal, so whatever is in
+  // this template is exactly what Framer serves. Unminified it is 72 kB of
+  // CSS comments riding in the page bundle, and on the published site the
+  // injector returns before it ever reads them.
   // Backticks and ${ have to survive the trip through a template literal.
-  const escaped = sheet.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+  const escaped = minify(sheet).replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
   return `// @ts-nocheck
 // Generated by scripts/compile-stylesheet-framer.mjs — do not edit.
 // Paste into Framer as a code file named ${FRAMER_FILE}.tsx.
@@ -187,11 +270,19 @@ function jsModule(sheet) {
 //
 // Keyed by a data attribute so Framer's editor hot reload replaces the sheet
 // rather than stacking a new copy on every edit.
+//
+// The sheet below is minified. framer/happen.css is the same CSS with its
+// comments and source banners intact — read that one.
 
 export const happenCSS = \`${escaped}\`
 
 export function injectHappenCSS(id = "happen", text = happenCSS) {
   if (typeof document === "undefined") return
+  // On the published site the sheet is already in the head, from head.html,
+  // where it was parsed before the first paint. Rewriting it from here would at
+  // best change nothing. The canvas has no custom code, so this only ever
+  // short-circuits on the live site.
+  if (document.querySelector("style[data-happen-static]")) return
   let el = document.querySelector('style[data-happen="' + id + '"]')
   if (!el) {
     el = document.createElement("style")

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion, useTransform } from "motion/react";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
 import { Heading4 } from "@/components/Heading/Heading";
 import { TextMedium } from "@/components/Text/Text";
 import { Badge } from "@/components/Badge/Badge";

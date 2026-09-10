@@ -27,15 +27,37 @@ pnpm compile-stylesheet-framer
 
 That script (`scripts/compile-stylesheet-framer.mjs`) concatenates `tokens.css`,
 `utilities.css`, `globals.css`, `page.module.css` and all 27 component modules into
-`framer/happen.css`, plus `framer/GlobalStylesheet.tsx`, which is the same text as a
-template string with an `injectHappenCSS()` helper. Every Framer code component imports
-that and calls it at module level. Framer's Site Settings custom code is deliberately
-not used, because it does not run on the Framer canvas.
+`framer/happen.css`, plus two Framer outputs:
+
+- **`framer/GlobalStylesheet.tsx`** — the sheet as a template string with an
+  `injectHappenCSS()` helper. Pasted as a code file; every section imports it and calls
+  it at module level. This is what styles the **canvas**, where custom code does not run.
+- **`framer/head.html`** — the same sheet as a `<style>` block plus the webfont `<link>`.
+  Pasted into the page's **Custom Code → Start of `<head>`**. This is what styles the
+  **published site**.
+
+Both are minified with lightningcss, 72 kB down to 42 kB, and the native nesting the
+`.module.css` files are written in is flattened on the way, which moves the floor from
+Safari 16.5 to Safari 16. The .tsx is minified for a reason worth knowing: Framer's JS
+minifier cannot reach inside a string literal, so whatever sits in that template is byte
+for byte what the page bundle carries. Neither file is meant to be read. `happen.css`
+is the same CSS with its comments and source banners intact, and it is the one to open
+when you need to see what a rule does.
+
+Both are needed, because they cover different moments. Framer server-renders the
+component markup, so a sheet that only arrives with the JS bundle paints raw unstyled
+HTML first — measured at roughly two seconds on a throttled connection. In the head the
+sheet blocks that first paint the way any stylesheet does, and `injectHappenCSS()` sees
+the `data-happen-static` marker and stands down.
+
+Paste head.html **per page, not into Site Settings**. The reset in `globals.css` is
+unscoped, so site-wide it would restyle every other page on happengroup.com.au.
 
 All 223 class names are already globally unique and camelCase-prefixed by stylesheet
 (`heroSection`, `navUnderline`, `artistCardWrap`). The script hard-fails if two
 stylesheets ever define the same name, or if JSX references a `styles.X` that no rule
-defines. Re-run it after touching any CSS, then re-paste `GlobalStylesheet.tsx`.
+defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.tsx` and
+`head.html`.
 
 ## Rules for a ported file
 
@@ -50,7 +72,10 @@ defines. Re-run it after touching any CSS, then re-paste `GlobalStylesheet.tsx`.
 4. **Imports carry the `.tsx` extension**: `from "./Primitives.tsx"`. A capitalisation
    or spelling mismatch makes Framer silently omit the component from the Insert panel
    rather than showing an error.
-5. **`motion/react` becomes `framer-motion`.** Framer bundles it.
+5. **Animation imports need no rewriting.** The Next app was moved off `motion/react`
+   onto `framer-motion@11` on 2026-09-10 precisely so the specifier matches what Framer
+   bundles. If you see `motion/react` anywhere, it is a mistake in the source, not
+   something to translate.
 6. **Anything that receives a `ref` needs `forwardRef`.** Passing `ref` as a plain prop
    is React 19 only, and Framer may be on 18, where it is silently dropped.
 7. **`inert` must be a string, not a boolean.** Use the `inertWhen` pattern from
@@ -118,6 +143,15 @@ on purpose. Rough page order is in `app/page.js`.
   transform and the fix is a portal into `document.body`.
 - A code file that fails to compile is omitted from the Insert panel silently. If a
   component does not appear, read the error strip in Framer's code editor first.
+- A published page that flashes unstyled markup has stale or missing head custom code.
+  Check it by viewing source on the live URL and searching for `data-happen-static`: it
+  has to be in the HTML the server sends, not added later by script.
+- A page with only a desktop canvas publishes as `<meta name="viewport" content="width=1200">`,
+  so phones render it scaled down and none of the `max-width` media queries in the sheet
+  ever fire. Adding a second canvas is what switches Framer to `width=device-width`. The
+  phone canvas needs nothing in it but the same components at Fill width, since the
+  breakpoints live in the CSS. Framer mounts each code component once and styles it per
+  breakpoint, so a second canvas does not duplicate the DOM or double up scroll listeners.
 
 ---
 

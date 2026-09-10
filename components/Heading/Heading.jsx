@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { EASE } from "@/lib/data";
 import styles from "./Heading.module.css";
 

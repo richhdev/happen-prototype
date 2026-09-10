@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cubicBezier, motion, useScroll, useTransform } from "motion/react";
+import { cubicBezier, motion, useScroll, useTransform } from "framer-motion";
 import { SERVICES } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2, Heading3 } from "@/components/Heading/Heading";

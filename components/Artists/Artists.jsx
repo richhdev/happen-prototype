@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion, useScroll } from "motion/react";
+import { useReducedMotion, useScroll } from "framer-motion";
 import { ARTISTS } from "./data";
 import { ArtistCard } from "./ArtistCard";
 import { Section } from "@/components/Section/Section";

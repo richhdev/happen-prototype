@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { EASE } from "@/lib/data";
 

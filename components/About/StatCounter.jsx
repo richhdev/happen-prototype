@@ -8,7 +8,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useTransform,
-} from "motion/react";
+} from "framer-motion";
 import { EASE } from "@/lib/data";
 
 // Counts up from 0 to `value` each time it scrolls into view (re-triggers, like

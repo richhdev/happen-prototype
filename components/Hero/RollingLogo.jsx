@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { asset } from "@/lib/data";
 import styles from "./RollingLogo.module.css";
 
