@@ -1,7 +1,9 @@
 .preloaderOverlay {
   position: fixed;
   inset: 0;
-  /* Over everything, the nav (51) included. */
+  /* Over everything, including the nav's hue guard, which is the highest layer
+     the page itself reaches. Left well clear of it rather than one above, since
+     this is the only thing that ever covers the whole page. */
   z-index: 100;
   display: grid;
   place-items: center;

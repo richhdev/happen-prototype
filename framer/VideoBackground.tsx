@@ -27,17 +27,20 @@ const MP4 = asset("/assets/video-background.mp4")
 // would then scroll away with the section it was dropped into. Portalling to
 // document.body is the same escape hatch PORTING.md prescribes for the nav.
 //
-// The stylesheet puts the container at z-index:0, so what sits above it is
-// decided by document order and by whether the page content is positioned.
-// Framer gives neither guarantee: it paints the page background on its own
-// #main wrapper, which is opaque and in flow, so it covers the video whatever
-// the video's z-index is. These rules move the colour onto body, where it
-// propagates to the canvas and paints behind everything, and lift #main into
-// the positioned layer above the video. Scoped to the published page — the
-// canvas has no #main.
+// The stylesheet puts the container at z-index:1, under the page content block
+// at 3 and the nav at 4. Framer has no page content block of its own to carry
+// that 3: it paints the page background on its #main wrapper, which is opaque
+// and in flow, so it covers the video whatever the video's z-index is. These
+// rules move the colour onto body, where it propagates to the canvas and paints
+// behind everything, and give #main the position and z-index that .pageMain has
+// in the Next app. Scoped to the published page — the canvas has no #main.
+//
+// The 3 has to stay in step with .pageMain in app/page.module.css, and with the
+// matching rule in Ribbons.tsx, which portals into this same block and depends
+// on it being a stacking context above the video.
 const STACKING_FIX = `
 body { background: var(--color-charcoal); }
-#main { background: transparent; position: relative; z-index: 1; }
+#main { background: transparent; position: relative; z-index: 3; }
 `
 
 function useStackingFix(active) {

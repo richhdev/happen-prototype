@@ -1,8 +1,10 @@
 .section {
   position: relative;
-  /* Every section has to clear the two full-page backdrops that sit at 0 in the
-     root stacking context — the fixed video and the drifting ribbons sheet. */
-  z-index: 1;
+  /* Above the ribbons sheet, which drifts behind the page at 2 in the same
+     stacking context `.pageMain` opens. The fixed video needs no clearing here:
+     it is at 1 in the root and `.pageMain` is at 3, so everything inside is
+     already over it. */
+  z-index: 3;
   width: 100%;
   padding: var(--layout-padding-y) var(--layout-padding-x);
 }

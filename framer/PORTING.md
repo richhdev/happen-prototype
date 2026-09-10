@@ -138,9 +138,9 @@ that file then has to be re-pasted into Framer.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, along with the
 `Reveal` additions to `Primitives.tsx` that it is the first section to need, and
-`VideoBackground.tsx`, which needs no stylesheet change.
+`VideoBackground.tsx` and `Ribbons.tsx`, neither of which needs a stylesheet change.
 
-**Still to port:** Ribbons, Work, Services, Artists, Venues, About, Testimonials, Hosts,
+**Still to port:** Work, Services, Artists, Venues, About, Testimonials, Hosts,
 Instagram, Contact, Preloader. Events is skipped on purpose. Rough page order is in
 `app/page.js`.
 

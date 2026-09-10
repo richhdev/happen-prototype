@@ -27,7 +27,7 @@ export default function Home() {
       <main className={styles.pageMain}>
         <Hero />
         <Events />
-
+        <Ribbons />
         <Vendors />
         <Work />
         <Services />
@@ -41,7 +41,6 @@ export default function Home() {
         <Instagram />
         <Contact />
       </main>
-      <Ribbons />
       <VideoBackground />
     </>
   );
