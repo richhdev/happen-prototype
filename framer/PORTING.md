@@ -124,6 +124,9 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
   serves `public/` at the site root. Cache headers for `/assets` are in
   `next.config.mjs`. Never hardcode an image URL.
 - `EASE` — the shared cubic-bezier used by every animation.
+- `SOCIALS` — the four social accounts, label, href and icon. Instagram uses all three
+  fields and Contact uses the icon only, which is why it is here rather than folded into
+  Instagram.
 - `Section` — the layout primitive. Full-bleed outer, centred inner capped at the layout
   max width. Takes a ref.
 - `TextXXLarge` … `TextSmall`, `TextOverline`, `ButtonTextLarge`, `ButtonTextMedium`,
@@ -143,10 +146,17 @@ that file then has to be re-pasted into Framer.
 `Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
-`Services.tsx`, `Artists.tsx`, `Venues.tsx` and `TestimonialsHosts.tsx`, along with the
-`Reveal` additions to `Primitives.tsx` that Vendors is the first section to need.
+`Services.tsx`, `Artists.tsx`, `Venues.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
+`Instagram.tsx` and `Contact.tsx`, along with the `Primitives.tsx` additions they need:
+`Reveal` for Vendors, and `SOCIALS` for Instagram and Contact.
 
-**Still to port:** About, Instagram, Contact, Preloader.
+The `Primitives.tsx` in Framer is older than the one in this repo and does not export
+`EASE`, so anything importing it fails with *does not provide an export named 'EASE'*.
+Re-pasting `Primitives.tsx` is the whole fix. It is the file to paste first whenever a
+section is pasted, since a section that imports a name the pasted copy lacks does not
+appear in the Insert panel.
+
+**Still to port:** Preloader.
 Events is skipped on purpose. Rough page order is in `app/page.js`.
 
 ## Verification before handing a file over

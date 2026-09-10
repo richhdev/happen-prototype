@@ -10,8 +10,8 @@
 // here is exported as a Framer component on purpose: these are text styles, not
 // things anyone should drag onto a canvas.
 
-import { forwardRef, useEffect, useLayoutEffect } from "react"
-import { motion } from "framer-motion"
+import { forwardRef, useEffect, useLayoutEffect } from "react";
+import { motion } from "framer-motion";
 
 // Where every image is fetched from. All 93 assets go through asset(), so this
 // one line is the whole asset story — the Framer equivalent of
@@ -20,12 +20,37 @@ import { motion } from "framer-motion"
 // The prototype's own Vercel deployment serves public/ at the site root, so it
 // is already an asset host and always matches whatever is deployed. Cache
 // headers for /assets are set in next.config.mjs.
-export const ASSET_BASE = "https://happen-prototype.vercel.app"
+export const ASSET_BASE = "https://happen-prototype.vercel.app";
 
-export const asset = (p) => `${ASSET_BASE}${p}`
+export const asset = (p) => `${ASSET_BASE}${p}`;
 
 // Shared cubic-bezier easing used across every animation.
-export const EASE = [0.16, 1, 0.3, 1]
+export const EASE = [0.16, 1, 0.3, 1];
+
+/* Data ---------------------------------------------------------------------
+   Ported from lib/data.js. The four social accounts, shared by the Instagram
+   section (icon + label) and the Contact section (icon only), which is the only
+   reason this sits here rather than folded into whichever one was ported first.
+   Spotify has no destination yet. */
+
+export const SOCIALS = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/happengroupau/",
+    icon: asset("/assets/icon-instagram.svg"),
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/happengroupau",
+    icon: asset("/assets/icon-facebook.svg"),
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@HappenGroup",
+    icon: asset("/assets/icon-youtube.svg"),
+  },
+  { label: "Spotify", href: "#", icon: asset("/assets/icon-spotify.svg") },
+];
 
 /* Reveal -------------------------------------------------------------------
    Ported from components/ui.jsx. The fade-and-rise that brings almost every
@@ -39,7 +64,7 @@ export const EASE = [0.16, 1, 0.3, 1]
 // useLayoutEffect on the client, useEffect on the server, so server rendering
 // does not warn. Framer renders code components on the server too.
 export const useIsoLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export function Reveal({
   children,
@@ -51,7 +76,7 @@ export function Reveal({
   as = "div",
   ...rest
 }) {
-  const M = motion[as] || motion.div
+  const M = motion[as] || motion.div;
 
   return (
     <M
@@ -64,7 +89,7 @@ export function Reveal({
     >
       {children}
     </M>
-  )
+  );
 }
 
 // Parent half of the staggered variant: children arrive one after another
@@ -77,7 +102,7 @@ export function RevealGroup({
   as = "div",
   ...rest
 }) {
-  const M = motion[as] || motion.div
+  const M = motion[as] || motion.div;
 
   return (
     <M
@@ -92,13 +117,13 @@ export function RevealGroup({
     >
       {children}
     </M>
-  )
+  );
 }
 
 // Child of RevealGroup. Only meaningful inside one, since it has no whileInView
 // of its own and waits for the parent's variant to reach it.
 export function RevealItem({ children, y = 30, as = "div", ...rest }) {
-  const M = motion[as] || motion.div
+  const M = motion[as] || motion.div;
 
   return (
     <M
@@ -114,7 +139,7 @@ export function RevealItem({ children, y = 30, as = "div", ...rest }) {
     >
       {children}
     </M>
-  )
+  );
 }
 
 /* Text ---------------------------------------------------------------------
@@ -130,29 +155,29 @@ export function RevealItem({ children, y = 30, as = "div", ...rest }) {
 function textStyle(cls, defaultTag) {
   return forwardRef(function Text(
     { as: Tag = defaultTag, className, children, ...rest },
-    ref
+    ref,
   ) {
     return (
       <Tag ref={ref} className={`${cls} ${className ?? ""}`} {...rest}>
         {children}
       </Tag>
-    )
-  })
+    );
+  });
 }
 
-export const TextXXLarge = textStyle("textXxlarge", "p")
-export const TextXLarge = textStyle("textXlarge", "p")
-export const TextLarge = textStyle("textLarge", "p")
-export const TextMedium = textStyle("textMedium", "p")
-export const TextSmall = textStyle("textSmall", "p")
+export const TextXXLarge = textStyle("textXxlarge", "p");
+export const TextXLarge = textStyle("textXlarge", "p");
+export const TextLarge = textStyle("textLarge", "p");
+export const TextMedium = textStyle("textMedium", "p");
+export const TextSmall = textStyle("textSmall", "p");
 
 // Short uppercase label, not a paragraph — defaults to a span.
-export const TextOverline = textStyle("textOverline", "span")
+export const TextOverline = textStyle("textOverline", "span");
 
 // Text styles only, meant to sit inside an actual <button>.
-export const ButtonTextLarge = textStyle("textButtonTextLarge", "span")
-export const ButtonTextMedium = textStyle("textButtonTextMedium", "span")
-export const BadgeText = textStyle("textBadgeText", "span")
+export const ButtonTextLarge = textStyle("textButtonTextLarge", "span");
+export const ButtonTextMedium = textStyle("textButtonTextMedium", "span");
+export const BadgeText = textStyle("textBadgeText", "span");
 
 /* Headings -----------------------------------------------------------------
    Each pairs a semantic heading tag with its text-style class. The uppercase
@@ -177,10 +202,10 @@ function TrackingHeading({
       <Tag className={className} {...rest}>
         {children}
       </Tag>
-    )
+    );
   }
 
-  const MotionTag = typeof Tag === "string" ? motion[Tag] : Tag
+  const MotionTag = typeof Tag === "string" ? motion[Tag] : Tag;
 
   return (
     <MotionTag
@@ -193,7 +218,7 @@ function TrackingHeading({
     >
       {children}
     </MotionTag>
-  )
+  );
 }
 
 export function Heading1({
@@ -213,7 +238,7 @@ export function Heading1({
     >
       {children}
     </TrackingHeading>
-  )
+  );
 }
 
 export function Heading2({
@@ -233,7 +258,7 @@ export function Heading2({
     >
       {children}
     </TrackingHeading>
-  )
+  );
 }
 
 // `sentence` swaps in the heading3-sentence variant (Sentence case instead of
@@ -257,7 +282,7 @@ export function Heading3({
     >
       {children}
     </TrackingHeading>
-  )
+  );
 }
 
 export function Heading4({ as: Tag = "h4", className, children, ...rest }) {
@@ -265,7 +290,7 @@ export function Heading4({ as: Tag = "h4", className, children, ...rest }) {
     <Tag className={`heading4 ${className ?? ""}`} {...rest}>
       {children}
     </Tag>
-  )
+  );
 }
 
 /* Section ------------------------------------------------------------------
@@ -275,14 +300,14 @@ export function Heading4({ as: Tag = "h4", className, children, ...rest }) {
 
 export const Section = forwardRef(function Section(
   { as: Tag = "section", className, innerClassName, children, ...rest },
-  ref
+  ref,
 ) {
   return (
     <Tag ref={ref} className={`section ${className ?? ""}`} {...rest}>
       <div className={`sectionInner ${innerClassName ?? ""}`}>{children}</div>
     </Tag>
-  )
-})
+  );
+});
 
 /* Buttons ------------------------------------------------------------------
    Four variants rather than props, matching the Figma component set. Each
@@ -290,7 +315,7 @@ export const Section = forwardRef(function Section(
 
 function buttonVariant(cls) {
   return function Button({ as, type, className, children, ...rest }) {
-    const Tag = as ?? (rest.href ? "a" : "button")
+    const Tag = as ?? (rest.href ? "a" : "button");
     return (
       <Tag
         type={type ?? (Tag === "button" ? "button" : undefined)}
@@ -299,17 +324,17 @@ function buttonVariant(cls) {
       >
         {children}
       </Tag>
-    )
-  }
+    );
+  };
 }
 
-export const ButtonLarge = buttonVariant("buttonLarge")
-export const ButtonMedium = buttonVariant("buttonMedium")
-export const ButtonOutlineLarge = buttonVariant("buttonOutline buttonLarge")
-export const ButtonOutlineMedium = buttonVariant("buttonOutline buttonMedium")
+export const ButtonLarge = buttonVariant("buttonLarge");
+export const ButtonMedium = buttonVariant("buttonMedium");
+export const ButtonOutlineLarge = buttonVariant("buttonOutline buttonLarge");
+export const ButtonOutlineMedium = buttonVariant("buttonOutline buttonMedium");
 
 // Default button for general use — outline/medium is the most common variant.
-export const Button = ButtonOutlineMedium
+export const Button = ButtonOutlineMedium;
 
 /* Badge --------------------------------------------------------------------
    Background is a colour prop rather than a component per colour: unlike the
@@ -319,7 +344,7 @@ const BADGE_COLORS = {
   charcoal: "var(--color-charcoal)",
   red: "var(--color-red)",
   orange: "var(--color-orange)",
-}
+};
 
 export function Badge({
   as: Tag = "span",
@@ -337,5 +362,5 @@ export function Badge({
     >
       {children}
     </Tag>
-  )
+  );
 }
