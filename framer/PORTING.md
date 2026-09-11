@@ -91,6 +91,12 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
    the port owns the `<Section>` the page was providing. Testimonials and Hosts are
    flex siblings from 1024px up, and Framer's page frame is a vertical stack, so
    shipping them separately would push that breakpoint onto the canvas.
+
+   The exception is a sub-component somebody is meant to insert or bind on its own.
+   `EventCard.tsx` is the only one so far: it is in the Insert panel on purpose, because
+   the CMS collection list has to render it with its fields bound. Split a card out only
+   when that is true of it, and have the section import the split file rather than
+   keeping a second copy of the markup.
 2. **`// @ts-nocheck` on line 1**, with the standard four-line header explaining that
    this is plain JS in a `.tsx` because Framer only makes `.tsx`.
 3. **Drop `import styles from "./X.module.css"`** and rewrite every `styles.heroSection`
@@ -114,6 +120,13 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
     * @framerSupportedLayoutHeight auto
     */
    ```
+9. **Property controls only where someone edits the thing.** Sections take their content
+   from the repo and expose nothing. A component built to be filled in from the panel
+   puts every field on `addPropertyControls`, with the default in a `defaultValue` and in
+   the parameter default — not in `Component.defaultProps`, which React 19 ignores on a
+   function component and warns about. Anything reading Framer's sizing out of `style`
+   has to drop the keyword values, or the auto mode overrides the width the stylesheet
+   set. `EventCard.tsx` carries both patterns.
 
 ## Shared code that already exists — do not duplicate
 
@@ -147,8 +160,9 @@ that file then has to be re-pasted into Framer.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `Venues.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
-`Instagram.tsx`, `Contact.tsx` and `Events.tsx`, along with the `Primitives.tsx`
-additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram and Contact.
+`Instagram.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
+`Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
+and Contact. `EventCard.tsx` goes in before `Events.tsx`, which imports it.
 
 The `Primitives.tsx` in Framer is older than the one in this repo and does not export
 `EASE`, so anything importing it fails with *does not provide an export named 'EASE'*.
@@ -161,9 +175,12 @@ appear in the Insert panel.
 `Events.tsx` is a throwaway. Events is still the section the client rebuilds as a Framer
 CMS collection, and the code component only exists so the section can be dropped into
 the page and reviewed in place first. Its four events are real dated placeholders, so it
-goes stale on its own. The two things worth carrying into the CMS build are the
-full-bleed horizontal scroller and the sold-out treatment, both described in the file's
-header.
+goes stale on its own. What survives it is `EventCard.tsx`: one card, every field on a
+property control, which is what the CMS collection list renders with Image, Title, Date,
+Description, Status, CTA and Link bound to the collection. The sold-out treatment lives
+there too. The part that does not survive is the full-bleed horizontal scroller, since
+the collection list replaces the row — `.eventsScroller` is described in the header of
+`Events.tsx` for whoever rebuilds it.
 
 ## Verification before handing a file over
 
