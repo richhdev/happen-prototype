@@ -30,7 +30,6 @@ body {
     sans-serif;
   width: 100%;
   overflow-x: clip;
-  background: var(--color-charcoal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

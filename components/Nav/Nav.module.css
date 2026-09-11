@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -126,7 +126,8 @@
 /* The difference blend turns the red glyphs green; this copy of the bar blends
    in hue to force them back to red, keeping lightness and sparing neutrals. */
 .nav.navHueGuard {
-  z-index: 5;
+  /* One above the bar it corrects, so the hue pass lands on top of it. */
+  z-index: 6;
   pointer-events: none;
   mix-blend-mode: hue;
 }

@@ -200,19 +200,22 @@ the collection list replaces the row — `.eventsScroller` is described in the h
 - Fixed positioning and `mix-blend-mode` break under a transformed ancestor. If the nav
   scrolls away with the page, or its red text renders green, a Framer wrapper has a
   transform and the fix is a portal into `document.body`.
-- A backdrop below the page content disappears on the published page. Framer paints the
-  page background on its `#main` wrapper, an in-flow block, which covers anything
-  painted under it whatever its z-index. `VideoBackground.tsx` carries the two-rule fix
-  that puts the colour on body, where it propagates to the canvas and paints behind
-  everything, and makes `#main` transparent.
+- A backdrop below the page content disappears on the published page. The video and the
+  ribbons sit on negative levels, and a negative level paints behind the root element's
+  background but still in front of any in-flow block's background — so anything opaque
+  and in flow over the top of it hides it. Framer paints the page background on its
+  `#main` wrapper, which is exactly that, and the Next app has the same trap on `body`.
+  `VideoBackground.tsx` carries the fix: the colour goes on `html`, where it becomes the
+  canvas and paints behind everything including the negative levels, and `body` and
+  `#main` are left transparent.
 - **Framer has no `.pageMain`, and two components depend on it.** In the Next app
-  `<main class="pageMain">` is `position: relative; z-index: 3`, and that one rule does
-  two jobs: it is the box the ribbons sheet is measured against, and it is the stacking
-  context holding the sheet at 2 under the sections at 3, above the fixed video at 1.
-  The rest of the scale is in the root — video 1, page content 3, nav and mobile overlay
-  4, nav hue guard 5, preloader 100. `VideoBackground.tsx` and `Ribbons.tsx` each give
-  `#main` that position and z-index, so the 3 lives in three places and they have to move
-  together.
+  `<main class="pageMain">` is `position: relative` with no z-index. Positioned, because
+  it is the box the ribbons sheet is measured against. No z-index, because it must not
+  open a stacking context: the sheet at -1 and the video at -2 are ordered against the
+  root, and a context here would trap the sheet above the video. The whole scale lives
+  in the root — video -2, ribbons -1, page content and sections 0, mobile overlay 4, nav
+  5, nav hue guard 6, preloader 100. `VideoBackground.tsx` and `Ribbons.tsx` each give
+  `#main` that position, and neither may add a z-index to it.
 - **Pick a portal target by what the element is measured against, not just to escape a
   transform.** Nav and the video are sized to the viewport, so they portal to
   `document.body`. The ribbons sheet has a percentage height and a percentage travel

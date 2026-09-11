@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-11 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -27,20 +27,24 @@ const MP4 = asset("/assets/video-background.mp4")
 // would then scroll away with the section it was dropped into. Portalling to
 // document.body is the same escape hatch PORTING.md prescribes for the nav.
 //
-// The stylesheet puts the container at z-index:1, under the page content block
-// at 3 and the nav at 4. Framer has no page content block of its own to carry
-// that 3: it paints the page background on its #main wrapper, which is opaque
-// and in flow, so it covers the video whatever the video's z-index is. These
-// rules move the colour onto body, where it propagates to the canvas and paints
-// behind everything, and give #main the position and z-index that .pageMain has
-// in the Next app. Scoped to the published page — the canvas has no #main.
+// The stylesheet puts the container at z-index:-2, below the ribbons sheet at
+// -1 and below the content, which sits at the document's default level. A
+// negative layer paints behind the root element's background but in front of
+// any in-flow block's background, so anything opaque and in flow over the top
+// of it hides it. Framer paints the page background on its #main wrapper, which
+// is exactly that. These rules move the colour onto html, where it becomes the
+// canvas and paints behind everything including the negative layers, and leave
+// #main transparent and merely positioned — the same shape .pageMain has in the
+// Next app. Scoped to the published page; the canvas has no #main.
 //
-// The 3 has to stay in step with .pageMain in app/page.module.css, and with the
-// matching rule in Ribbons.tsx, which portals into this same block and depends
-// on it being a stacking context above the video.
+// No z-index on #main on purpose: one would open a stacking context and trap
+// the ribbons sheet, which portals into this same block, above the video rather
+// than letting the two order against the root. Keep this in step with .pageMain
+// in app/page.module.css and with the matching rule in Ribbons.tsx.
 const STACKING_FIX = `
-body { background: var(--color-charcoal); }
-#main { background: transparent; position: relative; z-index: 3; }
+html { background: var(--color-charcoal); }
+body { background: transparent; }
+#main { background: transparent; position: relative; }
 `
 
 function useStackingFix(active) {
@@ -85,11 +89,12 @@ export default function VideoBackground() {
   const onCanvas = RenderTarget.current() === RenderTarget.canvas
 
   // createPortal has no server to run on, and Framer server-renders the markup.
-  // Nothing paints until the host exists, which is invisible: body is already
-  // charcoal, the same colour the container paints behind the video.
+  // Nothing paints until the host exists, which is invisible: the canvas is
+  // already charcoal, the same colour the container paints behind the video.
   //
-  // The host is prepended rather than appended. At z-index 0 the video would
-  // otherwise be a later sibling of #main and paint straight over the page.
+  // The host is prepended rather than appended. Belt and braces: the container
+  // is at -2, so it stays under the page wherever the host lands, but keeping
+  // it before #main means it is still correct if that number ever changes.
   const [host, setHost] = useState(null)
   useEffect(() => {
     if (onCanvas) return

@@ -9,12 +9,7 @@
   left: 0;
   right: 0;
   top: 0;
-  /* Inside the stacking context `.pageMain` opens at 3, alongside the sections,
-     which sit at 3 within it — so this is behind every section. Being inside
-     that context is also what puts the sheet above the fixed video backdrop:
-     the video is at 1 in the root, `.pageMain` is at 3, and nothing here has to
-     name the video's level to clear it. */
-  z-index: 2;
+  z-index: -1;
   pointer-events: none;
 
   height: calc(100% * var(--ribbon-rate));
