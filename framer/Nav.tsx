@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-12 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -12,6 +12,8 @@
 // internals — nobody should be able to drag a bare underline onto a canvas.
 
 import { useEffect, useLayoutEffect, useState } from "react"
+import { createPortal } from "react-dom"
+import { RenderTarget } from "framer"
 import { injectHappenCSS } from "./GlobalStylesheet.tsx"
 import { TextOverline, Heading3 } from "./Primitives.tsx"
 
@@ -42,6 +44,21 @@ const inertWhen = (on) => (on ? "" : undefined)
 export default function Nav() {
     const activeId = useActiveSection(LINKS)
     const [menuOpen, setMenuOpen] = useState(false)
+    const onCanvas = RenderTarget.current() === RenderTarget.canvas
+
+    // Both bars blend with what is behind them, and a blend only reaches as far
+    // as the nearest ancestor that opens a stacking context. Framer gives its
+    // component containers a z-index of their own — the one wrapping this was
+    // measured at `position: relative; z-index: 5` — which boxes the blend into
+    // a group holding nothing but the nav, so `difference` has a transparent
+    // backdrop and does nothing at all. The bar renders plain white over a cream
+    // section instead of inverting. Portalling to document.body puts the root
+    // back in that role, which is the only ancestor guaranteed to hold the page.
+    const [host, setHost] = useState(null)
+    useEffect(() => {
+        if (onCanvas) return
+        setHost(document.body)
+    }, [onCanvas])
 
     useEffect(() => {
         document.body.style.overflow = menuOpen ? "hidden" : ""
@@ -66,7 +83,7 @@ export default function Nav() {
         window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
-    return (
+    const bars = (
         <>
             <Bar
                 activeId={activeId}
@@ -94,6 +111,16 @@ export default function Nav() {
             />
         </>
     )
+
+    // On the canvas document.body is the Framer editor, so a fixed bar portalled
+    // there would sit over the whole UI. Render in place instead.
+    if (onCanvas) return bars
+
+    // createPortal has no server to run on, so nothing paints until the effect
+    // runs. NavPlaceholder already holds the height, so nothing moves.
+    if (!host) return null
+
+    return createPortal(bars, host)
 }
 
 // Reserves the fixed bar's height in the page flow.

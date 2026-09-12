@@ -197,9 +197,16 @@ the collection list replaces the row — `.eventsScroller` is described in the h
   Width to Fill.
 - `Nav` measures as zero height, because both its bars are `position: fixed`.
   `NavPlaceholder` is what reserves the space.
-- Fixed positioning and `mix-blend-mode` break under a transformed ancestor. If the nav
-  scrolls away with the page, or its red text renders green, a Framer wrapper has a
-  transform and the fix is a portal into `document.body`.
+- **Fixed positioning and `mix-blend-mode` both break inside Framer's component
+  containers, so the nav portals into `document.body`.** A transformed ancestor turns
+  `position: fixed` into `position: absolute`, and a blend reaches no further than the
+  nearest ancestor opening a stacking context. Framer gives its containers a z-index of
+  their own — the one around the nav measured at `position: relative; z-index: 5` — which
+  boxes the blend into a group holding nothing but the nav. `difference` then has a
+  transparent backdrop and does nothing: the bar renders plain white over a cream section
+  instead of inverting, and the hue guard has nothing to correct. It looks like the guard
+  has broken; the guard is fine and the bar underneath it never blended. Nothing about
+  the container is ours to control, so do not try to unset its z-index — portal out.
 - **The backdrop has to live below zero, and a positive scale will not work.** Framer
   wraps every section in divs of its own and gives them whatever z-index it likes —
   measured on the published page, the wrapper holding the entire site is `z-index: auto`
