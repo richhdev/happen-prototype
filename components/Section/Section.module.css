@@ -1,10 +1,5 @@
 .section {
   position: relative;
-  /* The content level. Zero rather than nothing, because it has to open a
-     stacking context: `.sectionInner` sits at 10 and everything a section
-     raises is numbered against that context, so without one they would all be
-     ordered against the root and climb past the nav. Zero is still above the
-     ribbons sheet at -1 and the fixed video at -2, which is all it needs. */
   z-index: 0;
   width: 100%;
   padding: var(--layout-padding-y) var(--layout-padding-x);

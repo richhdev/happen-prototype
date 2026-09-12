@@ -1,19 +1,13 @@
 // @ts-nocheck
-// Last changed 2026-09-11 · hand-written, re-paste into Framer after any edit.
-// Plain JavaScript in a .tsx file, because Framer's code editor only makes
-// .tsx. Nothing here is typed, and the imports resolve inside Framer rather
-// than in this repo, so the checker has nothing useful to say about it.
+// Last changed 2026-09-12 · hand-written, re-paste into Framer after any edit.
+// Ported from components/Ribbons/Ribbons.jsx.
 //
-// Ported from components/Ribbons/Ribbons.jsx. Paste into Framer as a code file
-// named Ribbons.tsx.
-//
-// The .ribbonsLayer rule, its @supports upgrade, its @keyframes and the four
-// --ribbon-* tokens all ship in GlobalStylesheet.tsx and head.html, so nothing
-// here needs its own copy of them — but the sheet in Framer has to be from the
-// z-index renumbering of 2026-09-11 or later, which moved the sheet to -1 and
-// the video to -2. On an older sheet the ribbons paint over the sections
-// instead of behind them. The head stamp on the published page says which
-// build is actually live; anything dated earlier than that is too old.
+// .ribbonsLayer, its @supports upgrade, its @keyframes and the four --ribbon-*
+// tokens all ship in the sheet. The scale is video -2, ribbons -1, content 0,
+// mobile overlay 4, nav 5, nav hue guard 6, preloader 7. Paste the sheet and
+// VideoBackground.tsx together — the sheet alone leaves Framer's page
+// background painted over the ribbons and the video. The head stamp on the
+// published page says which build is live.
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -23,35 +17,19 @@ import { asset } from "./Primitives.tsx";
 
 injectHappenCSS();
 
-// Two cuts of the same composition. Which one is fetched is decided by a media
-// query in the sheet, not here — see the comment on .ribbonsLayer in
-// happen.css. Only the URL the matching rule reads is ever requested.
+// Two cuts of the same composition. A media query in the sheet picks one, so
+// only the matching URL is ever fetched.
 const ART = {
   "--ribbon-art": `url(${asset("/assets/ribbons-layer-12.webp")})`,
   "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-9-mobile.webp")})`,
 };
 
-// In the Next app this div is a child of <main class="pageMain">, and both of
-// the things that make the sheet work come from that one fact.
-//
-// Its height is `100% * --ribbon-rate` and it travels by a percentage of its own
-// height, so both resolve against main's box — the length of the page. Dropped
-// anywhere without a positioned ancestor it would resolve against the viewport
-// instead, and the sheet would be 70vh of art pinned near the top of the
-// document rather than a full-page parallax.
-//
-// And pageMain is `position: relative` with no z-index, so it opens no stacking
-// context: the sheet at -1 and the fixed video at -2 are both ordered against
-// the root, which is what puts the art behind the page and still in front of
-// the video.
-//
-// Framer has no pageMain. Its own content wrapper, #main, is the same block in
-// the same place, so this gives it the same property. Positioned only — adding
-// a z-index here would open a context and trap the sheet above the video. The
-// rule is written against the attribute rather than against #main so that it
-// still matches if Framer ever renames the wrapper — and so that
-// VideoBackground.tsx, which sets its own #main rule, cannot outrank it on
-// specificity by accident.
+// The layer's height and travel are percentages, so they need a positioned
+// ancestor that is the length of the page — in the Next app that is
+// <main class="pageMain">, here it is Framer's #main. Positioned only: a
+// z-index would open a stacking context and trap the sheet above the video.
+// Written against the attribute so it survives a rename of #main, and so
+// VideoBackground.tsx's own #main rule cannot outrank it.
 const PAGE_MAIN_FIX = `
 [data-happen-page-main] { position: relative; }
 `;
@@ -79,14 +57,10 @@ function usePageMainFix(el) {
   }, [el]);
 }
 
-// Firefox has no scroll timelines — not even the `animation-timeline` property
-// — so the CSS upgrade never applies there and the sheet would sit still while
-// every other browser parallaxed it. This hands that one case the same
-// progress the timeline would have produced, and the same stylesheet rule
-// turns it into the same drift.
-//
-// Deliberately not motion's `useScroll`: it would run this listener in every
-// browser, including the ones already doing the work on the compositor.
+// Firefox has no scroll timelines, so the CSS upgrade never applies there and
+// the sheet would sit still. This feeds the same progress value the timeline
+// would have produced. Not motion's useScroll, which would run the listener in
+// every browser, including the ones already doing this on the compositor.
 function useScrollProgressFallback(ref, active) {
   useEffect(() => {
     if (!active) return;
@@ -135,13 +109,10 @@ export default function Ribbons() {
   const ref = useRef(null);
   const onCanvas = RenderTarget.current() === RenderTarget.canvas;
 
-  // Framer wraps every code component in a frame, and that frame is neither
-  // the length of the page nor the stacking context the sheet needs, so
-  // rendering in place would size the art to the wrapper. Portalling into the
-  // page content block is the same escape hatch PORTING.md prescribes for the
-  // nav and for VideoBackground — it is just aimed at #main here rather than
-  // at body, because unlike those two this layer is measured against the page
-  // rather than against the viewport.
+  // Framer's component wrapper is neither the length of the page nor the
+  // stacking context the sheet needs, so rendering in place would size the art
+  // to the wrapper. Portal out, as PORTING.md prescribes — into #main rather
+  // than body, since this layer is measured against the page, not the viewport.
   const [pageMain, setPageMain] = useState(null);
   useEffect(() => {
     if (onCanvas) return;
@@ -151,10 +122,9 @@ export default function Ribbons() {
   usePageMainFix(onCanvas ? null : pageMain);
   useScrollProgressFallback(ref, !onCanvas && pageMain !== null);
 
-  // On the canvas there is no #main — document.body is the Framer editor
-  // itself, so aiming a full-page layer at it would cover the whole UI.
-  // Render in place instead, inside a positioned box, since an absolute layer
-  // with a percentage height has nothing to resolve against without one.
+  // On the canvas body is the Framer editor itself, so a full-page layer would
+  // cover the whole UI. Render in place, inside a positioned box the percentage
+  // height can resolve against.
   if (onCanvas) {
     return (
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -163,15 +133,12 @@ export default function Ribbons() {
     );
   }
 
-  // createPortal has no server to run on, and Framer server-renders the
-  // markup, so nothing paints until the effect has found the host. That is
-  // invisible: the page behind it is already charcoal.
+  // createPortal has no server to run on, so nothing paints until the effect
+  // finds the host. Invisible: the page behind it is already charcoal.
   if (!pageMain) return null;
 
-  // Straight into #main rather than into a host div of its own. A host would
-  // be an in-flow block at the end of the page, and any position or z-index
-  // put on it to make the layer work would be a second stacking context
-  // between the sheet and the sections it has to sit behind.
+  // Straight into #main, not a host div — a host would need a position or
+  // z-index that opens a stacking context between the sheet and the sections.
   return createPortal(
     <div ref={ref} className="ribbonsLayer" style={ART} aria-hidden />,
     pageMain,

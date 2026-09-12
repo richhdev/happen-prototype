@@ -200,21 +200,29 @@ the collection list replaces the row — `.eventsScroller` is described in the h
 - Fixed positioning and `mix-blend-mode` break under a transformed ancestor. If the nav
   scrolls away with the page, or its red text renders green, a Framer wrapper has a
   transform and the fix is a portal into `document.body`.
-- A backdrop below the page content disappears on the published page. The video and the
-  ribbons sit on negative levels, and a negative level paints behind the root element's
-  background but still in front of any in-flow block's background — so anything opaque
-  and in flow over the top of it hides it. Framer paints the page background on its
-  `#main` wrapper, which is exactly that, and the Next app has the same trap on `body`.
-  `VideoBackground.tsx` carries the fix: the colour goes on `html`, where it becomes the
-  canvas and paints behind everything including the negative levels, and `body` and
-  `#main` are left transparent.
+- **The backdrop has to live below zero, and a positive scale will not work.** Framer
+  wraps every section in divs of its own and gives them whatever z-index it likes —
+  measured on the published page, the wrapper holding the entire site is `z-index: auto`
+  while one of its own children is `z-index: 3`. Nothing can be ordered against that
+  reliably, so a video at 1 and ribbons at 2 simply paint over the site. A negative level
+  sits under every in-flow block whatever its wrapper does, which is why the video is at
+  -2 and the ribbons at -1.
+- **Set the page background colour in Framer; the published page takes it back off.** A
+  negative level paints behind the root element's background but still in front of any
+  in-flow block's background, so an opaque page background hides the backdrop. Framer
+  puts that colour in two places: on `body`, via a rule written `html body`, and on the
+  single wrapper div inside `#main`. `VideoBackground.tsx` moves it to `html`, where it
+  becomes the canvas, and clears both — with `!important`, and matching `html body`
+  rather than `body`, because a bare `body` rule loses on specificity and does nothing at
+  all. That override runs only on the published page, so the editor keeps the colour and
+  stays usable.
 - **Framer has no `.pageMain`, and two components depend on it.** In the Next app
   `<main class="pageMain">` is `position: relative` with no z-index. Positioned, because
   it is the box the ribbons sheet is measured against. No z-index, because it must not
   open a stacking context: the sheet at -1 and the video at -2 are ordered against the
   root, and a context here would trap the sheet above the video. The whole scale lives
   in the root — video -2, ribbons -1, page content and sections 0, mobile overlay 4, nav
-  5, nav hue guard 6, preloader 100. `VideoBackground.tsx` and `Ribbons.tsx` each give
+  5, nav hue guard 6, preloader 7. `VideoBackground.tsx` and `Ribbons.tsx` each give
   `#main` that position, and neither may add a z-index to it.
 - **Pick a portal target by what the element is measured against, not just to escape a
   transform.** Nav and the video are sized to the viewport, so they portal to

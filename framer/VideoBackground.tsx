@@ -1,14 +1,9 @@
 // @ts-nocheck
-// Last changed 2026-09-11 · hand-written, re-paste into Framer after any edit.
-// Plain JavaScript in a .tsx file, because Framer's code editor only makes
-// .tsx. Nothing here is typed, and the imports resolve inside Framer rather
-// than in this repo, so the checker has nothing useful to say about it.
+// Last changed 2026-09-12 · hand-written, re-paste into Framer after any edit.
+// Ported from components/VideoBackground/VideoBackground.jsx.
 //
-// Ported from components/VideoBackground/VideoBackground.jsx. Paste into Framer
-// as a code file named VideoBackground.tsx.
-//
-// The .videoBackgroundContainer and .videoBackgroundVideo rules already ship in
-// GlobalStylesheet.tsx and head.html, so nothing here needs the sheet recompiled.
+// .videoBackgroundContainer and .videoBackgroundVideo already ship in the
+// sheet, so nothing here needs it recompiled.
 
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
@@ -22,29 +17,34 @@ const POSTER = asset("/assets/video-background-poster.jpg")
 const WEBM = asset("/assets/video-background.webm")
 const MP4 = asset("/assets/video-background.mp4")
 
-// Framer wraps every code component in a frame, and a transformed ancestor
-// turns position:fixed into position:absolute against that frame. The video
-// would then scroll away with the section it was dropped into. Portalling to
-// document.body is the same escape hatch PORTING.md prescribes for the nav.
+// The video sits at -2 and the ribbons at -1, below zero because Framer wraps
+// every section in its own divs and gives them whatever z-index it likes — on
+// the published page the wrapper holding the whole site is `z-index: auto`
+// while one of its children is `z-index: 3`. Nothing positive orders against
+// that reliably; a negative level sits under every in-flow block regardless.
 //
-// The stylesheet puts the container at z-index:-2, below the ribbons sheet at
-// -1 and below the content, which sits at the document's default level. A
-// negative layer paints behind the root element's background but in front of
-// any in-flow block's background, so anything opaque and in flow over the top
-// of it hides it. Framer paints the page background on its #main wrapper, which
-// is exactly that. These rules move the colour onto html, where it becomes the
-// canvas and paints behind everything including the negative layers, and leave
-// #main transparent and merely positioned — the same shape .pageMain has in the
-// Next app. Scoped to the published page; the canvas has no #main.
+// The price is that a negative level paints behind the root element's
+// background but in front of any in-flow block's, so anything opaque and in
+// flow hides it. Framer's page background colour is exactly that, and it lands
+// in two places: on `body`, via a rule written `html body`, and on the one
+// wrapper div inside `#main`. These rules move the colour to `html`, where it
+// becomes the canvas, and clear it from both. `html body` and `!important` are
+// deliberate — a bare `body` rule loses on specificity and silently does
+// nothing. `.ribbonsLayer` is excluded because it portals into `#main` too and
+// its art is a background image.
 //
-// No z-index on #main on purpose: one would open a stacking context and trap
-// the ribbons sheet, which portals into this same block, above the video rather
-// than letting the two order against the root. Keep this in step with .pageMain
-// in app/page.module.css and with the matching rule in Ribbons.tsx.
+// Only the published page gets this, so the Framer editor keeps showing the
+// page background colour you set. Set it and design against it.
+//
+// #main is positioned so the ribbons sheet can size itself against the page,
+// but never given a z-index: that would open a stacking context and trap the
+// sheet above the video. Keep in step with .pageMain in app/page.module.css
+// and the matching rule in Ribbons.tsx.
 const STACKING_FIX = `
-html { background: var(--color-charcoal); }
-body { background: transparent; }
-#main { background: transparent; position: relative; }
+html { background: var(--color-charcoal) !important; }
+html body { background: transparent !important; }
+#main { background: transparent !important; position: relative; }
+#main > div:not(.ribbonsLayer) { background: transparent !important; }
 `
 
 function useStackingFix(active) {
@@ -88,13 +88,16 @@ function Video({ playing }) {
 export default function VideoBackground() {
   const onCanvas = RenderTarget.current() === RenderTarget.canvas
 
-  // createPortal has no server to run on, and Framer server-renders the markup.
-  // Nothing paints until the host exists, which is invisible: the canvas is
-  // already charcoal, the same colour the container paints behind the video.
+  // A transformed Framer wrapper turns position:fixed into absolute, so the
+  // video would scroll away with the section it was dropped into. Portal to
+  // body, as PORTING.md prescribes for the nav.
   //
-  // The host is prepended rather than appended. Belt and braces: the container
-  // is at -2, so it stays under the page wherever the host lands, but keeping
-  // it before #main means it is still correct if that number ever changes.
+  // The sheet puts the container at z-index 1, under the ribbons at 2 and the
+  // content at 3. Every layer is positive so it paints over an in-flow block's
+  // background, which is what lets Framer keep the page colour on body and
+  // #main for the editor. Prepending the host is belt and braces: at 1 it stays
+  // under the content wherever it lands, but before #main it is still correct
+  // if that number ever changes.
   const [host, setHost] = useState(null)
   useEffect(() => {
     if (onCanvas) return
@@ -107,9 +110,9 @@ export default function VideoBackground() {
 
   useStackingFix(!onCanvas && host !== null)
 
-  // On the canvas document.body is the Framer editor, so a fixed full-screen
-  // portal would cover the whole UI. Render in place instead, and leave the
-  // video paused so the editor is not looping it behind your work.
+  // On the canvas body is the Framer editor, so a fixed full-screen portal
+  // would cover the whole UI. Render in place, paused, so the editor is not
+  // looping it behind your work.
   if (onCanvas) {
     return (
       <div
@@ -122,6 +125,8 @@ export default function VideoBackground() {
     )
   }
 
+  // createPortal has no server to run on, so nothing paints until the host
+  // exists. Invisible: the page is already charcoal.
   if (!host) return null
 
   return createPortal(
