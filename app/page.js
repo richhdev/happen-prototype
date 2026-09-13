@@ -26,7 +26,7 @@ export default function Home() {
       <main className={styles.pageMain}>
         <Hero />
         <Events />
-        {/* <Ribbons /> */}
+        <Ribbons />
         <Vendors />
         <Work />
         <Services />
