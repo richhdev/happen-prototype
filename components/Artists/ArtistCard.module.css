@@ -218,7 +218,7 @@
 }
 
 .artistCardContent .artistCardBadge {
-  background-color: #ff152b;
+  background-color: #ff152b !important;
   color: var(--color-charcoal);
 }
 
