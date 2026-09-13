@@ -34,6 +34,7 @@
 
 .navTitle {
   color: var(--color-red);
+  color: #ff152b; /* brighter red more contrst over red; */
   white-space: nowrap;
   flex-shrink: 0;
   text-decoration: none;

@@ -82,6 +82,7 @@
 
 .contactCardLabel {
   color: var(--color-red);
+  color: #ff152b; /* brighter red over grey for more contrast */
   font-size: var(--button-medium-size);
   line-height: var(--button-medium-line-height);
   font-weight: 700;
