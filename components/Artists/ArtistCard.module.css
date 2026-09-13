@@ -8,18 +8,12 @@
   --zoom-from: 0.6;
   --scale: calc(var(--zoom-from) + (1 - var(--zoom-from)) * var(--travelled));
 
-  /* The gaps the shrunken cluster should show. Grid gaps are absolute px and
-     don't shrink with the cards, so scaling about each card's own centre would
-     leave the four spread apart — hence the pushed-out origin below. */
   --start-gap-x: var(--space-8);
-  /* The heading sits in the row gap, so keep its line box plus a margin either
-     side. Must stay under --row-gap, or the rows open instead of closing. */
-  --heading-inset: var(--space-16);
   --start-gap-y: calc(var(--heading2-line-height) + 2 * var(--heading-inset));
 
-  /* `gap - 2d(1 - zoom-from) = start-gap` solved for d, the distance from the
-     card's inner edge out to the origin. Irrelevant at --travelled: 1, where a
-     scale of 1 is the identity transform wherever its origin sits. */
+  /* The heading sits in the row gap */
+  --heading-inset: var(--space-16);
+
   --origin-x: calc(
     (var(--col-gap) - var(--start-gap-x)) / (2 * (1 - var(--zoom-from)))
   );
@@ -34,8 +28,8 @@
   width: 100%;
   aspect-ratio: 390 / 469;
 
-  /* Above the backdrop dim, so an open card doesn't take the other three out
-     of reach — the veil below dims them without covering them. */
+  /* Above the backdrop dim, so an open card doesn't take the other cards out
+     of reach  */
   z-index: 3;
   transform: scale(var(--scale));
   transform-origin: var(--ox) var(--oy);
@@ -50,8 +44,6 @@
   }
 }
 
-/* Only articles are counted, so the heading div doesn't shift the quadrants. The left column and top row gather towards their
-   bottom-right, which is the default above; the other two mirror it. */
 .artistCardContainer:nth-of-type(even) {
   --ox: calc(0px - var(--origin-x));
 }
@@ -60,15 +52,6 @@
   --oy: calc(0px - var(--origin-y));
 }
 
-/* A transform — or the will-change that promotes it — makes the wrapper the
-   containing block for the absolutely positioned card below, which would pin
-   it inside its own slot instead of centring it on the grid. The card only
-   opens once the settle has finished, where the scale is the identity anyway,
-   so dropping both here costs nothing.
-
-   The z-index has to be raised here rather than on the card: a grid item with
-   a z-index is a stacking context, so the card can never climb past its own
-   wrapper's level however high its own z-index goes. */
 .artistCardContainerActive {
   z-index: 5;
   transform: none;
@@ -76,9 +59,7 @@
 }
 
 /* A card that has just closed keeps a lift over the idle three until it has
-   landed back in its slot — dropping it the moment the class went would let
-   them paint over it mid-flight. It stays below an incoming card, so switching
-   still reads as one card handing over to the next. */
+   landed back in its slot */
 .artistCardContainerReturning {
   z-index: 4;
 }
@@ -106,10 +87,7 @@
   }
 }
 
-/* Centred in the grid box, at the size the design draws a card at, so the
-   contents lay out for real rather than being scaled up. `inset: 0` with a
-   fixed size and `margin: auto` centres on both axes without a transform,
-   which the layout animation is free to use. */
+/* active card is centrered in the middle of the grid, at native scale size */
 .artistCardActive {
   --active-height: min(
     469px,
@@ -128,9 +106,7 @@
   height: calc(var(--active-width) * 469 / 390);
 }
 
-/* Dims a card while another one is open. The backdrop layer can't do this any
-   more now the cards sit above it, and doing it per card is what keeps them
-   clickable: the veil never takes a pointer event. */
+/* Puts a backdrop under an active card */
 .artistCard::after {
   content: "";
   position: absolute;
@@ -144,12 +120,6 @@
 
 .artistCardDimmed::after {
   opacity: 1;
-}
-
-/* A dimmed card is one target: clicking it swaps the open card rather than
-   following a link the viewer can barely read. */
-.artistCardDimmed .artistCardLink {
-  pointer-events: none;
 }
 
 .artistCardImage {
@@ -174,8 +144,6 @@
   pointer-events: none;
 }
 
-/* Covers the card, but sits under .content so the links keep their own hit
-   area in both states. */
 .artistCardToggle {
   position: absolute;
   inset: 0;
@@ -200,8 +168,6 @@
   position: relative;
   z-index: 2;
   padding: var(--space-16);
-  /* Lets a click anywhere but a link fall through to the toggle beneath, which
-     matters most on the small cards, where the text covers the card's middle. */
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -220,52 +186,39 @@
 .artistCardContent .artistCardBadge {
   background-color: #ff152b !important;
   color: var(--color-charcoal);
+  text-wrap: nowrap;
 }
 
-/* Toggling the bio's `display` shunted the rest of the content up in a single
-   frame as the card opened. Instead the box around it is a one-row grid that
-   goes from 0fr to 1fr, so it has a height to animate; the content is anchored
-   to the bottom of the card, so the row opening pushes the name, badge and
-   links up out of the way as it grows. */
 .artistCardBioContainer {
   display: grid;
   grid-template-rows: 0fr;
-  /* The collapsed box is still a flex item, so it still draws a gap either
-     side of itself. This drops one of them, leaving the shut card with the
-     same badge-to-links gap it had when the bio wasn't in the flow at all. */
   margin-block-end: calc(-1 * var(--space-8));
-  /* The bio's own breathing room lives out here on the container: padding on
-     the row's item would hold the collapsed row open at the height of that
-     padding, where the container's collapses with everything else. */
   padding-block: 0;
   overflow: hidden;
   opacity: 0;
-  /* The shut state carries no transition, so the bio is gone the frame the
-     card starts home. Easing it back out left the text sliding on its own
-     while the card flew the other way, which read as two separate moves. */
+  visibility: hidden;
+}
+
+.artistCardBioInner {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-16);
 }
 
 .artistCardBio {
-  /* A grid item's automatic minimum size would hold the row open at the text's
-     full height, which is exactly what the 0fr is trying to take away. */
-  min-height: 0;
   color: var(--color-cream);
 }
 
 .artistCardLinks {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-16);
-  }
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-16);
 }
 
 .artistCardLink {
-  padding: 24px 0 0 0;
   pointer-events: auto;
   color: var(--color-cream);
   text-decoration: none;
@@ -276,22 +229,16 @@
   text-decoration: underline;
 }
 
-/* The open card always reads as the full design, even where it lands under the
-   320px the container queries above switch at. */
 .artistCardActive .artistCardContent {
   padding: var(--space-24);
 }
 
-/* An open card shows its bio whatever width it lands at, including under the
-   320px the container query above switches at. */
 .artistCardActive .artistCardBioContainer {
   grid-template-rows: 1fr;
   padding-block: var(--space-8);
   margin-block-end: 0;
   opacity: 1;
-  /* Only the opening state transitions — a transition belongs to the state
-     being moved to, so this runs on the way in and nothing runs on the way
-     out. */
+  visibility: visible;
   transition:
     grid-template-rows 400ms cubic-bezier(0.16, 1, 0.3, 1),
     padding-block 400ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -301,10 +248,4 @@
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
-}
-
-.artistCardActive .artistCardLinks {
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-16);
 }

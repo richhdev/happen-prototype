@@ -58,6 +58,7 @@ export function ArtistCard({
             : { type: "spring", stiffness: 260, damping: 30 }
         }
         onLayoutAnimationComplete={() => setReturning(false)}
+        data-artist-card
         className={`${styles.artistCard} ${active ? styles.artistCardActive : ""} ${
           dimmed ? styles.artistCardDimmed : ""
         }`}
@@ -94,27 +95,31 @@ export function ArtistCard({
           </Badge>
 
           {/* The box, not the text, is what opens: it collapses to nothing
-              while the card is shut so the bio can grow the content upwards
-              instead of appearing in one frame. */}
+              while the card is shut so the bio and links can grow the content
+              upwards instead of appearing in one frame. */}
           <div className={styles.artistCardBioContainer}>
-            <TextMedium className={styles.artistCardBio}>
-              {artist.bio}
-            </TextMedium>
-          </div>
-
-          <div className={styles.artistCardLinks}>
-            {artist.links.map((link) => (
-              <TextMedium
-                key={link.label}
-                as="a"
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.artistCardLink}
-              >
-                <span className={styles.artistCardLinkLabel}>{link.label}</span>
+            <div className={styles.artistCardBioInner}>
+              <TextMedium className={styles.artistCardBio}>
+                {artist.bio}
               </TextMedium>
-            ))}
+
+              <div className={styles.artistCardLinks}>
+                {artist.links.map((link) => (
+                  <TextMedium
+                    key={link.label}
+                    as="a"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.artistCardLink}
+                  >
+                    <span className={styles.artistCardLinkLabel}>
+                      {link.label}
+                    </span>
+                  </TextMedium>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>

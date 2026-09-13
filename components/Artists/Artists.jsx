@@ -69,12 +69,19 @@ export default function Artists() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [activeIndex, isOpen]);
 
-  // Escape closes the open card, alongside the dim layer's click-away.
+  // Escape, or a click anywhere that isn't a card, closes the open card. Clicks
+  // on a card are left to its own toggle, which closes or swaps it.
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e) => e.key === "Escape" && setActiveIndex(null);
+    const onClick = (e) =>
+      !e.target.closest("[data-artist-card]") && setActiveIndex(null);
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener("click", onClick);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("click", onClick);
+    };
   }, [isOpen]);
 
   return (
@@ -83,7 +90,6 @@ export default function Artists() {
         <div className={styles.artistsPinned}>
           <div
             className={`${styles.artistsDim} ${isOpen ? styles.artistsDimVisible : ""}`}
-            onClick={() => setActiveIndex(null)}
             aria-hidden="true"
           />
 

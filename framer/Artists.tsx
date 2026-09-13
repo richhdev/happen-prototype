@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -150,12 +150,19 @@ export default function Artists() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [activeIndex, isOpen])
 
-  // Escape closes the open card, alongside the dim layer's click-away.
+  // Escape, or a click anywhere that isn't a card, closes the open card. Clicks
+  // on a card are left to its own toggle, which closes or swaps it.
   useEffect(() => {
     if (!isOpen) return
     const onKeyDown = (e) => e.key === "Escape" && setActiveIndex(null)
+    const onClick = (e) =>
+      !e.target.closest("[data-artist-card]") && setActiveIndex(null)
     window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
+    window.addEventListener("click", onClick)
+    return () => {
+      window.removeEventListener("keydown", onKeyDown)
+      window.removeEventListener("click", onClick)
+    }
   }, [isOpen])
 
   return (
@@ -164,7 +171,6 @@ export default function Artists() {
         <div className="artistsPinned">
           <div
             className={`artistsDim ${isOpen ? "artistsDimVisible" : ""}`}
-            onClick={() => setActiveIndex(null)}
             aria-hidden="true"
           />
 
@@ -239,6 +245,7 @@ function ArtistCard({ artist, index, progress, active, dimmed, onToggle }) {
             : { type: "spring", stiffness: 260, damping: 30 }
         }
         onLayoutAnimationComplete={() => setReturning(false)}
+        data-artist-card
         className={`artistCard ${active ? "artistCardActive" : ""} ${
           dimmed ? "artistCardDimmed" : ""
         }`}
@@ -274,25 +281,27 @@ function ArtistCard({ artist, index, progress, active, dimmed, onToggle }) {
           </Badge>
 
           {/* The box, not the text, is what opens: it collapses to nothing
-              while the card is shut so the bio can grow the content upwards
-              instead of appearing in one frame. */}
+              while the card is shut so the bio and links can grow the content
+              upwards instead of appearing in one frame. */}
           <div className="artistCardBioContainer">
-            <TextMedium className="artistCardBio">{artist.bio}</TextMedium>
-          </div>
+            <div className="artistCardBioInner">
+              <TextMedium className="artistCardBio">{artist.bio}</TextMedium>
 
-          <div className="artistCardLinks">
-            {artist.links.map((link) => (
-              <TextMedium
-                key={link.label}
-                as="a"
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="artistCardLink"
-              >
-                <span className="artistCardLinkLabel">{link.label}</span>
-              </TextMedium>
-            ))}
+              <div className="artistCardLinks">
+                {artist.links.map((link) => (
+                  <TextMedium
+                    key={link.label}
+                    as="a"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="artistCardLink"
+                  >
+                    <span className="artistCardLinkLabel">{link.label}</span>
+                  </TextMedium>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>
