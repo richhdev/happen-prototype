@@ -1,11 +1,10 @@
-/* Inter, self-hosted for the Next site only. The Framer sheet gets the same
-   face from Google instead — scripts/compile-stylesheet-framer.mjs adds that
-   @import itself, and this file is not one of the ones it compiles.
+/* Inter, self-hosted. The Framer sheet uses this same file:
+   scripts/compile-stylesheet-framer.mjs compiles it in with the url() pointed
+   at the asset host, and preloads it from the head block.
 
-   Loaded from Google here too, the @import sat behind the page's own CSS and
-   then behind a second origin, and held the first paint for both round trips.
-   Same origin and preloaded from app/layout.js, the font is requested as soon
-   as the HTML is.
+   Loaded from Google, the stylesheet sat on a second origin and held the first
+   paint for the extra round trips — on the Next site and on Framer alike.
+   Preloaded from app/layout.js, the font is requested as soon as the HTML is.
 
    The latin subset of the variable file Google serves, with its unicode-range,
    so it covers the same 100–900 range the components ask for. */

@@ -32,8 +32,8 @@ That script (`scripts/compile-stylesheet-framer.mjs`) concatenates `tokens.css`,
 - **`framer/GlobalStylesheet.tsx`** — the sheet as a template string with an
   `injectHappenCSS()` helper. Pasted as a code file; every section imports it and calls
   it at module level. This is what styles the **canvas**, where custom code does not run.
-- **`framer/GlobalStylesheetHead.html`** — the same sheet as a `<style>` block plus the
-  webfont `<link>`. Pasted into **Site Settings → Code** as the entry named
+- **`framer/GlobalStylesheetHead.html`** — the same sheet as a `<style>` block, plus
+  preloads for the self-hosted Inter and the ribbons (the page's largest paint). Pasted into **Site Settings → Code** as the entry named
   `GlobalStylesheetHead`, at **Start of `<head>`**. This is what styles the **published site**.
 
 Both are minified with lightningcss, 72 kB down to 42 kB, and the native nesting the

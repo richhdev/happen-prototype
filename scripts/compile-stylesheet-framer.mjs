@@ -128,14 +128,12 @@ const unwrapGlobal = (css) =>
 // ones have to survive, and CSS requires every @import to precede the rest of
 // the sheet, so they are collected and re-emitted at the top.
 //
-// Inter is seeded here rather than read from tokens.css. The Next site
-// self-hosts it (app/fonts.css, which this script does not compile), because
-// an @import in its CSS held the first paint for two extra round trips; Framer
-// has no local asset to point at, so it keeps Google. Variable range covers
-// the 300/500/700/800/900 weights the components ask for.
-const remoteImports = new Set([
-  `@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");`,
-]);
+// Inter is not one of these. It used to be — a Google @import seeded here —
+// but on the published Framer page that stylesheet was render-blocking, ~360ms
+// on a second origin before the first paint. It now comes from app/fonts.css,
+// the same self-hosted file the Next site uses, pointed at the asset host (see
+// main()).
+const remoteImports = new Set();
 
 const takeImports = (css) =>
   css.replace(/^\s*@import[^;\n]+;\s*$/gm, (stmt) => {
@@ -199,6 +197,23 @@ async function main() {
       `   Regenerate with: pnpm compile-stylesheet-framer */\n`,
   ];
 
+  // Inter, from the file the Next site self-hosts it with. Its url() is
+  // root-relative, which on Framer would resolve against Framer's own domain,
+  // so it is pointed at the asset host every other image already comes from.
+  // That host sends Access-Control-Allow-Origin: *, which a cross-origin font
+  // needs to load at all.
+  const assetBase = (await readFile(path.join(ROOT, "framer/Primitives.tsx"), "utf8"))
+    .match(/export const ASSET_BASE = "([^"]+)"/)?.[1];
+  if (!assetBase) {
+    console.error(`\nRefusing to write: no ASSET_BASE found in framer/Primitives.tsx.`);
+    process.exit(1);
+  }
+  const fontsFile = path.join(ROOT, "app/fonts.css");
+  const fontsCss = (await readFile(fontsFile, "utf8"))
+    .replace(/url\("(\/[^"]+)"\)/g, `url("${assetBase}$1")`);
+  const fontUrls = [...fontsCss.matchAll(/url\("([^"]+\.woff2)"\)/g)].map((m) => m[1]);
+  parts.push(banner(fontsFile), fontsCss.trim(), "\n");
+
   for (const f of GLOBAL_FILES) {
     const full = path.join(ROOT, f);
     parts.push(banner(full));
@@ -226,7 +241,7 @@ async function main() {
   const build = createHash("sha256").update(sheet).digest("hex").slice(0, 8);
   const css = await writeStamped(OUT_CSS, build, (s) => sheet.split(PLACEHOLDER).join(s));
   const js = await writeStamped(OUT_JS, build, (s) => jsModule(sheet, s));
-  const head = await writeStamped(OUT_HEAD, build, (s) => headHtml(sheet, s));
+  const head = await writeStamped(OUT_HEAD, build, (s) => headHtml(sheet, s, { assetBase, fontUrls }));
 
   const unused = [...owners.keys()].filter((n) => !used.has(n));
   // "changed" is the line to read: those are the files that have to be pasted
@@ -260,27 +275,40 @@ async function walk2(dir) {
   return out;
 }
 
-// The same sheet as a block to paste into Framer's page Custom Code → Start of
-// <head>. Two differences from the .tsx: the webfont @import becomes a real
-// <link> (an @import is only discovered once the sheet it sits in has been
-// fetched and parsed, which puts the font a whole round trip behind), and the
-// <style> carries data-happen-static, which is what tells injectHappenCSS() the
-// page already has the sheet.
-function headHtml(sheet, stamp) {
+// The ribbons are the published page's largest paint, and the sheet only names
+// them through custom properties Ribbons.tsx sets once it mounts — so without a
+// preload the browser finds them late and fetches them at low priority. The
+// component can't preload them itself: nothing ReactDOM.preload() emits reaches
+// Framer's server-rendered head. Media queries mirror .ribbonsLayer's
+// breakpoint, so only the pair the page will draw is fetched.
+const RIBBON_PRELOADS = [
+  ["/assets/ribbon-1-mobile.webp", "(max-width: 767.98px)"],
+  ["/assets/ribbon-2-mobile.webp", "(max-width: 767.98px)"],
+  ["/assets/ribbon-1.webp", "(min-width: 768px)"],
+  ["/assets/ribbon-2.webp", "(min-width: 768px)"],
+];
+
+// The same sheet as a block to paste into Framer's Custom Code → Start of
+// <head>. Differences from the .tsx: any remote @import becomes a real <link>
+// (an @import is only discovered once the sheet it sits in has been fetched and
+// parsed); the font and the ribbons are preloaded, since the sheet only reveals
+// them once it has been applied; and the <style> carries data-happen-static,
+// which is what tells injectHappenCSS() the page already has the sheet.
+function headHtml(sheet, stamp, { assetBase, fontUrls }) {
   const urls = [...remoteImports]
     .map((stmt) => stmt.match(/url\(\s*["']?([^"')]+)["']?\s*\)/)?.[1] ??
       stmt.match(/["']([^"']+)["']/)?.[1])
     .filter(Boolean);
 
-  const origins = new Set(urls.map((u) => new URL(u).origin));
-  // Google answers the CSS from one host and serves the font files from
-  // another, and the browser only learns about the second once the first has
-  // parsed. Warm both while the HTML is still arriving.
-  if (origins.has("https://fonts.googleapis.com")) origins.add("https://fonts.gstatic.com");
-
   const links = [
-    ...[...origins].map(
-      (o) => `<link rel="preconnect" href="${o}"${o.includes("gstatic") ? " crossorigin" : ""}>`,
+    // `crossorigin` because fonts are always fetched in CORS mode; without it
+    // the preloaded copy doesn't match the @font-face request and is fetched twice.
+    ...fontUrls.map(
+      (u) => `<link rel="preload" href="${u}" as="font" type="font/woff2" crossorigin>`,
+    ),
+    ...RIBBON_PRELOADS.map(
+      ([p, media]) =>
+        `<link rel="preload" href="${assetBase}${p}" as="image" fetchpriority="high" media="${media}">`,
     ),
     ...urls.map((u) => `<link rel="stylesheet" href="${u}">`),
   ];

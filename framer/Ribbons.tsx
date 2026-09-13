@@ -12,9 +12,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-// A namespace import, not `{ preload }`: preload is React 19 only, and a named
-// import of an export 18 lacks would stop this whole file from loading.
-import * as ReactDOM from "react-dom";
 import { RenderTarget } from "framer";
 import { injectHappenCSS } from "./GlobalStylesheet.tsx";
 import { asset } from "./Primitives.tsx";
@@ -145,24 +142,11 @@ export default function Ribbons() {
   const ref = useRef(null);
   const onCanvas = RenderTarget.current() === RenderTarget.canvas;
 
-  // The ribbons span the first screen, so they can be what Lighthouse times as
-  // the page's largest paint — but as url()s behind custom properties they are
-  // only found once the CSS has been applied, and then fetched at low priority.
-  // These put them in the <head> at the page's own priority. The media queries
-  // mirror the breakpoint in the sheet, so only the cuts that rule will use are
-  // fetched. On React 18 there is no preload and this does nothing.
-  for (const n of [1, 2]) {
-    ReactDOM.preload?.(asset(`/assets/ribbon-${n}-mobile.webp`), {
-      as: "image",
-      fetchPriority: "high",
-      media: "(max-width: 767.98px)",
-    });
-    ReactDOM.preload?.(asset(`/assets/ribbon-${n}.webp`), {
-      as: "image",
-      fetchPriority: "high",
-      media: "(min-width: 768px)",
-    });
-  }
+  // No preloads here. The ribbons are the page's largest paint, but nothing
+  // ReactDOM.preload() emits reaches Framer's server-rendered head, so Lighthouse
+  // saw them discovered late at low priority. GlobalStylesheetHead.html preloads
+  // them with fetchpriority=high instead — rename or re-cut a ribbon and update
+  // RIBBON_PRELOADS in scripts/compile-stylesheet-framer.mjs to match.
 
   // Framer's component wrapper is neither the length of the page nor the
   // stacking context the layer needs, so rendering in place would size the art
