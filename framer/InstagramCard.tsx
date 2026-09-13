@@ -29,7 +29,9 @@ injectHappenCSS()
 // the default parameters in the signature. Not `defaultProps` — React 19
 // ignores that on a function component.
 const DEFAULTS = {
-  image: asset("/assets/insta-chapter-nye.webp"),
+  // A neutral tile rather than a real post, so a fresh card never passes for
+  // live content before its image is set.
+  image: asset("/assets/insta-placeholder.svg"),
   link: "https://www.instagram.com/chapternye/p/DdNi8nPEuDA/",
 }
 
