@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Ported from components/Ribbons/Ribbons.jsx.
 //
 // .ribbonsLayer, its @supports upgrade, its @keyframes and the two --ribbon-*
@@ -11,6 +11,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+// A namespace import, not `{ preload }`: preload is React 19 only, and a named
+// import of an export 18 lacks would stop this whole file from loading.
+import * as ReactDOM from "react-dom";
 import { RenderTarget } from "framer";
 import { injectHappenCSS } from "./GlobalStylesheet.tsx";
 import { asset } from "./Primitives.tsx";
@@ -109,6 +112,23 @@ function useScrollProgressFallback(ref, active) {
 export default function Ribbons() {
   const ref = useRef(null);
   const onCanvas = RenderTarget.current() === RenderTarget.canvas;
+
+  // The sheet spans the first screen, so it is what Lighthouse times as the
+  // page's largest paint — but as a url() behind a custom property it is only
+  // found once the CSS has been applied, and then fetched at low priority.
+  // These put it in the <head> at the page's own priority. The media queries
+  // mirror the breakpoint in the sheet, so only the cut that rule will use is
+  // fetched. On React 18 there is no preload and this does nothing.
+  ReactDOM.preload?.(asset("/assets/ribbons-v9-7-mobile.webp"), {
+    as: "image",
+    fetchPriority: "high",
+    media: "(max-width: 767.98px)",
+  });
+  ReactDOM.preload?.(asset("/assets/ribbons-v9-7-x2.webp"), {
+    as: "image",
+    fetchPriority: "high",
+    media: "(min-width: 768px)",
+  });
 
   // Framer's component wrapper is neither the length of the page nor the
   // stacking context the sheet needs, so rendering in place would size the art

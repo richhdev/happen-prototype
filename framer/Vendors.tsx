@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -51,16 +51,14 @@ const VENDOR_EVENTS = [
 export default function Vendors() {
   return (
     <Section id="a-vendors" className="vendorsSection">
-      {/* Full-bleed backdrop behind the whole band. An <img> rather than a
-          background-image so it can be fetched early: it is the largest thing
-          in the section and above the fold on a tall viewport.
-          fetchpriority is lowercase on purpose — React only knows the camelCase
-          spelling from 19 on, and on 18 it would warn and lowercase it anyway. */}
+      {/* Full-bleed backdrop behind the whole band. Lazy, like every image
+          below the first screen, so it no longer competes with the ribbons
+          sheet for the page's largest paint. */}
       <img
         src={asset("/assets/vendor-bg.webp")}
         alt=""
         className="vendorsSurface"
-        fetchpriority="high"
+        loading="lazy"
         decoding="async"
       />
 
@@ -98,10 +96,20 @@ export default function Vendors() {
 function VendorCard({ event }) {
   return (
     <div className="vendorsCard">
-      <img src={event.img} alt="" className="vendorsCardImage" />
+      <img
+        src={event.img}
+        alt=""
+        className="vendorsCardImage"
+        loading="lazy"
+      />
 
       <div className="vendorsCardBody">
-        <img src={event.logo} alt={event.name} className="vendorsLogo" />
+        <img
+          src={event.logo}
+          alt={event.name}
+          className="vendorsLogo"
+          loading="lazy"
+        />
 
         <ButtonOutlineMedium
           href={event.link}

@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Ported from components/VideoBackground/VideoBackground.jsx.
 //
 // The portrait poster swap lives in the sheet (.videoBackgroundContainer), so
@@ -103,12 +103,11 @@ export default function VideoBackground() {
   // video would scroll away with the section it was dropped into. Portal to
   // body, as PORTING.md prescribes for the nav.
   //
-  // The sheet puts the container at z-index 1, under the ribbons at 2 and the
-  // content at 3. Every layer is positive so it paints over an in-flow block's
-  // background, which is what lets Framer keep the page colour on body and
-  // #main for the editor. Prepending the host is belt and braces: at 1 it stays
-  // under the content wherever it lands, but before #main it is still correct
-  // if that number ever changes.
+  // The sheet puts the container at z-index -2, under the ribbons at -1 and the
+  // content at 0 — see STACKING_FIX above for why the backdrop sits below zero.
+  // Prepending the host is belt and braces: at -2 it stays under the content
+  // wherever it lands, but before #main it is still correct if that number
+  // ever changes.
   const [host, setHost] = useState(null)
   useEffect(() => {
     if (onCanvas) return

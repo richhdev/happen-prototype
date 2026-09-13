@@ -243,7 +243,12 @@ function ArtistCard({ artist, index, progress, active, dimmed, onToggle }) {
           dimmed ? "artistCardDimmed" : ""
         }`}
       >
-        <img src={artist.img} alt="" className="artistCardImage" />
+        <img
+          src={artist.img}
+          alt=""
+          className="artistCardImage"
+          loading="lazy"
+        />
         <div className="artistCardOverlay" />
 
         {/* Sits under the content so the artist's links stay clickable in

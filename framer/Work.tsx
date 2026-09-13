@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -347,7 +347,13 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
       {/* item.crop is the per-photo art-direction hook — object-position, a
           transform — for a shot that does not sit right under a plain cover
           crop. Nothing in WORK needs one yet, so it is undefined throughout. */}
-      <img src={item.img} alt="" className="workImage" style={item.crop} />
+      <img
+        src={item.img}
+        alt=""
+        className="workImage"
+        style={item.crop}
+        loading="lazy"
+      />
 
       <div className="workOverlay" />
 
@@ -361,6 +367,7 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
             "--logo-h": item.logoHeight,
             "--logo-opacity": item.logoOpacity,
           }}
+          loading="lazy"
         />
       </div>
 

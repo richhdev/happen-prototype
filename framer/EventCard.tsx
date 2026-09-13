@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -155,6 +155,7 @@ export default function EventCard({
         alt=""
         className="eventsImage"
         style={imagePosition ? { objectPosition: imagePosition } : undefined}
+        loading="lazy"
       />
 
       {/* Sits above the image and carries the gradient that makes the copy

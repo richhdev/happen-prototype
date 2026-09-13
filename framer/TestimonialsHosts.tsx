@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -302,6 +302,7 @@ function Phone({ children }) {
         src={asset("/assets/testimonials-phone-frame.png")}
         alt=""
         className="phoneFrame"
+        loading="lazy"
       />
     </div>
   )
@@ -338,6 +339,7 @@ function Hosts() {
         src={asset("/assets/bg-graphic.webp")}
         alt=""
         className="hostsSurface"
+        loading="lazy"
       />
 
       <Heading3 as="h2" className="hostsTitle">
