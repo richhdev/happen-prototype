@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-11 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -9,25 +9,33 @@
 //
 // Only Events is exported here. The card is its own file, EventCard.tsx, so
 // the same one card can be dropped on a canvas and bound to a CMS collection;
-// this file is the section around it and the four placeholder events. Paste
+// this file is the section around it and the placeholder events. Paste
 // EventCard.tsx before this, or Events does not appear in the Insert panel.
 //
 // This one is a staging step, not the finished section. Events is the section
 // the client rebuilds as a Framer CMS collection so they can add their own,
-// which means the four events below are placeholders with a shelf life and
-// this file gets thrown away once the CMS version replaces it. It exists so
-// the section can be dropped in and reviewed at the right place in the page
-// before any of that work starts. EventCard.tsx outlives it — the CMS
-// collection list renders that component with its fields bound.
+// which means the events below are placeholders with a shelf life and this
+// file gets thrown away once the CMS version replaces it. It exists so the
+// section can be dropped in and reviewed at the right place in the page before
+// any of that work starts. EventCard.tsx outlives it — the CMS collection list
+// renders that component with its fields bound.
 //
-// The one thing to carry across when this is rebuilt natively, because it is
-// the only part that is not a plain card row:
+// The layout to carry across when this is rebuilt natively, because it changes
+// shape at 1024px:
 //
-//   .eventsScroller breaks out of the Section inner with
-//   `margin-inline: calc(50% - 50vw)` and pays the width back as padding, so
-//   the row of cards scrolls edge to edge while the first card still lines up
-//   with the heading. It is measured against the viewport, so it only works
-//   while the component is at Fill width.
+//   Below 1024px, .eventsScroller is a horizontal scroller that breaks out of
+//   the Section inner with `margin-inline: calc(50% - 50vw)` and pays the width
+//   back as padding, so the row scrolls edge to edge while the first card still
+//   lines up with the heading. It is measured against the viewport, so it only
+//   works while the component is at Fill width.
+//
+//   From 1024px up it is a three-column grid inside the content width, 32px gap
+//   both ways, and a fourth card wraps to a second row. Each card is width 100%
+//   of its column there, with the height from its 360/457 aspect-ratio.
+//
+//   This file is not used in Framer. The section is built natively there, with
+//   EventCard.tsx instances in a card container whose settings change per
+//   breakpoint — those settings are recorded in PORTING.md under Events.
 
 import { injectHappenCSS } from "./GlobalStylesheet.tsx"
 import { asset, Section, Reveal, Heading2 } from "./Primitives.tsx"
@@ -38,6 +46,36 @@ injectHappenCSS()
 // Placeholder content. Every one of these is a real event with a real date, so
 // they go stale on their own — which is the reason the client wants the CMS.
 const EVENTS = [
+  {
+    title: "Vanna Headline Show - Howler",
+    status: "onsale",
+    date: "12th September 2026",
+    description: "Howler Melbourne 3pm - 11pm",
+    cta: "Get tickets",
+    link: "https://m.moshtix.com.au/v2/event/vanna-headline-show-howler/198866?skin=hwlr",
+    img: asset("/assets/event-vanna-howler.webp"),
+  },
+  {
+    title: "Danny Rants Off TheRecord",
+    status: "upcoming",
+    date: "October 2026",
+    description:
+      "This October I speak to Sport Stars, Celebs, DJs, Gangsters & Nightlife Icons OFF THE RECORD",
+    cta: "Pre register",
+    link: "https://happengroup.fillout.com/dannyrants",
+    img: asset("/assets/event-off-the-record.webp"),
+  },
+  {
+    title: "Chapter NYE 2026",
+    status: "upcoming",
+    date: "31st December 2026",
+    description:
+      "We've got big plans for NYE 2026! Sign up to be the first to hear exclusive news about Chapter NYE 2026.",
+    cta: "Pre register",
+    link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
+    img: asset("/assets/event-chapter-nye.webp"),
+  },
+  // Example cards for testing the wrap to a second row - remove before shipping
   {
     title: "P★rty Girl Tour Forgotten Cities",
     status: "onsale",
@@ -57,26 +95,6 @@ const EVENTS = [
     cta: "Get tickets",
     link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
     img: asset("/assets/event-party-girl-auckland.webp"),
-  },
-  {
-    title: "Danny Rants Off TheRecord",
-    status: "upcoming",
-    date: "October 2026",
-    description:
-      "This October I speak to Sport Stars, Celebs, DJs, Gangsters & Nightlife Icons OFF THE RECORD",
-    cta: "Pre register",
-    link: "https://happengroup.fillout.com/dannyrants",
-    img: asset("/assets/event-off-the-record-tour.webp"),
-  },
-  {
-    title: "Chapter NYE 2026",
-    status: "upcoming",
-    date: "31st December 2026",
-    description:
-      "We've got big plans for NYE 2026! Sign up to be the first to hear exclusive news about Chapter NYE 2026.",
-    cta: "Pre register",
-    link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
-    img: asset("/assets/event-chapter-nye-2026.webp"),
   },
 ]
 

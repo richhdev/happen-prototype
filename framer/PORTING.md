@@ -162,7 +162,8 @@ that file then has to be re-pasted into Framer.
 `Services.tsx`, `Artists.tsx`, `Venues.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
 `Instagram.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
 `Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
-and Contact. `EventCard.tsx` goes in before `Events.tsx`, which imports it.
+and Contact. `EventCard.tsx` is pasted and in use; `Events.tsx` is not pasted — see
+Events below.
 
 The `Primitives.tsx` in Framer is older than the one in this repo and does not export
 `EASE`, so anything importing it fails with *does not provide an export named 'EASE'*.
@@ -172,15 +173,55 @@ appear in the Insert panel.
 
 **Still to port:** Preloader. Rough page order is in `app/page.js`.
 
-`Events.tsx` is a throwaway. Events is still the section the client rebuilds as a Framer
-CMS collection, and the code component only exists so the section can be dropped into
-the page and reviewed in place first. Its four events are real dated placeholders, so it
-goes stale on its own. What survives it is `EventCard.tsx`: one card, every field on a
-property control, which is what the CMS collection list renders with Image, Title, Date,
-Description, Status, CTA and Link bound to the collection. The sold-out treatment lives
-there too. The part that does not survive is the full-bleed horizontal scroller, since
-the collection list replaces the row — `.eventsScroller` is described in the header of
-`Events.tsx` for whoever rebuilds it.
+### Events
+
+Events is built natively in Framer, not from `Events.tsx`. That file is not pasted into
+Framer; it stays in the repo as a reference for the section's layout and placeholder
+content. What Framer uses is `EventCard.tsx`: one card, every field on a property
+control, placed as instances inside a native card container. The sold-out treatment
+lives in the card.
+
+Layer structure, the same on every breakpoint:
+
+```
+Events (Framer)          native Section, detached
+├─ Stack                 heading
+└─ Grid / Stack          card container — settings below
+   └─ EventCard × n
+```
+
+The card container's settings differ per breakpoint. Recorded 2026-09-13 from the
+Framer canvas:
+
+| Setting | Desktop (1200px+) | Tablet (768–1199px) | Phone (0–767px) |
+|---|---|---|---|
+| Layout type | Grid | Stack, horizontal | Stack, horizontal |
+| Columns × rows | 3 × 2, masonry off | — | — |
+| Distribute / align | — | Start / center | Start / center |
+| Wrap | — | No | No |
+| Gap | 32 × 32 | 32 | 32 |
+| Padding (T R B L) | 0 | 0 64 120 64 | 0 32 80 32 |
+| Width | 1fr, Fill | 1fr, Fill | 1fr, Fill |
+| Height | Fit | Fit | Fit |
+| Max width | 1200, Fixed | 1200, Fixed | 1200, Fixed |
+| Overflow | Scroll | Scroll | Scroll |
+| Radius | 0 | 0 | 0 |
+
+On Tablet and Phone the side padding matches the Section's own padding (64 and 32), so
+the row scrolls to the screen edges while the first card still lines up with the
+heading. The bottom padding (120 and 80) is the Section's bottom padding, moved inside
+the scroller.
+
+Two things to know when changing these:
+
+- **Framer's desktop breakpoint starts at 1200px; the stylesheet's starts at 1024px.**
+  Between 1024 and 1199px Framer shows the Tablet stack while `.eventsCard` has the
+  desktop rules, so cards sit at their 381px cap rather than the fluid clamp() width.
+- **Keep the container height on Fit.** The card's height comes from its width and the
+  360/457 aspect-ratio, so it changes with the viewport. Tablet and Phone were first set
+  to fixed heights (520 and 390), which were too short at some widths — 41px short at
+  1100px, 15px at 700px — and with Overflow on Scroll the row then scrolled vertically as
+  well, hiding the tops of the cards. Fit sizes the container to card plus padding.
 
 ## Verification before handing a file over
 

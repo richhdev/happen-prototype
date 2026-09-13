@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-11 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -9,15 +9,14 @@
 //
 // One card, on its own, with every piece of its content on a property control
 // so it can be filled in from the Framer properties panel — and, more to the
-// point, bound field by field to a CMS collection. Events is the section the
-// client rebuilds as a CMS collection, and this is the card that collection
-// list renders: bind Image → image, Title → title, Date → date and so on, and
-// the card below is the layout. `Events.tsx` imports this same component for
-// its four placeholder events, so there is one card implementation, not two.
+// point, bound field by field to a CMS collection. The Events section is built
+// natively in Framer, and this is the card placed inside its card container:
+// bind Image → image, Title → title, Date → date and so on, and the card below
+// is the layout. `Events.tsx` in this repo imports the same component for its
+// placeholder events, but that file is not pasted into Framer.
 //
 // Paste order matters: this file imports Primitives.tsx and
-// GlobalStylesheet.tsx, and Events.tsx imports this file. Paste Primitives and
-// GlobalStylesheet first, then EventCard, then Events.
+// GlobalStylesheet.tsx, so paste those first, then EventCard.
 //
 // Two things here are not a plain card and are worth knowing before editing:
 //
@@ -26,7 +25,12 @@
 //      for the height. Framer's own width and height win when they are set to
 //      a concrete value, which is what a CMS list wants: Fill the column and
 //      let the aspect-ratio take the height. Left on auto, the stylesheet's
-//      clamp decides, and the card matches the Next site exactly.
+//      clamp decides, and the card matches the Next site exactly — except
+//      from 1024px up, where the stylesheet makes it width 100% for the
+//      desktop grid. So in a Desktop grid set it to Fill, and in a
+//      horizontal scroll stack leave it on auto. Whatever Framer asks for,
+//      the stylesheet caps it at the Figma size, 381 × 483. The container
+//      settings on each breakpoint are in PORTING.md under Events.
 //   2. Sold out. The event keeps its real ticket link in the markup and the
 //      button is dimmed and made unclickable by `.eventsCtaSoldOut`, rather
 //      than the link being removed. The button label changes to "Sold out" as
@@ -69,7 +73,7 @@ const STATUSES = {
 // `EventCard.defaultProps` — React 19 ignores that on a function component and
 // warns, and this repo is on 19 even if Framer is not.
 const DEFAULTS = {
-  image: asset("/assets/event-chapter-nye-2026.webp"),
+  image: asset("/assets/event-chapter-nye.webp"),
   status: "upcoming",
   date: "31st December 2026",
   title: "Chapter NYE 2026",
