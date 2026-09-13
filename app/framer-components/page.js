@@ -18,7 +18,7 @@
 //   · Styling arrives from injectHappenCSS(), which every ported file calls at
 //     module level. It only runs in the browser, so this page paints unstyled
 //     for one frame before hydration. On the published Framer page the same
-//     sheet is in the head, from head.html, and that never happens.
+//     sheet is in the head, from GlobalStylesheetHead.html, and that never happens.
 //
 // Preloader is not ported yet, so the page starts at Nav.
 

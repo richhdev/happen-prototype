@@ -24,9 +24,9 @@ export default function Home() {
       <Nav />
       <NavPlaceholder />
       <main className={styles.pageMain}>
+        <Ribbons />
         <Hero />
         <Events />
-        <Ribbons />
         <Vendors />
         <Work />
         <Services />

@@ -32,9 +32,9 @@ That script (`scripts/compile-stylesheet-framer.mjs`) concatenates `tokens.css`,
 - **`framer/GlobalStylesheet.tsx`** — the sheet as a template string with an
   `injectHappenCSS()` helper. Pasted as a code file; every section imports it and calls
   it at module level. This is what styles the **canvas**, where custom code does not run.
-- **`framer/head.html`** — the same sheet as a `<style>` block plus the webfont `<link>`.
-  Pasted into the page's **Custom Code → Start of `<head>`**. This is what styles the
-  **published site**.
+- **`framer/GlobalStylesheetHead.html`** — the same sheet as a `<style>` block plus the
+  webfont `<link>`. Pasted into **Site Settings → Code** as the entry named
+  `GlobalStylesheetHead`, at **Start of `<head>`**. This is what styles the **published site**.
 
 Both are minified with lightningcss, 72 kB down to 42 kB, and the native nesting the
 `.module.css` files are written in is flattened on the way, which moves the floor from
@@ -70,14 +70,16 @@ through.
 Hand-ported sections carry `// Last changed <date>` on line 2 instead, since nothing
 generates them. Update that line whenever you change one, or it silently rots.
 
-Paste head.html **per page, not into Site Settings**. The reset in `globals.css` is
-unscoped, so site-wide it would restyle every other page on happengroup.com.au.
+Limit the `GlobalStylesheetHead` entry's **Page** field to the Happen pages
+(`/home-static`, `/home-editable`) rather than leaving it site-wide. The reset in
+`globals.css` is unscoped, so site-wide it would restyle every other page on
+happengroup.com.au.
 
 All 222 class names are already globally unique and camelCase-prefixed by stylesheet
 (`heroSection`, `navUnderline`, `artistCardWrap`). The script hard-fails if two
 stylesheets ever define the same name, or if JSX references a `styles.X` that no rule
 defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.tsx` and
-`head.html`.
+`GlobalStylesheetHead.html`.
 
 ## Rules for a ported file
 

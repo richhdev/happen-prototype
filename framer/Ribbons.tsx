@@ -2,9 +2,10 @@
 // Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
 // Ported from components/Ribbons/Ribbons.jsx.
 //
-// .ribbonsLayer, its @supports upgrade, its @keyframes and the two --ribbon-*
-// tokens all ship in the sheet. The scale is video -2, ribbons -1, content 0,
-// mobile overlay 4, nav 5, nav hue guard 6, preloader 7. Paste the sheet and
+// .ribbonsLayer, .ribbonsTile, .ribbonsRibbon and the four .ribbonsPlacement*
+// rules, the @supports upgrade, the @keyframes and the two --ribbon-* tokens
+// all ship in the sheet. The scale is video -2, ribbons -1, content 0, mobile
+// overlay 4, nav 5, nav hue guard 6, preloader 7. Paste the sheet and
 // VideoBackground.tsx together — the sheet alone leaves Framer's page
 // background painted over the ribbons and the video. The head stamp on the
 // published page says which build is live.
@@ -20,18 +21,35 @@ import { asset } from "./Primitives.tsx";
 
 injectHappenCSS();
 
-// Two cuts of the same v9-7 sheet: 5120px (2x) for tablets up, 2560px for
-// phones. A media query in the sheet picks one, so only the matching URL is
-// ever fetched.
+// Two ribbons, each in two cuts: 2000px for tablets up, 1200px for phones. A
+// media query in the sheet picks which pair the placements draw, so only the
+// matching URLs are ever fetched.
 const ART = {
-  "--ribbon-art": `url(${asset("/assets/ribbons-v9-7-x2.webp")})`,
-  "--ribbon-art-narrow": `url(${asset("/assets/ribbons-v9-7-mobile.webp")})`,
+  "--ribbon-art-1-wide": `url(${asset("/assets/ribbon-1.webp")})`,
+  "--ribbon-art-2-wide": `url(${asset("/assets/ribbon-2.webp")})`,
+  "--ribbon-art-1-narrow": `url(${asset("/assets/ribbon-1-mobile.webp")})`,
+  "--ribbon-art-2-narrow": `url(${asset("/assets/ribbon-2-mobile.webp")})`,
 };
+
+// How many copies of the composition are stacked down the layer. The layer
+// clips whatever runs past the page, so this only has to be enough for the
+// narrowest phone, where each tile is shortest and the page longest: at 320px
+// the layer is ~5.3 tiles tall.
+const TILE_COUNT = 6;
+
+// The four placements in the Figma frame (871:4399) — two of each ribbon. Their
+// geometry lives in the sheet; this only says which rule each one uses.
+const PLACEMENTS = [
+  "ribbonsPlacementA",
+  "ribbonsPlacementB",
+  "ribbonsPlacementC",
+  "ribbonsPlacementD",
+];
 
 // The layer's height and travel are percentages, so they need a positioned
 // ancestor that is the length of the page — in the Next app that is
 // <main class="pageMain">, here it is Framer's #main. Positioned only: a
-// z-index would open a stacking context and trap the sheet above the video.
+// z-index would open a stacking context and trap the layer above the video.
 // Written against the attribute so it survives a rename of #main, and so
 // VideoBackground.tsx's own #main rule cannot outrank it.
 const PAGE_MAIN_FIX = `
@@ -62,7 +80,7 @@ function usePageMainFix(el) {
 }
 
 // Firefox has no scroll timelines, so the CSS upgrade never applies there and
-// the sheet would sit still. This feeds the same progress value the timeline
+// the layer would sit still. This feeds the same progress value the timeline
 // would have produced. Not motion's useScroll, which would run the listener in
 // every browser, including the ones already doing this on the compositor.
 function useScrollProgressFallback(ref, active) {
@@ -99,12 +117,26 @@ function useScrollProgressFallback(ref, active) {
   }, [ref, active]);
 }
 
+function Layer({ layerRef }) {
+  return (
+    <div ref={layerRef} className="ribbonsLayer" style={ART} aria-hidden>
+      {Array.from({ length: TILE_COUNT }, (_, tile) => (
+        <div key={tile} className="ribbonsTile">
+          {PLACEMENTS.map((placement) => (
+            <div key={placement} className={`ribbonsRibbon ${placement}`} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /**
- * One sheet of art behind the whole page, drifting slower than the page it sits
- * behind. On the canvas it fills whatever it is dropped into so it can be seen
- * and placed. On the published page it leaves the layout entirely and covers the
- * page content block, so give it any size you like — where it sits in the page
- * stack makes no difference to what it does.
+ * The ribbon composition behind the whole page, drifting slower than the page
+ * it sits behind. On the canvas it fills whatever it is dropped into so it can
+ * be seen and placed. On the published page it leaves the layout entirely and
+ * covers the page content block, so give it any size you like — where it sits
+ * in the page stack makes no difference to what it does.
  *
  * @framerSupportedLayoutWidth any
  * @framerSupportedLayoutHeight any
@@ -113,25 +145,27 @@ export default function Ribbons() {
   const ref = useRef(null);
   const onCanvas = RenderTarget.current() === RenderTarget.canvas;
 
-  // The sheet spans the first screen, so it is what Lighthouse times as the
-  // page's largest paint — but as a url() behind a custom property it is only
-  // found once the CSS has been applied, and then fetched at low priority.
-  // These put it in the <head> at the page's own priority. The media queries
-  // mirror the breakpoint in the sheet, so only the cut that rule will use is
+  // The ribbons span the first screen, so they can be what Lighthouse times as
+  // the page's largest paint — but as url()s behind custom properties they are
+  // only found once the CSS has been applied, and then fetched at low priority.
+  // These put them in the <head> at the page's own priority. The media queries
+  // mirror the breakpoint in the sheet, so only the cuts that rule will use are
   // fetched. On React 18 there is no preload and this does nothing.
-  ReactDOM.preload?.(asset("/assets/ribbons-v9-7-mobile.webp"), {
-    as: "image",
-    fetchPriority: "high",
-    media: "(max-width: 767.98px)",
-  });
-  ReactDOM.preload?.(asset("/assets/ribbons-v9-7-x2.webp"), {
-    as: "image",
-    fetchPriority: "high",
-    media: "(min-width: 768px)",
-  });
+  for (const n of [1, 2]) {
+    ReactDOM.preload?.(asset(`/assets/ribbon-${n}-mobile.webp`), {
+      as: "image",
+      fetchPriority: "high",
+      media: "(max-width: 767.98px)",
+    });
+    ReactDOM.preload?.(asset(`/assets/ribbon-${n}.webp`), {
+      as: "image",
+      fetchPriority: "high",
+      media: "(min-width: 768px)",
+    });
+  }
 
   // Framer's component wrapper is neither the length of the page nor the
-  // stacking context the sheet needs, so rendering in place would size the art
+  // stacking context the layer needs, so rendering in place would size the art
   // to the wrapper. Portal out, as PORTING.md prescribes — into #main rather
   // than body, since this layer is measured against the page, not the viewport.
   const [pageMain, setPageMain] = useState(null);
@@ -149,7 +183,7 @@ export default function Ribbons() {
   if (onCanvas) {
     return (
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        <div ref={ref} className="ribbonsLayer" style={ART} aria-hidden />
+        <Layer layerRef={ref} />
       </div>
     );
   }
@@ -159,9 +193,6 @@ export default function Ribbons() {
   if (!pageMain) return null;
 
   // Straight into #main, not a host div — a host would need a position or
-  // z-index that opens a stacking context between the sheet and the sections.
-  return createPortal(
-    <div ref={ref} className="ribbonsLayer" style={ART} aria-hidden />,
-    pageMain,
-  );
+  // z-index that opens a stacking context between the layer and the sections.
+  return createPortal(<Layer layerRef={ref} />, pageMain);
 }

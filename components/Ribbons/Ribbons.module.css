@@ -1,5 +1,5 @@
-/* One sheet of art behind the whole page, drifting slower than the page it sits
-   behind. The parallax is bought by making the sheet shorter than the document
+/* One layer of art behind the whole page, drifting slower than the page it sits
+   behind. The parallax is bought by making the layer shorter than the document
    rather than by moving it out of the document's ends: it covers `--ribbon-rate`
    of the page and travels down through the gap it leaves as you scroll, so it is
    flush with the top of the document at the top of the scroll and flush with the
@@ -14,48 +14,34 @@
 
   height: calc(100% * var(--ribbon-rate));
 
-  /* The art is a tile, repeated down the sheet rather than stretched to fill it
-     — so it keeps its own proportions whatever the page ends up being, and the
-     composition never has to be laid out against a known page height. Anchored
-     at the top so the first tile lands where the art was drawn to; whatever the
-     document's length works out to is absorbed by the last repeat running off
-     the bottom, which the sections cover anyway.
-
-     Sideways it is drawn wider than the page and centred, so the composition
-     hangs off both edges rather than being fitted inside them — that overhang
-     is what keeps the ribbons at the weight they were drawn at, with the ones
-     at the edges reading as passing through rather than sitting in frame. The
-     bleed needs no clipping of its own: a background is painted to the
-     element's box and can't widen the document. */
-  /* The sheet is a 2560-wide Figma frame (865:3872), the largest screen it was
-     laid out for — so the layer is capped there and centred.
-
-     It is drawn `--ribbon-scale` times the page width, up to that 2560: phones
-     and tablets see the middle of the sheet with the ribbons passing off its
-     edges, and from the width where the two meet it stops growing and
-     narrower desktops crop the sides instead. One size rule, so nothing jumps
-     at a breakpoint. */
+  /* Capped at 2560, the largest screen the composition was laid out for, and
+     centred. The art is drawn wider than this box and clipped to it, so the
+     ribbons at the edges read as passing through rather than sitting in frame;
+     `clip` rather than `hidden` so the layer never becomes a scroll container. */
   max-width: 2560px;
   margin-inline: auto;
-  background-repeat: repeat-y;
-  background-position: center top;
-  background-size: min(100% * var(--ribbon-scale), 2560px) auto;
+  overflow: clip;
 
-  /* Two cuts of the same sheet, drawn to the same size, so the breakpoint only
-     changes resolution: phones take a 2560px cut, which at the ~1000px a
-     phone draws it is close to every pixel on a 3x screen; tablets up take
-     the 5120px 2x export. Both URLs come from the component, and the choice
-     is made here rather than by `image-set()` so it keys off page width, not
-     pixel ratio. Only the URL the matching rule uses is fetched. */
-  background-image: var(--ribbon-art-narrow);
+  display: flex;
+  flex-direction: column;
+  /* Centres the tiles even though they are wider than the layer — the default
+     (unsafe) alignment overflows both sides equally. */
+  align-items: center;
+
+  /* Two cuts of each ribbon, both URLs from the component. The breakpoint only
+     changes resolution — the art is drawn at the same size either side of it —
+     and only the cut the matching rule uses is fetched. */
+  --ribbon-art-1: var(--ribbon-art-1-narrow);
+  --ribbon-art-2: var(--ribbon-art-2-narrow);
 
   @media (min-width: 768px) {
-    background-image: var(--ribbon-art);
+    --ribbon-art-1: var(--ribbon-art-1-wide);
+    --ribbon-art-2: var(--ribbon-art-2-wide);
   }
 
-  /* The gap left below the sheet, as a share of the sheet's own height — which
+  /* The gap left below the layer, as a share of the layer's own height — which
      is what a percentage translate resolves against. Covering `rate` of the
-     document leaves (1 - rate) of it, so the sheet has (1 - rate)/rate of
+     document leaves (1 - rate) of it, so the layer has (1 - rate)/rate of
      itself to travel, and crossing that over the full scroll is what puts the
      art on screen at `rate` times the page's speed.
 
@@ -66,13 +52,88 @@
     calc(var(--ribbon-progress, 0) * (100% / var(--ribbon-rate) - 100%));
 }
 
+/* One copy of the Figma frame (871:4399): a 2560 × 6676 composition of the two
+   ribbons, four placements between them. Stacked down the layer the way the
+   flattened sheet used to repeat. Drawn `--ribbon-scale` times the page width,
+   up to 2560: phones and tablets see the middle of it with the ribbons passing
+   off its edges, and wider screens crop the sides instead. One size rule, so
+   nothing jumps at a breakpoint. Each tile clips its own ribbons, as the
+   flattened sheet did at its edges. */
+.ribbonsTile {
+  position: relative;
+  flex: none;
+  width: min(100% * var(--ribbon-scale), 2560px);
+  aspect-ratio: 2560 / 6676;
+  overflow: clip;
+  container-type: inline-size;
+  /* The frame's own opacity. The old sheet had it baked in; the individual
+     exports don't. */
+  opacity: 0.5;
+}
+
+/* A ribbon, placed in the frame's own pixels: `--x`/`--y` is its centre and
+   `--w`/`--h` its unrotated size, straight from Figma, scaled by one tile pixel
+   so the composition keeps its proportions at any tile width. Rotation is about
+   the centre, which is how Figma reports it. */
+.ribbonsRibbon {
+  --u: calc(100cqw / 2560);
+
+  position: absolute;
+  left: calc((var(--x) - var(--w) / 2) * var(--u));
+  top: calc((var(--y) - var(--h) / 2) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+  transform: var(--turn);
+  /* `cover` matches Figma's fill: ribbon 2's square export is cropped to its
+     wider frame, top and bottom, where it is only empty transparency. */
+  background: var(--art) center / cover no-repeat;
+}
+
+.ribbonsPlacementA {
+  --art: var(--ribbon-art-1);
+  --x: 1966;
+  --y: 1225.5;
+  --w: 1489;
+  --h: 1596;
+  /* Figma also flips both RIbbon1 layers vertically, but that flip is already
+     in the ribbon-1 export, so only the rotation is left to apply. */
+  --turn: rotate(-90deg);
+}
+
+.ribbonsPlacementB {
+  --art: var(--ribbon-art-1);
+  --x: 433.51;
+  --y: 5733.07;
+  --w: 1617.81;
+  --h: 1733.79;
+  --turn: rotate(155.38deg);
+}
+
+.ribbonsPlacementC {
+  --art: var(--ribbon-art-2);
+  --x: 808.17;
+  --y: 2829.4;
+  --w: 1652.48;
+  --h: 1192.98;
+  --turn: rotate(24.89deg);
+}
+
+.ribbonsPlacementD {
+  --art: var(--ribbon-art-2);
+  --x: 2235.12;
+  --y: 4107.13;
+  --w: 1618.97;
+  --h: 1169.11;
+  --turn: rotate(113.42deg);
+}
+
 /* The same drift, off the page's own scroll instead of a scroll listener. That
    is not a micro-optimisation: this page scrolls on the compositor while Work
-   and Services already run their own scroll work on the main thread, so a sheet
+   and Services already run their own scroll work on the main thread, so a layer
    parallaxed from JS updates a frame late, by a different amount each frame,
    against content that never misses one — which is exactly what reads as
    jitter. A scroll timeline runs the drift where the scrolling happens, so the
-   sheet cannot fall out of step with the page whatever the main thread is doing.
+   layer cannot fall out of step with the page whatever the main thread is doing.
 
    A running animation outranks the `translate` declaration above, so where this
    applies it simply takes over, and the fallback's progress goes unread. */
@@ -94,7 +155,7 @@
   }
 }
 
-/* One rule covers both paths, because rate 1 is a sheet the exact height of the
+/* One rule covers both paths, because rate 1 is a layer the exact height of the
    document with nowhere to travel: the keyframe's endpoint and the fallback's
    translate both resolve to zero on their own. The art still tiles at the same
    size, it just stops moving relative to the page. */

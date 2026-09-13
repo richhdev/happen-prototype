@@ -28,17 +28,32 @@ for src in source-assets/*/*.png source-assets/*/*.jpg; do
   name=$(basename "${src%.*}")
   out="public/assets/$name.webp"
 
-  # The ribbon art has its black keyed out by hand and ships under its own names,
-  # so this pass leaves it alone.
+  # The individual ribbons are already cut out on transparency, and ship as
+  # ribbon-1 and ribbon-2, each with a -mobile cut. The old whole-page sheet
+  # (still used by framer/Ribbons.tsx) has its black keyed out by
+  # hand and ships under its own names, so this pass leaves it alone.
   if [ "$(dirname "$src")" = source-assets/Ribbons ]; then
-    continue
+    case "$name" in
+      *individual-*) name="ribbon-${name##*-}"; out="public/assets/$name.webp" ;;
+      *) continue ;;
+    esac
   fi
 
   if [ "$force" != "--force" ] && [ -f "$out" ] && [ "$out" -nt "$src" ]; then
     continue
   fi
 
-  if [ "$(dirname "$src")" = source-assets/client-logos ]; then
+  if [ "$(dirname "$src")" = source-assets/Ribbons ]; then
+    # Nearly all of these bytes are alpha, so quality barely moves the size;
+    # resolution does. The largest placement draws ~1650px wide on the 2560 tile,
+    # so 2000 covers it with headroom, and is ~1.1MB for the pair against ~2.4MB
+    # at the exports' native 2784/3618.
+    cwebp -quiet -resize 2000 0 -q 72 -alpha_q 80 -m 6 -sharp_yuv "$src" -o "$out"
+    # Phones draw the tile at 2.5x the page width, so the largest placement is
+    # ~620-710px wide there; 1200 is ~2x of that, ~505KB for the pair against the
+    # 685KB flattened mobile sheet it replaces.
+    cwebp -quiet -resize 1200 0 -q 72 -alpha_q 80 -m 6 -sharp_yuv "$src" -o "public/assets/$name-mobile.webp"
+  elif [ "$(dirname "$src")" = source-assets/client-logos ]; then
     # Logos are flat-colour type on transparency, which is the case lossy WebP
     # is worst at: the DCT rings along every letter edge, and `-noalpha` would
     # flatten the cutout to a black box. `-near_lossless` keeps the edges exact
