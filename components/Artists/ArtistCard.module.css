@@ -217,8 +217,8 @@
   color: var(--color-white);
 }
 
-.artistCardBadge {
-  background-color: #ff152b !important;
+.artistCardContent .artistCardBadge {
+  background-color: #ff152b;
   color: var(--color-charcoal);
 }
 
