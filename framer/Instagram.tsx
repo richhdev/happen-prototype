@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -7,8 +7,10 @@
 // Ported from components/Instagram/ — Instagram.jsx and data.js, combined.
 // Paste into Framer as a code file named Instagram.tsx.
 //
-// Only Instagram is exported. IG_PROFILE and IG_TILES are internals: six
-// hard-coded image URLs are not something anyone should drag onto a canvas.
+// Only Instagram is exported here. The tile is its own file, InstagramCard.tsx,
+// with its image and link on property controls; this file is the section
+// around six of them. Paste InstagramCard.tsx before this, or Instagram does
+// not appear in the Insert panel.
 //
 // A short port, and the last easy one. No pin, no portal, no scroll maths — a
 // radial vignette behind a heading, a 3x3-column grid of six square tiles and a
@@ -19,7 +21,7 @@
 // the four social links are hidden by CSS, so mobile shows Instagram alone.
 // Both are the design, not a fallback.
 
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
+import { injectHappenCSS } from "./GlobalStylesheet.tsx";
 import {
   asset,
   Section,
@@ -27,23 +29,40 @@ import {
   RevealItem,
   Heading3,
   SOCIALS,
-} from "./Primitives.tsx"
+} from "./Primitives.tsx";
+import InstagramCard from "./InstagramCard.tsx";
 
-injectHappenCSS()
+injectHappenCSS();
 
-// Every tile links to the profile rather than to its own post: these are
-// stills lifted from the feed, not live embeds, so there is no per-post URL
-// to send anyone to.
-const IG_PROFILE = "https://www.instagram.com/happengroupau/"
-
+// The tiles are stills lifted from the feed, not live embeds, so each post's
+// URL is kept by hand next to its image. Several are collaborator posts, which
+// is why the handles differ.
 const IG_TILES = [
-  asset("/assets/insta-1.webp"),
-  asset("/assets/insta-2.webp"),
-  asset("/assets/insta-3.webp"),
-  asset("/assets/insta-4.webp"),
-  asset("/assets/insta-5.webp"),
-  asset("/assets/insta-6.webp"),
-]
+  {
+    src: asset("/assets/insta-sc-splash.webp"),
+    href: "https://www.instagram.com/soundcollectivefest/reel/DdH2LYizVCg/",
+  },
+  {
+    src: asset("/assets/insta-sc-lineup.webp"),
+    href: "https://www.instagram.com/destroyalllines/p/DdFZlpTTtvb/",
+  },
+  {
+    src: asset("/assets/insta-vanna-howler.webp"),
+    href: "https://www.instagram.com/untitledgroupau/p/DdDzH7PsVeE/",
+  },
+  {
+    src: asset("/assets/insta-sc-crowd.webp"),
+    href: "https://www.instagram.com/soundcollectivefest/reel/DdBTLy4TLfo/",
+  },
+  {
+    src: asset("/assets/insta-party-girl.webp"),
+    href: "https://www.instagram.com/lucy_and_nikki_/reel/DdBB3sdSNxx/",
+  },
+  {
+    src: asset("/assets/insta-chapter-nye.webp"),
+    href: "https://www.instagram.com/chapternye/p/DdNi8nPEuDA/",
+  },
+];
 
 /**
  * Width fills whatever it is dropped into; height is measured from the rendered
@@ -60,19 +79,12 @@ export default function Instagram() {
 
         {/* The group staggers its six tiles by 130ms and runs once. */}
         <RevealGroup className="instagramGrid" once={true}>
-          {IG_TILES.map((src) => (
-            <RevealItem
-              key={src}
-              as="a"
-              className="instagramTile"
-              href={IG_PROFILE}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Happen Group Instagram post"
-            >
-              {/* alt is empty on purpose: the link already carries the label,
-                  so naming the image again would read it out twice. */}
-              <img src={src} alt="" className="instagramTileImage" />
+          {IG_TILES.map(({ src, href }) => (
+            // No style prop, so the card falls through to the stylesheet and
+            // fills its grid column. Framer's sizing only applies to a card
+            // placed on a canvas.
+            <RevealItem key={src}>
+              <InstagramCard image={src} link={href} />
             </RevealItem>
           ))}
         </RevealGroup>
@@ -90,11 +102,7 @@ export default function Instagram() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img
-                  src={social.icon}
-                  alt=""
-                  className="instagramSocialIcon"
-                />
+                <img src={social.icon} alt="" className="instagramSocialIcon" />
                 {social.label}
               </a>
             ))}
@@ -102,5 +110,5 @@ export default function Instagram() {
         </div>
       </div>
     </Section>
-  )
+  );
 }

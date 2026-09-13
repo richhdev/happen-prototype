@@ -1,12 +1,28 @@
 import { asset } from "@/lib/data";
 
-export const IG_PROFILE = "https://www.instagram.com/happengroupau/";
-
 export const IG_TILES = [
-  asset("/assets/insta-1.webp"),
-  asset("/assets/insta-2.webp"),
-  asset("/assets/insta-3.webp"),
-  asset("/assets/insta-4.webp"),
-  asset("/assets/insta-5.webp"),
-  asset("/assets/insta-6.webp"),
+  {
+    src: asset("/assets/insta-sc-splash.webp"),
+    href: "https://www.instagram.com/soundcollectivefest/reel/DdH2LYizVCg/",
+  },
+  {
+    src: asset("/assets/insta-sc-lineup.webp"),
+    href: "https://www.instagram.com/destroyalllines/p/DdFZlpTTtvb/",
+  },
+  {
+    src: asset("/assets/insta-vanna-howler.webp"),
+    href: "https://www.instagram.com/untitledgroupau/p/DdDzH7PsVeE/",
+  },
+  {
+    src: asset("/assets/insta-sc-crowd.webp"),
+    href: "https://www.instagram.com/soundcollectivefest/reel/DdBTLy4TLfo/",
+  },
+  {
+    src: asset("/assets/insta-party-girl.webp"),
+    href: "https://www.instagram.com/lucy_and_nikki_/reel/DdBB3sdSNxx/",
+  },
+  {
+    src: asset("/assets/insta-chapter-nye.webp"),
+    href: "https://www.instagram.com/chapternye/p/DdNi8nPEuDA/",
+  },
 ];

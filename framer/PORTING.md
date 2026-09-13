@@ -93,8 +93,9 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
    shipping them separately would push that breakpoint onto the canvas.
 
    The exception is a sub-component somebody is meant to insert or bind on its own.
-   `EventCard.tsx` is the only one so far: it is in the Insert panel on purpose, because
-   the CMS collection list has to render it with its fields bound. Split a card out only
+   `EventCard.tsx` is in the Insert panel on purpose, because the CMS collection list has
+   to render it with its fields bound. `InstagramCard.tsx` is the other one: its image and
+   post link are on property controls so a tile can be swapped from the panel. Split a card out only
    when that is true of it, and have the section import the split file rather than
    keeping a second copy of the markup.
 2. **`// @ts-nocheck` on line 1**, with the standard four-line header explaining that
@@ -160,7 +161,7 @@ that file then has to be re-pasted into Framer.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `Venues.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
-`Instagram.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
+`Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
 `Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
 and Contact. `EventCard.tsx` is pasted and in use; `Events.tsx` is not pasted — see
 Events below.

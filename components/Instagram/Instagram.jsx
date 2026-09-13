@@ -1,7 +1,8 @@
 import { Section } from "@/components/Section/Section";
 import { RevealGroup, RevealItem } from "@/components/ui";
 import { SOCIALS } from "@/lib/data";
-import { IG_PROFILE, IG_TILES } from "./data";
+import { IG_TILES } from "./data";
+import { InstagramCard } from "./InstagramCard";
 import styles from "./Instagram.module.css";
 import { Heading3 } from "../Heading/Heading";
 
@@ -11,18 +12,9 @@ export default function Instagram() {
       <div className={styles.instagramContent}>
         <Heading3 style={{ color: "var(--color-white)" }}>Instagram</Heading3>
         <RevealGroup className={styles.instagramGrid} once={true}>
-          {IG_TILES.map((src) => (
-            <RevealItem
-              key={src}
-              as="a"
-              className={styles.instagramTile}
-              href={IG_PROFILE}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Happen Group Instagram post"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className={styles.instagramTileImage} />
+          {IG_TILES.map(({ src, href }) => (
+            <RevealItem key={src}>
+              <InstagramCard src={src} href={href} />
             </RevealItem>
           ))}
         </RevealGroup>
