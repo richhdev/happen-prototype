@@ -27,28 +27,30 @@
      at the edges reading as passing through rather than sitting in frame. The
      bleed needs no clipping of its own: a background is painted to the
      element's box and can't widen the document. */
-  /* Two cuts of the same art. The tile is drawn to `--ribbon-min-width` on a
-     phone — 4000px, an order of magnitude wider than the page — so a phone
-     downloads the whole sheet to show a tenth of it, and the full-size cut is
-     mostly bytes for canvas that is never on screen. The narrow cut is the
-     same composition at 2400px: drawn to the same size by the rule below, so
-     the framing is untouched and only the resolution behind it drops, which on
-     art this diffuse costs nothing visible at the size a phone draws it.
+  /* The sheet is a 2560-wide Figma frame (865:3872), the largest screen it was
+     laid out for — so the layer is capped there and centred.
 
-     Both URLs come from the component for the same reason one did — see there
-     — and the choice is made here rather than by `image-set()` so it keys off
-     the page width that decides the tile's size, not the device's pixel ratio.
-     Only the URL the matching rule uses is fetched: the other stays an unread
-     custom property. */
-  background-image: var(--ribbon-art-narrow);
+     It is drawn `--ribbon-scale` times the page width, up to that 2560: phones
+     and tablets see the middle of the sheet with the ribbons passing off its
+     edges, and from the width where the two meet it stops growing and
+     narrower desktops crop the sides instead. One size rule, so nothing jumps
+     at a breakpoint. */
+  max-width: 2560px;
+  margin-inline: auto;
   background-repeat: repeat-y;
-  background-position: var(--ribbon-position-x) top;
-  background-size: max(100% * var(--ribbon-scale), var(--ribbon-min-width)) auto;
+  background-position: center top;
+  background-size: min(100% * var(--ribbon-scale), 2560px) auto;
 
-  /* move the ribbons up into the fold on desktop */
+  /* Two cuts of the same sheet, drawn to the same size, so the breakpoint only
+     changes resolution: phones take a 2560px cut, which at the ~1000px a
+     phone draws it is close to every pixel on a 3x screen; tablets up take
+     the 5120px 2x export. Both URLs come from the component, and the choice
+     is made here rather than by `image-set()` so it keys off page width, not
+     pixel ratio. Only the URL the matching rule uses is fetched. */
+  background-image: var(--ribbon-art-narrow);
+
   @media (min-width: 768px) {
     background-image: var(--ribbon-art);
-    background-position: var(--ribbon-position-x) -40vh;
   }
 
   /* The gap left below the sheet, as a share of the sheet's own height — which

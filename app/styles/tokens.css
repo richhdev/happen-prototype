@@ -39,13 +39,7 @@
 
   /* Ribbons */
   --ribbon-rate: 0.7;
-  --ribbon-scale: 3.8;
-  --ribbon-min-width: 4000px;
-  --ribbon-position-x: 55%;
-
-  @media (min-width: 768px) {
-    --ribbon-position-x: center;
-  }
+  --ribbon-scale: 2.5;
 
   /* Layout */
   --layout-max-width: 1200px;

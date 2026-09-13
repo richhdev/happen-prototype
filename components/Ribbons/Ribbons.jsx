@@ -48,8 +48,8 @@ export default function Ribbons() {
       ref={ref}
       className={styles.ribbonsLayer}
       style={{
-        "--ribbon-art": `url(${asset("/assets/ribbons-layer-12.webp")})`,
-        "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-9-mobile.webp")})`,
+        "--ribbon-art": `url(${asset("/assets/ribbons-v9-7-x2.webp")})`,
+        "--ribbon-art-narrow": `url(${asset("/assets/ribbons-v9-7-mobile.webp")})`,
       }}
       aria-hidden
     />

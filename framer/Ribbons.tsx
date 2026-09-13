@@ -1,8 +1,8 @@
 // @ts-nocheck
-// Last changed 2026-09-12 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
 // Ported from components/Ribbons/Ribbons.jsx.
 //
-// .ribbonsLayer, its @supports upgrade, its @keyframes and the four --ribbon-*
+// .ribbonsLayer, its @supports upgrade, its @keyframes and the two --ribbon-*
 // tokens all ship in the sheet. The scale is video -2, ribbons -1, content 0,
 // mobile overlay 4, nav 5, nav hue guard 6, preloader 7. Paste the sheet and
 // VideoBackground.tsx together — the sheet alone leaves Framer's page
@@ -17,11 +17,12 @@ import { asset } from "./Primitives.tsx";
 
 injectHappenCSS();
 
-// Two cuts of the same composition. A media query in the sheet picks one, so
-// only the matching URL is ever fetched.
+// Two cuts of the same v9-7 sheet: 5120px (2x) for tablets up, 2560px for
+// phones. A media query in the sheet picks one, so only the matching URL is
+// ever fetched.
 const ART = {
-  "--ribbon-art": `url(${asset("/assets/ribbons-layer-12.webp")})`,
-  "--ribbon-art-narrow": `url(${asset("/assets/ribbons-layer-9-mobile.webp")})`,
+  "--ribbon-art": `url(${asset("/assets/ribbons-v9-7-x2.webp")})`,
+  "--ribbon-art-narrow": `url(${asset("/assets/ribbons-v9-7-mobile.webp")})`,
 };
 
 // The layer's height and travel are percentages, so they need a positioned
