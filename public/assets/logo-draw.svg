@@ -7,7 +7,7 @@
       stroke-linejoin: round;
       stroke-dasharray: 1000 1000;
       stroke-dashoffset: 1000;
-      animation-duration: 4s;
+      animation-duration: 1.5s;
       animation-timing-function: linear;
       animation-iteration-count: 1;
       animation-fill-mode: forwards;

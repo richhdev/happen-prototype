@@ -1,11 +1,24 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import styles from "./Preloader.module.css";
+
+// Memoised so the phase change that starts the fade never re-renders it: when
+// it did, React wrote the markup back in, which restarted the draw under the
+// fade.
+const PreloaderLogo = memo(function PreloaderLogo({ logoMarkup }) {
+  return (
+    <div
+      className={styles.preloaderLogo}
+      // Build-time artwork from public/assets/logo-draw.svg, not user input.
+      dangerouslySetInnerHTML={{ __html: logoMarkup }}
+    />
+  );
+});
 
 // The artwork's whole timeline: the mark draws itself over the first three
 // quarters, and the last quarter is the beat it holds once finished. So this is
 // the floor on its own — the overlay never leaves mid-stroke, however fast the
-// page arrives.
+// page arrives. Must match the animation-duration baked into logo-draw.svg.
 const DRAW_MS = 1500;
 
 // The fade out, and the CSS transition it drives.
@@ -81,7 +94,6 @@ export default function PreloaderOverlay({ logoMarkup }) {
         tabIndex={0}
         className={`${styles.preloaderOverlay}${phase === "leaving" ? ` ${styles.preloaderLeaving}` : ""}`}
         style={{
-          "--preloader-draw": `${DRAW_MS}ms`,
           "--preloader-fade": `${FADE_MS}ms`,
         }}
         onClick={() => leaveRef.current()}
@@ -92,11 +104,7 @@ export default function PreloaderOverlay({ logoMarkup }) {
           }
         }}
       >
-        <div
-          className={styles.preloaderLogo}
-          // Build-time artwork from public/assets/logo-draw.svg, not user input.
-          dangerouslySetInnerHTML={{ __html: logoMarkup }}
-        />
+        <PreloaderLogo logoMarkup={logoMarkup} />
       </div>
     </>
   );
