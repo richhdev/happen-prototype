@@ -2,9 +2,16 @@
   position: fixed;
   inset: 0;
   z-index: -2;
-  background: var(--color-charcoal);
+  background: var(--color-charcoal) var(--video-background-poster) center /
+    cover no-repeat;
   overflow: hidden;
   pointer-events: none;
+}
+
+@media (orientation: portrait) {
+  .videoBackgroundContainer {
+    background-image: var(--video-background-poster-mobile);
+  }
 }
 
 .videoBackgroundVideo {

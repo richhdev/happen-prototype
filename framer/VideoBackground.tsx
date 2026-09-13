@@ -1,9 +1,9 @@
 // @ts-nocheck
-// Last changed 2026-09-12 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
 // Ported from components/VideoBackground/VideoBackground.jsx.
 //
-// .videoBackgroundContainer and .videoBackgroundVideo already ship in the
-// sheet, so nothing here needs it recompiled.
+// The portrait poster swap lives in the sheet (.videoBackgroundContainer), so
+// re-paste GlobalStylesheet.tsx alongside this file.
 
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
@@ -13,9 +13,18 @@ import { asset } from "./Primitives.tsx"
 
 injectHappenCSS()
 
-const POSTER = asset("/assets/video-background-poster.jpg")
 const WEBM = asset("/assets/video-background.webm")
 const MP4 = asset("/assets/video-background.mp4")
+const MOBILE_WEBM = asset("/assets/video-background-mobile.webm")
+const MOBILE_MP4 = asset("/assets/video-background-mobile.mp4")
+const PORTRAIT = "(orientation: portrait)"
+
+// Posters are painted by the container (poster="" can't take a media query);
+// url() in the sheet can't be rewritten by asset().
+const POSTER_VARS = {
+  "--video-background-poster": `url(${asset("/assets/video-background-poster.jpg")})`,
+  "--video-background-poster-mobile": `url(${asset("/assets/video-background-mobile-poster.jpg")})`,
+}
 
 // The video sits at -2 and the ribbons at -1, below zero because Framer wraps
 // every section in its own divs and gives them whatever z-index it likes — on
@@ -66,11 +75,13 @@ function Video({ playing }) {
       loop
       muted
       playsInline
-      poster={POSTER}
       // autoPlay makes browsers fetch enough to start regardless, so this only
       // does anything on the canvas, where the video is left paused.
       preload="metadata"
     >
+      {/* First matching source wins, and only at load: rotating won't swap. */}
+      <source src={MOBILE_WEBM} type="video/webm" media={PORTRAIT} />
+      <source src={MOBILE_MP4} type="video/mp4" media={PORTRAIT} />
       <source src={WEBM} type="video/webm" />
       <source src={MP4} type="video/mp4" />
     </video>
@@ -118,7 +129,7 @@ export default function VideoBackground() {
       <div
         className="videoBackgroundContainer"
         aria-hidden="true"
-        style={{ position: "absolute" }}
+        style={{ ...POSTER_VARS, position: "absolute" }}
       >
         <Video playing={false} />
       </div>
@@ -130,7 +141,11 @@ export default function VideoBackground() {
   if (!host) return null
 
   return createPortal(
-    <div className="videoBackgroundContainer" aria-hidden="true">
+    <div
+      className="videoBackgroundContainer"
+      aria-hidden="true"
+      style={POSTER_VARS}
+    >
       <Video playing={true} />
     </div>,
     host,
