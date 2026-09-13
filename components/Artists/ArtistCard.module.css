@@ -218,6 +218,7 @@
 }
 
 .artistCardBadge {
+  background-color: #ff152b;
   color: var(--color-charcoal);
 }
 
@@ -264,6 +265,7 @@
 }
 
 .artistCardLink {
+  padding: 24px 0 0 0;
   pointer-events: auto;
   color: var(--color-cream);
   text-decoration: none;
