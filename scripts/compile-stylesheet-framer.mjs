@@ -122,9 +122,17 @@ const unwrapGlobal = (css) =>
   css.replace(/:global\s*\(([^)]*)\)/g, "$1");
 
 // Local @imports are satisfied by the concatenation itself, so they go. Remote
-// ones (the Inter webfont) have to survive, and CSS requires every @import to
-// precede the rest of the sheet, so they are collected and re-emitted at the top.
-const remoteImports = new Set();
+// ones have to survive, and CSS requires every @import to precede the rest of
+// the sheet, so they are collected and re-emitted at the top.
+//
+// Inter is seeded here rather than read from tokens.css. The Next site
+// self-hosts it (app/fonts.css, which this script does not compile), because
+// an @import in its CSS held the first paint for two extra round trips; Framer
+// has no local asset to point at, so it keeps Google. Variable range covers
+// the 300/500/700/800/900 weights the components ask for.
+const remoteImports = new Set([
+  `@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");`,
+]);
 
 const takeImports = (css) =>
   css.replace(/^\s*@import[^;\n]+;\s*$/gm, (stmt) => {

@@ -10,6 +10,7 @@ export default function Phone({ children }) {
         src={asset("/assets/testimonials-phone-frame.png")}
         alt=""
         className={styles.phoneFrame}
+        loading="lazy"
       />
     </div>
   );

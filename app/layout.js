@@ -1,4 +1,6 @@
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { asset } from "@/lib/data";
+import "./fonts.css";
 import "./globals.css";
 
 const TITLE = "Happen — Melbourne Events Agency";
@@ -46,12 +48,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-AU">
       <head>
-        {/* Inter is pulled in by an @import in globals.css. These shave a round
-            trip off that chain, which next/font used to avoid by self-hosting. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* Inter is self-hosted (app/fonts.css). Without this the file is only
+            discovered once the CSS has arrived and a heading has matched it. */}
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
+          rel="preload"
+          href={asset("/assets/fonts/inter-latin-var.woff2")}
+          as="font"
+          type="font/woff2"
           crossOrigin="anonymous"
         />
       </head>

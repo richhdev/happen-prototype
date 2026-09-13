@@ -16,7 +16,7 @@ export default function Vendors() {
         src={asset("/assets/vendor-bg.webp")}
         alt=""
         className={styles.vendorsSurface}
-        fetchPriority="high"
+        loading="lazy"
         decoding="async"
       />
 
@@ -53,11 +53,21 @@ function VendorCard({ event }) {
   return (
     <div className={styles.vendorsCard}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.img} alt="" className={styles.vendorsCardImage} />
+      <img
+        src={event.img}
+        alt=""
+        className={styles.vendorsCardImage}
+        loading="lazy"
+      />
 
       <div className={styles.vendorsCardBody}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={event.logo} alt={event.name} className={styles.vendorsLogo} />
+        <img
+          src={event.logo}
+          alt={event.name}
+          className={styles.vendorsLogo}
+          loading="lazy"
+        />
 
         <ButtonOutlineMedium
           href={event.link}

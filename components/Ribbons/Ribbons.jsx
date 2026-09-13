@@ -1,10 +1,28 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { preload } from "react-dom";
 import { asset } from "@/lib/data";
 import styles from "./Ribbons.module.css";
 
 export default function Ribbons() {
   const ref = useRef(null);
+
+  // The sheet spans the first screen, so it is what Lighthouse times as the
+  // page's largest paint — but as a url() behind a custom property it is only
+  // found once the CSS has been applied, and then fetched at low priority.
+  // These put it in the <head> at the page's own priority. The media queries
+  // mirror the breakpoint in Ribbons.module.css, so only the cut that rule will
+  // use is fetched.
+  preload(asset("/assets/ribbons-v9-7-mobile.webp"), {
+    as: "image",
+    fetchPriority: "high",
+    media: "(max-width: 767.98px)",
+  });
+  preload(asset("/assets/ribbons-v9-7-x2.webp"), {
+    as: "image",
+    fetchPriority: "high",
+    media: "(min-width: 768px)",
+  });
 
   // Firefox has no scroll timelines — not even the `animation-timeline` property
   // — so the CSS upgrade never applies there and the sheet would sit still while

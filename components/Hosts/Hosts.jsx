@@ -14,6 +14,7 @@ export default function Hosts() {
         src={asset("/assets/bg-graphic.webp")}
         alt=""
         className={styles.hostsSurface}
+        loading="lazy"
       />
 
       <Heading3 as="h2" className={styles.hostsTitle}>

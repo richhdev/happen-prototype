@@ -45,7 +45,13 @@ function EventCard({ event }) {
   return (
     <article className={styles.eventsCard}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.img} alt="" className={styles.eventsImage} style={event.crop} />
+      <img
+        src={event.img}
+        alt=""
+        className={styles.eventsImage}
+        style={event.crop}
+        loading="lazy"
+      />
 
       <div className={styles.eventsOverlay}>
         {label && <Badge color={color}>{label}</Badge>}

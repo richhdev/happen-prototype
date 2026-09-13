@@ -150,6 +150,7 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
         alt=""
         className={styles.workImage}
         style={item.crop}
+        loading="lazy"
       />
 
       <div className={styles.workOverlay} />
@@ -165,6 +166,7 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
             "--logo-h": item.logoHeight,
             "--logo-opacity": item.logoOpacity,
           }}
+          loading="lazy"
         />
       </div>
 

@@ -63,7 +63,12 @@ export function ArtistCard({
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={artist.img} alt="" className={styles.artistCardImage} />
+        <img
+          src={artist.img}
+          alt=""
+          className={styles.artistCardImage}
+          loading="lazy"
+        />
         <div className={styles.artistCardOverlay} />
 
         {/* Sits under the content so the artist's links stay clickable in

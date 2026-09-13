@@ -12,7 +12,12 @@ export function InstagramCard({ src, href, className }) {
       aria-label="Happen Group Instagram post"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" className={styles.instagramCardImage} />
+      <img
+        src={src}
+        alt=""
+        className={styles.instagramCardImage}
+        loading="lazy"
+      />
     </a>
   );
 }
