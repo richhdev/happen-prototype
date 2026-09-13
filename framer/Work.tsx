@@ -349,6 +349,8 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
           crop. Nothing in WORK needs one yet, so it is undefined throughout. */}
       <img
         src={item.img}
+        srcSet={`${item.img.replace(/\.webp$/, "-mobile.webp")} 640w, ${item.img} 840w`}
+        sizes="(min-width: 768px) 420px, 320px"
         alt=""
         className="workImage"
         style={item.crop}

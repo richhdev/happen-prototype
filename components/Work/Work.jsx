@@ -147,6 +147,8 @@ function WorkCard({ item, index, step, x, active, cardRef, onActivate }) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={item.img}
+        srcSet={`${item.img.replace(/\.webp$/, "-mobile.webp")} 640w, ${item.img} 840w`}
+        sizes="(min-width: 768px) 420px, 320px"
         alt=""
         className={styles.workImage}
         style={item.crop}

@@ -39,7 +39,15 @@ for src in source-assets/*/*.png source-assets/*/*.jpg; do
     esac
   fi
 
-  if [ "$force" != "--force" ] && [ -f "$out" ] && [ "$out" -nt "$src" ]; then
+  # Sets that ship a -mobile cut only count as fresh once that cut exists too,
+  # so a newly added cut gets built without needing --force.
+  mobile="public/assets/$name-mobile.webp"
+  case "$(dirname "$src")" in
+    source-assets/Ribbons | source-assets/work) ;;
+    *) mobile="$out" ;;
+  esac
+
+  if [ "$force" != "--force" ] && [ -f "$out" ] && [ "$out" -nt "$src" ] && [ -f "$mobile" ]; then
     continue
   fi
 
@@ -67,6 +75,12 @@ for src in source-assets/*/*.png source-assets/*/*.jpg; do
     # corners. It also drops the part-transparent edge rows Figma leaves on a frame
     # whose height wasn't a whole pixel.
     cwebp -quiet -q "$QUALITY" -m 6 -sharp_yuv -noalpha "$src" -o "$out"
+    # The work cards feature at 320px on phones against 420px from 768 up, so the
+    # 840px exports are 2x desktop but ~2.6x phone. A 640 cut is 2x the phone card
+    # and halves the set, ~1.2MB to ~620KB; Work picks it with srcset.
+    if [ "$(dirname "$src")" = source-assets/work ]; then
+      cwebp -quiet -resize 640 0 -q "$QUALITY" -m 6 -sharp_yuv -noalpha "$src" -o "public/assets/$name-mobile.webp"
+    fi
   fi
   echo "$name  $(du -k "$src" | cut -f1)k -> $(du -k "$out" | cut -f1)k"
 done
