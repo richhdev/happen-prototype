@@ -11,7 +11,8 @@
     "screenshot": "node scripts/screenshot.mjs",
     "assets": "./scripts/build-assets.sh",
     "prefix-classes": "node scripts/prefix-classes.mjs",
-    "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs"
+    "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs",
+    "lighthouse": "lighthouse http://localhost:3000 --chrome-flags=\"--headless=new\" --output=html --output-path=.lighthouse/report.html --view"
   },
   "dependencies": {
     "next": "^15.5.18",
@@ -22,6 +23,7 @@
     "eslint": "^9",
     "eslint-config-next": "^15.1.6",
     "framer-motion": "^11.18.2",
+    "lighthouse": "^13.4.1",
     "lightningcss": "^1.33.0",
     "playwright": "^1.62.1"
   }

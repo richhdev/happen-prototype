@@ -15,6 +15,7 @@
 *.pem
 .screenshots/
 .playwright-mcp/
+.lighthouse/
 
 # debug
 npm-debug.log*
