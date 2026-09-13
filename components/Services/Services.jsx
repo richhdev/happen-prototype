@@ -134,6 +134,8 @@ export default function Services() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={service.img}
+                  srcSet={`${service.img.replace(/\.webp$/, "-mobile.webp")} 800w, ${service.img} 950w`}
+                  sizes="(min-width: 1024px) 475px, min(100vw, 400px)"
                   alt=""
                   className={styles.servicesSlideImage}
                   loading={i === 0 ? undefined : "lazy"}

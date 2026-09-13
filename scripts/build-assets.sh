@@ -43,7 +43,7 @@ for src in source-assets/*/*.png source-assets/*/*.jpg; do
   # so a newly added cut gets built without needing --force.
   mobile="public/assets/$name-mobile.webp"
   case "$(dirname "$src")" in
-    source-assets/Ribbons | source-assets/work) ;;
+    source-assets/Ribbons | source-assets/work | source-assets/services) ;;
     *) mobile="$out" ;;
   esac
 
@@ -80,6 +80,12 @@ for src in source-assets/*/*.png source-assets/*/*.jpg; do
     # and halves the set, ~1.2MB to ~620KB; Work picks it with srcset.
     if [ "$(dirname "$src")" = source-assets/work ]; then
       cwebp -quiet -resize 640 0 -q "$QUALITY" -m 6 -sharp_yuv -noalpha "$src" -o "public/assets/$name-mobile.webp"
+    fi
+    # The services card is 475px from 1024 up, which the 950px exports are 2x of,
+    # but caps at 400px below that. An 800 cut is 2x the phone card and takes
+    # the set from ~1.05MB to ~450KB; Services picks it with srcset.
+    if [ "$(dirname "$src")" = source-assets/services ]; then
+      cwebp -quiet -resize 800 0 -q "$QUALITY" -m 6 -sharp_yuv -noalpha "$src" -o "public/assets/$name-mobile.webp"
     fi
   fi
   echo "$name  $(du -k "$src" | cut -f1)k -> $(du -k "$out" | cut -f1)k"
