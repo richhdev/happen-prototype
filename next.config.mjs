@@ -29,6 +29,11 @@ const nextConfig = {
   // files, so a day in the browser with a week of background revalidation is
   // both faster and still lets a replaced image roll out on its own.
   async headers() {
+    // Next applies these under `next dev` too, where a re-exported asset keeps
+    // its name and would sit stale in the browser for a day. Dev keeps Next's
+    // revalidate-every-time default instead.
+    if (process.env.NODE_ENV !== "production") return [];
+
     return [
       {
         source: "/assets/:path*",
