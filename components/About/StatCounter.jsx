@@ -13,17 +13,12 @@ import { EASE } from "@/lib/data";
 
 // Counts up from 0 to `value` each time it scrolls into view (re-triggers, like
 // the other reveals in the site).
-export function StatCounter({
-  value,
-  suffix = "",
-  duration = 1.8,
-  className,
-}) {
+export function StatCounter({ value, suffix = "", duration = 1.8, className }) {
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.6, margin: "0px 0px -60px 0px" });
   const reduceMotion = useReducedMotion();
 
-  const count = useMotionValue(reduceMotion ? value : 0);
+  const count = useMotionValue(value);
   const text = useTransform(count, (n) => Math.round(n) + suffix);
 
   useEffect(() => {
