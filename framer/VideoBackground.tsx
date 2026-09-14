@@ -13,17 +13,17 @@ import { asset } from "./Primitives.tsx"
 
 injectHappenCSS()
 
-const WEBM = asset("/assets/video-background.webm")
-const MP4 = asset("/assets/video-background.mp4")
-const MOBILE_WEBM = asset("/assets/video-background-mobile.webm")
-const MOBILE_MP4 = asset("/assets/video-background-mobile.mp4")
+const WEBM = asset("/assets/video-background-v2.webm")
+const MP4 = asset("/assets/video-background-v2.mp4")
+const MOBILE_WEBM = asset("/assets/video-background-v2-mobile.webm")
+const MOBILE_MP4 = asset("/assets/video-background-v2-mobile.mp4")
 const PORTRAIT = "(orientation: portrait)"
 
 // Posters are painted by the container (poster="" can't take a media query);
 // url() in the sheet can't be rewritten by asset().
 const POSTER_VARS = {
-  "--video-background-poster": `url(${asset("/assets/video-background-poster.jpg")})`,
-  "--video-background-poster-mobile": `url(${asset("/assets/video-background-mobile-poster.jpg")})`,
+  "--video-background-poster": `url(${asset("/assets/video-background-v2-poster.jpg")})`,
+  "--video-background-poster-mobile": `url(${asset("/assets/video-background-v2-mobile-poster.jpg")})`,
 }
 
 // The video sits at -2 and the ribbons at -1, below zero because Framer wraps

@@ -9,8 +9,8 @@ export function VideoBackground() {
       // Posters are painted by the container (poster="" can't take a media
       // query); url() in the CSS module can't be rewritten by asset().
       style={{
-        "--video-background-poster": `url(${asset("/assets/video-background-poster.jpg")})`,
-        "--video-background-poster-mobile": `url(${asset("/assets/video-background-mobile-poster.jpg")})`,
+        "--video-background-poster": `url(${asset("/assets/video-background-v2-poster.jpg")})`,
+        "--video-background-poster-mobile": `url(${asset("/assets/video-background-v2-mobile-poster.jpg")})`,
       }}
     >
       <video
@@ -23,20 +23,20 @@ export function VideoBackground() {
       >
         {/* First matching source wins, and only at load: rotating won't swap. */}
         <source
-          src={asset("/assets/video-background-mobile.webm")}
+          src={asset("/assets/video-background-v2-mobile.webm")}
           type="video/webm"
           media="(orientation: portrait)"
         />
         <source
-          src={asset("/assets/video-background-mobile.mp4")}
+          src={asset("/assets/video-background-v2-mobile.mp4")}
           type="video/mp4"
           media="(orientation: portrait)"
         />
         <source
-          src={asset("/assets/video-background.webm")}
+          src={asset("/assets/video-background-v2.webm")}
           type="video/webm"
         />
-        <source src={asset("/assets/video-background.mp4")} type="video/mp4" />
+        <source src={asset("/assets/video-background-v2.mp4")} type="video/mp4" />
       </video>
     </div>
   );
