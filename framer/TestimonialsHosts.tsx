@@ -65,28 +65,28 @@ const TESTIMONIALS = [
     role: "Thick as Thieves",
     quote:
       "We've worked with the Happen team for years and it's been smooth sailing from day one. The care they put into their shows from sound, creative, artist experience and care is unmatched. Highly recommend.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-jacob-malmo.webp"),
   },
   {
     name: "Daniel Hildebrand",
     role: "Astral People",
     quote:
       "Working with Happen Group has been a seamless experience from day one. Their team has helped us build meaningful community engagement through a highly effective micro-influencer campaign, while their street team has played an important role in increasing awareness and driving ticket sales for our events. They're proactive, easy to work with, and consistently deliver with professionalism and care.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-dan-hildebrand.webp"),
   },
   {
     name: "Miranda Nicol",
     role: "Untitled Group",
     quote:
       "We've loved working with Paris and Dana at Happen Group on the retail precinct at Beyond the Valley and Pitch Music & Arts. They come to every conversation prepared, stay on top of timelines, and make the whole process feel collaborative, which is exactly what you need in the lead-up to a major festival. We always feel like our vendor relationships are in good hands.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-miranda-nicol.webp"),
   },
   {
     name: "Mike Toner",
     role: "Thick as Thieves",
     quote:
       "I have been working with Happen Group for a number of years now, and everything from their communication, professionalism and attention to detail is top notch. They really know how to wear the hats of everyone from promoters, to punters, to site operators and everyone else, which results in a win-win for all working with them. Could not recommend highly enough.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-mike-toner.webp"),
   },
   {
     name: "Annie Tetzlaff",
@@ -107,7 +107,7 @@ const TESTIMONIALS = [
     role: "Director, Untitled Group",
     quote:
       "We have worked with the team at Happen Group for over 10 years now in a number of different roles. Whether we are contracting them to deliver an area of one of our festivals or working together on an event it is always a great experience.",
-    avatar: asset("/assets/testimonial-avatar-placeholder.svg"),
+    avatar: asset("/assets/testimonial-avatar-fil-palermo.webp"),
   },
 ]
 

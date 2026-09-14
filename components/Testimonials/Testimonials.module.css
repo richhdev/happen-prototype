@@ -1,11 +1,8 @@
-/* Mobile first: the thread sits straight on the cream panel and is clipped by
-   it. From 768px up it moves inside the phone (see Phone.module.css) and
-   scrolls within the screen. */
+/* Mobile: the msg thread sits on the cream surface.
+   768px up it moves inside the phone */
 
 .testimonialsSurface {
-  /* How far down the first message starts, and how tall the fade above it is.
-     Sized to clear the heading at its tallest (three lines in a narrow
-     column), so the thread never surfaces from behind it mid-word. */
+  /* How far down the first message starts, and how tall the fade above it is. */
   --thread-top: 158px;
 
   position: relative;
@@ -14,7 +11,7 @@
   align-items: center;
   gap: var(--space-24);
   width: 100%;
-  /* Fixed so the thread below is clipped by it, as designed. */
+  /* Fixed so the thread below is clipped by it off the edge of the surface */
   height: 499px;
   padding: 30px var(--space-24) 0;
   overflow: hidden;
@@ -24,8 +21,12 @@
 
   @media (min-width: 768px) {
     gap: var(--space-64);
-    height: 698px;
+    height: 655px;
     padding: var(--space-64) var(--space-32) 0;
+  }
+
+  @media (min-width: 1024px) {
+    height: 100%;
   }
 }
 
@@ -59,9 +60,6 @@
 
 /* --- Thread ------------------------------------------------------------ */
 
-/* Scrolls within whatever is holding it — the panel on mobile, the phone's
-   screen on desktop. The top padding is what lets the first message sit clear
-   of the heading while later ones can still travel up behind it. */
 .testimonialsFeed {
   display: flex;
   flex-direction: column;
@@ -85,21 +83,16 @@
 .testimonialsFeed::-webkit-scrollbar {
   display: none;
 }
-
+/* avatar on the right, bubble pushed left. */
 .testimonialsRow {
   display: flex;
-  /* Packs the pair against its own side of the thread, which only shows while
-     the bubble is a typing pill and doesn't fill the row. row-reverse flips
-     what "end" means, so this holds for both sides. */
   justify-content: flex-end;
   align-items: flex-end;
   gap: 10px;
-  /* The pop-open scale grows out of the tail corner, so a message unfolds from
-     where it's anchored rather than from its middle. */
   transform-origin: bottom right;
 }
 
-/* Odd entries mirror: avatar on the left, bubble pushed right. */
+/* Odd entries: avatar on the left, bubble pushed right. */
 .testimonialsRowFlipped {
   flex-direction: row-reverse;
   transform-origin: bottom left;
