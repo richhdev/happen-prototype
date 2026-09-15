@@ -13,8 +13,8 @@ export const VENUES = [
     name: "Brown Alley",
     address: "Corner of King & Lonsdale St, CBD",
     description:
-      "Melbourne's most iconic underground club with four rooms, world-class sound, and a 24-hour licence inside a heritage building on King Street.",
-    capacity: "Capacity 1000",
+      "Melbourne's most iconic underground club. Four rooms, world-class sound and a 24-hour licence inside a heritage building on King Street.",
+    capacity: "Capacity 1200",
     img: asset("/assets/venue-brown-alley.webp"),
   },
 ];

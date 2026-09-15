@@ -69,7 +69,10 @@ export const WORK = [
   },
   {
     name: "Souled Out",
-    tag: ["Artist Services"],
+    tag: [
+      "Artist Services, Nationwide",
+      "Industry Ticketing / Community Building",
+    ],
     img: asset("/assets/work-souled-out.webp"),
     logo: asset("/assets/client-souled-out.webp"),
     logoWidth: 286,
