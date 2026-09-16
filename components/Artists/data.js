@@ -38,7 +38,7 @@ export const ARTISTS = [
     name: "Vanna",
     genre: "Rave",
     img: asset("/assets/artist-vanna.webp"),
-    bio: 'Melbourne-based, self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
+    bio: 'Melbourne raised, now based Gold Coast, Vanna is a self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
     links: [
       { label: "Soundcloud", href: "https://soundcloud.com/vannaspins" },
       { label: "Instagram", href: "https://instagram.com/vannaspins" },
