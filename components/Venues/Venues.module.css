@@ -9,7 +9,7 @@
 .venuesSurface {
   display: flex;
   flex-direction: column;
-  gap: var(--space-32);
+  gap: var(--space-16);
   width: 100%;
   max-width: 900px;
   margin-inline: auto;

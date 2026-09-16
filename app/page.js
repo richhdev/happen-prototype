@@ -28,6 +28,7 @@ export default function Home() {
         <Hero />
         <Events />
         <Vendors />
+        <Hosts />
         <Work />
         <Services />
         <Artists />
@@ -35,7 +36,6 @@ export default function Home() {
         <About />
         <Section innerClassName={styles.pageTestimonialsHostsGroup}>
           <Testimonials />
-          <Hosts />
         </Section>
         <Instagram />
         <Contact />

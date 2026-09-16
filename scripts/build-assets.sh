@@ -28,6 +28,12 @@ for src in source-assets/*/*.png source-assets/*/*.jpg; do
   name=$(basename "${src%.*}")
   out="public/assets/$name.webp"
 
+  # graphics/ is the pristine high-res library the section art is cropped from,
+  # not shipping art: a section takes its own crop into its own folder.
+  if [ "$(dirname "$src")" = source-assets/graphics ]; then
+    continue
+  fi
+
   # The individual ribbons are already cut out on transparency, and ship as
   # ribbon-1 and ribbon-2, each with a -mobile cut. The old whole-page sheet
   # (still used by framer/Ribbons.tsx) has its black keyed out by
