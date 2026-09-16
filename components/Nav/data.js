@@ -6,6 +6,6 @@ export const LINKS = [
   { id: "b-artists", label: "Artists" },
   // { id: "a-venues", label: "Venues" },
   { id: "a-about", label: "About" },
-  { id: "a-hosts", label: "Hosts" },
+  // { id: "a-hosts", label: "Hosts" },
   { id: "a-contact", label: "Contact" },
 ];

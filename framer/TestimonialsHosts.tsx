@@ -111,20 +111,20 @@ const TESTIMONIALS = [
   },
 ]
 
-// Both links are Google Forms the client owns, which is why they open in a new
+// Both links are Fillout forms the client owns, which is why they open in a new
 // tab rather than routing anywhere on the site.
 const HOST_CARDS = [
   {
     title: "Hosts & Promoters",
     description: "Turn your network into a side hustle.",
     label: "Join the team",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSdxwNLMLijvqMuaeHtV8M2FsPSfGB4g0ZVlATtbpdbBntmL6A/viewform",
+    href: "https://happengroup.fillout.com/t/hMmqKzd35Gus",
   },
   {
     title: "Casual Event Workers",
     description: "Pick up casual work at Australia's biggest events.",
     label: "Register",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSfGExZGlBSpbc4ciG6nipO5i0NgDDcdFpXRqtsu3CWuMCBO9Q/viewform",
+    href: "https://happengroup.fillout.com/casual_staff_eoi_summer_26_27",
   },
 ]
 

@@ -59,13 +59,13 @@ const LINK_CARDS = [
     description:
       "Register your interest to hear about casual work opportunities in the events industry",
     label: "Join the team",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSfGExZGlBSpbc4ciG6nipO5i0NgDDcdFpXRqtsu3CWuMCBO9Q/viewform",
+    href: "https://happengroup.fillout.com/casual_staff_eoi_summer_26_27",
   },
   {
     title: "Promoter / Influencer Sign up",
     description: "If you know how to hype a party, we want you on the team",
     label: "Register",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSdxwNLMLijvqMuaeHtV8M2FsPSfGB4g0ZVlATtbpdbBntmL6A/viewform",
+    href: "https://happengroup.fillout.com/t/hMmqKzd35Gus",
   },
 ]
 
