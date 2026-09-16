@@ -26,7 +26,7 @@ pnpm compile-stylesheet-framer
 ```
 
 That script (`scripts/compile-stylesheet-framer.mjs`) concatenates `tokens.css`,
-`utilities.css`, `globals.css`, `page.module.css` and all 27 component modules into
+`utilities.css`, `globals.css`, `page.module.css` and all 28 component modules into
 `framer/happen.css`, plus two Framer outputs:
 
 - **`framer/GlobalStylesheet.tsx`** — the sheet as a template string with an
@@ -75,7 +75,7 @@ Limit the `GlobalStylesheetHead` entry's **Page** field to the Happen pages
 `globals.css` is unscoped, so site-wide it would restyle every other page on
 happengroup.com.au.
 
-All 219 class names are already globally unique and camelCase-prefixed by stylesheet
+All 228 class names are already globally unique and camelCase-prefixed by stylesheet
 (`heroSection`, `navUnderline`, `artistCardWrap`). The script hard-fails if two
 stylesheets ever define the same name, or if JSX references a `styles.X` that no rule
 defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.tsx` and
@@ -124,7 +124,9 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
     */
    ```
 9. **Property controls only where someone edits the thing.** Sections take their content
-   from the repo and expose nothing. A component built to be filled in from the panel
+   from the repo and expose nothing, unless the client has asked to edit that section
+   themselves — `Vendors.tsx` and `VendorsClosed.tsx` are the two that have, and both put
+   their copy and CTAs on controls. A component built to be filled in from the panel
    puts every field on `addPropertyControls`, with the default in a `defaultValue` and in
    the parameter default — not in `Component.defaultProps`, which React 19 ignores on a
    function component and warns about. Anything reading Framer's sizing out of `style`
@@ -161,7 +163,7 @@ that file then has to be re-pasted into Framer.
 **In Framer and working:** `GlobalStylesheet.tsx`, `Primitives.tsx`, `Nav.tsx`,
 `Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
-**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
+**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
 `Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
 `Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
@@ -175,6 +177,50 @@ section is pasted, since a section that imports a name the pasted copy lacks doe
 appear in the Insert panel.
 
 **Still to port:** Preloader. Rough page order is in `app/page.js`.
+
+### Vendors
+
+The vendors band has two states, and they are two components rather than one with a
+variant, so swapping them is a swap in the page stack:
+
+- **`Vendors.tsx`** — applications open. A card per festival, edited from the section's
+  own properties panel: heading, body, and an **Events** array of up to three
+  `{ name, logo, CTA, link }`. Three is the cap because a fourth scrolls the row
+  sideways on desktop, which the layout was never drawn for.
+- **`VendorsClosed.tsx`** — between intakes. Same shell, same `#a-vendors` id, same
+  backdrop; the card row becomes one card with a generic message and a CTA to an
+  expression-of-interest form. Heading, body, card copy, CTA and link are all on
+  controls.
+
+The closed card takes the footprint the card row takes — two cards plus the gap, so 572px at
+1024px and 740px from 1200px — which is why the band keeps its height and proportions
+whichever one is in the stack.
+
+The closed card, like `.hostsCard`, is a flat charcoal background. Both used to carry their
+own copy of the band backdrop under a `mix-blend-mode: darken` fill; that was dropped for
+the plain background, so there is no blend left to break inside Framer's container.
+
+### TestimonialsHosts is out of date
+
+`TestimonialsHosts.tsx` was ported before Hosts was renamed in the repo and has drifted.
+It has never been pasted into Framer, so nothing is broken on the live site, but it will
+not render correctly if it is pasted as it stands:
+
+| In the file | In the repo now |
+|---|---|
+| `hostsCards` | `hostsCardGroup` |
+| `hostsTitle` | `hostsHeading` |
+| `asset("/assets/bg-graphic.webp")` | `hosts-bg.webp` |
+| no wrapper | `hostsContentGroup` > `hostsCopy` + `hostsBody` |
+| `once={false}` | `once={true}` |
+
+`hostsCards` and `hostsTitle` are defined by no stylesheet at all, so those two elements
+land unstyled. The compile script does not catch this: its "every `styles.X` exists"
+guard only reads JSX under `components/`, and `framer/` is excluded from the build and
+the linter by design.
+
+The section still points at `bg-graphic.webp`. Re-port the Hosts half from
+`components/Hosts/` before pasting it.
 
 ### Events
 

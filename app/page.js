@@ -3,7 +3,7 @@ import Nav, { NavPlaceholder } from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services/Services";
 import Work from "@/components/Work/Work";
-import Vendors from "@/components/Vendors/Vendors";
+import Vendors, { VendorsClosed } from "@/components/Vendors/Vendors";
 import Artists from "@/components/Artists/Artists";
 import About from "@/components/About/About";
 import Events from "@/components/Events/Events";
@@ -24,7 +24,8 @@ export default function Home() {
         <Ribbons />
         <Hero />
         <Events />
-        <Vendors />
+        {/* <Vendors /> */}
+        <VendorsClosed />
         <Hosts />
         <Work />
         <Services />
