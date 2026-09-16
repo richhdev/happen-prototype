@@ -1,5 +1,4 @@
 import Preloader from "@/components/Preloader/Preloader";
-import VideoBackground from "@/components/VideoBackground/VideoBackground";
 import Nav, { NavPlaceholder } from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
 import Services from "@/components/Services/Services";
@@ -37,7 +36,6 @@ export default function Home() {
         <Instagram />
         <Contact />
       </main>
-      <VideoBackground />
     </>
   );
 }

@@ -1,3 +1,9 @@
+/* Holds the video behind the header. Deliberately without a z-index of its
+   own, so the video can sit below the ribbons and not just below the header. */
+.heroScene {
+  position: relative;
+}
+
 .heroSection {
   position: relative;
   color: #eeebe3;

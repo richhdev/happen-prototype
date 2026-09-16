@@ -5,6 +5,7 @@ import { ARTISTS } from "./data";
 import { ArtistCard } from "./ArtistCard";
 import { Section } from "@/components/Section/Section";
 import { Heading2 } from "@/components/Heading/Heading";
+import VideoBackground from "@/components/VideoBackground/VideoBackground";
 import styles from "./Artists.module.css";
 
 /* How far from the pin's rest point the viewer has to scroll before the open
@@ -85,33 +86,39 @@ export default function Artists() {
   }, [isOpen]);
 
   return (
-    <Section id="b-artists" className={styles.artistsSection}>
-      <div ref={trackRef} className={styles.artistsScrollContainer}>
-        <div className={styles.artistsPinned}>
-          <div
-            className={`${styles.artistsDim} ${isOpen ? styles.artistsDimVisible : ""}`}
-            aria-hidden="true"
-          />
+    <div className={styles.artistsScene}>
+      <VideoBackground />
 
-          <div className={styles.artistsGrid}>
-            <div className={styles.artistsHeadingWrap}>
-              <Heading2 className={styles.artistsHeading}>Our artists</Heading2>
+      <Section id="b-artists" className={styles.artistsSection}>
+        <div ref={trackRef} className={styles.artistsScrollContainer}>
+          <div className={styles.artistsPinned}>
+            <div
+              className={`${styles.artistsDim} ${isOpen ? styles.artistsDimVisible : ""}`}
+              aria-hidden="true"
+            />
+
+            <div className={styles.artistsGrid}>
+              <div className={styles.artistsHeadingWrap}>
+                <Heading2 className={styles.artistsHeading}>
+                  Our artists
+                </Heading2>
+              </div>
+
+              {ARTISTS.map((artist, i) => (
+                <ArtistCard
+                  key={artist.name}
+                  artist={artist}
+                  index={i}
+                  progress={scrollYProgress}
+                  active={i === activeIndex}
+                  dimmed={isOpen && i !== activeIndex}
+                  onToggle={() => toggle(i)}
+                />
+              ))}
             </div>
-
-            {ARTISTS.map((artist, i) => (
-              <ArtistCard
-                key={artist.name}
-                artist={artist}
-                index={i}
-                progress={scrollYProgress}
-                active={i === activeIndex}
-                dimmed={isOpen && i !== activeIndex}
-                onToggle={() => toggle(i)}
-              />
-            ))}
           </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+    </div>
   );
 }

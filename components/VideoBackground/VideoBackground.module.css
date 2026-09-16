@@ -1,15 +1,50 @@
-.videoBackgroundContainer {
-  position: fixed;
+/* The crop: the section's own box, and the only thing of this that is visible.
+   `clip` rather than `hidden` — hidden would make this a scroll container, and
+   the sticky viewport below would pin to it instead of to the screen. */
+.videoBackground {
+  position: absolute;
   inset: 0;
+  /* Below the ribbons at -1. The section's wrapper has no z-index of its own,
+     so this orders against the page rather than against the section. */
   z-index: -2;
-  background: var(--color-charcoal) var(--video-background-poster) center /
-    cover no-repeat;
-  overflow: hidden;
+  overflow: clip;
   pointer-events: none;
 }
 
+/* The header's crop reaches the top of the page, past the spacer holding the
+   space for the fixed nav. */
+.videoBackgroundBehindNav {
+  top: calc(-1 * var(--nav-height-mobile));
+
+  @media (min-width: 768px) {
+    top: calc(-1 * var(--nav-height-desktop));
+  }
+}
+
+/* What the sticky viewport is clamped to, hanging a screen past the crop at
+   both ends. A sticky box cannot leave its containing block, so clamped to the
+   section itself it would be dragged along by the section's last screen instead
+   of holding still — and would ride in on the section's first screen rather
+   than being uncovered by it. Overhanging puts both clamps out past the point
+   where the crop still shows anything, which leaves the viewport pinned to the
+   screen the whole time the section is in view. */
+.videoBackgroundTrack {
+  position: absolute;
+  inset: -100vh 0;
+}
+
+/* Pinned to the screen: the video holds still and the section's edges pass over
+   it, so it reads as fixed and is cropped to the section. */
+.videoBackgroundViewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--color-charcoal) var(--video-background-poster) center /
+    cover no-repeat;
+}
+
 @media (orientation: portrait) {
-  .videoBackgroundContainer {
+  .videoBackgroundViewport {
     background-image: var(--video-background-poster-mobile);
   }
 }

@@ -1,3 +1,8 @@
+/* Holds the video behind the section — see .heroScene. */
+.artistsScene {
+  position: relative;
+}
+
 /* Vertical rhythm comes from the pinned 100vh below, not from section padding. */
 .artistsSection {
   padding-block: 0;

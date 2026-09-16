@@ -31,24 +31,24 @@ export const EVENTS = [
     img: asset("/assets/event-chapter-nye.webp"),
   },
   // Example cards for testing the wrap - remove before shipping
-  {
-    title: "P★rty Girl Tour Forgotten Cities",
-    status: "onsale",
-    date: "5th September 2026",
-    description:
-      "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
-    cta: "Get tickets",
-    link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
-    img: asset("/assets/event-party-girl-adelaide.webp"),
-  },
-  {
-    title: "P★rty Girl Tour Forgotten Cities",
-    status: "soldout",
-    date: "9th September 2026",
-    description:
-      "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
-    cta: "Get tickets",
-    link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
-    img: asset("/assets/event-party-girl-auckland.webp"),
-  },
+  // {
+  //   title: "P★rty Girl Tour Forgotten Cities",
+  //   status: "onsale",
+  //   date: "5th September 2026",
+  //   description:
+  //     "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
+  //   cta: "Get tickets",
+  //   link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
+  //   img: asset("/assets/event-party-girl-adelaide.webp"),
+  // },
+  // {
+  //   title: "P★rty Girl Tour Forgotten Cities",
+  //   status: "soldout",
+  //   date: "9th September 2026",
+  //   description:
+  //     "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
+  //   cta: "Get tickets",
+  //   link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
+  //   img: asset("/assets/event-party-girl-auckland.webp"),
+  // },
 ];
