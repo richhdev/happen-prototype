@@ -30,7 +30,6 @@ import Vendors from "@/framer/Vendors.tsx";
 import Work from "@/framer/Work.tsx";
 import Services from "@/framer/Services.tsx";
 import Artists from "@/framer/Artists.tsx";
-import Venues from "@/framer/Venues.tsx";
 import About from "@/framer/About.tsx";
 import TestimonialsHosts from "@/framer/TestimonialsHosts.tsx";
 import Instagram from "@/framer/Instagram.tsx";
@@ -54,7 +53,6 @@ export default function FramerComponents() {
         <Work />
         <Services />
         <Artists />
-        <Venues />
         <About />
         {/* One component, not Section + Testimonials + Hosts. The port owns the
             Section that app/page.js provides, so the 1024px breakpoint between

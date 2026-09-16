@@ -162,7 +162,7 @@ that file then has to be re-pasted into Framer.
 `Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `Work.tsx`,
-`Services.tsx`, `Artists.tsx`, `Venues.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
+`Services.tsx`, `Artists.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
 `Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
 `Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
 and Contact. `EventCard.tsx` is pasted and in use; `Events.tsx` is not pasted — see

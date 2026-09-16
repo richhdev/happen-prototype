@@ -35,28 +35,18 @@ The Instagram tiles are a square grid: three columns across the 894px content
 width with a 32px gap, so each tile is 276.67px and the art is 554x554. The
 posts are portrait — 4:5, and one 2:3 — so each is cropped square here.
 
-**Venue art is the one thing here that is deliberately not cropped.** That card
-has no fixed aspect — it is 370x357 on desktop and 244x371 on mobile, because
-its height follows its text — so there is no one crop that can be right, and
-`background-size: cover` has to keep its room to move. Crop these to a card
-aspect and one of the two breakpoints will cut the frame wrong. They ship at the
-full size of the original for the same reason.
-
 ## Cards whose art is not a separate layer
 
-Work art exports straight from its own node. Artist and venue art cannot: in
-Figma the photo is a *fill* on the card frame, and the name, badge, capacity
-pill and body copy are layers on top of it, so exporting the node bakes the
-whole card into the picture. Take `rawImages` from `download_assets` instead —
-that is the uploaded photo, before the crop, the overlay and the corner radius.
+Work art exports straight from its own node. Artist art cannot: in Figma the
+photo is a *fill* on the card frame, and the name, badge and body copy are
+layers on top of it, so exporting the node bakes the whole card into the
+picture. Take `rawImages` from `download_assets` instead — that is the uploaded
+photo, before the crop, the overlay and the corner radius.
 
 The design's framing then has to be re-derived, since the raw is uncropped: all
-four artists and Brown Alley are a plain centred cover crop, which is what the
-CSS already does, so the raw needs nothing done to it. Bourke Street is zoomed
-in much further in Figma, but that frame is a washed-out placeholder whose
-overlay renders its own text nearly illegible, and the site has always shown the
-centred crop. It stays centred. Re-derive this before trusting a new export —
-`rawImages` also hands back a small duplicate of each photo alongside the
+four artists are a plain centred cover crop, which is what the CSS already does,
+so the raw needs nothing done to it. Re-derive this before trusting a new export
+— `rawImages` also hands back a small duplicate of each photo alongside the
 full-size one, so check the dimensions and take the larger.
 
 Instagram tiles are photo fills on a link frame with nothing layered on top, so

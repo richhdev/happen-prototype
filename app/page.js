@@ -5,7 +5,6 @@ import Services from "@/components/Services/Services";
 import Work from "@/components/Work/Work";
 import Vendors from "@/components/Vendors/Vendors";
 import Artists from "@/components/Artists/Artists";
-import Venues from "@/components/Venues/Venues";
 import About from "@/components/About/About";
 import Events from "@/components/Events/Events";
 import Instagram from "@/components/Instagram/Instagram";
@@ -30,7 +29,6 @@ export default function Home() {
         <Work />
         <Services />
         <Artists />
-        <Venues />
         <About />
         <Testimonials />
         <Instagram />
