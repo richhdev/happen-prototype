@@ -75,7 +75,7 @@ Limit the `GlobalStylesheetHead` entry's **Page** field to the Happen pages
 `globals.css` is unscoped, so site-wide it would restyle every other page on
 happengroup.com.au.
 
-All 222 class names are already globally unique and camelCase-prefixed by stylesheet
+All 219 class names are already globally unique and camelCase-prefixed by stylesheet
 (`heroSection`, `navUnderline`, `artistCardWrap`). The script hard-fails if two
 stylesheets ever define the same name, or if JSX references a `styles.X` that no rule
 defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.tsx` and

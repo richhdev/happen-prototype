@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-16 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -7,13 +7,12 @@
 // Ported from components/Contact/ — Contact.jsx, ContactForm.jsx and data.js,
 // combined. Paste into Framer as a code file named Contact.tsx.
 //
-// Only Contact is exported. ContactForm, CONTACT_EMAIL, LINK_CARDS and
-// FORM_FIELDS are internals: a form that belongs to exactly one footer is not
-// something anyone should drag onto a canvas.
+// Only Contact is exported. ContactForm, CONTACT_EMAILS and FORM_FIELDS are
+// internals: a form that belongs to exactly one footer is not something anyone
+// should drag onto a canvas.
 //
-// The page's last section, and it renders as the <footer>. Two columns from
-// 768px up — contact card plus form on the left, four link cards on the right —
-// stacking to one column below that. No pin, no portal, no scroll maths.
+// The page's last section, and it renders as the <footer>. One centred column
+// at every width — contact card, then form. No pin, no portal, no scroll maths.
 //
 // The form posts nowhere. Its submit handler calls preventDefault and stops, so
 // pressing Send message does nothing at all, which is how the Next app has it
@@ -23,50 +22,18 @@
 import { injectHappenCSS } from "./GlobalStylesheet.tsx"
 import {
   Section,
-  RevealGroup,
-  RevealItem,
   Heading3,
   TextMedium,
-  TextSmall,
   ButtonOutlineMedium,
   SOCIALS,
 } from "./Primitives.tsx"
 
 injectHappenCSS()
 
-const CONTACT_EMAIL = "hello@happengroup.com.au"
-
-// Four outbound forms, all hosted elsewhere. The two festival stall links are
-// separate Jotforms rather than one form with a picker, because the festivals
-// are run by different clients.
-const LINK_CARDS = [
-  {
-    title: "Retail vendors - Good Things 2026",
-    description:
-      "We're on the lookout for market stall holders to join us at the festival and help bring the space to life.",
-    label: "Get your stall",
-    href: "https://form.jotform.com/261311126413846",
-  },
-  {
-    title: "Retail vendors - Beyond the Valley 2026",
-    description:
-      "We're on the lookout for market stall holders to join us at the festival and help bring the space to life.",
-    label: "Get your stall",
-    href: "https://form.jotform.com/261448233625861",
-  },
-  {
-    title: "Work with us",
-    description:
-      "Register your interest to hear about casual work opportunities in the events industry",
-    label: "Join the team",
-    href: "https://happengroup.fillout.com/casual_staff_eoi_summer_26_27",
-  },
-  {
-    title: "Promoter / Influencer Sign up",
-    description: "If you know how to hype a party, we want you on the team",
-    label: "Register",
-    href: "https://happengroup.fillout.com/t/hMmqKzd35Gus",
-  },
+const CONTACT_EMAILS = [
+  "hello@happengroup.com.au",
+  "paris@happengroup.com.au",
+  "macca@happengroup.com.au",
 ]
 
 // Rendered as label + input pairs; `rows` marks the one multi-line field.
@@ -147,63 +114,35 @@ export default function Contact() {
         </div>
 
         <div className="contactBody">
-          <div className="contactColumn">
-            <div className="contactCard">
-              <span className="contactCardLabel">General enquiries</span>
-              <a className="contactEmail" href={`mailto:${CONTACT_EMAIL}`}>
-                {CONTACT_EMAIL}
-              </a>
-              {/* Icon only, no labels — the Instagram section above already
-                  spells the four names out. aria-label carries them here. */}
-              <div className="contactSocials">
-                {SOCIALS.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                  >
-                    <img
-                      src={social.icon}
-                      alt=""
-                      className="contactSocialIcon"
-                    />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <ContactForm />
-          </div>
-
-          {/* The right column is itself the reveal group, so the four cards
-              stagger in by 130ms and run once. The left column does not
-              animate: a form that slides in is a form you cannot click yet. */}
-          <RevealGroup className="contactColumn" once={true}>
-            {LINK_CARDS.map((card) => (
-              <RevealItem
-                key={card.title}
-                as="article"
-                className="contactLinkCard"
+          <div className="contactCard">
+            <span className="contactCardLabel">General enquiries</span>
+            {CONTACT_EMAILS.map((email) => (
+              <a
+                key={email}
+                className="contactEmail"
+                href={`mailto:${email}`}
               >
-                <h3 className="contactLinkTitle">{card.title}</h3>
-                {/* Hidden under 768px — four descriptions would bury the
-                    links on a phone. */}
-                <TextSmall className="contactLinkBody">
-                  {card.description}
-                </TextSmall>
+                {email}
+              </a>
+            ))}
+            {/* Icon only, no labels — the Instagram section above already
+                spells the four names out. aria-label carries them here. */}
+            <div className="contactSocials">
+              {SOCIALS.map((social) => (
                 <a
-                  className="contactLinkCta"
-                  href={card.href}
+                  key={social.label}
+                  href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={social.label}
                 >
-                  <span className="contactLinkCtaText">{card.label}</span>
+                  <img src={social.icon} alt="" className="contactSocialIcon" />
                 </a>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+              ))}
+            </div>
+          </div>
+
+          <ContactForm />
         </div>
       </div>
     </Section>
