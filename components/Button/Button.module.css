@@ -17,7 +17,7 @@
 .buttonOutline {
   background: none;
   color: var(--color-cream);
-  border: 2px solid var(--color-cream);
+  border: 2px solid currentColor;
 }
 
 .buttonLarge {

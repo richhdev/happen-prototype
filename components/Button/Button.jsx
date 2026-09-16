@@ -1,51 +1,23 @@
 import styles from "./Button.module.css";
 
+const BUTTON_COLORS = {
+  charcoal: "var(--color-charcoal)",
+  cream: "var(--color-cream)",
+  white: "var(--color-white)",
+  red: "var(--color-red)",
+  orange: "var(--color-orange)",
+};
+
 // Default button for general use — outline/medium is the most common variant.
 export const Button = ButtonOutlineMedium;
 
-export function ButtonLarge({ as, type, className, children, ...rest }) {
-  const Tag = as ?? (rest.href ? "a" : "button");
-  return (
-    <Tag
-      type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.button} ${styles.buttonLarge} ${className ?? ""}`}
-      {...rest}
-    >
-      {children}
-    </Tag>
-  );
-}
-
-export function ButtonMedium({ as, type, className, children, ...rest }) {
-  const Tag = as ?? (rest.href ? "a" : "button");
-  return (
-    <Tag
-      type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.button} ${styles.buttonMedium} ${className ?? ""}`}
-      {...rest}
-    >
-      {children}
-    </Tag>
-  );
-}
-
-export function ButtonOutlineLarge({ as, type, className, children, ...rest }) {
-  const Tag = as ?? (rest.href ? "a" : "button");
-  return (
-    <Tag
-      type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.button} ${styles.buttonOutline} ${styles.buttonLarge} ${className ?? ""}`}
-      {...rest}
-    >
-      {children}
-    </Tag>
-  );
-}
-
-export function ButtonOutlineMedium({
+function ButtonBase({
   as,
   type,
+  color,
+  variantClassName,
   className,
+  style,
   children,
   ...rest
 }) {
@@ -53,10 +25,37 @@ export function ButtonOutlineMedium({
   return (
     <Tag
       type={type ?? (Tag === "button" ? "button" : undefined)}
-      className={`${styles.button} ${styles.buttonOutline} ${styles.buttonMedium} ${className ?? ""}`}
+      className={`${styles.button} ${variantClassName} ${className ?? ""}`}
+      style={color ? { color: BUTTON_COLORS[color] ?? color, ...style } : style}
       {...rest}
     >
       {children}
     </Tag>
+  );
+}
+
+export function ButtonLarge(props) {
+  return <ButtonBase variantClassName={styles.buttonLarge} {...props} />;
+}
+
+export function ButtonMedium(props) {
+  return <ButtonBase variantClassName={styles.buttonMedium} {...props} />;
+}
+
+export function ButtonOutlineLarge(props) {
+  return (
+    <ButtonBase
+      variantClassName={`${styles.buttonOutline} ${styles.buttonLarge}`}
+      {...props}
+    />
+  );
+}
+
+export function ButtonOutlineMedium(props) {
+  return (
+    <ButtonBase
+      variantClassName={`${styles.buttonOutline} ${styles.buttonMedium}`}
+      {...props}
+    />
   );
 }
