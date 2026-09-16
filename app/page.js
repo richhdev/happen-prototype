@@ -11,7 +11,6 @@ import About from "@/components/About/About";
 import Events from "@/components/Events/Events";
 import Instagram from "@/components/Instagram/Instagram";
 import Contact from "@/components/Contact/Contact";
-import Section from "@/components/Section/Section";
 import Testimonials from "@/components/Testimonials/Testimonials";
 import Hosts from "@/components/Hosts/Hosts";
 import Ribbons from "@/components/Ribbons/Ribbons";
@@ -34,9 +33,7 @@ export default function Home() {
         <Artists />
         <Venues />
         <About />
-        <Section innerClassName={styles.pageTestimonialsHostsGroup}>
-          <Testimonials />
-        </Section>
+        <Testimonials />
         <Instagram />
         <Contact />
       </main>

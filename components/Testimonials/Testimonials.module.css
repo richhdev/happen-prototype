@@ -1,4 +1,4 @@
-/* Mobile: the msg thread sits on the cream surface.
+/* Mobile: the msg thread sits on the panel itself.
    768px up it moves inside the phone */
 
 .testimonialsSurface {
@@ -13,11 +13,12 @@
   width: 100%;
   /* Fixed so the thread below is clipped by it off the edge of the surface */
   height: 499px;
+  max-width: 900px;
+  margin-inline: auto;
   padding: 30px var(--space-24) 0;
   overflow: hidden;
   border-radius: var(--radius-large);
-  /* background: var(--color-cream); */
-  background: rgba(255, 250, 242, 0.8);
+  background: var(--color-black);
 
   @media (min-width: 768px) {
     gap: var(--space-64);
@@ -25,33 +26,40 @@
     padding: var(--space-64) var(--space-32) 0;
   }
 
+  /* Wraps the phone from here up, so it lands flush on the bottom edge. */
   @media (min-width: 1024px) {
-    height: 100%;
+    height: auto;
   }
+}
+
+/* 0.7 over the black surface is the 30% black the design lays over the graphic. */
+.testimonialsBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .testimonialsTitle {
   position: relative;
   z-index: 2;
-  color: var(--color-black);
+  color: var(--color-white);
   text-align: center;
+  backdrop-filter: blur(2px);
 }
 
 /* Sits under the heading and fades the thread out as it scrolls up behind it. */
 .testimonialsScrim {
   position: absolute;
-  /* Above the phone, which is positioned too and would otherwise paint over it. */
   z-index: 1;
   top: 0;
   right: var(--space-16);
   left: var(--space-16);
   height: var(--thread-top);
-  background: linear-gradient(
-    0deg,
-    rgb(235 230 222 / 0) 3%,
-    rgb(235 230 222 / 0.9) 61%
-  );
-  backdrop-filter: blur(2px);
 
   @media (min-width: 768px) {
     display: none;
