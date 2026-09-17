@@ -8,7 +8,7 @@ import { TextMedium, TextOverline } from "@/components/Text/Text";
 import { useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Services.module.css";
 
-const debugFocusLine = true;
+const debugFocusLine = false;
 
 // Which edge of the card counts as "current", and which edge of a title has
 // to cross it. Desktop reads titles beside the card, so a title takes over at
