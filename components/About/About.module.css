@@ -44,7 +44,7 @@
   isolation: isolate;
 
   /* Red background to increase contrast */
-  &::before {
+  /* &::before {
     content: "";
     position: absolute;
     inset: -16px;
@@ -55,7 +55,7 @@
       rgba(207, 8, 19, 0.8) 62%,
       rgba(207, 8, 19, 0) 100%
     );
-  }
+  } */
 }
 
 .aboutStatNumber {
