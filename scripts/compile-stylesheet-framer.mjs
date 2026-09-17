@@ -97,6 +97,8 @@ const GLOBAL_FILES = [
   "app/globals.css",
 ];
 
+const PRIMITIVES = ["Badge", "Button", "Heading", "Section", "Text"];
+
 async function walk(dir) {
   const out = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -147,10 +149,16 @@ const banner = (f) =>
   `\n/* ${"=".repeat(68)}\n   ${rel(f)}\n   ${"=".repeat(68)} */\n`;
 
 async function main() {
+  // Primitives lead, as they do in Next where each section imports them before
+  // its own module; sorted after, `.section` would override `.hostsSection`.
+  const isPrimitive = (f) =>
+    PRIMITIVES.some((name) => f.endsWith(`/${name}.module.css`));
   const moduleFiles = [
     path.join(ROOT, "app/page.module.css"),
     ...(await walk(path.join(ROOT, "components"))),
-  ].sort();
+  ]
+    .sort()
+    .sort((a, b) => isPrimitive(b) - isPrimitive(a));
 
   // --- guard: no class name may appear in two module files -----------------
   const owners = new Map();

@@ -27,6 +27,7 @@ import Hero from "@/framer/Hero.tsx";
 import Events from "@/framer/Events.tsx";
 import Ribbons from "@/framer/Ribbons.tsx";
 import Vendors from "@/framer/Vendors.tsx";
+import Hosts from "@/framer/Hosts.tsx";
 import Work from "@/framer/Work.tsx";
 import Services from "@/framer/Services.tsx";
 import Artists from "@/framer/Artists.tsx";
@@ -50,6 +51,7 @@ export default function FramerComponents() {
         <Events />
         <Ribbons />
         <Vendors />
+        <Hosts />
         <Work />
         <Services />
         <Artists />

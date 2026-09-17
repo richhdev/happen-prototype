@@ -125,8 +125,8 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
    ```
 9. **Property controls only where someone edits the thing.** Sections take their content
    from the repo and expose nothing, unless the client has asked to edit that section
-   themselves — `Vendors.tsx` and `VendorsClosed.tsx` are the two that have, and both put
-   their copy and CTAs on controls. A component built to be filled in from the panel
+   themselves — `Vendors.tsx`, `VendorsClosed.tsx` and `Hosts.tsx` are the three that have,
+   and all put their copy and CTAs on controls. A component built to be filled in from the panel
    puts every field on `addPropertyControls`, with the default in a `defaultValue` and in
    the parameter default — not in `Component.defaultProps`, which React 19 ignores on a
    function component and warns about. Anything reading Framer's sizing out of `style`
@@ -163,7 +163,7 @@ that file then has to be re-pasted into Framer.
 **In Framer and working:** `GlobalStylesheet.tsx`, `Primitives.tsx`, `Nav.tsx`,
 `Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
-**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Work.tsx`,
+**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Hosts.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
 `Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
 `Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
@@ -219,8 +219,9 @@ land unstyled. The compile script does not catch this: its "every `styles.X` exi
 guard only reads JSX under `components/`, and `framer/` is excluded from the build and
 the linter by design.
 
-The section still points at `bg-graphic.webp`. Re-port the Hosts half from
-`components/Hosts/` before pasting it.
+Hosts has since been re-ported on its own as `Hosts.tsx`, which is the one to paste. The
+Testimonials half is still stale: Testimonials is now its own `<Section>` in `app/page.js`
+with a `bg-graphic-2.webp` backdrop, so it wants re-porting as `Testimonials.tsx` too.
 
 ### Events
 
