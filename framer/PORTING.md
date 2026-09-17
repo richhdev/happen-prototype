@@ -166,8 +166,8 @@ that file then has to be re-pasted into Framer.
 `GlobalStylesheetHead.html`, `Primitives.tsx` (Button `color`), `Nav.tsx` (Hosts link
 dropped), `Hero.tsx` and `VideoBackground.tsx` (video moved from a page-wide backdrop
 into the hero). The standalone VideoBackground instance in the Framer page stack has to
-be deleted when these go in. `Artists.tsx` has not been re-synced, so Artists has no
-video until it is.
+be deleted when these go in. `Artists.tsx` was re-synced the same day and now renders
+the video inside its own `artistsScene`, as Hero does.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Hosts.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `Testimonials.tsx`, `About.tsx`,

@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -32,6 +32,7 @@ import {
   TextMedium,
   Badge,
 } from "./Primitives.tsx"
+import { VideoBackground } from "./VideoBackground.tsx"
 
 injectHappenCSS()
 
@@ -73,7 +74,7 @@ const ARTISTS = [
     name: "Vanna",
     genre: "Rave",
     img: asset("/assets/artist-vanna.webp"),
-    bio: 'Melbourne-based, self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
+    bio: 'Melbourne raised, now based Gold Coast, Vanna is a self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
     links: [
       { label: "Soundcloud", href: "https://soundcloud.com/vannaspins" },
       { label: "Instagram", href: "https://instagram.com/vannaspins" },
@@ -166,34 +167,38 @@ export default function Artists() {
   }, [isOpen])
 
   return (
-    <Section id="b-artists" className="artistsSection">
-      <div ref={trackRef} className="artistsScrollContainer">
-        <div className="artistsPinned">
-          <div
-            className={`artistsDim ${isOpen ? "artistsDimVisible" : ""}`}
-            aria-hidden="true"
-          />
+    <div className="artistsScene">
+      <VideoBackground />
 
-          <div className="artistsGrid">
-            <div className="artistsHeadingWrap">
-              <Heading2 className="artistsHeading">Our artists</Heading2>
+      <Section id="b-artists" className="artistsSection">
+        <div ref={trackRef} className="artistsScrollContainer">
+          <div className="artistsPinned">
+            <div
+              className={`artistsDim ${isOpen ? "artistsDimVisible" : ""}`}
+              aria-hidden="true"
+            />
+
+            <div className="artistsGrid">
+              <div className="artistsHeadingWrap">
+                <Heading2 className="artistsHeading">Our artists</Heading2>
+              </div>
+
+              {ARTISTS.map((artist, i) => (
+                <ArtistCard
+                  key={artist.name}
+                  artist={artist}
+                  index={i}
+                  progress={scrollYProgress}
+                  active={i === activeIndex}
+                  dimmed={isOpen && i !== activeIndex}
+                  onToggle={() => toggle(i)}
+                />
+              ))}
             </div>
-
-            {ARTISTS.map((artist, i) => (
-              <ArtistCard
-                key={artist.name}
-                artist={artist}
-                index={i}
-                progress={scrollYProgress}
-                active={i === activeIndex}
-                dimmed={isOpen && i !== activeIndex}
-                onToggle={() => toggle(i)}
-              />
-            ))}
           </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+    </div>
   )
 }
 
