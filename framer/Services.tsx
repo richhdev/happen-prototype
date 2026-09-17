@@ -25,7 +25,6 @@ import {
   Heading2,
   Heading3,
   TextMedium,
-  TextOverline,
   useIsoLayoutEffect,
 } from "./Primitives.tsx"
 
@@ -34,7 +33,8 @@ injectHappenCSS()
 const DEFAULT_IMG = asset("/assets/svc-default.webp")
 
 // Nine capabilities, in the order they scroll past. `meta` is the four or five
-// verbs under each title; `desc` is the paragraph that sits over the photo.
+// verbs under each title; `desc` is the paragraph that fades in under the
+// current one.
 const SERVICES = [
   {
     title: "Artist Services",
@@ -55,7 +55,7 @@ const SERVICES = [
     img: asset("/assets/svc-artist-tour-logistics.webp"),
   },
   {
-    title: "Industry Ticketing / Community Building",
+    title: "Industry Ticketing & Community Building",
     meta: "Recruit · Activate · Track · Amplify",
     desc: "Real people sell the most tickets. We build and manage teams of hosts and promoters who spread the word through their personal networks. It’s the old-school street team, reimagined for today.",
     img: asset("/assets/svc-industry-ticketing.webp"),
@@ -99,6 +99,7 @@ const SERVICES = [
 // than where it claims — the measurements themselves are viewport-relative and
 // stay correct either way.
 const debugFocusLine = false
+const mobileItemGap = 24
 
 // Which edge of the card counts as "current", and which edge of a title has
 // to cross it. Desktop reads titles beside the card, so a title takes over at
@@ -173,13 +174,15 @@ export default function Services() {
 
   useIsoLayoutEffect(sync, [sync])
 
-  // Scroll a service up to the same line, so clicking it makes it the current one
+  // Past the focus line, so the clicked service is the current one: centred on
+  // the card on desktop, sat fully above it on mobile
   const scrollToItem = (e) => {
-    const { at, edgeOf } = focusLine(cardRef.current)
-    window.scrollBy({
-      top: edgeOf(e.currentTarget) - at,
-      behavior: "smooth",
-    })
+    const card = cardRef.current.getBoundingClientRect()
+    const item = e.currentTarget.getBoundingClientRect()
+    const top = window.matchMedia("(min-width: 1024px)").matches
+      ? item.top + item.height / 2 - (card.top + card.height / 2)
+      : item.bottom + mobileItemGap - card.top
+    window.scrollBy({ top, behavior: "smooth" })
   }
 
   return (
@@ -219,7 +222,7 @@ export default function Services() {
               <Heading3 as="span" sentence>
                 {service.title}
               </Heading3>
-              <TextOverline className="servicesListMeta">{service.meta}</TextOverline>
+              <TextMedium className="servicesListMeta">{service.meta}</TextMedium>
               <TextMedium as="span" className="servicesListDesc">
                 {service.desc}
               </TextMedium>
