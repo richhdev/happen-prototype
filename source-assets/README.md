@@ -2,11 +2,19 @@
 
 Pristine Figma exports. Nothing here is served — it sits outside `public/` so
 Next never sees it — and nothing here should be edited by hand. It is the input
-to `scripts/build-assets.sh`, which encodes it into the WebPs that ship from
-`public/assets/`.
+to `scripts/build-assets.sh`, which builds `public/assets/` from it.
 
-    ./scripts/build-assets.sh            encode anything whose source is newer
-    ./scripts/build-assets.sh --force    re-encode everything
+    ./scripts/build-assets.sh            build anything whose source is newer
+    ./scripts/build-assets.sh --force    rebuild everything
+
+Each source is named after what it ships as: `work-a3.png` becomes
+`work-a3.webp` (plus `work-a3-mobile.webp` for work, services and ribbons), and
+SVGs, WebPs and the few files listed in the script are copied as they are. Only
+sources for art the site uses belong here — retired ones go in `asset-archive/`.
+
+`video-background/` is the exception the script skips: `video-background-v2.mp4`
+is the graded AV1 base the shipped `video-background-v2*` files are encoded from
+by hand.
 
 Keeping the exports means the shipped art can be re-encoded from a lossless
 original rather than from an already-lossy file, whatever the encoder settings
@@ -59,9 +67,9 @@ Export flat rectangles. The cards clip their own corners with `border-radius`
 and `overflow: hidden`, so a baked-in radius either doubles up or, on a
 transparent export, lets the page show through.
 
-Subdirectories are for organisation only; the encoder flattens them, so
-basenames must be unique across the whole tree and must match what the component
-asks for in `public/assets`.
+Subdirectories are for organisation only, apart from choosing the encoder
+settings; the build flattens them, so basenames must be unique across the whole
+tree and must match what the component asks for in `public/assets`.
 
 ## Logos
 
