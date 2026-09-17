@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -26,26 +26,21 @@ import {
   Heading3,
   TextMedium,
   TextOverline,
-  TextXXLarge,
   useIsoLayoutEffect,
 } from "./Primitives.tsx"
 
 injectHappenCSS()
 
-// Ten capabilities, in the order they scroll past. `meta` is the four or five
+const DEFAULT_IMG = asset("/assets/svc-default.webp")
+
+// Nine capabilities, in the order they scroll past. `meta` is the four or five
 // verbs under each title; `desc` is the paragraph that sits over the photo.
 const SERVICES = [
   {
     title: "Artist Services",
-    meta: "Plan · Deliver · Manage · Operate",
-    desc: "We work alongside promoters and venues, delivering artist liaison and touring support at the highest level. We’re there to make sure every artist is taken care of, so promoters can focus on delivering a great event.",
+    meta: "Plan · Host · Manage · Deliver",
+    desc: "We work alongside promoters and venues, delivering artist liaison, touring support and hospitality at the highest level. From compounds and dressing rooms to communal spaces, every artist and crew member is taken care of, so promoters can focus on delivering a great event.",
     img: asset("/assets/svc-artist-services.webp"),
-  },
-  {
-    title: "Artist Hospitality",
-    meta: "Plan · Stock · Host · Deliver",
-    desc: "We plan, manage and deliver artist compounds, dressing rooms and communal spaces. Designed around the needs of your artists and crew so they can focus on the event.",
-    img: asset("/assets/svc-artist-hospitality.webp"),
   },
   {
     title: "Artist Management",
@@ -58,6 +53,12 @@ const SERVICES = [
     meta: "Advance · Book · Move · Track",
     desc: "Getting people where they need to be, when they need to be there. Flights, accommodation, transfers, visas and per diems. All in. All sorted.",
     img: asset("/assets/svc-artist-tour-logistics.webp"),
+  },
+  {
+    title: "Industry Ticketing / Community Building",
+    meta: "Recruit · Activate · Track · Amplify",
+    desc: "Real people sell the most tickets. We build and manage teams of hosts and promoters who spread the word through their personal networks. It’s the old-school street team, reimagined for today.",
+    img: asset("/assets/svc-industry-ticketing.webp"),
   },
   {
     title: "Comedy & Podcast Tours",
@@ -89,12 +90,6 @@ const SERVICES = [
     desc: "We curate purpose-built spaces within festivals. Our team design and deliver wellness, connection and entertainment experiences tailored to your audience.",
     img: asset("/assets/svc-wellness-activations.webp"),
   },
-  {
-    title: "Industry Ticketing / Community Building",
-    meta: "Recruit · Activate · Track · Amplify",
-    desc: "Real people sell the most tickets. We build and manage teams of hosts and promoters who spread the word through their personal networks. It’s the old-school street team, reimagined for today.",
-    img: asset("/assets/svc-industry-ticketing.webp"),
-  },
 ]
 
 // Flip to true to draw the focus line the list is measured against. Left in
@@ -115,10 +110,16 @@ const focusLine = (cardEl) => {
   if (window.matchMedia("(min-width: 1024px)").matches) {
     return {
       at: card ? card.bottom : fallback,
-      edgeOf: (r) => r.top + r.height / 2,
+      edgeOf: (el) => {
+        const r = el.getBoundingClientRect()
+        return r.top + r.height / 2
+      },
     }
   }
-  return { at: card ? card.top : fallback, edgeOf: (r) => r.bottom }
+  return {
+    at: card ? card.top : fallback,
+    edgeOf: (el) => el.firstElementChild.getBoundingClientRect().bottom,
+  }
 }
 
 /**
@@ -133,7 +134,7 @@ export default function Services() {
   const itemRefs = useRef([])
   const cardRef = useRef(null)
   const debugLineRef = useRef(null)
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(-1)
 
   // Track the section's scroll progress while the section is sticky
   const { scrollYProgress } = useScroll({
@@ -154,9 +155,9 @@ export default function Services() {
 
     // Last item to have crossed the line, not the nearest one — nearest flips
     // at the midpoint between titles, well before the line.
-    let next = 0
+    let next = -1
     itemRefs.current.forEach((node, i) => {
-      if (node && edgeOf(node.getBoundingClientRect()) <= at) next = i
+      if (node && edgeOf(node) <= at) next = i
     })
     setActive((prev) => (prev === next ? prev : next))
   }, [])
@@ -176,7 +177,7 @@ export default function Services() {
   const scrollToItem = (e) => {
     const { at, edgeOf } = focusLine(cardRef.current)
     window.scrollBy({
-      top: edgeOf(e.currentTarget.getBoundingClientRect()) - at,
+      top: edgeOf(e.currentTarget) - at,
       behavior: "smooth",
     })
   }
@@ -218,7 +219,10 @@ export default function Services() {
               <Heading3 as="span" sentence>
                 {service.title}
               </Heading3>
-              <TextOverline>{service.meta}</TextOverline>
+              <TextOverline className="servicesListMeta">{service.meta}</TextOverline>
+              <TextMedium as="span" className="servicesListDesc">
+                {service.desc}
+              </TextMedium>
             </button>
           ))}
         </div>
@@ -227,6 +231,16 @@ export default function Services() {
       <div className="servicesCardLayer" aria-hidden>
         <div className="servicesCardSticky">
           <div className="servicesCard" ref={cardRef}>
+            <div
+              className="servicesSlide"
+              data-active={active === -1 ? "" : undefined}
+            >
+              <img
+                src={DEFAULT_IMG}
+                alt=""
+                className="servicesSlideImage"
+              />
+            </div>
             {SERVICES.map((service, i) => (
               <div
                 key={service.title}
@@ -236,15 +250,11 @@ export default function Services() {
                 <img
                   src={service.img}
                   srcSet={`${service.img.replace(/\.webp$/, "-mobile.webp")} 800w, ${service.img} 950w`}
-                  sizes="(min-width: 1024px) 475px, min(100vw, 400px)"
+                  sizes="(min-width: 1024px) 600px, min(100vw, 400px)"
                   alt=""
                   className="servicesSlideImage"
-                  loading={i === 0 ? undefined : "lazy"}
+                  loading="lazy"
                 />
-                <div className="servicesSlideGradient" />
-                <TextXXLarge className="servicesSlideText">
-                  {service.desc}
-                </TextXXLarge>
               </div>
             ))}
           </div>

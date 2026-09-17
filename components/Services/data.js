@@ -1,17 +1,13 @@
 import { asset } from "@/lib/data";
 
+export const DEFAULT_IMG = asset("/assets/svc-default.webp");
+
 export const SERVICES = [
   {
     title: "Artist Services",
-    meta: "Plan · Deliver · Manage · Operate",
-    desc: "We work alongside promoters and venues, delivering artist liaison and touring support at the highest level. We’re there to make sure every artist is taken care of, so promoters can focus on delivering a great event.",
+    meta: "Plan · Host · Manage · Deliver",
+    desc: "We work alongside promoters and venues, delivering artist liaison, touring support and hospitality at the highest level. From compounds and dressing rooms to communal spaces, every artist and crew member is taken care of, so promoters can focus on delivering a great event.",
     img: asset("/assets/svc-artist-services.webp"),
-  },
-  {
-    title: "Artist Hospitality",
-    meta: "Plan · Stock · Host · Deliver",
-    desc: "We plan, manage and deliver artist compounds, dressing rooms and communal spaces. Designed around the needs of your artists and crew so they can focus on the event.",
-    img: asset("/assets/svc-artist-hospitality.webp"),
   },
   {
     title: "Artist Management",
@@ -24,6 +20,12 @@ export const SERVICES = [
     meta: "Advance · Book · Move · Track",
     desc: "Getting people where they need to be, when they need to be there. Flights, accommodation, transfers, visas and per diems. All in. All sorted.",
     img: asset("/assets/svc-artist-tour-logistics.webp"),
+  },
+  {
+    title: "Industry Ticketing & Community Building",
+    meta: "Recruit · Activate · Track · Amplify",
+    desc: "Real people sell the most tickets. We build and manage teams of hosts and promoters who spread the word through their personal networks. It’s the old-school street team, reimagined for today.",
+    img: asset("/assets/svc-industry-ticketing.webp"),
   },
   {
     title: "Comedy & Podcast Tours",
@@ -54,11 +56,5 @@ export const SERVICES = [
     meta: "Design · Curate · Build · Staff · Operate",
     desc: "We curate purpose-built spaces within festivals. Our team design and deliver wellness, connection and entertainment experiences tailored to your audience.",
     img: asset("/assets/svc-wellness-activations.webp"),
-  },
-  {
-    title: "Industry Ticketing / Community Building",
-    meta: "Recruit · Activate · Track · Amplify",
-    desc: "Real people sell the most tickets. We build and manage teams of hosts and promoters who spread the word through their personal networks. It’s the old-school street team, reimagined for today.",
-    img: asset("/assets/svc-industry-ticketing.webp"),
   },
 ];

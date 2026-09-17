@@ -3,15 +3,14 @@
   --surface-top: 80px;
   --surface-bottom: 192px;
   --card-bottom: 73px;
-  --card-inset: 0px;
 
   /* Progress of the surface animation */
   --progress: 0;
 
   @media (min-width: 1024px) {
-    --surface-top: 171px;
-    --surface-bottom: 171px;
-    --copy-inset: 229px;
+    --surface-top: var(--layout-padding-y);
+    --surface-bottom: var(--layout-padding-y);
+    --copy-inset: 128px;
   }
 }
 
@@ -29,7 +28,7 @@
 
 .servicesSurfaceLayer {
   position: absolute;
-  inset: 0;
+  inset: 0 0 calc(-1 * var(--layout-padding-y));
   pointer-events: none;
 }
 
@@ -39,15 +38,10 @@
   height: calc(
     100vh - (var(--surface-top) + var(--surface-bottom)) * (1 - var(--progress))
   );
-  margin-left: calc((50% - 50vw) * var(--progress));
-  margin-right: calc((50% - 50vw) * var(--progress));
+  margin-inline: calc((50% - 50vw) * var(--progress));
   border-radius: var(--radius-large);
   /* background: var(--color-cream); */
   background: rgba(255, 250, 242, 0.8);
-
-  @media (min-width: 1024px) {
-    margin-right: calc(20% - 10% * var(--progress));
-  }
 }
 
 /* Copy --------------------------------------------------------------------- */
@@ -55,15 +49,17 @@
 .servicesContentGroup {
   position: relative;
   width: 100%;
-  padding-top: var(--space-80);
+  max-width: 400px;
+  padding: var(--space-80) var(--space-16) 0;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 
   @media (min-width: 1024px) {
     width: 50%;
-    padding-top: calc(25vh);
+    max-width: none;
+    padding: 0 var(--space-16) 0 var(--copy-inset);
   }
 }
 
@@ -71,22 +67,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
-  padding: 0 var(--space-32);
-  text-align: center;
   color: var(--color-black);
   text-wrap: balance;
+
+  /* Fills the surface's starting frame, so the heading centres on the card */
+  @media (min-width: 1024px) {
+    justify-content: center;
+    min-height: calc(100vh - 2 * var(--layout-padding-y));
+  }
 }
 
 .servicesHeading {
-  margin-inline: auto;
-
   @media (min-width: 768px) {
     max-width: 465px;
   }
 }
 
 .servicesCopy {
-  margin-inline: auto;
   color: var(--color-charcoal);
 
   @media (min-width: 768px) {
@@ -106,7 +103,7 @@
 
   @media (min-width: 1024px) {
     gap: 320px;
-    padding-top: 320px;
+    padding-top: 0;
     padding-bottom: 50vh;
   }
 }
@@ -114,13 +111,13 @@
 .servicesListItem {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-8);
   padding: 0 var(--space-4);
   border: 0;
   background: none;
   font: inherit;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
   color: var(--color-charcoal);
   opacity: 0.5;
@@ -140,11 +137,21 @@
   opacity: 1;
 }
 
+.servicesListMeta {
+  text-wrap-style: auto;
+}
+
+.servicesListDesc {
+  max-width: 439px;
+  padding-top: var(--space-16);
+  color: var(--color-charcoal);
+}
+
 /* Card ------------------------------------------------------------------ */
 
 .servicesCardLayer {
   position: absolute;
-  inset: 0;
+  inset: calc(-1 * var(--layout-padding-y)) 0;
   pointer-events: none;
 }
 
@@ -152,10 +159,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  margin-top: calc(-1 * var(--surface-top) * (1 - var(--progress)));
-  margin-bottom: calc(-1 * var(--surface-bottom) * (1 - var(--progress)));
-  /* padding-inline: var(--space-16); */
-  padding-bottom: calc(var(--card-bottom) + var(--card-inset));
+  padding-bottom: var(--card-bottom);
 
   display: flex;
   flex-direction: column;
@@ -165,7 +169,6 @@
   @media (min-width: 1024px) {
     align-items: flex-end;
     justify-content: center;
-    padding-inline: 0;
     padding-bottom: 0;
   }
 }
@@ -178,30 +181,19 @@
   border-radius: var(--radius-large);
   border-bottom: 1px solid var(--color-grey-700);
   background: var(--color-charcoal);
-  text-wrap: balance;
   overflow: hidden;
 
   @media (min-width: 1024px) {
-    max-width: 475px;
+    max-width: min(600px, 50%);
+    margin-right: calc((100% - 100vw) / 4);
   }
 }
 
 .servicesSlide {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-32);
   opacity: 0;
   transition: opacity 360ms ease;
-
-  @media (min-width: 1024px) {
-    padding: var(--space-32) var(--space-80);
-  }
-  @media (max-width: 440px) {
-    padding: var(--space-16);
-  }
 }
 
 .servicesSlide[data-active] {
@@ -218,18 +210,3 @@
   object-fit: cover;
 }
 
-.servicesSlideGradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(17, 17, 17, 0) 0%,
-    var(--color-charcoal) 100%
-  );
-}
-
-.servicesSlideText {
-  position: relative;
-  color: var(--color-white);
-  text-align: center;
-}

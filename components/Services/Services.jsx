@@ -1,14 +1,14 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cubicBezier, motion, useScroll, useTransform } from "framer-motion";
-import { SERVICES } from "./data";
+import { DEFAULT_IMG, SERVICES } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2, Heading3 } from "@/components/Heading/Heading";
-import { TextMedium, TextOverline, TextXXLarge } from "@/components/Text/Text";
+import { TextMedium, TextOverline } from "@/components/Text/Text";
 import { useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Services.module.css";
 
-const debugFocusLine = false;
+const debugFocusLine = true;
 
 // Which edge of the card counts as "current", and which edge of a title has
 // to cross it. Desktop reads titles beside the card, so a title takes over at
@@ -20,10 +20,16 @@ const focusLine = (cardEl) => {
   if (window.matchMedia("(min-width: 1024px)").matches) {
     return {
       at: card ? card.bottom : fallback,
-      edgeOf: (r) => r.top + r.height / 2,
+      edgeOf: (el) => {
+        const r = el.getBoundingClientRect();
+        return r.top + r.height / 2;
+      },
     };
   }
-  return { at: card ? card.top : fallback, edgeOf: (r) => r.bottom };
+  return {
+    at: card ? card.top : fallback,
+    edgeOf: (el) => el.firstElementChild.getBoundingClientRect().bottom,
+  };
 };
 
 export default function Services() {
@@ -31,7 +37,7 @@ export default function Services() {
   const itemRefs = useRef([]);
   const cardRef = useRef(null);
   const debugLineRef = useRef(null);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(-1);
 
   // Track the section's scroll progress while the section is sticky
   const { scrollYProgress } = useScroll({
@@ -52,9 +58,9 @@ export default function Services() {
 
     // Last item to have crossed the line, not the nearest one — nearest flips
     // at the midpoint between titles, well before the line.
-    let next = 0;
+    let next = -1;
     itemRefs.current.forEach((node, i) => {
-      if (node && edgeOf(node.getBoundingClientRect()) <= at) next = i;
+      if (node && edgeOf(node) <= at) next = i;
     });
     setActive((prev) => (prev === next ? prev : next));
   }, []);
@@ -74,7 +80,7 @@ export default function Services() {
   const scrollToItem = (e) => {
     const { at, edgeOf } = focusLine(cardRef.current);
     window.scrollBy({
-      top: edgeOf(e.currentTarget.getBoundingClientRect()) - at,
+      top: edgeOf(e.currentTarget) - at,
       behavior: "smooth",
     });
   };
@@ -96,7 +102,9 @@ export default function Services() {
 
       <div className={styles.servicesContentGroup}>
         <div className={styles.servicesHead}>
-          <Heading2 className={styles.servicesHeading}>How we make it Happen</Heading2>
+          <Heading2 className={styles.servicesHeading}>
+            How we make it Happen
+          </Heading2>
           <TextMedium className={styles.servicesCopy}>
             We&rsquo;ve built a broad operational capability and a national
             network to match.
@@ -116,7 +124,12 @@ export default function Services() {
               <Heading3 as="span" sentence>
                 {service.title}
               </Heading3>
-              <TextOverline>{service.meta}</TextOverline>
+              <TextOverline className={styles.servicesListMeta}>
+                {service.meta}
+              </TextOverline>
+              <TextMedium as="span" className={styles.servicesListDesc}>
+                {service.desc}
+              </TextMedium>
             </button>
           ))}
         </div>
@@ -125,6 +138,17 @@ export default function Services() {
       <div className={styles.servicesCardLayer} aria-hidden>
         <div className={styles.servicesCardSticky}>
           <div className={styles.servicesCard} ref={cardRef}>
+            <div
+              className={styles.servicesSlide}
+              data-active={active === -1 ? "" : undefined}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={DEFAULT_IMG}
+                alt=""
+                className={styles.servicesSlideImage}
+              />
+            </div>
             {SERVICES.map((service, i) => (
               <div
                 key={service.title}
@@ -135,15 +159,11 @@ export default function Services() {
                 <img
                   src={service.img}
                   srcSet={`${service.img.replace(/\.webp$/, "-mobile.webp")} 800w, ${service.img} 950w`}
-                  sizes="(min-width: 1024px) 475px, min(100vw, 400px)"
+                  sizes="(min-width: 1024px) 600px, min(100vw, 400px)"
                   alt=""
                   className={styles.servicesSlideImage}
-                  loading={i === 0 ? undefined : "lazy"}
+                  loading="lazy"
                 />
-                <div className={styles.servicesSlideGradient} />
-                <TextXXLarge className={styles.servicesSlideText}>
-                  {service.desc}
-                </TextXXLarge>
               </div>
             ))}
           </div>
