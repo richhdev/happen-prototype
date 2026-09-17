@@ -138,6 +138,7 @@
 }
 
 .servicesListMeta {
+  font-weight: bold;
   text-wrap-style: auto;
 }
 
@@ -145,6 +146,12 @@
   max-width: 439px;
   padding-top: var(--space-16);
   color: var(--color-charcoal);
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.servicesListItem[data-active] .servicesListDesc {
+  opacity: 1;
 }
 
 /* Card ------------------------------------------------------------------ */
@@ -209,4 +216,3 @@
   max-width: none;
   object-fit: cover;
 }
-

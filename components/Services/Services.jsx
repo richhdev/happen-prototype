@@ -9,6 +9,7 @@ import { useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Services.module.css";
 
 const debugFocusLine = false;
+const mobileItemGap = 24;
 
 // Which edge of the card counts as "current", and which edge of a title has
 // to cross it. Desktop reads titles beside the card, so a title takes over at
@@ -76,13 +77,15 @@ export default function Services() {
 
   useIsoLayoutEffect(sync, [sync]);
 
-  // Scroll a service up to the same line, so clicking it makes it the current one
+  // Past the focus line, so the clicked service is the current one: centred on
+  // the card on desktop, sat fully above it on mobile
   const scrollToItem = (e) => {
-    const { at, edgeOf } = focusLine(cardRef.current);
-    window.scrollBy({
-      top: edgeOf(e.currentTarget) - at,
-      behavior: "smooth",
-    });
+    const card = cardRef.current.getBoundingClientRect();
+    const item = e.currentTarget.getBoundingClientRect();
+    const top = window.matchMedia("(min-width: 1024px)").matches
+      ? item.top + item.height / 2 - (card.top + card.height / 2)
+      : item.bottom + mobileItemGap - card.top;
+    window.scrollBy({ top, behavior: "smooth" });
   };
 
   return (
@@ -124,9 +127,9 @@ export default function Services() {
               <Heading3 as="span" sentence>
                 {service.title}
               </Heading3>
-              <TextOverline className={styles.servicesListMeta}>
+              <TextMedium className={styles.servicesListMeta}>
                 {service.meta}
-              </TextOverline>
+              </TextMedium>
               <TextMedium as="span" className={styles.servicesListDesc}>
                 {service.desc}
               </TextMedium>
