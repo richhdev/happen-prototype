@@ -12,7 +12,9 @@
     "assets": "./scripts/build-assets.sh",
     "prefix-classes": "node scripts/prefix-classes.mjs",
     "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs",
-    "lighthouse": "lighthouse http://localhost:3000 --chrome-flags=\"--headless=new\" --output=html --output-path=.lighthouse/report.html --view"
+    "lighthouse": "lighthouse http://localhost:3000 --chrome-flags=\"--headless=new\" --output=html --output-path=.lighthouse/report.html --view",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "next": "^15.5.18",
@@ -25,6 +27,10 @@
     "framer-motion": "^11.18.2",
     "lighthouse": "^13.4.1",
     "lightningcss": "^1.33.0",
-    "playwright": "^1.62.1"
+    "playwright": "^1.62.1",
+    "storybook": "^10.6.0",
+    "@storybook/nextjs-vite": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "vite": "^7.0.6"
   }
 }
