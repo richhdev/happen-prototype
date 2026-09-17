@@ -12,11 +12,12 @@
 // row replaced by an expression-of-interest card; swap one for the other in
 // the page stack as applications open and close.
 //
-// The cards are edited from this component's own properties panel — an Array
-// control, so a festival can be added or dropped without a layer being inserted.
+// Every card field is its own control, two card slots flattened rather than an
+// Array: Framer's on-page editor only lists simple controls, so an Array never
+// shows up there. A slot with an empty name is not rendered.
 
-import { addPropertyControls, ControlType } from "framer"
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
+import { addPropertyControls, ControlType } from "framer";
+import { injectHappenCSS } from "./GlobalStylesheet.tsx";
 import {
   asset,
   Reveal,
@@ -24,9 +25,9 @@ import {
   Heading3,
   TextMedium,
   ButtonOutlineMedium,
-} from "./Primitives.tsx"
+} from "./Primitives.tsx";
 
-injectHappenCSS()
+injectHappenCSS();
 
 // Written once and read twice: as `defaultValue` on the controls at the foot of
 // the file, which is what fills the Framer properties panel, and as the default
@@ -39,21 +40,15 @@ injectHappenCSS()
 const DEFAULTS = {
   heading: "Festival retail vendors",
   body: "We’re on the lookout for market stall holders to join us at the festival and help bring the space to life.",
-  events: [
-    {
-      name: "Good Things Festival",
-      logo: asset("/assets/client-good-things.svg"),
-      cta: "Get your stall",
-      link: "https://form.jotform.com/261311126413846",
-    },
-    {
-      name: "Beyond The Valley",
-      logo: asset("/assets/client-beyond-the-valley.svg"),
-      cta: "Get your stall",
-      link: "https://form.jotform.com/261448233625861",
-    },
-  ],
-}
+  card1Name: "Good Things Festival",
+  card1Logo: asset("/assets/client-good-things.svg"),
+  card1Cta: "Get your stall",
+  card1Link: "https://form.jotform.com/261311126413846",
+  card2Name: "Beyond The Valley",
+  card2Logo: asset("/assets/client-beyond-the-valley.svg"),
+  card2Cta: "Get your stall",
+  card2Link: "https://form.jotform.com/261448233625861",
+};
 
 /**
  * Width fills whatever it is dropped into; height is measured from the rendered
@@ -62,12 +57,21 @@ const DEFAULTS = {
  * @framerSupportedLayoutWidth any
  * @framerSupportedLayoutHeight auto
  */
-export default function Vendors({
-  heading = DEFAULTS.heading,
-  body = DEFAULTS.body,
-  events = DEFAULTS.events,
-  newTab = true,
-}) {
+export default function Vendors(props) {
+  const {
+    heading = DEFAULTS.heading,
+    body = DEFAULTS.body,
+    newTab = true,
+  } = props;
+  const events = [1, 2]
+    .map((n) => ({
+      name: props[`card${n}Name`] ?? DEFAULTS[`card${n}Name`],
+      logo: props[`card${n}Logo`] ?? DEFAULTS[`card${n}Logo`],
+      cta: props[`card${n}Cta`] ?? DEFAULTS[`card${n}Cta`],
+      link: props[`card${n}Link`] ?? DEFAULTS[`card${n}Link`],
+    }))
+    .filter((event) => event.name);
+
   return (
     <Section id="a-vendors" className="vendorsSection">
       {/* Full-bleed backdrop behind the whole band. Lazy, like every image
@@ -121,7 +125,7 @@ export default function Vendors({
         </div>
       </div>
     </Section>
-  )
+  );
 }
 
 addPropertyControls(Vendors, {
@@ -136,34 +140,53 @@ addPropertyControls(Vendors, {
     defaultValue: DEFAULTS.body,
     displayTextArea: true,
   },
-  events: {
-    type: ControlType.Array,
-    title: "Events",
-    // Three fits the row at 1200px+; past that the cards scroll sideways on
-    // desktop too, which the layout was never drawn for.
-    maxCount: 3,
-    defaultValue: DEFAULTS.events,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        name: {
-          type: ControlType.String,
-          title: "Name",
-          description: "Alt text for the logo. Not shown on the card.",
-        },
-        logo: {
-          type: ControlType.Image,
-          title: "Logo",
-          description: "Capped at 256 × 50, and at 188 × 44 below 1200px.",
-        },
-        cta: { type: ControlType.String, title: "CTA" },
-        link: { type: ControlType.Link, title: "Link" },
-      },
-    },
+  card1Name: {
+    type: ControlType.String,
+    title: "Card 1 name",
+    defaultValue: DEFAULTS.card1Name,
+    description: "Alt text for the logo. Leave empty to hide this card.",
+  },
+  card1Logo: {
+    type: ControlType.Image,
+    title: "Card 1 logo",
+    defaultValue: DEFAULTS.card1Logo,
+    description: "Capped at 256 × 50, and at 188 × 44 below 1200px.",
+  },
+  card1Cta: {
+    type: ControlType.String,
+    title: "Card 1 CTA",
+    defaultValue: DEFAULTS.card1Cta,
+  },
+  card1Link: {
+    type: ControlType.String,
+    title: "Card 1 link",
+    defaultValue: DEFAULTS.card1Link,
+  },
+  card2Name: {
+    type: ControlType.String,
+    title: "Card 2 name",
+    defaultValue: DEFAULTS.card2Name,
+    description: "Alt text for the logo. Leave empty to hide this card.",
+  },
+  card2Logo: {
+    type: ControlType.Image,
+    title: "Card 2 logo",
+    defaultValue: DEFAULTS.card2Logo,
+    description: "Capped at 256 × 50, and at 188 × 44 below 1200px.",
+  },
+  card2Cta: {
+    type: ControlType.String,
+    title: "Card 2 CTA",
+    defaultValue: DEFAULTS.card2Cta,
+  },
+  card2Link: {
+    type: ControlType.String,
+    title: "Card 2 link",
+    defaultValue: DEFAULTS.card2Link,
   },
   newTab: {
     type: ControlType.Boolean,
     title: "New tab",
     defaultValue: true,
   },
-})
+});

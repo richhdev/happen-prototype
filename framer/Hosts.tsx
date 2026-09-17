@@ -7,13 +7,14 @@
 // Ported from components/Hosts/ — Hosts.jsx and data.js, combined. Paste into
 // Framer as a code file named Hosts.tsx.
 //
-// Heading, body and the cards are on property controls — an Array control, so a
-// card can be added or dropped without a layer being inserted.
+// Every field is a plain string control, two card slots flattened rather than
+// an Array: Framer's on-page editor only lists simple controls, so an Array
+// never shows up there. A slot with an empty title is not rendered.
 //
 // Paste order: Primitives.tsx and GlobalStylesheet.tsx first, then this.
 
-import { addPropertyControls, ControlType } from "framer"
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
+import { addPropertyControls, ControlType } from "framer";
+import { injectHappenCSS } from "./GlobalStylesheet.tsx";
 import {
   asset,
   Reveal,
@@ -22,30 +23,24 @@ import {
   Heading4,
   TextMedium,
   ButtonOutlineMedium,
-} from "./Primitives.tsx"
+} from "./Primitives.tsx";
 
-injectHappenCSS()
+injectHappenCSS();
 
 // Read as `defaultValue` on the controls and as the parameter defaults, the same
 // way Vendors.tsx does it.
 const DEFAULTS = {
   heading: "Want in?",
   body: "We’re always looking for well-connected individuals and magnetic group leaders – social, influential, and the life of the party.",
-  cards: [
-    {
-      title: "Hosts & Promoters",
-      description: "Turn your network into a side hustle.",
-      label: "Join the team",
-      href: "https://happengroup.fillout.com/t/hMmqKzd35Gus",
-    },
-    {
-      title: "Casual Event Workers",
-      description: "Pick up casual work at Australia's biggest events.",
-      label: "Register",
-      href: "https://happengroup.fillout.com/casual_staff_eoi_summer_26_27",
-    },
-  ],
-}
+  card1Title: "Hosts & Promoters",
+  card1Description: "Turn your network into a side hustle.",
+  card1Cta: "Join the team",
+  card1Link: "https://happengroup.fillout.com/t/hMmqKzd35Gus",
+  card2Title: "Casual Event Workers",
+  card2Description: "Pick up casual work at Australia's biggest events.",
+  card2Cta: "Register",
+  card2Link: "https://happengroup.fillout.com/casual_staff_eoi_summer_26_27",
+};
 
 /**
  * Width fills whatever it is dropped into; height is measured from the rendered
@@ -54,12 +49,22 @@ const DEFAULTS = {
  * @framerSupportedLayoutWidth any
  * @framerSupportedLayoutHeight auto
  */
-export default function Hosts({
-  heading = DEFAULTS.heading,
-  body = DEFAULTS.body,
-  cards = DEFAULTS.cards,
-  newTab = true,
-}) {
+export default function Hosts(props) {
+  const {
+    heading = DEFAULTS.heading,
+    body = DEFAULTS.body,
+    newTab = true,
+  } = props;
+  const cards = [1, 2]
+    .map((n) => ({
+      title: props[`card${n}Title`] ?? DEFAULTS[`card${n}Title`],
+      description:
+        props[`card${n}Description`] ?? DEFAULTS[`card${n}Description`],
+      label: props[`card${n}Cta`] ?? DEFAULTS[`card${n}Cta`],
+      href: props[`card${n}Link`] ?? DEFAULTS[`card${n}Link`],
+    }))
+    .filter((card) => card.title);
+
   return (
     <Section id="a-hosts" className="hostsSection">
       <img
@@ -109,7 +114,7 @@ export default function Hosts({
         </div>
       </div>
     </Section>
-  )
+  );
 }
 
 addPropertyControls(Hosts, {
@@ -124,28 +129,51 @@ addPropertyControls(Hosts, {
     defaultValue: DEFAULTS.body,
     displayTextArea: true,
   },
-  cards: {
-    type: ControlType.Array,
-    title: "Cards",
-    maxCount: 3,
-    defaultValue: DEFAULTS.cards,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        title: { type: ControlType.String, title: "Title" },
-        description: {
-          type: ControlType.String,
-          title: "Description",
-          displayTextArea: true,
-        },
-        label: { type: ControlType.String, title: "CTA" },
-        href: { type: ControlType.Link, title: "Link" },
-      },
-    },
+  card1Title: {
+    type: ControlType.String,
+    title: "Card 1 title",
+    defaultValue: DEFAULTS.card1Title,
+  },
+  card1Description: {
+    type: ControlType.String,
+    title: "Card 1 body",
+    defaultValue: DEFAULTS.card1Description,
+    displayTextArea: true,
+  },
+  card1Cta: {
+    type: ControlType.String,
+    title: "Card 1 CTA",
+    defaultValue: DEFAULTS.card1Cta,
+  },
+  card1Link: {
+    type: ControlType.String,
+    title: "Card 1 link",
+    defaultValue: DEFAULTS.card1Link,
+  },
+  card2Title: {
+    type: ControlType.String,
+    title: "Card 2 title",
+    defaultValue: DEFAULTS.card2Title,
+  },
+  card2Description: {
+    type: ControlType.String,
+    title: "Card 2 body",
+    defaultValue: DEFAULTS.card2Description,
+    displayTextArea: true,
+  },
+  card2Cta: {
+    type: ControlType.String,
+    title: "Card 2 CTA",
+    defaultValue: DEFAULTS.card2Cta,
+  },
+  card2Link: {
+    type: ControlType.String,
+    title: "Card 2 link",
+    defaultValue: DEFAULTS.card2Link,
   },
   newTab: {
     type: ControlType.Boolean,
     title: "New tab",
     defaultValue: true,
   },
-})
+});

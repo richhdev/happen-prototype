@@ -324,6 +324,11 @@ Two things to know when changing these:
 - On the canvas, `document.body` is the Framer editor itself, so a component that
   portals a fixed full-screen layer there covers the whole UI. Guard the portal with
   `RenderTarget.current() === RenderTarget.canvas` and render in place instead.
+- **On-page editing (the live-site editor) only lists simple controls.** An Array control
+  never appears there, and neither did a Boolean, so a code component meant to be edited
+  that way puts every field on its own control. `Hosts.tsx` and `Vendors.tsx` flatten
+  their cards into two fixed slots for this reason, since a third breaks the layout. A
+  Hosts slot with an empty title, or a Vendors slot with an empty name, is not rendered.
 - A code file that fails to compile is omitted from the Insert panel silently. If a
   component does not appear, read the error strip in Framer's code editor first.
 - A published page that flashes unstyled markup has stale or missing head custom code.
