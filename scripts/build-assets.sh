@@ -50,6 +50,8 @@ for src in source-assets/*/*; do
     work) opts="$photo" mobile="-resize 640 0 $photo" ;;
     # 2x the 400px phone card; Services picks it with srcset.
     services) opts="$photo" mobile="-resize 800 0 $photo" ;;
+    # 2x the 360px card. Event art comes from promoters at any size.
+    events) opts="-resize 720 0 $photo" ;;
     *) opts="$photo" ;;
   esac
 

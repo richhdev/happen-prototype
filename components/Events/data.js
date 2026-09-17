@@ -2,15 +2,6 @@ import { asset } from "@/lib/data";
 
 export const EVENTS = [
   {
-    title: "Vanna Headline Show - Howler",
-    status: "onsale",
-    date: "12th September 2026",
-    description: "Howler Melbourne 3pm - 11pm",
-    cta: "Get tickets",
-    link: "https://m.moshtix.com.au/v2/event/vanna-headline-show-howler/198866?skin=hwlr",
-    img: asset("/assets/event-vanna-howler.webp"),
-  },
-  {
     title: "Danny Rants Off TheRecord",
     status: "upcoming",
     date: "October 2026",
@@ -29,6 +20,25 @@ export const EVENTS = [
     cta: "Pre register",
     link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
     img: asset("/assets/event-chapter-nye.webp"),
+  },
+  {
+    title: "Unboxed Party Girl Up Late",
+    status: "upcoming",
+    date: "19th December 2026",
+    description:
+      "When the after party is the main event. Secret lineup, no guest announcement and no chance of this being a regular event",
+    cta: "Join the ballot",
+    link: "https://m.moshtix.com.au/v2/event/unboxed-party-girl-up-late/200244?skin=UNBOXEDMELB",
+    img: asset("/assets/event-unboxed.webp"),
+  },
+  {
+    title: "Sound Collective",
+    status: "upcoming",
+    date: "20th February 2027",
+    description: "Reggae Island Vibes are coming to Gold Coast.",
+    cta: "Tickets on sale",
+    link: "https://megatix.com.au/events/sound-collective",
+    img: asset("/assets/event-sound-collective.webp"),
   },
   // Example cards for testing the wrap - remove before shipping
   // {

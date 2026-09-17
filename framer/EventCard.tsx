@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -105,10 +105,15 @@ function layoutStyle(style) {
 // gives { src, srcSet, alt }. The control below is the responsive one, so the
 // srcSet is what Framer and the CMS actually serve; the string branch is for a
 // URL passed in from code, which is how Events.tsx passes its four.
+//
+// Framer labels the srcSet 100vw, so a 381px card fetched its 2048px cut.
+// `.eventsCard` never exceeds 381px, and 360px below the desktop grid.
+const IMAGE_SIZES = "(min-width: 1024px) 381px, 360px"
+
 function imageProps(image) {
   if (!image) return { src: undefined }
   if (typeof image === "string") return { src: image }
-  return { src: image.src, srcSet: image.srcSet }
+  return { src: image.src, srcSet: image.srcSet, sizes: IMAGE_SIZES }
 }
 
 /**
@@ -134,10 +139,14 @@ export default function EventCard({
   newTab = true,
   className,
   style,
+  // Framer also passes its sizing as props, which would otherwise land on the
+  // <article> as width="100%" height="100%" attributes.
+  width,
+  height,
   ...rest
 }) {
   const { label, color, soldout } = STATUSES[status] ?? STATUSES.upcoming
-  const { src, srcSet } = imageProps(image)
+  const { src, srcSet, sizes } = imageProps(image)
 
   return (
     <article
@@ -152,6 +161,7 @@ export default function EventCard({
       <img
         src={src}
         srcSet={srcSet}
+        sizes={sizes}
         alt=""
         className="eventsImage"
         style={imagePosition ? { objectPosition: imagePosition } : undefined}

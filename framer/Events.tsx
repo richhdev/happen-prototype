@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-13 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -47,15 +47,6 @@ injectHappenCSS()
 // they go stale on their own — which is the reason the client wants the CMS.
 const EVENTS = [
   {
-    title: "Vanna Headline Show - Howler",
-    status: "onsale",
-    date: "12th September 2026",
-    description: "Howler Melbourne 3pm - 11pm",
-    cta: "Get tickets",
-    link: "https://m.moshtix.com.au/v2/event/vanna-headline-show-howler/198866?skin=hwlr",
-    img: asset("/assets/event-vanna-howler.webp"),
-  },
-  {
     title: "Danny Rants Off TheRecord",
     status: "upcoming",
     date: "October 2026",
@@ -75,27 +66,46 @@ const EVENTS = [
     link: "https://happengroup.fillout.com/t/fQhTFKa2Ntus",
     img: asset("/assets/event-chapter-nye.webp"),
   },
+  {
+    title: "Unboxed Party Girl Up Late",
+    status: "upcoming",
+    date: "19th December 2026",
+    description:
+      "When the after party is the main event. Secret lineup, no guest announcement and no chance of this being a regular event",
+    cta: "Join the ballot",
+    link: "https://m.moshtix.com.au/v2/event/unboxed-party-girl-up-late/200244?skin=UNBOXEDMELB",
+    img: asset("/assets/event-unboxed.webp"),
+  },
+  {
+    title: "Sound Collective",
+    status: "upcoming",
+    date: "20th February 2027",
+    description: "Reggae Island Vibes are coming to Gold Coast.",
+    cta: "Tickets on sale",
+    link: "https://megatix.com.au/events/sound-collective",
+    img: asset("/assets/event-sound-collective.webp"),
+  },
   // Example cards for testing the wrap to a second row - remove before shipping
-  {
-    title: "P★rty Girl Tour Forgotten Cities",
-    status: "onsale",
-    date: "5th September 2026",
-    description:
-      "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
-    cta: "Get tickets",
-    link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
-    img: asset("/assets/event-party-girl-adelaide.webp"),
-  },
-  {
-    title: "P★rty Girl Tour Forgotten Cities",
-    status: "soldout",
-    date: "9th September 2026",
-    description:
-      "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
-    cta: "Get tickets",
-    link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
-    img: asset("/assets/event-party-girl-auckland.webp"),
-  },
+  // {
+  //   title: "P★rty Girl Tour Forgotten Cities",
+  //   status: "onsale",
+  //   date: "5th September 2026",
+  //   description:
+  //     "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
+  //   cta: "Get tickets",
+  //   link: "https://www.ticketmaster.com.au/party-girl-tour-forgotten-cities-presented-torrensville-05-09-2026/event/130064E68D62206C",
+  //   img: asset("/assets/event-party-girl-adelaide.webp"),
+  // },
+  // {
+  //   title: "P★rty Girl Tour Forgotten Cities",
+  //   status: "soldout",
+  //   date: "9th September 2026",
+  //   description:
+  //     "Lucy & Nikki's 'P★rty Girl Tour' hits Adelaide and Auckland this September. Their only live shows of the year.",
+  //   cta: "Get tickets",
+  //   link: "https://www.ticketmaster.co.nz/party-girl-tour-forgotten-cities-presented-auckland-09-09-2026/event/240064DDB8FD1EF4?currency-locale=en-au",
+  //   img: asset("/assets/event-party-girl-auckland.webp"),
+  // },
 ]
 
 /**
