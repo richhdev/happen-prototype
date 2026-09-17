@@ -3,10 +3,10 @@
 // cannot export metadata, which is why it lives in a layout rather than in
 // page.js.
 export const metadata = {
-  title: "Framer components — Happen",
+  title: "Framer — Happen",
   robots: { index: false, follow: false },
 };
 
-export default function FramerComponentsLayout({ children }) {
+export default function FramerLayout({ children }) {
   return children;
 }

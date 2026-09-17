@@ -1,15 +1,9 @@
 "use client";
 
-// The Framer ports, rendered by the Next app, in the same order as app/page.js.
+// This page exists to check the ported copies against the real site before
+// pasting them into Framer.
 //
-// This page exists to check the ported copies against the real site without
-// pasting them into Framer first. It is not part of the site: nothing links to
-// it, sitemap.js does not list it, and app/page.js still renders the real
-// components from components/.
-//
-// Three things make the ports run here at all, and they are the whole reason
-// this file looks different from app/page.js:
-//
+// There are some mods to make this work in nextjs context:
 //   · "use client" above. None of the framer/ files carry the directive —
 //     Framer has no server components — so the page has to declare it for the
 //     whole import graph.
@@ -36,16 +30,13 @@ import Testimonials from "@/framer/Testimonials.tsx";
 import Instagram from "@/framer/Instagram.tsx";
 import Contact from "@/framer/Contact.tsx";
 
-export default function FramerComponents() {
+export default function FramerPage() {
   return (
     <>
       <Nav />
-      <NavPlaceholder />
-      {/* pageMain comes from the injected sheet, not from a CSS module. The id
-          is what Framer's own content wrapper is called, and Ribbons and
-          VideoBackground both reach for it, so having it here exercises the
-          same code path the published page takes. */}
+      {/* .pageMain matches framers actual structure */}
       <main id="main" className="pageMain">
+        <NavPlaceholder />
         <Ribbons />
         <Hero />
         <Events />

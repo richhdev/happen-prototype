@@ -19,8 +19,8 @@ export default function Home() {
     <>
       <Preloader />
       <Nav />
-      <NavPlaceholder />
       <main className={styles.pageMain}>
+        <NavPlaceholder />
         <Ribbons />
         <Hero />
         <Events />

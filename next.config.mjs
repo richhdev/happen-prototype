@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 // The `framer` package only exists inside Framer, and three files in framer/
 // import RenderTarget from it. Rather than rewrite those imports — the files
 // have to stay byte-identical to what is pasted into Framer — the bare
-// specifier is aliased onto a local stand-in. Only /framer-components/ pulls
+// specifier is aliased onto a local stand-in. Only /framer/ pulls
 // this in; the real site never imports anything from framer/.
 const FRAMER_SHIM = fileURLToPath(
   new URL("./lib/framer-render-target.js", import.meta.url)
