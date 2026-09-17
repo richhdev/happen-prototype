@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-12 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -23,9 +23,10 @@ const LINKS = [
     { id: "a-events", label: "Events" },
     { id: "b-work", label: "Work" },
     { id: "a-services", label: "Services" },
+    // { id: "a-testimonials", label: "Testimonials" },
     { id: "b-artists", label: "Artists" },
     { id: "a-about", label: "About" },
-    { id: "a-hosts", label: "Hosts" },
+    // { id: "a-hosts", label: "Hosts" },
     { id: "a-contact", label: "Contact" },
 ]
 

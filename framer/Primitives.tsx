@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-10 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -311,15 +311,25 @@ export const Section = forwardRef(function Section(
 
 /* Buttons ------------------------------------------------------------------
    Four variants rather than props, matching the Figma component set. Each
-   renders an <a> when given an href and a <button> otherwise. */
+   renders an <a> when given an href and a <button> otherwise. `color` sets the
+   text, and the outline variants' border follows it. */
+
+const BUTTON_COLORS = {
+  charcoal: "var(--color-charcoal)",
+  cream: "var(--color-cream)",
+  white: "var(--color-white)",
+  red: "var(--color-red)",
+  orange: "var(--color-orange)",
+};
 
 function buttonVariant(cls) {
-  return function Button({ as, type, className, children, ...rest }) {
+  return function Button({ as, type, color, className, style, children, ...rest }) {
     const Tag = as ?? (rest.href ? "a" : "button");
     return (
       <Tag
         type={type ?? (Tag === "button" ? "button" : undefined)}
         className={`button ${cls} ${className ?? ""}`}
+        style={color ? { color: BUTTON_COLORS[color] ?? color, ...style } : style}
         {...rest}
       >
         {children}

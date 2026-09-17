@@ -26,7 +26,7 @@ import Nav, { NavPlaceholder } from "@/framer/Nav.tsx";
 import Hero from "@/framer/Hero.tsx";
 import Events from "@/framer/Events.tsx";
 import Ribbons from "@/framer/Ribbons.tsx";
-import Vendors from "@/framer/Vendors.tsx";
+import VendorsClosed from "@/framer/VendorsClosed.tsx";
 import Hosts from "@/framer/Hosts.tsx";
 import Work from "@/framer/Work.tsx";
 import Services from "@/framer/Services.tsx";
@@ -35,7 +35,6 @@ import About from "@/framer/About.tsx";
 import Testimonials from "@/framer/Testimonials.tsx";
 import Instagram from "@/framer/Instagram.tsx";
 import Contact from "@/framer/Contact.tsx";
-import VideoBackground from "@/framer/VideoBackground.tsx";
 
 export default function FramerComponents() {
   return (
@@ -47,10 +46,10 @@ export default function FramerComponents() {
           VideoBackground both reach for it, so having it here exercises the
           same code path the published page takes. */}
       <main id="main" className="pageMain">
+        <Ribbons />
         <Hero />
         <Events />
-        <Ribbons />
-        <Vendors />
+        <VendorsClosed />
         <Hosts />
         <Work />
         <Services />
@@ -60,7 +59,6 @@ export default function FramerComponents() {
         <Instagram />
         <Contact />
       </main>
-      <VideoBackground />
     </>
   );
 }

@@ -1,54 +1,39 @@
 // @ts-nocheck
-// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
-// Ported from components/VideoBackground/VideoBackground.jsx.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
+// Plain JavaScript in a .tsx file, because Framer's code editor only makes
+// .tsx. Nothing here is typed, and the imports resolve inside Framer rather
+// than in this repo, so the checker has nothing useful to say about it.
 //
-// The portrait poster swap lives in the sheet (.videoBackgroundContainer), so
-// re-paste GlobalStylesheet.tsx alongside this file.
+// Ported from components/VideoBackground/VideoBackground.jsx. Paste into Framer
+// as a code file named VideoBackground.tsx.
+//
+// Not a section: Hero and Artists each render one inside their own scene, so
+// there is no default export and nothing to put in the page stack.
 
-import { useEffect, useState } from "react"
-import { createPortal } from "react-dom"
+import { useEffect } from "react"
 import { RenderTarget } from "framer"
 import { injectHappenCSS } from "./GlobalStylesheet.tsx"
 import { asset } from "./Primitives.tsx"
 
 injectHappenCSS()
 
-const WEBM = asset("/assets/video-background-v2.webm")
-const MP4 = asset("/assets/video-background-v2.mp4")
-const MOBILE_WEBM = asset("/assets/video-background-v2-mobile.webm")
-const MOBILE_MP4 = asset("/assets/video-background-v2-mobile.mp4")
-const PORTRAIT = "(orientation: portrait)"
-
-// Posters are painted by the container (poster="" can't take a media query);
-// url() in the sheet can't be rewritten by asset().
-const POSTER_VARS = {
-  "--video-background-poster": `url(${asset("/assets/video-background-v2-poster.jpg")})`,
-  "--video-background-poster-mobile": `url(${asset("/assets/video-background-v2-mobile-poster.jpg")})`,
-}
-
-// The video sits at -2 and the ribbons at -1, below zero because Framer wraps
-// every section in its own divs and gives them whatever z-index it likes — on
-// the published page the wrapper holding the whole site is `z-index: auto`
-// while one of its children is `z-index: 3`. Nothing positive orders against
-// that reliably; a negative level sits under every in-flow block regardless.
+// The video sits at -2 and the ribbons at -1, which only works while nothing
+// between the scene and the root opens a stacking context. Measured on the
+// published page on 2026-09-17: Hero's Framer container and the page wrapper
+// are both `position: relative; z-index: auto`, so it holds.
 //
-// The price is that a negative level paints behind the root element's
-// background but in front of any in-flow block's, so anything opaque and in
-// flow hides it. Framer's page background colour is exactly that, and it lands
-// in two places: on `body`, via a rule written `html body`, and on the one
-// wrapper div inside `#main`. These rules move the colour to `html`, where it
-// becomes the canvas, and clear it from both. `html body` and `!important` are
-// deliberate — a bare `body` rule loses on specificity and silently does
-// nothing. `.ribbonsLayer` is excluded because it portals into `#main` too and
-// its art is a background image.
+// A negative level paints behind the root element's background but in front of
+// any in-flow block's, so Framer's page background colour hides it. That colour
+// lands on `body`, via a rule written `html body`, and on the one wrapper div
+// inside `#main`. These rules move it to `html`, where it becomes the canvas,
+// and clear it from both. `html body` and `!important` are deliberate — a bare
+// `body` rule loses on specificity and silently does nothing. `.ribbonsLayer`
+// is excluded because its art is a background image.
 //
-// Only the published page gets this, so the Framer editor keeps showing the
-// page background colour you set. Set it and design against it.
-//
-// #main is positioned so the ribbons sheet can size itself against the page,
-// but never given a z-index: that would open a stacking context and trap the
-// sheet above the video. Keep in step with .pageMain in app/page.module.css
-// and the matching rule in Ribbons.tsx.
+// #main is positioned for the ribbons sheet, but never given a z-index: that
+// would open a stacking context and trap the sheet above the video. Keep in
+// step with .pageMain in app/page.module.css and the matching rule in
+// Ribbons.tsx.
 const STACKING_FIX = `
 html { background: var(--color-charcoal) !important; }
 html body { background: transparent !important; }
@@ -57,96 +42,70 @@ html body { background: transparent !important; }
 `
 
 function useStackingFix(active) {
-  useEffect(() => {
-    if (!active) return
-    const el = document.createElement("style")
-    el.setAttribute("data-happen-video-bg", "")
-    el.textContent = STACKING_FIX
-    document.head.appendChild(el)
-    return () => el.remove()
-  }, [active])
-}
-
-function Video({ playing }) {
-  return (
-    <video
-      className="videoBackgroundVideo"
-      autoPlay={playing}
-      loop
-      muted
-      playsInline
-      // autoPlay makes browsers fetch enough to start regardless, so this only
-      // does anything on the canvas, where the video is left paused.
-      preload="metadata"
-    >
-      {/* First matching source wins, and only at load: rotating won't swap. */}
-      <source src={MOBILE_WEBM} type="video/webm" media={PORTRAIT} />
-      <source src={MOBILE_MP4} type="video/mp4" media={PORTRAIT} />
-      <source src={WEBM} type="video/webm" />
-      <source src={MP4} type="video/mp4" />
-    </video>
-  )
+    useEffect(() => {
+        if (!active) return
+        const el = document.createElement("style")
+        el.setAttribute("data-happen-video-bg", "")
+        el.textContent = STACKING_FIX
+        document.head.appendChild(el)
+        return () => el.remove()
+    }, [active])
 }
 
 /**
- * Fills whatever it is dropped into on the canvas so it can be seen and placed.
- * On the published page it leaves the layout entirely and covers the viewport,
- * so give it any size you like and put it first in the page stack.
+ * The video, filling the scene it is dropped into. It needs a positioned
+ * parent that is not a stacking context — the section's own wrapper — so that
+ * it can sit below the ribbons rather than only below the section.
  *
- * @framerSupportedLayoutWidth any
- * @framerSupportedLayoutHeight any
+ * `name` is the base of the six files in /assets — two cuts, two formats, two
+ * posters — so a section can be given a different video.
  */
-export default function VideoBackground() {
-  const onCanvas = RenderTarget.current() === RenderTarget.canvas
+export function VideoBackground({
+    name = "video-background-v2",
+    behindNav = false,
+}) {
+    const onCanvas = RenderTarget.current() === RenderTarget.canvas
+    const src = (suffix) => asset(`/assets/${name}${suffix}`)
 
-  // A transformed Framer wrapper turns position:fixed into absolute, so the
-  // video would scroll away with the section it was dropped into. Portal to
-  // body, as PORTING.md prescribes for the nav.
-  //
-  // The sheet puts the container at z-index -2, under the ribbons at -1 and the
-  // content at 0 — see STACKING_FIX above for why the backdrop sits below zero.
-  // Prepending the host is belt and braces: at -2 it stays under the content
-  // wherever it lands, but before #main it is still correct if that number
-  // ever changes.
-  const [host, setHost] = useState(null)
-  useEffect(() => {
-    if (onCanvas) return
-    const el = document.createElement("div")
-    el.setAttribute("data-happen-video-bg-host", "")
-    document.body.prepend(el)
-    setHost(el)
-    return () => el.remove()
-  }, [onCanvas])
+    useStackingFix(!onCanvas)
 
-  useStackingFix(!onCanvas && host !== null)
-
-  // On the canvas body is the Framer editor, so a fixed full-screen portal
-  // would cover the whole UI. Render in place, paused, so the editor is not
-  // looping it behind your work.
-  if (onCanvas) {
     return (
-      <div
-        className="videoBackgroundContainer"
-        aria-hidden="true"
-        style={{ ...POSTER_VARS, position: "absolute" }}
-      >
-        <Video playing={false} />
-      </div>
+        <div
+            className={`videoBackground${behindNav ? " videoBackgroundBehindNav" : ""}`}
+            aria-hidden="true"
+            style={{
+                "--video-background-poster": `url(${src("-poster.jpg")})`,
+                "--video-background-poster-mobile": `url(${src("-mobile-poster.jpg")})`,
+                // The stacking fix does not run on the canvas, so at -2 the
+                // page background would hide it. Under the section is enough.
+                ...(onCanvas && { zIndex: "auto" }),
+            }}
+        >
+            <div className="videoBackgroundTrack">
+                <div className="videoBackgroundViewport">
+                    <video
+                        className="videoBackgroundVideo"
+                        autoPlay={!onCanvas}
+                        loop
+                        muted
+                        playsInline
+                        preload="metadata"
+                    >
+                        <source
+                            src={src("-mobile.webm")}
+                            type="video/webm"
+                            media="(orientation: portrait)"
+                        />
+                        <source
+                            src={src("-mobile.mp4")}
+                            type="video/mp4"
+                            media="(orientation: portrait)"
+                        />
+                        <source src={src(".webm")} type="video/webm" />
+                        <source src={src(".mp4")} type="video/mp4" />
+                    </video>
+                </div>
+            </div>
+        </div>
     )
-  }
-
-  // createPortal has no server to run on, so nothing paints until the host
-  // exists. Invisible: the page is already charcoal.
-  if (!host) return null
-
-  return createPortal(
-    <div
-      className="videoBackgroundContainer"
-      aria-hidden="true"
-      style={POSTER_VARS}
-    >
-      <Video playing={true} />
-    </div>,
-    host,
-  )
 }

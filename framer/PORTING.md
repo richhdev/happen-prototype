@@ -162,6 +162,13 @@ that file then has to be re-pasted into Framer.
 **In Framer and working:** `GlobalStylesheet.tsx`, `Primitives.tsx`, `Nav.tsx`,
 `Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
+**Re-synced with the repo 2026-09-17, not yet re-pasted:** `GlobalStylesheet.tsx`,
+`GlobalStylesheetHead.html`, `Primitives.tsx` (Button `color`), `Nav.tsx` (Hosts link
+dropped), `Hero.tsx` and `VideoBackground.tsx` (video moved from a page-wide backdrop
+into the hero). The standalone VideoBackground instance in the Framer page stack has to
+be deleted when these go in. `Artists.tsx` has not been re-synced, so Artists has no
+video until it is.
+
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Hosts.tsx`, `Work.tsx`,
 `Services.tsx`, `Artists.tsx`, `Testimonials.tsx`, `About.tsx`,
 `Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
@@ -298,9 +305,19 @@ Two things to know when changing these:
   in the root — video -2, ribbons -1, page content and sections 0, mobile overlay 4, nav
   5, nav hue guard 6, preloader 7. `VideoBackground.tsx` and `Ribbons.tsx` each give
   `#main` that position, and neither may add a z-index to it.
+- **The video is not portalled; it renders inside the scene of the section that owns it.**
+  `VideoBackground.tsx` has no default export — Hero and Artists import it and drop it
+  into their own `heroScene` / `artistsScene`, where it is `position: absolute` with a
+  sticky viewport. That holds only while every wrapper between the scene and the root is
+  `z-index: auto` with no transform, and while none of them is a scroll container.
+  Measured on the published page on 2026-09-17: Hero's container and the page wrapper are
+  both `position: relative; z-index: auto`, and the page wrapper is `overflow: clip`,
+  which is not a scroll container, so the sticky still pins to the screen. The nav
+  placeholder sits inside that same wrapper, so Hero's `behindNav` overhang is not
+  clipped. If the ribbons ever vanish over the hero, or the video scrolls away with it,
+  re-measure those wrappers first.
 - **Pick a portal target by what the element is measured against, not just to escape a
-  transform.** Nav and the video are sized to the viewport, so they portal to
-  `document.body`. The ribbons sheet has a percentage height and a percentage travel
+  transform.** Nav is sized to the viewport, so it portals to `document.body`. The ribbons sheet has a percentage height and a percentage travel
   resolved against the page, so body would have given it 70vh of art pinned near the top
   of the document — visibly wrong, and wrong in a way that still looks deliberate. It
   portals into `#main` instead.
