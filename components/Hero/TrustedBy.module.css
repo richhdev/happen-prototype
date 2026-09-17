@@ -36,7 +36,6 @@
 }
 
 .trustedByLogo {
-  max-width: 132px;
   object-fit: contain;
   opacity: 0.82;
   display: block;

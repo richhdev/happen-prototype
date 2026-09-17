@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-18 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -122,50 +122,52 @@ function RollingLogo({ trackRef }) {
    carries its own height, since the logos have wildly different proportions
    and matching by width alone makes the wide ones dominate the row. */
 
+const LOGO_SCALE = 0.3;
+
 const CLIENTS = [
   {
     name: "Beyond The Valley",
     src: asset("/assets/client-beyond-the-valley.svg"),
-    h: 26,
+    h: 65,
   },
   {
     name: "Live Nation",
     src: asset("/assets/client-live-nation.webp"),
-    h: 35,
+    h: 85,
   },
-  { name: "Novel", src: asset("/assets/client-novel.webp"), h: 22 },
-  { name: "Happy Hour", src: asset("/assets/client-happy-hour.webp"), h: 37 },
-  { name: "Dangerous Goods", src: asset("/assets/client-dg.webp"), h: 24 },
-  { name: "A3", src: asset("/assets/client-a3.webp"), h: 32 },
+  { name: "Novel", src: asset("/assets/client-novel.webp"), h: 65 },
+  { name: "Happy Hour", src: asset("/assets/client-happy-hour.webp"), h: 83 },
+  { name: "Dangerous Goods", src: asset("/assets/client-dg.webp"), h: 85 },
+  { name: "A3", src: asset("/assets/client-a3.webp"), h: 57 },
   {
     name: "Astral People",
     src: asset("/assets/client-astral-people.svg"),
-    h: 40,
+    h: 129,
   },
   {
     name: "Strawberry Fields",
     src: asset("/assets/client-strawberry-fields.webp"),
-    h: 40,
+    h: 137,
   },
-  { name: "Pitch", src: asset("/assets/client-pitch.webp"), h: 31 },
+  { name: "Pitch", src: asset("/assets/client-pitch.webp"), h: 93 },
   {
     name: "Destroy All Lines",
     src: asset("/assets/client-destroy-all-lines.svg"),
-    h: 26,
+    h: 87,
   },
-  { name: "S.A.S.H", src: asset("/assets/client-sash.svg"), h: 28 },
+  { name: "S.A.S.H", src: asset("/assets/client-sash.svg"), h: 67 },
   {
     name: "Strummingbird",
     src: asset("/assets/client-strummingbird.svg"),
-    h: 26,
+    h: 65,
   },
   {
     name: "Our City Our Sound",
     src: asset("/assets/client-our-city-our-sound.svg"),
-    h: 36,
+    h: 115,
   },
-  { name: "Chapter", src: asset("/assets/client-chapter.webp"), h: 30 },
-  { name: "Afrosoul", src: asset("/assets/client-afrosoul.svg"), h: 30 },
+  { name: "Chapter", src: asset("/assets/client-chapter.webp"), h: 185 },
+  { name: "Afrosoul", src: asset("/assets/client-afrosoul.svg"), h: 77 },
 ];
 
 function TrustedBy({ className, ...rest }) {
@@ -179,7 +181,7 @@ function TrustedBy({ className, ...rest }) {
             <img
               src={c.src}
               alt={c.name}
-              style={{ height: c.h }}
+              style={{ height: c.h * LOGO_SCALE }}
               className="trustedByLogo"
             />
           </div>
