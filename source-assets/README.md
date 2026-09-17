@@ -14,7 +14,8 @@ sources for art the site uses belong here — retired ones go in `asset-archive/
 
 `video-background/` is the exception the script skips: `video-background-v2.mp4`
 is the graded AV1 base the shipped `video-background-v2*` files are encoded from
-by hand.
+by hand. `site-icons/` is skipped too: `scripts/generate-icons.mjs` builds the
+favicon, Apple icon and share image in `app/` from it.
 
 Keeping the exports means the shipped art can be re-encoded from a lossless
 original rather than from an already-lossy file, whatever the encoder settings

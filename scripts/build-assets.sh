@@ -21,6 +21,9 @@ ribbon="-q 72 -alpha_q 80 -m 6 -sharp_yuv"
 before_kb=$(du -sk public/assets | cut -f1)
 
 for src in source-assets/*/*; do
+  # Built into app/ by generate-icons.mjs instead.
+  [[ "$src" == source-assets/site-icons/* ]] && continue
+
   file=$(basename "$src")
   name=${file%.*}
 

@@ -1,19 +1,22 @@
-// Generates every icon and share image from the artwork in public/assets, so a
-// logo change is re-run rather than re-drawn. The share card carries the whole
-// mark; the icons carry logo-h.svg, the isolated "h", because the full mark's
-// thin script is unreadable in a 16px tab.
+// Builds the site icons and share image from the Figma exports in
+// source-assets/site-icons, so a design change is re-exported and re-run.
 //
 //   node scripts/generate-icons.mjs
 //
-// Chromium (already a dev dependency for the screenshot script) does the
-// rendering, so there is no ImageMagick / librsvg to install. Outputs land on
+// Chromium (already a dev dependency for the screenshot script) rasterises the
+// favicon SVGs, so there is no ImageMagick / librsvg to install. Outputs land on
 // Next's App Router file conventions, which `output: 'export'` honours:
 //
-//   app/icon.png              browser tab / bookmarks
-//   app/apple-icon.png        iOS home screen
-//   app/favicon.ico           legacy + search-engine crawlers
-//   app/opengraph-image.png   Facebook, LinkedIn, Slack, iMessage
-//   app/twitter-image.png     X/Twitter (same art, separate convention)
+//   app/icon.png              browser tab / bookmarks   (favicon-dark.svg at 512)
+//   app/favicon.ico           legacy + crawlers         (favicon-dark.svg at 16/32/48)
+//   app/apple-icon.png        iOS home screen           (copied)
+//   app/opengraph-image.png   Facebook, LinkedIn, Slack (copied)
+//   app/twitter-image.png     X/Twitter                 (copied)
+//
+// Framer takes a light and a dark favicon as 64px PNG uploads in Site Settings:
+//
+//   framer/favicon-light.png
+//   framer/favicon-dark.png
 
 import { chromium } from "playwright";
 import fs from "node:fs";
@@ -21,78 +24,20 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const src = path.join(root, "source-assets/site-icons");
 const out = path.join(root, "app");
 
-const RED = "#ca0013";
-const CREAM = "#ebe6de";
-const CHARCOAL = "#111111";
+const iconPage = (name) => {
+  const svg = fs
+    .readFileSync(path.join(src, `${name}.svg`), "utf8")
+    .replace(/ width="\d+" height="\d+"/, "")
+    .replace("<svg", '<svg style="width:100%;height:100%;display:block"');
+  return `<body style="margin:0;width:100vw;height:100vh">${svg}</body>`;
+};
 
-// The mark is recoloured through `currentColor` rather than by editing the
-// file, so the export stays a straight copy of what's in Figma.
-const logo = fs
-  .readFileSync(path.join(root, "public/assets/logo.svg"), "utf8")
-  .replace(/fill="#CA0013"/gi, 'fill="currentColor"');
-
-const mark = (color, width) =>
-  `<div style="width:${width};color:${color};display:flex">
-     ${logo.replace("<svg", '<svg style="width:100%;height:auto"')}
-   </div>`;
-
-// The "h" alone, cropped to a square that sits on the glyph's bottom and sides
-// and lets the ascender run off the top edge. Trimming the ascender is what
-// buys the legibility: at full height the glyph is 61x110, so fitting it into a
-// square tile would shrink everything else to nothing. The cut has to bleed off
-// the edge — a flat stroke end floating mid-tile reads as a rendering fault.
-const H_BOX = { x: 10, y: 60, w: 60.75, h: 109.5 }; // glyph bounds in logo-h.svg
-const H_PAD = 10;
-const H_SIZE = H_BOX.w + H_PAD * 2;
-const H_VIEWBOX = [
-  H_BOX.x - H_PAD,
-  H_BOX.y + H_BOX.h + H_PAD - H_SIZE, // anchor the bottom, crop off the top
-  H_SIZE,
-  H_SIZE,
-].join(" ");
-
-// An <svg> clips to its own viewport, so re-aiming the viewBox is all the crop
-// takes — no second clip path.
-const glyph = fs
-  .readFileSync(path.join(root, "public/assets/logo-h.svg"), "utf8")
-  .replace(/fill="#CA0013"/i, 'fill="currentColor"')
-  .replace(/viewBox="[^"]*"/, `viewBox="${H_VIEWBOX}"`)
-  .replace("<svg", '<svg style="width:100%;height:100%;display:block"');
-
-// Cream-on-red, not the other way round: at 16px a solid tile holds its shape
-// while the mark's thin script on a light ground washes out to nothing.
-const iconPage = `<body style="margin:0">
-  <div style="width:100vw;height:100vh;background:${RED};color:${CREAM}">
-    ${glyph}
-  </div>
-</body>`;
-
-const sharePage = `<head>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-</head>
-<body style="margin:0;background:${CHARCOAL}">
-  <div style="width:1200px;height:630px;box-sizing:border-box;padding:76px 84px;
-              display:flex;flex-direction:column;justify-content:space-between;
-              font-family:Inter,-apple-system,'Helvetica Neue',sans-serif;
-              color:${CREAM};overflow:hidden">
-    ${mark(RED, "94px")}
-    <div>
-      <h1 style="margin:0;font-size:82px;line-height:1.02;font-weight:700;
-                 text-transform:uppercase;letter-spacing:-.035em;max-width:17ch">Behind every event, is a team making it Happen</h1>
-      <p style="margin:32px 0 0;font-size:26px;line-height:1.4;font-weight:400;
-                color:${CREAM};opacity:.68;max-width:34ch">A Melbourne events agency, built on 10+ years of doing the work.</p>
-    </div>
-  </div>
-</body>`;
-
-// ICO entries here are BMP DIBs rather than embedded PNGs: Chromium only ever
-// writes an opaque screenshot as RGB, and the decoders that read this file —
-// Turbopack's included — reject a PNG-in-ICO that has no alpha channel. A DIB
-// carries its own 32bpp BGRA, so there is nothing to re-encode.
+// ICO entries here are BMP DIBs rather than embedded PNGs: some decoders —
+// Turbopack's included — reject a PNG-in-ICO without an alpha channel, and a
+// DIB carries its own 32bpp BGRA whatever the screenshot was encoded as.
 function buildIco(icons) {
   const header = Buffer.alloc(6);
   header.writeUInt16LE(0, 0); // reserved
@@ -148,24 +93,21 @@ function buildIco(icons) {
 
 const browser = await chromium.launch();
 
-async function shot(html, width, height, file) {
-  const page = await browser.newPage({ viewport: { width, height } });
-  await page.setContent(html);
-  // Inter is the site's face; if it isn't cached locally the stack falls back
-  // to the system sans rather than blocking the render.
-  await page.waitForLoadState("networkidle").catch(() => {});
-  const buf = await page.screenshot({ path: file ?? undefined });
+async function shot(name, size, file) {
+  const page = await browser.newPage({ viewport: { width: size, height: size } });
+  await page.setContent(iconPage(name));
+  const buf = await page.screenshot({ path: file ?? undefined, omitBackground: true });
   await page.close();
   return buf;
 }
 
-await shot(iconPage, 512, 512, path.join(out, "icon.png"));
-await shot(iconPage, 180, 180, path.join(out, "apple-icon.png"));
-await shot(sharePage, 1200, 630, path.join(out, "opengraph-image.png"));
-fs.copyFileSync(
-  path.join(out, "opengraph-image.png"),
-  path.join(out, "twitter-image.png"),
-);
+await shot("favicon-dark", 512, path.join(out, "icon.png"));
+await shot("favicon-light", 64, path.join(root, "framer/favicon-light.png"));
+await shot("favicon-dark", 64, path.join(root, "framer/favicon-dark.png"));
+fs.copyFileSync(path.join(src, "apple-icon.png"), path.join(out, "apple-icon.png"));
+for (const f of ["opengraph-image.png", "twitter-image.png"]) {
+  fs.copyFileSync(path.join(src, "opengraph-image.png"), path.join(out, f));
+}
 
 // Round-trip each rendering through a canvas to get at its pixels, which is
 // the only way to reach raw RGBA without pulling in an image library.
@@ -174,7 +116,7 @@ await reader.setContent("<body></body>");
 
 const icons = [];
 for (const size of [16, 32, 48]) {
-  const png = await shot(iconPage, size, size, null);
+  const png = await shot("favicon-dark", size, null);
   const rgba = await reader.evaluate(
     async ({ url, size }) => {
       const img = new Image();
@@ -197,12 +139,14 @@ fs.writeFileSync(path.join(out, "favicon.ico"), buildIco(icons));
 await browser.close();
 
 for (const f of [
-  "icon.png",
-  "apple-icon.png",
-  "favicon.ico",
-  "opengraph-image.png",
-  "twitter-image.png",
+  "app/icon.png",
+  "app/apple-icon.png",
+  "app/favicon.ico",
+  "app/opengraph-image.png",
+  "app/twitter-image.png",
+  "framer/favicon-light.png",
+  "framer/favicon-dark.png",
 ]) {
-  const { size } = fs.statSync(path.join(out, f));
-  console.log(`app/${f}  ${(size / 1024).toFixed(1)} KB`);
+  const { size } = fs.statSync(path.join(root, f));
+  console.log(`${f}  ${(size / 1024).toFixed(1)} KB`);
 }
