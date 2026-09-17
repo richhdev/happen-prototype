@@ -1,27 +1,12 @@
 // @ts-nocheck
-// Last changed 2026-09-16 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
 //
 // Ported from components/Testimonials/ — Testimonials.jsx, Phone.jsx,
-// Thread.jsx and data.js — plus components/Hosts/ — Hosts.jsx and data.js.
-// Six source files, combined. Paste into Framer as a code file named
-// TestimonialsHosts.tsx.
-//
-// Only TestimonialsHosts is exported. Testimonials, Hosts, Phone, Thread,
-// TESTIMONIALS and HOST_CARDS are internals.
-//
-// The two are one component because the layout gives no choice. From 1024px up
-// they are flex siblings at `flex: 1 1 0` inside .pageTestimonialsHostsGroup,
-// and Framer's page frame is a vertical stack, so shipping them separately
-// would mean the client building a Framer row and setting that breakpoint on
-// the canvas — the one thing the compiled stylesheet exists to avoid.
-//
-// This is also the first port whose <Section> lives in app/page.js rather than
-// in the component, so the group owns it. Both inner ids come with it:
-// a-hosts is a live nav target and a-testimonials is commented out in the nav
-// data, waiting to be switched back on.
+// Thread.jsx and data.js, combined. Paste into Framer as a code file named
+// Testimonials.tsx.
 //
 // Two things to watch in Preview rather than on the canvas:
 //   · Thread puts motion's `layout` on the bubble, the tail and the avatar, so
@@ -29,20 +14,13 @@
 //     Artists, and the tail is the piece most likely to show it.
 //   · The feed is its own scroller with overscroll-behavior: contain. It
 //     drives itself with scrollTo until the visitor scrolls it, then stops.
+//
+// Paste order: Primitives.tsx and GlobalStylesheet.tsx first, then this.
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { injectHappenCSS } from "./GlobalStylesheet.tsx"
-import {
-  asset,
-  EASE,
-  Section,
-  Reveal,
-  Heading3,
-  Heading4,
-  TextMedium,
-  ButtonOutlineMedium,
-} from "./Primitives.tsx"
+import { asset, EASE, Section, Heading3 } from "./Primitives.tsx"
 
 injectHappenCSS()
 
@@ -108,23 +86,6 @@ const TESTIMONIALS = [
     quote:
       "We have worked with the team at Happen Group for over 10 years now in a number of different roles. Whether we are contracting them to deliver an area of one of our festivals or working together on an event it is always a great experience.",
     avatar: asset("/assets/testimonial-avatar-fil-palermo.webp"),
-  },
-]
-
-// Both links are Fillout forms the client owns, which is why they open in a new
-// tab rather than routing anywhere on the site.
-const HOST_CARDS = [
-  {
-    title: "Hosts & Promoters",
-    description: "Turn your network into a side hustle.",
-    label: "Join the team",
-    href: "https://happengroup.fillout.com/t/hMmqKzd35Gus",
-  },
-  {
-    title: "Casual Event Workers",
-    description: "Pick up casual work at Australia's biggest events.",
-    label: "Register",
-    href: "https://happengroup.fillout.com/casual_staff_eoi_summer_26_27",
   },
 ]
 
@@ -291,7 +252,7 @@ function Thread() {
 
 /* Phone --------------------------------------------------------------------
    Nothing under 768px: the frame is display: none and the thread sits straight
-   on the cream panel. From 768px up this becomes the device, and the screen is
+   on the panel. From 768px up this becomes the device, and the screen is
    the hole the thread scrolls inside. */
 
 function Phone({ children }) {
@@ -308,79 +269,6 @@ function Phone({ children }) {
   )
 }
 
-/* Testimonials — left half of the group from 1024px up. --------------------- */
-
-function Testimonials() {
-  return (
-    <div id="a-testimonials" className="testimonialsSurface">
-      {/* Fades the thread out as it runs up behind the heading. Mobile only —
-          on desktop the phone's own bezel does that job. */}
-      <div className="testimonialsScrim" aria-hidden="true" />
-
-      <Heading3 as="h2" className="testimonialsTitle">
-        Trusted by the best in the business
-      </Heading3>
-
-      <Phone>
-        <Thread />
-      </Phone>
-    </div>
-  )
-}
-
-/* Hosts — right half of the group from 1024px up. --------------------------- */
-
-function Hosts() {
-  return (
-    <div id="a-hosts" className="hostsSection">
-      {/* The panel itself, as an <img> rather than a background so it can crop
-          with object-fit while the copy stacks on top of it. */}
-      <img
-        src={asset("/assets/bg-graphic.webp")}
-        alt=""
-        className="hostsSurface"
-        loading="lazy"
-      />
-
-      <Heading3 as="h2" className="hostsTitle">
-        Want in?
-      </Heading3>
-
-      {/* Two cards: a swipeable row under 1024px, a stack above it. Each
-          re-reveals every time it comes back into view, staggered by 130ms. */}
-      <div className="hostsCards">
-        {HOST_CARDS.map((card, i) => (
-          <Reveal
-            key={card.title}
-            className="hostsCardWrap"
-            once={false}
-            amount={0}
-            delay={i * 130}
-          >
-            <article className="hostsCard">
-              <div className="hostsContent">
-                <Heading4 as="h3" className="hostsCardTitle">
-                  {card.title}
-                </Heading4>
-                <TextMedium className="hostsCardBody">
-                  {card.description}
-                </TextMedium>
-              </div>
-              <ButtonOutlineMedium
-                href={card.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {card.label}
-              </ButtonOutlineMedium>
-            </article>
-          </Reveal>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 /**
  * Width fills whatever it is dropped into; height is measured from the rendered
  * content, so the stylesheet decides it rather than a number typed in Framer.
@@ -388,11 +276,30 @@ function Hosts() {
  * @framerSupportedLayoutWidth any
  * @framerSupportedLayoutHeight auto
  */
-export default function TestimonialsHosts() {
+export default function Testimonials() {
   return (
-    <Section innerClassName="pageTestimonialsHostsGroup">
-      <Testimonials />
-      <Hosts />
+    <Section id="a-testimonials">
+      <div className="testimonialsSurface">
+        <img
+          src={asset("/assets/bg-graphic-2.webp")}
+          alt=""
+          className="testimonialsBg"
+          loading="lazy"
+          decoding="async"
+        />
+
+        {/* Fades the thread out as it runs up behind the heading. Mobile only —
+            on desktop the phone's own bezel does that job. */}
+        <div className="testimonialsScrim" aria-hidden="true" />
+
+        <Heading3 as="h2" className="testimonialsTitle">
+          Trusted by the best <br /> in the business
+        </Heading3>
+
+        <Phone>
+          <Thread />
+        </Phone>
+      </div>
     </Section>
   )
 }

@@ -86,13 +86,12 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
 1. **One file per section.** Fold its private sub-components, data and hooks in as
    non-exported functions. Framer lists every export in the Insert panel, so only the
    section itself is exported. Nav absorbed six source files this way; Hero absorbed
-   three, and `TestimonialsHosts.tsx` six.
+   three, and `Testimonials.tsx` four.
 
    A section is what occupies one slot in the page stack, not what has a folder. Where
    `app/page.js` wraps two components in one `<Section>`, that group is the section and
-   the port owns the `<Section>` the page was providing. Testimonials and Hosts are
-   flex siblings from 1024px up, and Framer's page frame is a vertical stack, so
-   shipping them separately would push that breakpoint onto the canvas.
+   the port owns the `<Section>` the page was providing, since Framer's page frame is a
+   vertical stack and shipping them separately would push the row layout onto the canvas.
 
    The exception is a sub-component somebody is meant to insert or bind on its own.
    `EventCard.tsx` is in the Insert panel on purpose, because the CMS collection list has
@@ -164,7 +163,7 @@ that file then has to be re-pasted into Framer.
 `Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
 
 **Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Hosts.tsx`, `Work.tsx`,
-`Services.tsx`, `Artists.tsx`, `TestimonialsHosts.tsx`, `About.tsx`,
+`Services.tsx`, `Artists.tsx`, `Testimonials.tsx`, `About.tsx`,
 `Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
 `Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
 and Contact. `EventCard.tsx` is pasted and in use; `Events.tsx` is not pasted — see
@@ -199,29 +198,6 @@ whichever one is in the stack.
 The closed card, like `.hostsCard`, is a flat charcoal background. Both used to carry their
 own copy of the band backdrop under a `mix-blend-mode: darken` fill; that was dropped for
 the plain background, so there is no blend left to break inside Framer's container.
-
-### TestimonialsHosts is out of date
-
-`TestimonialsHosts.tsx` was ported before Hosts was renamed in the repo and has drifted.
-It has never been pasted into Framer, so nothing is broken on the live site, but it will
-not render correctly if it is pasted as it stands:
-
-| In the file | In the repo now |
-|---|---|
-| `hostsCards` | `hostsCardGroup` |
-| `hostsTitle` | `hostsHeading` |
-| `asset("/assets/bg-graphic.webp")` | `hosts-bg.webp` |
-| no wrapper | `hostsContentGroup` > `hostsCopy` + `hostsBody` |
-| `once={false}` | `once={true}` |
-
-`hostsCards` and `hostsTitle` are defined by no stylesheet at all, so those two elements
-land unstyled. The compile script does not catch this: its "every `styles.X` exists"
-guard only reads JSX under `components/`, and `framer/` is excluded from the build and
-the linter by design.
-
-Hosts has since been re-ported on its own as `Hosts.tsx`, which is the one to paste. The
-Testimonials half is still stale: Testimonials is now its own `<Section>` in `app/page.js`
-with a `bg-graphic-2.webp` backdrop, so it wants re-porting as `Testimonials.tsx` too.
 
 ### Events
 

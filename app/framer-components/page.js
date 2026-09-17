@@ -32,7 +32,7 @@ import Work from "@/framer/Work.tsx";
 import Services from "@/framer/Services.tsx";
 import Artists from "@/framer/Artists.tsx";
 import About from "@/framer/About.tsx";
-import TestimonialsHosts from "@/framer/TestimonialsHosts.tsx";
+import Testimonials from "@/framer/Testimonials.tsx";
 import Instagram from "@/framer/Instagram.tsx";
 import Contact from "@/framer/Contact.tsx";
 import VideoBackground from "@/framer/VideoBackground.tsx";
@@ -56,10 +56,7 @@ export default function FramerComponents() {
         <Services />
         <Artists />
         <About />
-        {/* One component, not Section + Testimonials + Hosts. The port owns the
-            Section that app/page.js provides, so the 1024px breakpoint between
-            the two halves stays in the CSS. */}
-        <TestimonialsHosts />
+        <Testimonials />
         <Instagram />
         <Contact />
       </main>
