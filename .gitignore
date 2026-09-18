@@ -35,3 +35,4 @@ pnpm-debug.log*
 
 *storybook.log
 storybook-static
+/public/storybook/

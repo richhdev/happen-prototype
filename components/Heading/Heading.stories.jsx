@@ -24,7 +24,8 @@ export const H3Sentence = {
 
 export const H4 = {
   name: "H4",
-  render: ({ animateTracking, ...args }) => <Heading4 {...args} />,
+  args: { animateTracking: undefined },
+  render: (args) => <Heading4 {...args} />,
 };
 
 export const AllLevels = {

@@ -22,6 +22,12 @@ const nextConfig = {
     return config;
   },
 
+  // Storybook is built into public/storybook by `pnpm build`. public/ has no
+  // directory index, so the bare path needs pointing at the file.
+  async rewrites() {
+    return [{ source: "/storybook", destination: "/storybook/index.html" }];
+  },
+
   // public/assets is the asset host for the Framer site, so these are fetched
   // cross-origin by every visitor rather than by this app. Next's default for
   // public/ is max-age=0, must-revalidate, which makes a browser re-check all

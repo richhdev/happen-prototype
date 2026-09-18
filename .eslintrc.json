@@ -3,6 +3,12 @@
   "rules": {
     "no-unused-vars": "warn"
   },
+  "overrides": [
+    {
+      "files": ["**/*.stories.jsx"],
+      "rules": { "import/no-anonymous-default-export": "off" }
+    }
+  ],
   "ignorePatterns": [
     "framer/"
   ]
