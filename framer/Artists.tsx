@@ -74,7 +74,7 @@ const ARTISTS = [
     name: "Vanna",
     genre: "Rave",
     img: asset("/assets/artist-vanna.webp"),
-    bio: 'Melbourne raised, now based Gold Coast, Vanna is a self-described "Naarm/Melbourne Rave Chic" and "bpm pusher." Has played Revolver Upstairs and venues in Paris and Dortmund.',
+    bio: "Naarm-raised, Gold Coast-based DJ and producer Vanna delivers high-energy house, techno, bounce and trance with a reimagined ’90s edge. With sets at Beyond The Valley, Strawberry Fields and Snow Machine Japan, she’s quickly carving out her place in Australia’s electronic scene.",
     links: [
       { label: "Soundcloud", href: "https://soundcloud.com/vannaspins" },
       { label: "Instagram", href: "https://instagram.com/vannaspins" },

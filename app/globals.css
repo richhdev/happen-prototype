@@ -18,7 +18,7 @@ html {
   background: var(--color-charcoal);
 }
 
-body {
+html body {
   font-family:
     Inter,
     -apple-system,

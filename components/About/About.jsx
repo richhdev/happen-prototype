@@ -13,7 +13,7 @@ export default function About() {
         <div className={styles.aboutCopy}>
           <TextXXLarge>
             A dream team of doers and difference-makers. Sharp, reliable and
-            here to get it done. Each of us brings something different to the
+            here to get it done. Each member brings something different to the
             table: creative brains, logistical minds, artist wranglers and
             on-ground weapons.
           </TextXXLarge>
