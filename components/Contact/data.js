@@ -1,8 +1,4 @@
-export const CONTACT_EMAILS = [
-  "hello@happengroup.com.au",
-  "paris@happengroup.com.au",
-  "macca@happengroup.com.au",
-];
+export const CONTACT_EMAILS = ["hello@happengroup.com.au"];
 
 // Rendered as label + input pairs; `rows` marks the one multi-line field.
 export const FORM_FIELDS = [
