@@ -1,0 +1,5 @@
+.feed {
+  width: 100%;
+  min-height: 320px;
+  background: var(--color-charcoal);
+}

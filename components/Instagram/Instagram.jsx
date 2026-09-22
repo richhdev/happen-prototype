@@ -1,23 +1,18 @@
 import { Section } from "@/components/Section/Section";
-import { RevealGroup, RevealItem } from "@/components/ui";
 import { SOCIALS } from "@/lib/data";
-import { IG_TILES } from "./data";
-import { InstagramCard } from "./InstagramCard";
+import { EmbedSocialFeed } from "./EmbedSocialFeed";
 import styles from "./Instagram.module.css";
 import { Heading3 } from "../Heading/Heading";
+
+const EMBED_REF = "e509db0b81e805a0eb40ae1c420701e728ec2ee0";
 
 export default function Instagram() {
   return (
     <Section id="a-instagram" className={styles.instagramSection}>
       <div className={styles.instagramContent}>
         <Heading3 style={{ color: "var(--color-white)" }}>Instagram</Heading3>
-        <RevealGroup className={styles.instagramGrid} once={true}>
-          {IG_TILES.map(({ src, href }) => (
-            <RevealItem key={src}>
-              <InstagramCard src={src} href={href} />
-            </RevealItem>
-          ))}
-        </RevealGroup>
+
+        <EmbedSocialFeed embedRef={EMBED_REF} />
 
         <div className={styles.instagramSocial}>
           <span className={styles.instagramFollowLabel}>Follow us</span>

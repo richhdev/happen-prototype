@@ -22,17 +22,6 @@
   }
 }
 
-.instagramGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-8);
-  width: 100%;
-
-  @media (min-width: 768px) {
-    gap: var(--space-32);
-  }
-}
-
 .instagramSocial {
   display: flex;
   flex-wrap: wrap;
@@ -74,17 +63,6 @@
   line-height: var(--text-medium-line-height);
   font-weight: 500;
   text-decoration: underline;
-}
-
-/* Mobile carries Instagram alone, as the design has it — the other three are
-   repeated in the Contact section, so the row does not need to spend the width
-   on them here. */
-.instagramSocialLink:not(:first-child) {
-  display: none;
-
-  @media (min-width: 768px) {
-    display: inline-flex;
-  }
 }
 
 .instagramSocialIcon {
