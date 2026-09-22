@@ -3,6 +3,7 @@ import { Heading3 } from "@/components/Heading/Heading";
 import { TextMedium } from "@/components/Text/Text";
 import { SOCIALS } from "@/lib/data";
 import ContactForm from "./ContactForm";
+import Acknowledgement from "./Acknowledgement";
 import { CONTACT_EMAILS } from "./data";
 import styles from "./Contact.module.css";
 
@@ -55,6 +56,8 @@ export default function Contact() {
 
           <ContactForm />
         </div>
+
+        <Acknowledgement />
       </div>
     </Section>
   );

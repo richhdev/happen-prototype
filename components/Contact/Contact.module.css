@@ -127,3 +127,16 @@
   height: 76px;
   resize: vertical;
 }
+
+.acknowledgement {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 760px;
+}
+
+.acknowledgementText {
+  color: var(--color-cream);
+  text-align: center;
+  text-wrap: pretty;
+}
