@@ -23,5 +23,5 @@ export const VENDOR_EVENTS = [
 export const VENDORS_CLOSED = {
   copy: "Register your interest and we’ll be in touch.",
   cta: "Register",
-  link: "#",
+  link: "https://happengroup.fillout.com/t/kCuR3PBPduus",
 };
