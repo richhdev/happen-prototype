@@ -4,7 +4,7 @@ import { cubicBezier, motion, useScroll, useTransform } from "framer-motion";
 import { DEFAULT_IMG, SERVICES } from "./data";
 import { Section } from "@/components/Section/Section";
 import { Heading2, Heading3 } from "@/components/Heading/Heading";
-import { TextMedium, TextOverline } from "@/components/Text/Text";
+import { TextMedium } from "@/components/Text/Text";
 import { useIsoLayoutEffect } from "@/components/ui";
 import styles from "./Services.module.css";
 
