@@ -8,16 +8,18 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:lan": "next dev --turbopack -H 0.0.0.0 -p 3100",
-    "build": "storybook build -o public/storybook --quiet && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "screenshot": "node scripts/screenshot.mjs",
-    "assets": "./scripts/build-assets.sh",
-    "prefix-classes": "node scripts/prefix-classes.mjs",
-    "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs",
-    "lighthouse": "lighthouse http://localhost:3000 --chrome-flags=\"--headless=new\" --output=html --output-path=.lighthouse/report.html --view",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook-build": "storybook build -o public/storybook",
+    "lighthouse": "pnpm lighthouse:mobile & pnpm lighthouse:desktop",
+    "lighthouse:mobile": "lighthouse http://localhost:3000 --chrome-flags=\"--headless=new\" --output=html --output-path=public/lighthouse/mobile/index.html",
+    "lighthouse:desktop": "lighthouse http://localhost:3000 --preset=desktop --chrome-flags=\"--headless=new\" --output=html --output-path=public/lighthouse/desktop/index.html",
+    "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs",
+    "assets": "./scripts/build-assets.sh",
+    "screenshot": "node scripts/screenshot.mjs",
+    "devstart": "(sleep 2 && open -a 'Firefox Developer Edition' http://localhost:3000) & BROWSER='Firefox Developer Edition' storybook dev -p 6006 & next dev --turbopack"
   },
   "dependencies": {
     "next": "^15.5.18",

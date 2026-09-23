@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 // specifier is aliased onto a local stand-in. Only /framer/ pulls
 // this in; the real site never imports anything from framer/.
 const FRAMER_SHIM = fileURLToPath(
-  new URL("./lib/framer-render-target.js", import.meta.url)
+  new URL("./lib/framer-render-target.js", import.meta.url),
 );
 
 /** @type {import('next').NextConfig} */
@@ -22,10 +22,21 @@ const nextConfig = {
     return config;
   },
 
-  // Storybook is built into public/storybook by `pnpm build`. public/ has no
-  // directory index, so the bare path needs pointing at the file.
+  // Storybook is built into public/storybook
+  // Lighthouse is built into public/lighthouse
   async rewrites() {
-    return [{ source: "/storybook", destination: "/storybook/index.html" }];
+    return [
+      { source: "/storybook", destination: "/storybook/index.html" },
+      { source: "/lighthouse", destination: "/lighthouse/index.html" },
+      {
+        source: "/lighthouse/mobile",
+        destination: "/lighthouse/mobile/index.html",
+      },
+      {
+        source: "/lighthouse/desktop",
+        destination: "/lighthouse/desktop/index.html",
+      },
+    ];
   },
 
   // public/assets is the asset host for the Framer site, so these are fetched
