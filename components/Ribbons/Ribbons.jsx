@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 import styles from "./Ribbons.module.css";
 
 // How many copies of the composition are stacked down the layer. The layer
@@ -19,6 +19,13 @@ const PLACEMENTS = [
   styles.ribbonsPlacementD,
 ];
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Ribbons() {
   const ref = useRef(null);
 

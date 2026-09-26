@@ -1,4 +1,4 @@
-import { TextSmall } from "@/components/Text/Text";
+import { TextSmall } from "@/components/Primitives";
 import styles from "./Contact.module.css";
 
 export default function Acknowledgement() {

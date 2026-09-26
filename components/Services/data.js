@@ -1,4 +1,4 @@
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 
 export const DEFAULT_IMG = asset("/assets/svc-default.webp");
 

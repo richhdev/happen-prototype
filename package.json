@@ -17,6 +17,8 @@
     "lighthouse:mobile": "lighthouse http://localhost:3000 --chrome-flags=\"--headless=new\" --output=html --output-path=public/lighthouse/mobile/index.html",
     "lighthouse:desktop": "lighthouse http://localhost:3000 --preset=desktop --chrome-flags=\"--headless=new\" --output=html --output-path=public/lighthouse/desktop/index.html",
     "compile-stylesheet-framer": "node scripts/compile-stylesheet-framer.mjs",
+    "build-framer": "node scripts/build-framer.mjs",
+    "compare-framer": "node scripts/compare-framer.mjs",
     "assets": "./scripts/build-assets.sh",
     "screenshot": "node scripts/screenshot.mjs",
     "devstart": "(sleep 2 && open -a 'Firefox Developer Edition' http://localhost:3000) & BROWSER='Firefox Developer Edition' storybook dev -p 6006 & next dev --turbopack"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-25 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -10,12 +10,9 @@
 // Not a section: Hero and Artists each render one inside their own scene, so
 // there is no default export and nothing to put in the page stack.
 
-import { useEffect } from "react"
-import { RenderTarget } from "framer"
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
-import { asset } from "./Primitives.tsx"
-
-injectHappenCSS()
+import { useEffect } from "react";
+import { RenderTarget } from "framer";
+import { styles, asset } from "./Primitives.tsx";
 
 // The video sits at -2 and the ribbons at -1, which only works while nothing
 // between the scene and the root opens a stacking context. Measured on the
@@ -30,26 +27,22 @@ injectHappenCSS()
 // `body` rule loses on specificity and silently does nothing. `.ribbonsLayer`
 // is excluded because its art is a background image.
 //
-// #main is positioned for the ribbons sheet, but never given a z-index: that
-// would open a stacking context and trap the sheet above the video. Keep in
-// step with .pageMain in app/page.module.css and the matching rule in
-// Ribbons.tsx.
 const STACKING_FIX = `
 html { background: var(--color-charcoal) !important; }
 html body { background: transparent !important; }
-#main { background: transparent !important; position: relative; }
+#main { background: transparent !important; }
 #main > div:not(.ribbonsLayer) { background: transparent !important; }
-`
+`;
 
 function useStackingFix(active) {
-    useEffect(() => {
-        if (!active) return
-        const el = document.createElement("style")
-        el.setAttribute("data-happen-video-bg", "")
-        el.textContent = STACKING_FIX
-        document.head.appendChild(el)
-        return () => el.remove()
-    }, [active])
+  useEffect(() => {
+    if (!active) return;
+    const el = document.createElement("style");
+    el.setAttribute("data-happen-video-bg", "");
+    el.textContent = STACKING_FIX;
+    document.head.appendChild(el);
+    return () => el.remove();
+  }, [active]);
 }
 
 /**
@@ -61,51 +54,51 @@ function useStackingFix(active) {
  * posters — so a section can be given a different video.
  */
 export function VideoBackground({
-    name = "video-background-v2",
-    behindNav = false,
+  name = "video-background-v2",
+  behindNav = false,
 }) {
-    const onCanvas = RenderTarget.current() === RenderTarget.canvas
-    const src = (suffix) => asset(`/assets/${name}${suffix}`)
+  const onCanvas = RenderTarget.current() === RenderTarget.canvas;
+  const src = (suffix) => asset(`/assets/${name}${suffix}`);
 
-    useStackingFix(!onCanvas)
+  useStackingFix(!onCanvas);
 
-    return (
-        <div
-            className={`videoBackground${behindNav ? " videoBackgroundBehindNav" : ""}`}
-            aria-hidden="true"
-            style={{
-                "--video-background-poster": `url(${src("-poster.jpg")})`,
-                "--video-background-poster-mobile": `url(${src("-mobile-poster.jpg")})`,
-                // The stacking fix does not run on the canvas, so at -2 the
-                // page background would hide it. Under the section is enough.
-                ...(onCanvas && { zIndex: "auto" }),
-            }}
-        >
-            <div className="videoBackgroundTrack">
-                <div className="videoBackgroundViewport">
-                    <video
-                        className="videoBackgroundVideo"
-                        autoPlay={!onCanvas}
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                    >
-                        <source
-                            src={src("-mobile.webm")}
-                            type="video/webm"
-                            media="(orientation: portrait)"
-                        />
-                        <source
-                            src={src("-mobile.mp4")}
-                            type="video/mp4"
-                            media="(orientation: portrait)"
-                        />
-                        <source src={src(".webm")} type="video/webm" />
-                        <source src={src(".mp4")} type="video/mp4" />
-                    </video>
-                </div>
-            </div>
+  return (
+    <div
+      className={`videoBackground${behindNav ? " videoBackgroundBehindNav" : ""}`}
+      aria-hidden="true"
+      style={{
+        "--video-background-poster": `url(${src("-poster.jpg")})`,
+        "--video-background-poster-mobile": `url(${src("-mobile-poster.jpg")})`,
+        // The stacking fix does not run on the canvas, so at -2 the
+        // page background would hide it. Under the section is enough.
+        ...(onCanvas && { zIndex: "auto" }),
+      }}
+    >
+      <div className={styles.videoBackgroundTrack}>
+        <div className={styles.videoBackgroundViewport}>
+          <video
+            className={styles.videoBackgroundVideo}
+            autoPlay={!onCanvas}
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source
+              src={src("-mobile.webm")}
+              type="video/webm"
+              media="(orientation: portrait)"
+            />
+            <source
+              src={src("-mobile.mp4")}
+              type="video/mp4"
+              media="(orientation: portrait)"
+            />
+            <source src={src(".webm")} type="video/webm" />
+            <source src={src(".mp4")} type="video/mp4" />
+          </video>
         </div>
-    )
+      </div>
+    </div>
+  );
 }

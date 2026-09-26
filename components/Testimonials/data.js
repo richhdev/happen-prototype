@@ -1,4 +1,4 @@
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 
 // Each entry is one message in the phone's thread. They alternate sides
 // automatically — index order is the only thing that decides which way a

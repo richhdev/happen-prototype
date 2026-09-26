@@ -1,4 +1,5 @@
 "use client";
+import { RenderTarget } from "framer";
 import { useCallback, useRef, useState } from "react";
 import {
   cubicBezier,
@@ -8,9 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { WORK } from "./data";
-import { Section } from "@/components/Section/Section";
-import { Heading2 } from "@/components/Heading/Heading";
-import { useIsoLayoutEffect } from "@/components/ui";
+import { Section, Heading2, useIsoLayoutEffect } from "@/components/Primitives";
 import { useSidewaysScroll } from "./useSidewaysScroll";
 import styles from "./Work.module.css";
 
@@ -19,6 +18,13 @@ import styles from "./Work.module.css";
 // but leaves a long crawl at the end.
 const SHRINK_EASE = cubicBezier(0.5, 1, 0.89, 1);
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Work() {
   const containerRef = useRef(null);
   const cardRefs = useRef([]);
@@ -83,7 +89,12 @@ export default function Work() {
 
   // A sideways gesture over the section drives the same vertical scroll, so
   // reaching for the cards directly moves them instead of doing nothing.
-  useSidewaysScroll(containerRef);
+  // Off on the Framer canvas, where a horizontal wheel is how you pan the
+  // canvas itself and preventDefault would fight the editor. `framer` resolves
+  // to lib/framer-render-target.js outside Framer, which always answers
+  // preview, so this is always on in the Next app.
+  const onCanvas = RenderTarget.current() === RenderTarget.canvas;
+  useSidewaysScroll(containerRef, !onCanvas);
 
   // "change" only fires on later updates, so the track would keep card 0
   // featured until the first scroll — wrong for a reload part-way down the page.

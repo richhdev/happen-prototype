@@ -22,10 +22,12 @@ const PAUSE_MS = 80;
 // Pair this with `touch-action: pan-y pinch-zoom` on the same element: it stops
 // the browser claiming a horizontal drag for itself, which keeps touchmove
 // cancelable so this can take the gesture over.
-export function useSidewaysScroll(ref) {
+// `enabled` is off only on the Framer canvas, where the listeners would fight
+// the editor's own panning.
+export function useSidewaysScroll(ref, enabled = true) {
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !enabled) return;
 
     // `instant` overrides the global `scroll-behavior: smooth`: a gesture
     // arrives as a stream of small deltas, and animating each one would leave
@@ -145,5 +147,5 @@ export function useSidewaysScroll(ref) {
       el.removeEventListener("touchend", onTouchEnd);
       el.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [ref]);
+  }, [ref, enabled]);
 }

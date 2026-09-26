@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useTransform } from "framer-motion";
-import { Heading4 } from "@/components/Heading/Heading";
-import { TextMedium } from "@/components/Text/Text";
-import { Badge } from "@/components/Badge/Badge";
+import { Heading4, TextMedium, Badge } from "@/components/Primitives";
 import { ARTISTS } from "./data";
 import styles from "./ArtistCard.module.css";
 

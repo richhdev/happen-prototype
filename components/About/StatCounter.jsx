@@ -9,7 +9,7 @@ import {
   useReducedMotion,
   useTransform,
 } from "framer-motion";
-import { EASE } from "@/lib/data";
+import { EASE } from "@/components/Primitives";
 
 // Counts up from 0 to `value` each time it scrolls into view (re-triggers, like
 // the other reveals in the site).

@@ -1,5 +1,5 @@
 "use client";
-import { ButtonOutlineMedium } from "@/components/Button/Button";
+import { ButtonOutlineMedium } from "@/components/Primitives";
 import { FORM_FIELDS } from "./data";
 import styles from "./Contact.module.css";
 

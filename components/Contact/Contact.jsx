@@ -1,12 +1,21 @@
-import { Section } from "@/components/Section/Section";
-import { Heading3 } from "@/components/Heading/Heading";
-import { TextMedium } from "@/components/Text/Text";
-import { SOCIALS } from "@/lib/data";
+import {
+  SOCIALS,
+  Section,
+  Heading3,
+  TextMedium,
+} from "@/components/Primitives";
 import ContactForm from "./ContactForm";
 import Acknowledgement from "./Acknowledgement";
 import { CONTACT_EMAILS } from "./data";
 import styles from "./Contact.module.css";
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Contact() {
   return (
     <Section as="footer" id="a-contact" className={styles.contactSection}>

@@ -1,20 +1,31 @@
 # Framer porting brief
 
-Copy everything below the line into a fresh chat session, and name the section you
-want ported at the end.
+Copy everything below the line into a fresh chat session, and name the section you want
+worked on at the end. Most sections are generated now — read **Generating and checking a
+port** first.
 
 ---
 
 ## What we're doing
 
-Porting this Next.js prototype into Framer. Every section becomes a Framer **code
-component**, except **Events**, which the client rebuilds as a Framer CMS collection so
-they can add events themselves. The Next repo stays the source of truth; Framer gets
-hand-ported copies that live in `framer/`.
+Porting this Next.js prototype into Framer. Most sections become a Framer **code
+component**. Three do not — **Events**, **Instagram** and **Contact** are built natively
+in Framer, so the client can edit them without touching code. The Next repo stays the
+source of truth; Framer gets copies that live in `framer/`, generated where it can be
+and hand-written where it cannot.
 
 The prototype itself is done. Nothing in `app/` or `components/` should be redesigned
 during a port. A port is a mechanical translation, and any visual difference from the
 Next app is a bug.
+
+**A ported file should differ from its source in its import block and nothing else.**
+That is the target the rules below are shaped around: the class names, the markup, the
+hooks and the sizing annotation are all written once, in `components/`, and copied
+across untouched. `About.tsx` is the worked example — diff it against
+`components/About/About.jsx` and the only changes are the imports, the divider above the
+folded `StatCounter`, and one dropped `export` keyword. Anything beyond that in a port
+is a divergence somebody has to re-read on every sync, so push it into the shared file
+or into the source instead.
 
 ## How styling works
 
@@ -30,8 +41,10 @@ That script (`scripts/compile-stylesheet-framer.mjs`) concatenates `tokens.css`,
 `framer/happen.css`, plus two Framer outputs:
 
 - **`framer/GlobalStylesheet.tsx`** — the sheet as a template string with an
-  `injectHappenCSS()` helper. Pasted as a code file; every section imports it and calls
-  it at module level. This is what styles the **canvas**, where custom code does not run.
+  `injectHappenCSS()` helper. Pasted as a code file. `Primitives.tsx` imports it and
+  calls it at module level, and every section imports `Primitives.tsx`, so no section
+  needs to call it itself. This is what styles the **canvas**, where custom code does
+  not run.
 - **`framer/GlobalStylesheetHead.html`** — the same sheet as a `<style>` block, plus
   preloads for the self-hosted Inter and the ribbons (the page's largest paint). Pasted into **Site Settings → Code** as the entry named
   `GlobalStylesheetHead`, at **Start of `<head>`**. This is what styles the **published site**.
@@ -67,8 +80,21 @@ The head stamp is also on the marker attribute, as
 there to confirm which build is actually live, rather than trusting that the paste went
 through.
 
-Hand-ported sections carry `// Last changed <date>` on line 2 instead, since nothing
-generates them. Update that line whenever you change one, or it silently rots.
+One caveat on that id: it hashes the sheet **before** minification, comments and source
+banners included, so editing a comment in any `.module.css` moves it while the CSS that
+actually ships is unchanged. A mismatched id is a reason to look, not proof of a stale
+paste. To settle it, pull the `<style data-happen-static>` block off the live page and
+compare it against the one in `GlobalStylesheetHead.html` — identical content means
+there is nothing to re-paste however far apart the ids have drifted. That happened on
+2026-09-27: the live page read `3ccacef6` against the repo's `914ec9aa`, and both style
+blocks were 41,627 characters with no rule differing and identical preloads.
+
+Generated section files carry no date. They carry a "do not edit" banner and the list of
+sources they were built from, and `pnpm build-framer --check` is what says whether the
+committed copy is current — a stamp cannot rot if nothing has to remember to update it.
+The eight hand-written files still carry `// Last changed <date>` on line 2. That line
+did rot: on 2026-09-23 eleven of fourteen ports were stamped older than their source,
+which is why most of them are generated now.
 
 Limit the `GlobalStylesheetHead` entry's **Page** field to the Happen pages
 (`/home-static`, `/home-editable`) rather than leaving it site-wide. The reset in
@@ -81,40 +107,82 @@ stylesheets ever define the same name, or if JSX references a `styles.X` that no
 defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.tsx` and
 `GlobalStylesheetHead.html`.
 
+## Generating and checking a port
+
+Most sections are no longer written by hand. Two commands:
+
+```
+pnpm build-framer          regenerate framer/*.tsx from components/
+pnpm build-framer --check  fail if a committed copy is out of date
+pnpm compare-framer        diff every section on / against /framer/ in a browser
+```
+
+`build-framer` concatenates a section's folder into one file, rewrites the import
+block onto `./Primitives.tsx`, drops `export` from the folded parts and appends
+`framer/extra/<Name>.tsx` if it exists. Eleven sections are generated: About, Artists,
+Contact, Events, Hero, Hosts, Instagram, Services, Testimonials, Vendors, Work. **Never
+edit those by hand** — the header says so and the next run overwrites it. Edit the
+source.
+
+`compare-framer` needs `pnpm dev` running. It fetches both pages, unhashes the CSS-module
+class names so the two are directly comparable, strips the asset host, and diffs each
+top-level block of `<main>`. A port is a mechanical translation, so anything it reports
+is drift. It found three real bugs the day it was written: Contact still carried two
+email addresses the repo had removed, Instagram still rendered the old six-tile grid
+after the site moved to EmbedSocial, and `Primitives.tsx` exported four social accounts
+where `lib/data.js` has two.
+
+### What still has to be hand-written, and why
+
+| File | Why it cannot be generated |
+|---|---|
+| `Nav.tsx`, `Ribbons.tsx` | portal out of Framer's container, which moves the DOM. Doing the same in Next would change the Next app. |
+| `VideoBackground.tsx` | injects CSS that overrides Framer's page background. Not inert in Next — it would restyle the real page. |
+| `EventCard.tsx`, `InstagramCard.tsx` | no source in `components/` at all. Framer-native. |
+| `VendorsClosed.tsx` | three lines re-exporting `VendorsClosed` from `Vendors.tsx` — see Vendors below. |
+
+These four still carry `// Last changed <date>` on line 2; update it when you touch one.
+They now write their class names as `styles.heroSection` like everything else, which is
+not cosmetic: `compile-stylesheet-framer` only checks names written that way, so a typo
+in one of them is now a failed build rather than an unstyled element. None of them calls
+`injectHappenCSS()` any more either — `Primitives.tsx` does it for everyone.
+
+`compare-framer` watches them the same as the generated ones, except `Nav` and the two
+cards: `Nav` is `position: fixed` and outside `<main>`, and the cards have no source to
+compare against. Those three are the files to eyeball in Preview.
+
 ## Rules for a ported file
 
-1. **One file per section.** Fold its private sub-components, data and hooks in as
-   non-exported functions. Framer lists every export in the Insert panel, so only the
-   section itself is exported. Nav absorbed six source files this way; Hero absorbed
-   three, and `Testimonials.tsx` four.
+These are what the generator does. They matter when you hand-write one of the files
+above, or when you change a source in a way the generator has to keep up with.
 
-   A section is what occupies one slot in the page stack, not what has a folder. Where
-   `app/page.js` wraps two components in one `<Section>`, that group is the section and
-   the port owns the `<Section>` the page was providing, since Framer's page frame is a
-   vertical stack and shipping them separately would push the row layout onto the canvas.
+1. **One file per section.** Its private sub-components, data and hooks are folded in as
+   non-exported functions, because Framer lists every export in the Insert panel.
+   Data files land above the section and sub-components below it, so a module-level
+   constant is always declared before it is read.
 
    The exception is a sub-component somebody is meant to insert or bind on its own.
    `EventCard.tsx` is in the Insert panel on purpose, because the CMS collection list has
-   to render it with its fields bound. `InstagramCard.tsx` is the other one: its image and
-   post link are on property controls so a tile can be swapped from the panel. Split a card out only
-   when that is true of it, and have the section import the split file rather than
-   keeping a second copy of the markup.
-2. **`// @ts-nocheck` on line 1**, with the standard four-line header explaining that
-   this is plain JS in a `.tsx` because Framer only makes `.tsx`.
-3. **Drop `import styles from "./X.module.css"`** and rewrite every `styles.heroSection`
-   as the plain string `"heroSection"`.
-4. **Imports carry the `.tsx` extension**: `from "./Primitives.tsx"`. A capitalisation
-   or spelling mismatch makes Framer silently omit the component from the Insert panel
-   rather than showing an error.
+   to render it with its fields bound. `InstagramCard.tsx` is the other one.
+2. **`// @ts-nocheck` on line 1**, with the header explaining that this is plain JS in a
+   `.tsx` because Framer only makes `.tsx`.
+3. **`styles.heroSection` stays exactly as the source writes it.** The
+   `import styles from "./X.module.css"` line goes, and `styles` comes from
+   `Primitives.tsx` instead, where it is a Proxy answering every string key with its own
+   name. The compiled sheet is global, so the class name is already the value.
+   `compile-stylesheet-framer` scans `framer/` alongside `components/`, so a `styles.X`
+   naming no rule fails the build.
+4. **Imports carry the `.tsx` extension**: `from "./Primitives.tsx"`. A capitalisation or
+   spelling mismatch makes Framer silently omit the component from the Insert panel.
 5. **Animation imports need no rewriting.** The Next app was moved off `motion/react`
    onto `framer-motion@11` on 2026-09-10 precisely so the specifier matches what Framer
-   bundles. If you see `motion/react` anywhere, it is a mistake in the source, not
-   something to translate.
+   bundles.
 6. **Anything that receives a `ref` needs `forwardRef`.** Passing `ref` as a plain prop
-   is React 19 only, and Framer may be on 18, where it is silently dropped.
+   is React 19 only, and Framer may be on 18.
 7. **`inert` must be a string, not a boolean.** Use the `inertWhen` pattern from
    `Nav.tsx`. React 18 drops an unknown boolean attribute entirely.
-8. **Annotate the export** so Framer sizes it from the CSS, not from a typed number:
+8. **The sizing annotation lives in the source.** Every section's default export in
+   `components/` carries it, inert there, and the port copies it across:
 
    ```
    /**
@@ -122,20 +190,42 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
     * @framerSupportedLayoutHeight auto
     */
    ```
-9. **Property controls only where someone edits the thing.** Sections take their content
-   from the repo and expose nothing, unless the client has asked to edit that section
-   themselves — `Vendors.tsx`, `VendorsClosed.tsx` and `Hosts.tsx` are the three that have,
-   and all put their copy and CTAs on controls. A component built to be filled in from the panel
-   puts every field on `addPropertyControls`, with the default in a `defaultValue` and in
-   the parameter default — not in `Component.defaultProps`, which React 19 ignores on a
-   function component and warns about. Anything reading Framer's sizing out of `style`
-   has to drop the keyword values, or the auto mode overrides the width the stylesheet
-   set. `EventCard.tsx` carries both patterns.
+
+9. **Framer-only code goes in `framer/extra/<Name>.tsx`**, which the generator appends
+   and whose imports it merges into the one block at the top. That is where property
+   controls live. If something Framer-only cannot be appended — because it belongs
+   *inside* the component — then either it moves into the source as inert code, or the
+   section comes off the generated list. There is no third option, and no hand-editing
+   of a generated file.
+
+   **Prefer moving it into the source.** `next.config.mjs` and `.storybook/main.mjs` both
+   alias the bare `framer` specifier onto `lib/framer-render-target.js`, so a source file
+   can `import { RenderTarget } from "framer"` and the guard simply never fires outside
+   Framer. `components/Work/Work.jsx` does this to switch its sideways-scroll listeners
+   off on the canvas. `addPropertyControls` is a no-op in the same shim.
+
+10. **Property controls only where someone edits the thing.** Sections take their content
+    from the repo and expose nothing, unless the client has asked to edit that section
+    themselves — `Vendors.tsx`, `VendorsClosed.tsx`, `Hosts.tsx` and `About.tsx` are the
+    four that have.
+
+    The field defaults go in a `DEFAULTS` object in the **source** file, which
+    destructures them as parameter defaults, so the Next copy renders exactly what an
+    unconfigured Framer instance does. `addPropertyControls` then goes in the extra file.
+    `About.tsx` is the pattern.
+
+    Copy that runs to more than one paragraph goes on **one** textarea control and is
+    rendered as one element under `white-space: pre-line`, not split in JS. A blank line
+    becomes an empty line box, which is the paragraph gap. `.aboutCopy` is the example.
 
 ## Shared code that already exists — do not duplicate
 
 `framer/Primitives.tsx` is imported by every section and already exports:
 
+- `styles` — the identity Proxy standing in for each section's CSS-module import, so
+  ported markup keeps the source's `styles.X`. It also calls `injectHappenCSS()` at
+  module level on everyone's behalf, which is why `Primitives.tsx` has to be the first
+  file pasted: a section pasted against an older copy renders unstyled on the canvas.
 - `ASSET_BASE` and `asset()` — every image goes through this. It points at
   `https://happen-prototype.vercel.app`, the prototype's own Vercel deployment, which
   serves `public/` at the site root. Cache headers for `/assets` are in
@@ -154,67 +244,164 @@ defines. Re-run it after touching any CSS, then re-paste both `GlobalStylesheet.
 - `Reveal`, `RevealGroup`, `RevealItem` and `useIsoLayoutEffect` — the
   fade-and-rise on scroll, ported out of `components/ui.jsx` with Vendors.
 
-If a section needs a new shared primitive, add it to `Primitives.tsx` and say so, since
-that file then has to be re-pasted into Framer.
+`components/Primitives.js` is the Next-side mirror of that file — a barrel re-exporting
+the same names from where they actually live, so both copies of a section import one
+specifier and the two import blocks line up. It defines nothing. A new shared primitive
+goes in both: the real one in `framer/Primitives.tsx`, a re-export line in
+`components/Primitives.js`. Say so when you add one, since `Primitives.tsx` then has to
+be re-pasted into Framer.
 
 ## Status
 
-**In Framer and working:** `GlobalStylesheet.tsx`, `Primitives.tsx`, `Nav.tsx`,
-`Hero.tsx`, `VideoBackground.tsx`, `Ribbons.tsx`.
+**Convergence pass, 2026-09-23.** The port is now mostly generated. What changed:
 
-**Re-synced with the repo 2026-09-17, not yet re-pasted:** `GlobalStylesheet.tsx`,
-`GlobalStylesheetHead.html`, `Primitives.tsx` (Button `color`), `Nav.tsx` (Hosts link
-dropped), `Hero.tsx` and `VideoBackground.tsx` (video moved from a page-wide backdrop
-into the hero). The standalone VideoBackground instance in the Framer page stack has to
-be deleted when these go in. `Artists.tsx` was re-synced the same day and now renders
-the video inside its own `artistsScene`, as Hero does.
+- `Primitives.tsx` gained the `styles` proxy and a module-level `injectHappenCSS()`, so
+  no section calls it itself. Its `SOCIALS` was cut from four accounts to the two
+  `lib/data.js` actually has.
+- `components/Primitives.js` was added as the Next-side mirror of that file, and every
+  section's import block was moved onto it.
+- Every section's default export in `components/` carries the sizing annotation.
+- `scripts/build-framer.mjs` generates nine of the section files; `scripts/compare-framer.mjs`
+  diffs every section against its source in a browser.
+- `About.tsx` is the worked example: source and port differ in the import block alone,
+  and its heading and copy are on property controls, making it the fourth editable
+  section.
+- `.storybook/main.mjs` now aliases `framer` the way `next.config.mjs` does, so a source
+  file can import `RenderTarget` and still run in Storybook.
 
-**Written, not yet pasted or checked in Framer:** `Vendors.tsx`, `VendorsClosed.tsx`, `Hosts.tsx`, `Work.tsx`,
-`Services.tsx`, `Artists.tsx`, `Testimonials.tsx`, `About.tsx`,
-`Instagram.tsx`, `InstagramCard.tsx`, `Contact.tsx`, `EventCard.tsx` and `Events.tsx`, along with the
-`Primitives.tsx` additions they need: `Reveal` for Vendors, and `SOCIALS` for Instagram
-and Contact. `EventCard.tsx` is pasted and in use; `Events.tsx` is not pasted — see
-Events below.
+`Hosts` and `Vendors` were then converged too: their flattened card slots moved into
+`components/*/data.js` as a flat `DEFAULTS` object that the source destructures as
+parameter defaults, which is inert in Next and is what the Framer controls read. That
+fixed the last two differences — `VendorsClosed` had `href="#"` where the source has the
+live form URL, and `Hosts` wrote `target` and `rel` in the other order.
 
-The `Primitives.tsx` in Framer is older than the one in this repo and does not export
-`EASE`, so anything importing it fails with *does not provide an export named 'EASE'*.
-Re-pasting `Primitives.tsx` is the whole fix. It is the file to paste first whenever a
-section is pasted, since a section that imports a name the pasted copy lacks does not
-appear in the Insert panel.
+`pnpm compare-framer` now reports **every ported block matching its source.**
+
+`InstagramCard.tsx` is no longer imported by anything: the section moved to the
+EmbedSocial feed. It is left in place in case the Framer page still has instances of it,
+but it is dead in this repo.
+
+**Pasted and verified, 2026-09-27.** The live page at
+`https://happengroup.com.au/home-editable` was compared against the repo and matches:
+
+- The head stylesheet is build `2026-09-24 18:46 UTC · 3ccacef6`, the same one the repo
+  holds.
+- Hero, Vendors, Hosts, About and Testimonials render markup **identical** to the Next
+  app. Work and Services differ only by `srcSet` versus `srcset`, which is React writing
+  the attribute the JSX way, not a difference in what is rendered.
+- Nav portals into its own `<nav>`, and Ribbons into `#main` — the right target, not
+  `body`. Two `<video>` elements, Hero and Artists, so no standalone `VideoBackground`
+  instance is left in the stack. Four artist cards, matching the repo. No console errors.
+- Both bugs `compare-framer` had found are fixed live: the Vendors CTA is the real form
+  URL with no `href="#"` left anywhere, and Contact lists only `hello@happengroup.com.au`.
+
+Comparing markup against the published page takes three normalisations, or everything
+looks different for no reason: strip the `<style>` and `<script>` blocks, since the sheet
+is inlined in the head and its class names otherwise match every grep; unhash the Next
+side's CSS-module names, as `compare-framer` does; and normalise React's serialisation
+against Framer's — React writes `<img … />`, `alt=""`, `&#x27;` and `data-active=""`
+where the published HTML has `<img …>`, `alt`, `'` and `data-active`. Match blocks by
+`id`, not by position: Framer's own wrapper divs mean the two pages have different shapes
+above the section elements.
 
 **Still to port:** Preloader. Rough page order is in `app/page.js`.
 
+### The paste, in order
+
+The order is not advice. Fourteen files import `styles` from `Primitives.tsx`, and a
+section pasted against a copy that lacks it does not error — it is silently missing from
+the Insert panel. When a change touches `Primitives.tsx` or the sheet, it is a full
+paste rather than a patch, because everything downstream of them moves at once.
+
+1. **`Primitives.tsx`** first, always.
+2. **`GlobalStylesheet.tsx`**.
+3. **`GlobalStylesheetHead.html`** into Site Settings → Code, at Start of `<head>`, with
+   its Page field limited to the Happen pages. Confirm it landed by viewing source on the
+   published URL and searching for `data-happen-static` — the value is the build stamp,
+   so the same search says whether the paste is current.
+4. The rest, in any order: `Nav`, `Ribbons`, `VideoBackground`, `Hero`, `Hosts`,
+   `Vendors`, `VendorsClosed`, `Work`, `Services`, `Artists`, `About`, `Testimonials`,
+   `EventCard`.
+
+**Not pasted:** `Events.tsx`, `Instagram.tsx` and `Contact.tsx`, because those three
+sections are built natively in Framer — see **Sections Framer owns** below. Nor
+`InstagramCard.tsx`, which is dead. Nor `happen.css`, `PORTING.md` or `extra/`, none of
+which are Framer files at all: `happen.css` is the readable copy of the sheet, and
+`extra/` is generator input that is already folded into the files above.
+
+Then, in the page itself:
+
+- **Delete the standalone `VideoBackground` instance from the page stack.** The video
+  moved into the hero on 2026-09-17 and Hero and Artists each render their own now; a
+  leftover instance draws a second one.
+- **Delete `InstagramCard` and any instances of it.** The section is the EmbedSocial feed
+  now, and `.instagramCard` / `.instagramCardImage` are no longer in the sheet at all, so
+  those tiles would render unstyled. Done as of 2026-09-27; nothing on the live page uses
+  it.
+- `VendorsClosed` stays as it is in the page. The new `VendorsClosed.tsx` re-exports the
+  component from `Vendors.tsx`, so the existing instance keeps resolving.
+
+Worth an eye in Preview afterwards, since `compare-framer` cannot see them: the nav bar
+and its blend over the cream sections, the ribbons over the hero, and the event cards.
+On the canvas, Instagram should be a plain charcoal block — `EmbedSocialFeed` is guarded
+by `RenderTarget` so the vendor script never loads into the editor.
+
 ### Vendors
 
-The vendors band has two states, and they are two components rather than one with a
-variant, so swapping them is a swap in the page stack:
+The vendors band has two states, and they are two components so that swapping them is a
+swap in the page stack:
 
-- **`Vendors.tsx`** — applications open. A card per festival, edited from the section's
-  own properties panel: heading, body, and an **Events** array of up to three
-  `{ name, logo, CTA, link }`. Three is the cap because a fourth scrolls the row
-  sideways on desktop, which the layout was never drawn for.
-- **`VendorsClosed.tsx`** — between intakes. Same shell, same `#a-vendors` id, same
-  backdrop; the card row becomes one card with a generic message and a CTA to an
-  expression-of-interest form. Heading, body, card copy, CTA and link are all on
-  controls.
+- **`Vendors`** — applications open. A card per festival, edited from the section's own
+  properties panel: heading, body, and two `{ name, logo, CTA, link }` slots. A slot with
+  an empty name is not rendered. Two fixed slots rather than an Array control, because
+  the on-page editor lists no Array control; a third card would scroll the row sideways
+  on desktop anyway, which the layout was never drawn for.
+- **`VendorsClosed`** — between intakes. Same shell, same `#a-vendors` id, same backdrop;
+  the card row becomes one card with a generic message and a CTA to an
+  expression-of-interest form.
 
-The closed card takes the footprint the card row takes — two cards plus the gap, so 572px at
-1024px and 740px from 1200px — which is why the band keeps its height and proportions
+Both come from one source file, `components/Vendors/Vendors.jsx`, so both land in
+`framer/Vendors.tsx` with their own property controls. `framer/VendorsClosed.tsx` is kept
+as a re-export of it, so the instance already placed in the Framer page still resolves
+rather than having to be deleted and re-inserted.
+
+The closed card takes the footprint the card row takes — two cards plus the gap, so 572px
+at 1024px and 740px from 1200px — which is why the band keeps its height and proportions
 whichever one is in the stack.
 
-The closed card, like `.hostsCard`, is a flat charcoal background. Both used to carry their
-own copy of the band backdrop under a `mix-blend-mode: darken` fill; that was dropped for
-the plain background, so there is no blend left to break inside Framer's container.
+The closed card, like `.hostsCard`, is a flat charcoal background. Both used to carry
+their own copy of the band backdrop under a `mix-blend-mode: darken` fill; that was
+dropped for the plain background, so there is no blend left to break inside Framer's
+container.
 
-### Events
+### Sections Framer owns
 
-Events is built natively in Framer, not from `Events.tsx`. That file is not pasted into
-Framer; it stays in the repo as a reference for the section's layout and placeholder
-content. What Framer uses is `EventCard.tsx`: one card, every field on a property
-control, placed as instances inside a native card container. The sold-out treatment
-lives in the card.
+Three sections are built in Framer rather than pasted, so the client can edit them
+without code. Their `.tsx` files stay in the repo as a reference for layout and
+placeholder content, and `compare-framer` still holds them to the source — useful as a
+spec, but it no longer describes the live page.
 
-Layer structure, the same on every breakpoint:
+- **Events** — a CMS collection, so the client adds events themselves. It renders
+  `EventCard.tsx`, which *is* pasted: one card, every field on a property control, placed
+  as instances inside a native card container. The sold-out treatment lives in the card.
+  Measured on the live site 2026-09-27: four cards from the collection against eight
+  placeholders in `components/Events/data.js`, which is the expected difference.
+- **Instagram** — a native frame holding a rich-text heading and a Framer Embed element
+  wrapping the EmbedSocial `data-ref`. Two things follow from it being native: the
+  section carries no `a-instagram` id, which is harmless because nothing links to it, and
+  it takes none of `.instagramSection` / `.instagramContent` from the sheet, so its
+  layout is whatever the Framer frame sets. The embed itself works — the iframe resizes
+  to its content and loads the feed.
+- **Contact** — a native frame. The form, the email and the acknowledgement on the live
+  page are Framer elements, not `Contact.tsx`, so none of `.contactSection`,
+  `.contactForm`, `.contactEmail` or `.contactSocials` appears there.
+
+If any of the three is ever switched back to the code component, paste its file and
+delete the native frame; the ids and copy already match.
+
+#### Events layer structure
+
+The same on every breakpoint:
 
 ```
 Events (Framer)          native Section, detached
@@ -258,11 +445,26 @@ Two things to know when changing these:
 
 ## Verification before handing a file over
 
-- Every class name used in the new file must exist in `framer/happen.css`.
+Four commands, and the first three are the ones that actually catch things:
+
+```
+pnpm compile-stylesheet-framer   every styles.X must name a rule that exists
+pnpm build-framer --check        no generated file may be stale
+pnpm dev + pnpm compare-framer   every section must match its source in the browser
+pnpm build && pnpm lint
+```
+
+- `compile-stylesheet-framer` scans `components/` and `framer/` together and refuses to
+  write if a `styles.X` names no rule, or if two stylesheets define the same class. This
+  is why the hand-written files were moved onto `styles.X` too — a plain string is not
+  checked by anything.
 - Every `asset()` path must exist under `public/`.
 - `pnpm build` and `pnpm lint` must still pass. The `framer/` folder is excluded from
-  both `jsconfig.json` and `.eslintrc.json`, so nothing in it should ever break the
-  Next build.
+  both `jsconfig.json` and `.eslintrc.json`, so nothing in it should ever break the Next
+  build — but the `components/` side of a change certainly can. Note that turbopack
+  (`pnpm dev`) and webpack (`pnpm build`) disagree about CSS modules: a top-level
+  `:global(#id)` in a `.module.css` passes in dev and fails the production build, so a
+  green dev server is not the same as a green build.
 
 ## Known Framer behaviour, so it isn't mistaken for a bug
 
@@ -303,8 +505,8 @@ Two things to know when changing these:
   open a stacking context: the sheet at -1 and the video at -2 are ordered against the
   root, and a context here would trap the sheet above the video. The whole scale lives
   in the root — video -2, ribbons -1, page content and sections 0, mobile overlay 4, nav
-  5, nav hue guard 6, preloader 7. `VideoBackground.tsx` and `Ribbons.tsx` each give
-  `#main` that position, and neither may add a z-index to it.
+  5, nav hue guard 6, preloader 7. The sheet gives `#main` that position (in
+  `app/page.module.css`); nothing may add a z-index to it.
 - **The video is not portalled; it renders inside the scene of the section that owns it.**
   `VideoBackground.tsx` has no default export — Hero and Artists import it and drop it
   into their own `heroScene` / `artistsScene`, where it is `position: absolute` with a
@@ -344,6 +546,8 @@ Two things to know when changing these:
 
 ---
 
-**Port the `<SECTION NAME>` section.** Read the files under `components/<SECTION>/`,
-follow the rules above, and write `framer/<SECTION>.tsx`. Tell me what to paste and in
-what order, and anything I should check in Preview.
+**Work on the `<SECTION NAME>` section.** If it is on the generated list, change the
+source under `components/<SECTION>/` and run `pnpm build-framer` — never edit
+`framer/<SECTION>.tsx`. If it is hand-written, edit it directly and update its
+`// Last changed` line. Either way, finish with `pnpm dev` and `pnpm compare-framer`,
+and tell me what to paste, in what order, and what to check in Preview.

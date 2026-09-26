@@ -14,10 +14,7 @@
 import { useEffect, useLayoutEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { RenderTarget } from "framer"
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
-import { TextOverline, Heading3 } from "./Primitives.tsx"
-
-injectHappenCSS()
+import { styles, TextOverline, Heading3 } from "./Primitives.tsx"
 
 const LINKS = [
     { id: "a-events", label: "Events" },
@@ -96,7 +93,7 @@ export default function Nav() {
 
             {/* keeps the navlinks from turning weird colors from `difference` */}
             <Bar
-                className="navHueGuard"
+                className={styles.navHueGuard}
                 hidden
                 activeId={activeId}
                 menuOpen={menuOpen}
@@ -126,7 +123,7 @@ export default function Nav() {
 
 // Reserves the fixed bar's height in the page flow.
 export function NavPlaceholder() {
-    return <div className="navPlaceholder" />
+    return <div className={styles.navPlaceholder} />
 }
 
 function Bar({
@@ -144,11 +141,11 @@ function Bar({
             aria-hidden={hidden ? "true" : undefined}
             inert={inertWhen(hidden)}
         >
-            <div className="navInner">
+            <div className={styles.navInner}>
                 <TextOverline
                     as="a"
                     href="/"
-                    className="navTitle"
+                    className={styles.navTitle}
                     onClick={scrollToTop}
                 >
                     Happen Group
@@ -156,7 +153,7 @@ function Bar({
 
                 <button
                     type="button"
-                    className="navMenuToggle"
+                    className={styles.navMenuToggle}
                     aria-label={menuOpen ? "Close menu" : "Open menu"}
                     aria-expanded={menuOpen}
                     onClick={() => setMenuOpen((v) => !v)}
@@ -178,7 +175,7 @@ function LinkList({ activeId, scrollToSection }) {
     const [activeLink, setActiveLink] = useState(null)
 
     return (
-        <div className="navLinks" ref={setList}>
+        <div className={styles.navLinks} ref={setList}>
             {LINKS.map((n) => (
                 <TextOverline
                     as="a"
@@ -186,7 +183,7 @@ function LinkList({ activeId, scrollToSection }) {
                     href={`#${n.id}`}
                     ref={n.id === activeId ? setActiveLink : null}
                     onClick={(e) => scrollToSection(e, n.id)}
-                    className="navLink"
+                    className={styles.navLink}
                     aria-current={n.id === activeId ? "true" : undefined}
                 >
                     {n.label}
@@ -254,7 +251,7 @@ function MobileNav({ open, activeId, scrollToSection }) {
             className={`mobileNavOverlay${open ? " mobileNavOpen" : ""}`}
             inert={inertWhen(!open)}
         >
-            <div className="mobileNavLinks">
+            <div className={styles.mobileNavLinks}>
                 {LINKS.map((n, i) => (
                     <a
                         key={n.id}
@@ -264,11 +261,11 @@ function MobileNav({ open, activeId, scrollToSection }) {
                         aria-current={n.id === activeId ? "true" : undefined}
                         style={{ "--i": i, "--r": LINKS.length - 1 - i }}
                     >
-                        <span className="mobileNavMask">
+                        <span className={styles.mobileNavMask}>
                             <Heading3
                                 as="span"
                                 animateTracking={false}
-                                className="mobileNavLabel"
+                                className={styles.mobileNavLabel}
                             >
                                 {n.label}
                             </Heading3>

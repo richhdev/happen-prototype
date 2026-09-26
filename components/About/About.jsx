@@ -1,29 +1,39 @@
-import { Section } from "@/components/Section/Section";
-import { Heading2, Heading4 } from "@/components/Heading/Heading";
-import { TextXXLarge } from "@/components/Text/Text";
+import {
+  Section,
+  Heading2,
+  Heading4,
+  TextXXLarge,
+} from "@/components/Primitives";
 import { StatCounter } from "./StatCounter";
 import styles from "./About.module.css";
 
-export default function About() {
+// Read as the parameter defaults here and as `defaultValue` on the Framer
+// controls, the same way Hosts does it. `body` is one textarea, one line per
+// paragraph, so it is written the way it reads in the panel.
+const DEFAULTS = {
+  heading: "Who we are",
+  body: `A dream team of doers and difference-makers. Sharp, reliable and here to get it done. Each member brings something different to the table: creative brains, logistical minds, artist wranglers and on-ground weapons.
+
+We work with grit, good humour and zero ego. We're just here to make it Happen.`,
+};
+
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
+export default function About({
+  heading = DEFAULTS.heading,
+  body = DEFAULTS.body,
+}) {
   return (
     <Section id="a-about">
       <div className={styles.aboutSurface}>
-        <Heading2 className={styles.aboutTitle}>Who we are</Heading2>
+        <Heading2 className={styles.aboutTitle}>{heading}</Heading2>
 
-        <div className={styles.aboutCopy}>
-          <TextXXLarge>
-            A dream team of doers and difference-makers. Sharp, reliable and
-            here to get it done. Each member brings something different to the
-            table: creative brains, logistical minds, artist wranglers and
-            on-ground weapons.
-          </TextXXLarge>
-          <TextXXLarge>
-            {/* Desktop sets these as two lines; mobile lets them run on. */}
-            We work with grit, good humour and zero ego.{" "}
-            <br className="desktop-only" />
-            We&apos;re just here to make it Happen.
-          </TextXXLarge>
-        </div>
+        <TextXXLarge className={styles.aboutCopy}>{body}</TextXXLarge>
 
         <div className={styles.aboutStat}>
           <StatCounter

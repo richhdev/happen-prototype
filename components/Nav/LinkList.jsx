@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./Nav.module.css";
 import { LINKS } from "./data";
-import { TextOverline } from "@/components/Text/Text";
+import { TextOverline } from "@/components/Primitives";
 import Underline from "./Underline";
 
 export default function LinkList({ activeId, scrollToSection }) {

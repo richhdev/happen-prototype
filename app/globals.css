@@ -33,3 +33,11 @@ html body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+/* Framer has no .pageMain. #main is the box the ribbons sheet is measured
+   against, so it has to be positioned — and must never be given a z-index, or
+   the sheet at -1 is trapped above the video at -2 instead of both ordering
+   against the root. Keep in step with .pageMain in app/page.module.css. */
+#main {
+  position: relative;
+}

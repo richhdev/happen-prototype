@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { EASE } from "@/lib/data";
+import { EASE } from "@/components/Primitives";
 import styles from "./Testimonials.module.css";
 import { TESTIMONIALS } from "./data";
 

@@ -1,4 +1,4 @@
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 
 // `links` is ordered as the design lists them: the artist's music platform
 // first, Instagram last. Sasha Fern has no music link, so the row is just the

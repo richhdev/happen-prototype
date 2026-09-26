@@ -1,4 +1,4 @@
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 import styles from "./TrustedBy.module.css";
 
 const LOGO_SCALE = 0.3;

@@ -1,4 +1,4 @@
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 
 export const WORK = [
   {

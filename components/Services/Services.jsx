@@ -2,10 +2,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cubicBezier, motion, useScroll, useTransform } from "framer-motion";
 import { DEFAULT_IMG, SERVICES } from "./data";
-import { Section } from "@/components/Section/Section";
-import { Heading2, Heading3 } from "@/components/Heading/Heading";
-import { TextMedium } from "@/components/Text/Text";
-import { useIsoLayoutEffect } from "@/components/ui";
+import {
+  Section,
+  Heading2,
+  Heading3,
+  TextMedium,
+  useIsoLayoutEffect,
+} from "@/components/Primitives";
 import styles from "./Services.module.css";
 
 const debugFocusLine = false;
@@ -33,6 +36,13 @@ const focusLine = (cardEl) => {
   };
 };
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Services() {
   const sectionRef = useRef(null);
   const itemRefs = useRef([]);

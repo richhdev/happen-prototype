@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-17 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-23 · hand-written, re-paste into Framer after any edit.
 // Plain JavaScript in a .tsx file, because Framer's code editor only makes
 // .tsx. Nothing here is typed, and the imports resolve inside Framer rather
 // than in this repo, so the checker has nothing useful to say about it.
@@ -12,6 +12,21 @@
 
 import { forwardRef, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
+import { injectHappenCSS } from "./GlobalStylesheet.tsx";
+
+// Custom code does not run on the Framer canvas, so the sheet has to arrive
+// with the JS. Every ported file imports this one, so the call belongs here
+// rather than repeated at the top of each section.
+injectHappenCSS();
+
+// Stands in for the `import styles from "./X.module.css"` each section has in
+// the Next repo. The compiled sheet is global, so a class name is already its
+// own value and a ported file can keep the source's `styles.aboutSurface`
+// verbatim. Only string keys answer, so a symbol probe still misses.
+export const styles = new Proxy(
+  {},
+  { get: (_, name) => (typeof name === "string" ? name : undefined) },
+);
 
 // Where every image is fetched from. All 93 assets go through asset(), so this
 // one line is the whole asset story — the Framer equivalent of
@@ -28,10 +43,9 @@ export const asset = (p) => `${ASSET_BASE}${p}`;
 export const EASE = [0.16, 1, 0.3, 1];
 
 /* Data ---------------------------------------------------------------------
-   Ported from lib/data.js. The four social accounts, shared by the Instagram
-   section (icon + label) and the Contact section (icon only), which is the only
-   reason this sits here rather than folded into whichever one was ported first.
-   Spotify has no destination yet. */
+   Ported from lib/data.js. The social accounts, shared by the Instagram section
+   (icon + label) and the Contact section (icon only), which is the only reason
+   this sits here rather than folded into whichever one was ported first. */
 
 export const SOCIALS = [
   {
@@ -44,12 +58,9 @@ export const SOCIALS = [
     href: "https://www.facebook.com/happengroupau",
     icon: asset("/assets/icon-facebook.svg"),
   },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@HappenGroup",
-    icon: asset("/assets/icon-youtube.svg"),
-  },
-  { label: "Spotify", href: "#", icon: asset("/assets/icon-spotify.svg") },
+  // YouTube and Spotify are commented out in lib/data.js, which is the source
+  // of truth, so they are commented out here too rather than quietly adding two
+  // icons the prototype does not show.
 ];
 
 /* Reveal -------------------------------------------------------------------

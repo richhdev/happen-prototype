@@ -181,9 +181,14 @@ async function main() {
   }
 
   // --- guard: every styles.X used in JSX must exist in the sheet -----------
-  const jsxFiles = (await walk2(path.join(ROOT, "components"))).concat(
+  // framer/ is scanned alongside components/: the ported files read their class
+  // names off the identity `styles` proxy in Primitives.tsx, so a typo there is
+  // a string that quietly matches no rule. Here it is an error instead.
+  const jsxFiles = [
+    ...(await walk2(path.join(ROOT, "components"))),
+    ...(await walk2(path.join(ROOT, "framer"))),
     path.join(ROOT, "app/page.js"),
-  );
+  ];
   const used = new Set();
   for (const file of jsxFiles)
     for (const m of (await readFile(file, "utf8")).matchAll(/\bstyles\.([\w$]+)/g))

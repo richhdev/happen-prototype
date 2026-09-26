@@ -37,8 +37,8 @@
 //      well, so the CTA text control hides itself in that state.
 
 import { addPropertyControls, ControlType } from "framer"
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
 import {
+  styles,
   asset,
   Heading4,
   TextSmall,
@@ -47,7 +47,6 @@ import {
   ButtonOutlineMedium,
 } from "./Primitives.tsx"
 
-injectHappenCSS()
 
 // Three states, each a badge colour and a label. `soldout` is the only one
 // that changes the button as well as the badge.
@@ -163,27 +162,27 @@ export default function EventCard({
         srcSet={srcSet}
         sizes={sizes}
         alt=""
-        className="eventsImage"
+        className={styles.eventsImage}
         style={imagePosition ? { objectPosition: imagePosition } : undefined}
         loading="lazy"
       />
 
       {/* Sits above the image and carries the gradient that makes the copy
           readable, clear at the top and solid charcoal at the bottom. */}
-      <div className="eventsOverlay">
+      <div className={styles.eventsOverlay}>
         {label && <Badge color={color}>{label}</Badge>}
 
         {/* margin-top: auto here is what pushes everything below it to the
             bottom of the card, so cards with shorter copy still line up. */}
-        <div className="eventsMeta">
-          <TextSmall className="eventsDate">{date}</TextSmall>
-          <Heading4 as="h3" className="eventsTitle">
+        <div className={styles.eventsMeta}>
+          <TextSmall className={styles.eventsDate}>{date}</TextSmall>
+          <Heading4 as="h3" className={styles.eventsTitle}>
             {title}
           </Heading4>
         </div>
 
         {/* Hidden under 768px — the card is too short to carry it there. */}
-        <TextMedium className="eventsDescription">{description}</TextMedium>
+        <TextMedium className={styles.eventsDescription}>{description}</TextMedium>
 
         <ButtonOutlineMedium
           href={link}

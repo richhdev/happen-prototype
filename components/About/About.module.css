@@ -21,9 +21,10 @@
 }
 
 .aboutCopy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--text-xxlarge-line-height);
+  /* The copy is one string from one Framer control, so a paragraph break is a
+     blank line inside it. pre-line renders that as an empty line box, which is
+     the gap this used to set between two separate elements. */
+  white-space: pre-line;
   padding-inline: var(--space-16);
   color: var(--color-white);
   text-align: center;

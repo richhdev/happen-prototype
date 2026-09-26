@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Last changed 2026-09-14 · hand-written, re-paste into Framer after any edit.
+// Last changed 2026-09-25 · hand-written, re-paste into Framer after any edit.
 // Ported from components/Ribbons/Ribbons.jsx.
 //
 // .ribbonsLayer, .ribbonsTile, .ribbonsRibbon and the four .ribbonsPlacement*
@@ -13,10 +13,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { RenderTarget } from "framer";
-import { injectHappenCSS } from "./GlobalStylesheet.tsx";
-import { asset } from "./Primitives.tsx";
+import { styles, asset } from "./Primitives.tsx";
 
-injectHappenCSS();
 
 // Two ribbons, each in two cuts: 2000px for tablets up, 1200px for phones. A
 // media query in the sheet picks which pair the placements draw, so only the
@@ -43,37 +41,12 @@ const PLACEMENTS = [
   "ribbonsPlacementD",
 ];
 
-// The layer's height and travel are percentages, so they need a positioned
-// ancestor that is the length of the page — in the Next app that is
-// <main class="pageMain">, here it is Framer's #main. Positioned only: a
-// z-index would open a stacking context and trap the layer above the video.
-// Written against the attribute so it survives a rename of #main, and so
-// VideoBackground.tsx's own #main rule cannot outrank it.
-const PAGE_MAIN_FIX = `
-[data-happen-page-main] { position: relative; }
-`;
-
 function findPageMain() {
   return (
     document.querySelector("#main") ||
     document.querySelector("main") ||
     document.body
   );
-}
-
-function usePageMainFix(el) {
-  useEffect(() => {
-    if (!el) return;
-    el.setAttribute("data-happen-page-main", "");
-    const style = document.createElement("style");
-    style.setAttribute("data-happen-ribbons", "");
-    style.textContent = PAGE_MAIN_FIX;
-    document.head.appendChild(style);
-    return () => {
-      el.removeAttribute("data-happen-page-main");
-      style.remove();
-    };
-  }, [el]);
 }
 
 // Firefox has no scroll timelines, so the CSS upgrade never applies there and
@@ -116,9 +89,9 @@ function useScrollProgressFallback(ref, active) {
 
 function Layer({ layerRef }) {
   return (
-    <div ref={layerRef} className="ribbonsLayer" style={ART} aria-hidden>
+    <div ref={layerRef} className={styles.ribbonsLayer} style={ART} aria-hidden>
       {Array.from({ length: TILE_COUNT }, (_, tile) => (
-        <div key={tile} className="ribbonsTile">
+        <div key={tile} className={styles.ribbonsTile}>
           {PLACEMENTS.map((placement) => (
             <div key={placement} className={`ribbonsRibbon ${placement}`} />
           ))}
@@ -158,7 +131,6 @@ export default function Ribbons() {
     setPageMain(findPageMain());
   }, [onCanvas]);
 
-  usePageMainFix(onCanvas ? null : pageMain);
   useScrollProgressFallback(ref, !onCanvas && pageMain !== null);
 
   // On the canvas body is the Framer editor itself, so a full-page layer would

@@ -1,14 +1,24 @@
 "use client";
 import { useRef } from "react";
-import { Section } from "@/components/Section/Section";
-import { Heading1 } from "@/components/Heading/Heading";
-import { TextXXLarge } from "@/components/Text/Text";
-import { ButtonLarge, ButtonOutlineLarge } from "@/components/Button/Button";
+import {
+  Section,
+  Heading1,
+  TextXXLarge,
+  ButtonLarge,
+  ButtonOutlineLarge,
+} from "@/components/Primitives";
 import VideoBackground from "@/components/VideoBackground/VideoBackground";
 import { TrustedBy } from "@/components/Hero/TrustedBy";
 import { RollingLogo } from "./RollingLogo";
 import styles from "./Hero.module.css";
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Hero() {
   const headerRef = useRef(null);
 

@@ -20,10 +20,8 @@
 // width to Fill and leave the height alone; the aspect-ratio keeps it square.
 
 import { addPropertyControls, ControlType } from "framer"
-import { injectHappenCSS } from "./GlobalStylesheet.tsx"
 import { asset } from "./Primitives.tsx"
 
-injectHappenCSS()
 
 // Written once and read twice: as `defaultValue` on the controls below, and as
 // the default parameters in the signature. Not `defaultProps` — React 19

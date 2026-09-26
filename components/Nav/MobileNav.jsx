@@ -1,6 +1,6 @@
 import styles from "./MobileNav.module.css";
 import { LINKS } from "./data";
-import { Heading3 } from "@/components/Heading/Heading";
+import { Heading3 } from "@/components/Primitives";
 
 export default function MobileNav({ open, activeId, scrollToSection }) {
   return (

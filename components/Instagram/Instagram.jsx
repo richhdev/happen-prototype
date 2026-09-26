@@ -1,11 +1,16 @@
-import { Section } from "@/components/Section/Section";
-import { SOCIALS } from "@/lib/data";
+import { SOCIALS, Section, Heading3 } from "@/components/Primitives";
 import { EmbedSocialFeed } from "./EmbedSocialFeed";
 import styles from "./Instagram.module.css";
-import { Heading3 } from "../Heading/Heading";
 
 const EMBED_REF = "e509db0b81e805a0eb40ae1c420701e728ec2ee0";
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Instagram() {
   return (
     <Section id="a-instagram" className={styles.instagramSection}>

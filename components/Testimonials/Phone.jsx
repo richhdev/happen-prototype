@@ -1,4 +1,4 @@
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 import styles from "./Phone.module.css";
 
 export default function Phone({ children }) {

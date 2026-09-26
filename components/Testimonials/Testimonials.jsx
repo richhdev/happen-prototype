@@ -1,10 +1,15 @@
-import { Section } from "@/components/Section/Section";
-import { Heading3 } from "@/components/Heading/Heading";
-import { asset } from "@/lib/data";
+import { asset, Section, Heading3 } from "@/components/Primitives";
 import styles from "./Testimonials.module.css";
 import Phone from "./Phone";
 import Thread from "./Thread";
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Testimonials() {
   return (
     <Section id="a-testimonials">

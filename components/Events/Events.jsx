@@ -1,13 +1,24 @@
 "use client";
-import { Reveal } from "@/components/ui";
+import {
+  Section,
+  Heading2,
+  Heading4,
+  TextSmall,
+  TextMedium,
+  ButtonOutlineMedium,
+  Badge,
+  Reveal,
+} from "@/components/Primitives";
 import { EVENTS } from "./data";
-import { Section } from "@/components/Section/Section";
-import { Heading2, Heading4 } from "@/components/Heading/Heading";
-import { TextSmall, TextMedium } from "@/components/Text/Text";
-import { Badge } from "@/components/Badge/Badge";
-import { ButtonOutlineMedium } from "@/components/Button/Button";
 import styles from "./Events.module.css";
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Events() {
   return (
     <Section

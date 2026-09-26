@@ -3,8 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion, useScroll } from "framer-motion";
 import { ARTISTS } from "./data";
 import { ArtistCard } from "./ArtistCard";
-import { Section } from "@/components/Section/Section";
-import { Heading2 } from "@/components/Heading/Heading";
+import { Section, Heading2 } from "@/components/Primitives";
 import VideoBackground from "@/components/VideoBackground/VideoBackground";
 import styles from "./Artists.module.css";
 
@@ -13,6 +12,13 @@ import styles from "./Artists.module.css";
    distance, so the buffer feels the same on a phone as on a desktop. */
 const CLOSE_FRACTION = 1 / 3;
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Artists() {
   const trackRef = useRef(null);
   // Where the pin comes to rest, and so where an open card sits.

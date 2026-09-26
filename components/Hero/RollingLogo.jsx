@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { asset } from "@/lib/data";
+import { asset } from "@/components/Primitives";
 import styles from "./RollingLogo.module.css";
 
 function useRoll(trackRef, logoRef) {

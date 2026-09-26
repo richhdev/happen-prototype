@@ -3,10 +3,17 @@ import { useEffect, useState } from "react";
 import styles from "./Nav.module.css";
 import { LINKS } from "./data";
 import { useActiveSection } from "./useActiveSection";
-import { TextOverline } from "@/components/Text/Text";
+import { TextOverline } from "@/components/Primitives";
 import LinkList from "./LinkList";
 import MobileNav from "./MobileNav";
 
+/**
+ * Width fills whatever it is dropped into; height is measured from the rendered
+ * content, so the stylesheet decides it rather than a number typed in Framer.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function Nav() {
   const activeId = useActiveSection(LINKS);
   const [menuOpen, setMenuOpen] = useState(false);
