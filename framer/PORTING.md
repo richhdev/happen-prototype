@@ -140,8 +140,9 @@ where `lib/data.js` has two.
 | `VideoBackground.tsx` | injects CSS that overrides Framer's page background. Not inert in Next — it would restyle the real page. |
 | `EventCard.tsx`, `InstagramCard.tsx` | no source in `components/` at all. Framer-native. |
 | `VendorsClosed.tsx` | three lines re-exporting `VendorsClosed` from `Vendors.tsx` — see Vendors below. |
+| `Preloader.tsx` | the source reads `logo-draw.svg` with `node:fs`, so the port inlines it as `LOGO_MARKUP`. `PreloaderOverlay.jsx` is otherwise copied verbatim. Re-inline the SVG if it changes. |
 
-These four still carry `// Last changed <date>` on line 2; update it when you touch one.
+These still carry `// Last changed <date>` on line 2; update it when you touch one.
 They now write their class names as `styles.heroSection` like everything else, which is
 not cosmetic: `compile-stylesheet-framer` only checks names written that way, so a typo
 in one of them is now a failed build rather than an unstyled element. None of them calls
@@ -304,7 +305,9 @@ where the published HTML has `<img …>`, `alt`, `'` and `data-active`. Match bl
 `id`, not by position: Framer's own wrapper divs mean the two pages have different shapes
 above the section elements.
 
-**Still to port:** Preloader. Rough page order is in `app/page.js`.
+**Preloader ported, 2026-09-29.** Rendered in place rather than portalled, so the cover is in Framer's server-rendered HTML and paints before the site does. That only works while its container opens no stacking context or containing block: on the live page four containers carry `will-change: transform` and three carry their own z-index, and either would trap the fixed overlay. Place it as a plain layer at the top of the page stack with no effects, no z-index and no fixed positioning set in Framer. It renders nothing on the canvas — select it from the Layers panel — and its box is zero-size on the live site.
+
+**Pasted and verified, 2026-09-29.** On `https://happengroup.com.au/` the cover is in the server-rendered HTML, there is one instance, it covers the full viewport and is the top element at its centre, no ancestor carries a transform, z-index or `will-change`, its container is 0×0 in a gap-free stack, and it locks and then releases scroll before leaving.
 
 ### The paste, in order
 
@@ -321,7 +324,7 @@ paste rather than a patch, because everything downstream of them moves at once.
    so the same search says whether the paste is current.
 4. The rest, in any order: `Nav`, `Ribbons`, `VideoBackground`, `Hero`, `Hosts`,
    `Vendors`, `VendorsClosed`, `Work`, `Services`, `Artists`, `About`, `Testimonials`,
-   `EventCard`.
+   `EventCard`, `Preloader`.
 
 **Not pasted:** `Events.tsx`, `Instagram.tsx` and `Contact.tsx`, because those three
 sections are built natively in Framer — see **Sections Framer owns** below. Nor

@@ -53,6 +53,9 @@
   /* overflow-x also makes overflow-y a scroll box, which would clip the
      underline sitting below the links — symmetric padding keeps it inside. */
   padding-block: 0.75em;
+  /* Room for the hover badge on the end links, without moving them. */
+  padding-inline: 12px;
+  margin-inline: -12px;
 
   @media (min-width: 1024px) {
     display: flex;
@@ -64,6 +67,27 @@
   color: var(--color-white);
   white-space: nowrap;
   flex-shrink: 0;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Drawn outside the link box so the text and the underline's width stay put. */
+.navLink::before {
+  content: "";
+  position: absolute;
+  inset: -8px -12px;
+  z-index: -1;
+  border-radius: var(--radius-small);
+  background: var(--color-cream);
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+
+@media (hover: hover) {
+  .navLink:not([aria-current]):hover::before {
+    /* dont apply hover state if button is active */
+    opacity: 0.1;
+  }
 }
 
 /*

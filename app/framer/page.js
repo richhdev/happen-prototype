@@ -14,8 +14,8 @@
 //     for one frame before hydration. On the published Framer page the same
 //     sheet is in the head, from GlobalStylesheetHead.html, and that never happens.
 //
-// Preloader is not ported yet, so the page starts at Nav.
 
+import Preloader from "@/framer/Preloader.tsx";
 import Nav, { NavPlaceholder } from "@/framer/Nav.tsx";
 import Hero from "@/framer/Hero.tsx";
 import Events from "@/framer/Events.tsx";
@@ -33,6 +33,7 @@ import Contact from "@/framer/Contact.tsx";
 export default function FramerPage() {
   return (
     <>
+      <Preloader />
       <Nav />
       {/* .pageMain matches framers actual structure */}
       <main id="main" className="pageMain">

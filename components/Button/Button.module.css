@@ -1,10 +1,37 @@
+@property --button-glow-center {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --button-glow-edge {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 .button {
+  --button-glow-center: 0%;
+  --button-glow-edge: 0%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-small);
   border: none;
-  background: var(--color-red);
+  background: radial-gradient(
+    65% 65% at 50% 50%,
+    color-mix(
+        in srgb,
+        var(--color-red-bright) var(--button-glow-center),
+        var(--color-red)
+      )
+      58%,
+    color-mix(
+      in srgb,
+      var(--color-red-bright) var(--button-glow-edge),
+      var(--color-red)
+    )
+  );
   color: var(--color-white);
   cursor: pointer;
   text-decoration: none;
@@ -12,12 +39,40 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  transition:
+    --button-glow-center 300ms ease,
+    --button-glow-edge 300ms ease;
 }
 
 .buttonOutline {
-  background: none;
+  background: radial-gradient(
+    65% 65% at 50% 50%,
+    color-mix(in srgb, currentColor var(--button-glow-center), transparent) 58%,
+    color-mix(in srgb, currentColor var(--button-glow-edge), transparent)
+  );
   color: var(--color-cream);
   border: 2px solid currentColor;
+}
+
+@media (hover: hover) {
+  .button:hover {
+    --button-glow-center: 100%;
+  }
+
+  .buttonOutline:hover {
+    --button-glow-center: 15%;
+    --button-glow-edge: 5%;
+  }
+}
+
+.button:active {
+  --button-glow-center: 100%;
+  --button-glow-edge: 100%;
+}
+
+.buttonOutline:active {
+  --button-glow-center: 20%;
+  --button-glow-edge: 20%;
 }
 
 .buttonLarge {

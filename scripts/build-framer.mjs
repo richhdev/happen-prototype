@@ -32,6 +32,7 @@ import { argv, exit } from "node:process";
 //
 //   Nav, Ribbons       portal out of Framer's container, which moves the DOM
 //   VideoBackground    injects CSS that overrides Framer's page background
+//   Preloader          source reads its SVG with node:fs; the port inlines it
 //   Hosts, Vendors     flatten their cards into fixed slots for the on-page
 //                      editor, which lists no Array control
 //   VendorsClosed,     no source in components/ at all; Framer-native

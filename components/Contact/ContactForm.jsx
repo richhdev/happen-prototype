@@ -32,6 +32,7 @@ export default function ContactForm() {
               name={field.name}
               type={field.type}
               autoComplete={field.autoComplete}
+              placeholder={field.placeholder}
               className={styles.contactInput}
             />
           )}
