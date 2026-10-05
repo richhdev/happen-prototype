@@ -44,6 +44,7 @@ const CLIENTS = [
   },
   { name: "Chapter", src: asset("/assets/client-chapter.webp"), h: 185 },
   { name: "Afrosoul", src: asset("/assets/client-afrosoul.svg"), h: 77 },
+  { name: "Spilt Milk", src: asset("/assets/client-spilt-milk.svg"), h: 67 },
 ];
 
 export function TrustedBy({ className, ...rest }) {

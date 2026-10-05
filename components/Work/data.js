@@ -169,4 +169,20 @@ export const WORK = [
     logoWidth: 334,
     logoHeight: 45,
   },
+  {
+    name: "Dan Does Footy",
+    tag: ["Event Delivery & Operations"],
+    img: asset("/assets/work-dan-does-footy.webp"),
+    logo: asset("/assets/client-dan-does-footy.svg"),
+    logoWidth: 144,
+    logoHeight: 101,
+  },
+  {
+    name: "Spilt Milk",
+    tag: ["Artist Services, Nationwide"],
+    img: asset("/assets/work-spilt-milk.webp"),
+    logo: asset("/assets/client-spilt-milk.svg"),
+    logoWidth: 237,
+    logoHeight: 67,
+  },
 ];
