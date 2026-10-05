@@ -9,6 +9,15 @@ export const WORK = [
     logoWidth: 377,
     logoHeight: 89,
   },
+
+  {
+    name: "Spilt Milk",
+    tag: ["Artist Services, Nationwide"],
+    img: asset("/assets/work-spilt-milk.webp"),
+    logo: asset("/assets/client-spilt-milk.svg"),
+    logoWidth: 237,
+    logoHeight: 67,
+  },
   {
     name: "Happy Hour",
     tag: ["End-to-end Event Delivery, Nationwide"],
@@ -32,6 +41,14 @@ export const WORK = [
     logo: asset("/assets/client-strummingbird.svg"),
     logoWidth: 324,
     logoHeight: 65,
+  },
+  {
+    name: "Dan Does Footy",
+    tag: ["Event Delivery & Operations"],
+    img: asset("/assets/work-dan-does-footy.webp"),
+    logo: asset("/assets/client-dan-does-footy.svg"),
+    logoWidth: 144,
+    logoHeight: 101,
   },
   {
     name: "Let Them Eat Cake",
@@ -168,21 +185,5 @@ export const WORK = [
     logo: asset("/assets/client-knotfest.webp"),
     logoWidth: 334,
     logoHeight: 45,
-  },
-  {
-    name: "Dan Does Footy",
-    tag: ["Event Delivery & Operations"],
-    img: asset("/assets/work-dan-does-footy.webp"),
-    logo: asset("/assets/client-dan-does-footy.svg"),
-    logoWidth: 144,
-    logoHeight: 101,
-  },
-  {
-    name: "Spilt Milk",
-    tag: ["Artist Services, Nationwide"],
-    img: asset("/assets/work-spilt-milk.webp"),
-    logo: asset("/assets/client-spilt-milk.svg"),
-    logoWidth: 237,
-    logoHeight: 67,
   },
 ];
